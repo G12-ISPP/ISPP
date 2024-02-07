@@ -1,17 +1,17 @@
-## Title #ISSUE_NUMBER
+## Título #NÚMERO_DE_ISSUE
 
-### Description
-Please provide a concise summary of the changes made and/or specify the issue(s) being resolved.
+### Descripción
 
-### Additional Context
-Include any relevant context or additional information about the pull request.
+Por favor, proporciona un resumen conciso de los cambios realizados y/o especifica el o los problemas que se están resolviendo.
 
-## Checklist
-Please check the boxes that apply:
+### Contexto Adicional
 
-- [ ] I have thoroughly tested these changes locally.
-- [ ] I have reviewed and resolved any merge conflicts.
-- [ ] I have updated the documentation.
+Incluye cualquier contexto relevante o información adicional sobre la solicitud de extracción.
 
+## Lista de Verificación
 
+Por favor, marca las casillas que correspondan:
 
+- [ ] He probado exhaustivamente estos cambios localmente.
+- [ ] He revisado y resuelto cualquier conflicto de fusión.
+- [ ] He actualizado la documentación.

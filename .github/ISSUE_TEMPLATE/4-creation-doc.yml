@@ -1,30 +1,21 @@
-name: "📄🆕 Document Creation Request"
-description: "Submit your request for the creation of a new document."
-title: "[Documentation] "
-labels: ["documentation]
+name: "📄🆕 Solicitud de Creación de Documento"
+description: "Envía tu solicitud para la creación de un nuevo documento."
+title: "[documentation] "
+labels: ["documentation"]
 body:
   - type: markdown
     attributes:
-        value: |
-            # **📄 Document Creation Request**
+      value: |
+        # **📄 Solicitud de Creación de Documento**
   - type: textarea
     attributes:
-        label: "Describe the document you need."
-        description: "Provide a clear and concise description of the document you want to create."
+      label: "Describe el documento que necesitas."
+      description: "Proporciona una descripción clara y concisa del documento que deseas crear."
     validations:
-        required: true
+      required: true
   - type: textarea
     attributes:
-        label: "Specify the content and format you'd like for the document."
-        description: "Clearly outline the content and desired format for the document."
+      label: "Especifica el contenido y formato que deseas para el documento."
+      description: "Detalla claramente el contenido y el formato deseado para el documento."
     validations:
-        required: false
-  - type: textarea
-    attributes:
-      label: "Additional instructions or context"
-      description: "Include any additional instructions or context for the document creation."
-    validations: 
       required: false
-
-
-

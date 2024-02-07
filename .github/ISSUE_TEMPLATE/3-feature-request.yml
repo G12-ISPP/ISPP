@@ -1,29 +1,27 @@
-name: "🚀🆕 Feature Request"
-description: "Suggest an idea or possible new feature for this project."
+name: "🚀🆕 Solicitud de Funcionalidad"
+description: "Sugiere una idea o posible nueva característica para este proyecto."
 title: "[Feature] "
 labels: ["feature"]
 body:
   - type: markdown
     attributes:
-        value: |
-            # **🚀 Feature Request**
+      value: |
+        # **🚀 Solicitud de Funcionalidad**
   - type: textarea
     attributes:
-        label: "Describe the feature."
-        description: "A clear and concise description of what the feature is."
+      label: "Describe la funcionalidad."
+      description: "Proporciona una descripción clara y concisa de lo que implica la funcionalidad."
     validations:
-        required: true
+      required: true
   - type: textarea
     attributes:
-        label: "Describe the solution you'd like."
-        description: "A clear and concise description of what you want to happen."
+      label: "Describe la solución que te gustaría."
+      description: "Proporciona una descripción clara y concisa de lo que te gustaría que sucediera."
     validations:
-        required: false
-  - type: textarea
-    attributes:
-      label: "Additional context"
-      description: "Add any other context or additional information about the problem here."
-    validations: 
       required: false
-
-
+  - type: textarea
+    attributes:
+      label: "Contexto adicional"
+      description: "Añade cualquier otro contexto o información adicional sobre el problema aquí."
+    validations:
+      required: false
