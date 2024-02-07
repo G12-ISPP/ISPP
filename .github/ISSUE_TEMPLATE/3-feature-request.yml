@@ -1,0 +1,29 @@
+name: "🚀🆕 Feature Request"
+description: "Suggest an idea or possible new feature for this project."
+title: "[Feature] "
+labels: ["feature"]
+body:
+  - type: markdown
+    attributes:
+        value: |
+            # **🚀 Feature Request**
+  - type: textarea
+    attributes:
+        label: "Describe the feature."
+        description: "A clear and concise description of what the feature is."
+    validations:
+        required: true
+  - type: textarea
+    attributes:
+        label: "Describe the solution you'd like."
+        description: "A clear and concise description of what you want to happen."
+    validations:
+        required: false
+  - type: textarea
+    attributes:
+      label: "Additional context"
+      description: "Add any other context or additional information about the problem here."
+    validations: 
+      required: false
+
+

@@ -1,0 +1,21 @@
+name: "💉 Test"
+description: "Creation tests."
+title: "[Test] "
+labels: ["test"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # **💉 Creation Test**
+  - type: textarea
+    attributes:
+      label: "Which jobs/test(s) is needed to be created"
+      description: "The CI jobs or tests that need to be created"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Additional context"
+      description: "Add any other context or additional information about the problem here."
+    validations: 
+      required: false

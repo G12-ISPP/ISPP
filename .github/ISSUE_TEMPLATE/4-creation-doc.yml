@@ -1,0 +1,30 @@
+name: "📄🆕 Document Creation Request"
+description: "Submit your request for the creation of a new document."
+title: "[Documentation] "
+labels: ["documentation]
+body:
+  - type: markdown
+    attributes:
+        value: |
+            # **📄 Document Creation Request**
+  - type: textarea
+    attributes:
+        label: "Describe the document you need."
+        description: "Provide a clear and concise description of the document you want to create."
+    validations:
+        required: true
+  - type: textarea
+    attributes:
+        label: "Specify the content and format you'd like for the document."
+        description: "Clearly outline the content and desired format for the document."
+    validations:
+        required: false
+  - type: textarea
+    attributes:
+      label: "Additional instructions or context"
+      description: "Include any additional instructions or context for the document creation."
+    validations: 
+      required: false
+
+
+
