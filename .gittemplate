@@ -1,0 +1,18 @@
+[Tipo] [Título]
+
+[Descripción]
+
+# En estos casos, el tipo debe describir con una palabra qué contiene o qué soluciona el commit. Los distintos tipos son:
+# - fix: el cambio soluciona un bug que tenía la aplicación.
+# - feat: el cambio añade nueva funcionalidad al sistema.
+# - refactor: el cambio está destinado a mejorar la calidad del código.
+# - test: el cambio se destina a probar el correcto funcionamiento de alguna parte del código.
+# - docs: el cambio añade documentos necesarios para el proyecto o modifica los ya existentes.
+# - build: el cambio modifica el código para permitir que la construcción del proyecto funcione como se estima.
+# - release: el cambio se encarga de permitir el lanzamiento adecuado de la versión del código para cada uno de los sprints.
+
+# El título podrá tener un máximo de 50 caracteres, debe incluir en muy pocas
+# palabras qué contiene el commit. La descripción, en cambio, podrá tener un
+# máximo de 100 caracteres y debe tratar de explicar el qué y por qué se ha hecho.
+
+
