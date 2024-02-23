@@ -10,7 +10,7 @@
       "description": "Vendo impresora 3D porque me he comprado otra. Es la Anycubic Kobra 2 Neo, tiene muy poco uso, en perfecto estado. La compré en Octubre del 2023, todavía tiene garantía. Comprada en la web oficial.",
       "show": "1",
       "stock_quantity": "1",
-      "imageRoute": "/frontend/public/printer_anycubic_kobra_2_neo.jpg",
+      "imageRoute": "/frontend/public/printer_1.jpg",
       "seller_id": "2"
     }
   },
@@ -25,7 +25,7 @@
       "description": "Excepcional impresora FLSUN V400. Una de la mas rapidas del mercado. Esta en perfecto estado. Se vende por cambio de maquina. Tambien se incluye webcam Logitech y sensor ADXL.",
       "show": "1",
       "stock_quantity": "1",
-      "imageRoute": "/frontend/public/printer_FLSUN_V400.jpg",
+      "imageRoute": "/frontend/public/printer_2.jpg",
       "seller_id": "3"
     }
   },
@@ -34,13 +34,13 @@
     "pk": "3",
     "fields": {
       "id": "3",
-      "product_type": "P",
-      "price": "135",
-      "name": "Anycubic Photon Mono 2",
-      "description": "ANYCUBIC Impresoras 3D Photon Mono 2, Impresoras 3D Resina con Pantalla LCD Monocromática de 6,6 pulgadas, Alta Resolución Ultra 4K, Fácil de usar para principiantes",
+      "product_type": "M",
+      "price": "21",
+      "name": "Filamento PLA multicolor",
+      "description": "Vendo filamentos PLA 1.75mm para cualquier impresora 3D. Incluye un único royo de un color a elegir de los que se muestran en la imagen.",
       "show": "1",
-      "stock_quantity": "1",
-      "imageRoute": "/frontend/public/printer_ANYCUBIC_Photon_Mono_2.jpg",
+      "stock_quantity": "18",
+      "imageRoute": "/frontend/public/material_filamento_PLA.jpg",
       "seller_id": "4"
     }
   },
@@ -51,11 +51,11 @@
       "id": "4",
       "product_type": "M",
       "price": "25",
-      "name": "Filamento PLA. Pack 5 colores",
-      "description": "Vendo bobina nuevas a estrenar. Filamento PLA 1,75 mm. Compatible con todo tipo de impresoras 3d. El PLA es de ácido poliláctico. Pack de 5 colores (rojo, blanco, naranja, celeste y azul oscuro)",
+      "name": "Filamento PLA color Negro",
+      "description": "Vendo bobina nueva a estrenar. Filamento PLA 1,75 mm. Compatible con todo tipo de impresoras 3d. El PLA es de ácido poliláctico. EL hilo es de color negro tal y como en la foto.",
       "show": "1",
-      "stock_quantity": "1",
-      "imageRoute": "/frontend/public/material_filamento_PLA.png",
+      "stock_quantity": "2",
+      "imageRoute": "/frontend/public/material_filamento_negro.jpg",
       "seller_id": "5"
     }
   },
@@ -65,12 +65,12 @@
     "fields": {
       "id": "5",
       "product_type": "M",
-      "price": "200",
-      "name": "Filamento PLA 1,75 mm",
-      "description": "Se vende filamento PLA de 1.75mm de la marca Gembird. Nuevos a estrenar, bien conservados. impresoras 3d.",
+      "price": "19",
+      "name": "Filamento PLA 1,75 mm Gris",
+      "description": "Se vende filamento PLA de 1.75mm de la marca Gembird. Nuevo a estrenar, bien conservado. El filamento es de color gris.",
       "show": "1",
-      "stock_quantity": "1",
-      "imageRoute": "/frontend/public/material_PLA_multicolor.png",
+      "stock_quantity": "4",
+      "imageRoute": "/frontend/public/material_filamento_gris.jpg",
       "seller_id": "3"
     }
   },
@@ -80,12 +80,12 @@
     "fields": {
       "id": "6",
       "product_type": "M",
-      "price": "19",
-      "name": "Filamento PLA 1,75 mm blanco",
-      "description": "Vendo rollos de filamento de ABS de impresión 3D de 1.75 mm de diámetro de color blanco de la marca Kingroom. No produce burbujas lo que se consiguen acabados muy finos y detallados.",
+      "price": "52",
+      "name": "Filamento PLA 1,75mm 3 colores",
+      "description": "Vendo rollos de filamento de impresión 3D de 1.75 mm de diámetro de color gris, amarillo y azul de la marca Kingroom. Se venden los tres colores juntos.",
       "show": "1",
-      "stock_quantity": "6",
-      "imageRoute": "/frontend/public/material_filamento_blanco.png",
+      "stock_quantity": "1",
+      "imageRoute": "/frontend/public/material_filamento_3D.jpg",
       "seller_id": "6"
     }
   },
@@ -100,7 +100,7 @@
       "description": "Diseño único de cabez de dragón. Listo para imprimir. Tiene una gran cantidad de detalles.",
       "show": "1",
       "stock_quantity": "1",
-      "imageRoute": "/frontend/public/design_dragon.png",
+      "imageRoute": "/frontend/public/design_dragon.jpg",
       "seller_id": "11"
     }
   },
@@ -111,8 +111,8 @@
       "id": "8",
       "product_type": "D",
       "price": "14",
-      "name": "Diseño marciano Buzz Lightyear",
-      "description": "Diseño para impresora 3D de los extraterrestres de Buzz Lightyear. Falta aplicar los colores, no dudes en contactarme para ver el resultado final.",
+      "name": "Diseño Buzz Lightyear",
+      "description": "Diseño para impresora 3D de una figura de Buzz Lightyear. Tiene todos los detalles del personaje, no dudes en contactarme si tienes algnua duda.",
       "show": "1",
       "stock_quantity": "1",
       "imageRoute": "/frontend/public/design_marciano.jpg",
@@ -126,11 +126,11 @@
       "id": "9",
       "product_type": "D",
       "price": "3",
-      "name": "Diseño pollito",
-      "description": "Diseño para impresión 3D de un pollito. Es de pequeño tamaño (15x15x15cm).",
+      "name": "Diseño gallina",
+      "description": "Diseño para impresión 3D de una gallina. Está pensado para la diversión y el juego de los más pequeños. Los colores son los mostrados en la foto. Se puede ajustar al tamaño que se desee.",
       "show": "1",
       "stock_quantity": "1",
-      "imageRoute": "/frontend/public/design_pollito.png",
+      "imageRoute": "/frontend/public/design_gallina.jpg",
       "seller_id": "10"
     }
   },
@@ -145,7 +145,7 @@
       "description": "Se trata del diseño de un conejo mediante mallado poligonal. Ofrexco la opción de elegir el color y tamaño que se desee.",
       "show": "1",
       "stock_quantity": "1",
-      "imageRoute": "/frontend/public/design_conejo.png",
+      "imageRoute": "/frontend/public/design_conejo.jpg",
       "seller_id": "11"
     }
   },
@@ -155,12 +155,12 @@
     "fields": {
       "id": "11",
       "product_type": "I",
-      "price": "17",
-      "name": "Soporte para auriculares GOW",
-      "description": "Soporte de auriculares con tematica de god of war.\n-Fabricados con las mejores impresoras 3d del mercado\n-Hechos para durar gracias a una gran resistencia\n-Totalmente personalizables en color",
+      "price": "10",
+      "name": "Soporte para movil serpiente",
+      "description": "Soporte para móvil con tematica de serpiente. Hechoo para durar gracias a una gran resistencia. Está pensado para sujetar un teléfono móvil pero también puede servir para tablet o ipad.",
       "show": "1",
-      "stock_quantity": "1",
-      "imageRoute": "/frontend/public/impression_soporte_auriculares.png",
+      "stock_quantity": "5",
+      "imageRoute": "/frontend/public/impression_cobra_soporte_movil.jpg",
       "seller_id": "9"
     }
   },
@@ -169,13 +169,13 @@
     "pk": "12",
     "fields": {
       "id": "12",
-      "product_type": "I",
-      "price": "39",
-      "name": "Soporte Switch Mario Bros",
-      "description": "Sopporte para nintendo switch con temática de Mario Bros. Incluye ranuras dentro de los tubas para guardar los juegos.",
+      "product_type": "D",
+      "price": "12",
+      "name": "Diseño corazón humano",
+      "description": "Diseño del corazón humano con gran cantidad de detalles. Está pensado para ser impreso a tamaño real pero se puede adecuar al que se desee.",
       "show": "1",
-      "stock_quantity": "3",
-      "imageRoute": "/frontend/public/design_soporte_switch.jpg",
+      "stock_quantity": "1",
+      "imageRoute": "/frontend/public/design_corazon.jpg",
       "seller_id": "8"
     }
   },
@@ -184,13 +184,13 @@
     "pk": "13",
     "fields": {
       "id": "13",
-      "product_type": "I",
-      "price": "20",
-      "name": "Hucha de cerdito macarra",
-      "description": "Hucha de cerdito macarra en 3D. La lengua y los ojos son piezas separadas que tienes que insertar, perfecto por si quieres que tengan un color diferente, y las monedas se meten por la nariz.",
+      "product_type": "D",
+      "price": "10",
+      "name": "Diseño hucha de cerdito",
+      "description": "Hucha de cerdito en 3D. No se aprecia en la foto pero en la parte superior tiene una ranura por la que caben todo tipo de monedas.",
       "show": "1",
-      "stock_quantity": "2",
-      "imageRoute": "/frontend/public/design_hucha_cerdo.png",
+      "stock_quantity": "1",
+      "imageRoute": "/frontend/public/design_hucha_cerdo.jpg",
       "seller_id": "6"
     }
   },
@@ -200,12 +200,12 @@
     "fields": {
       "id": "14",
       "product_type": "I",
-      "price": "64",
-      "name": "Piezas de ajedrez futurista",
-      "description": "Pack de piezas de ajedrez con diseño moderno y futurista. Incluye las 32 piezas que componen un tablero.",
+      "price": "16",
+      "name": "Figura Yoda",
+      "description": "Figura del personaje Yoda de la saga Star Wars. La figura tiene una altura de 10 cm. Ideal para coleccionistas o para regalar a un fan de la saga.",
       "show": "1",
       "stock_quantity": "3",
-      "imageRoute": "/frontend/public/impression_piezas_ajedrez.png",
+      "imageRoute": "/frontend/public/impression_baby_yoda.jpg",
       "seller_id": "7"
     }
   },
@@ -215,12 +215,12 @@
     "fields": {
       "id": "15",
       "product_type": "I",
-      "price": "29",
-      "name": "Figura Baby Yoda",
-      "description": "Figura de Baby Yoda de color de 20 cm de altura con base.",
+      "price": "13",
+      "name": "Portacepillos de dientes",
+      "description": "Portacepillo de diente con capacidad para 4 cepillos con forma de diente. Es resistente al agua y se puede lavar con jabón.",
       "show": "1",
       "stock_quantity": "5",
-      "imageRoute": "/frontend/public/impression_baby_yoda.jpg",
+      "imageRoute": "/frontend/public/impression_cepillos_dientes.png",
       "seller_id": "9"
     }
   },
@@ -230,12 +230,12 @@
     "fields": {
       "id": "16",
       "product_type": "I",
-      "price": "20",
-      "name": "Maceta de autorriego",
-      "description": "Maceta con autorriego. A uno de los lados tiene un depósito de agua que va hasta el fondo, de manera que con irlo llenando de agua la planta luego irá absorbiendo la que necesite.",
+      "price": "16",
+      "name": "Figura de dos búhos",
+      "description": "Figura de dos búhos. En la imagen están impresos en color naranja pero puedo imprimirlo en el color que desee. No dudes en contactar si estás interesado. Tiene una altura de 10 cm.",
       "show": "1",
-      "stock_quantity": "2",
-      "imageRoute": "/frontend/public/impression_maceta_autorriego.png",
+      "stock_quantity": "3",
+      "imageRoute": "/frontend/public/impression_buhos.jpg",
       "seller_id": "7"
     }
   },
@@ -245,12 +245,12 @@
     "fields": {
       "id": "17",
       "product_type": "I",
-      "price": "14",
-      "name": "Dispensador de pilas AA/AAA",
-      "description": "Dispensador perfecto para pilas de tipo AA y AAA. Sus demensiones son de 18x15x10 cm.",
+      "price": "22",
+      "name": "Figura de corazón humano",
+      "description": "Figura de corazón humano de igual color a la foto. Tiene unas dimensiones de 15x7x7 cm. Ideal para decorar cualquier estancia de la casa de un amante de la anatomía.",
       "show": "1",
-      "stock_quantity": "4",
-      "imageRoute": "/frontend/public/impression_dispensador_pilas.png",
+      "stock_quantity": "2",
+      "imageRoute": "/frontend/public/impression_corazon.jpg",
       "seller_id": "9"
     }
   },
@@ -261,11 +261,11 @@
       "id": "18",
       "product_type": "I",
       "price": "6",
-      "name": "Exprimidor de pasta de dientes",
-      "description": "Exprimidor para tubo de pasta de dientes. Ideal para agotar la pasta de dientes al completo",
+      "name": "Decoración esferas geométricas",
+      "description": "Figuras para decorar cualquier estancia de la casa. Las esferas tienen un diámetro de 15 cm. Disponibles en varios colores. También son ideales para el juego de los más peques de la casa.",
       "show": "1",
       "stock_quantity": "6",
-      "imageRoute": "/frontend/public/impression_exprimidor_pasta_de_dientes.png",
+      "imageRoute": "/frontend/public/impression_decoracion.jpg",
       "seller_id": "10"
     }
   },
@@ -276,11 +276,11 @@
       "id": "19",
       "product_type": "I",
       "price": "16",
-      "name": "Organizador de zapatos",
-      "description": "Organizador de zapatos. Organiza los zapatos optimizando al máximo el espacio disponible. Disponible en varios colores. No dudes en contactarme.",
+      "name": "Dispensador de jabón de cocina",
+      "description": "Dispensador de jabón de cocina con escurridor para dejar el estropajo y no manchar la encimera. El dispensador tiene una capacidad de 100 ml.",
       "show": "1",
-      "stock_quantity": "12",
-      "imageRoute": "/frontend/piublicimpression_organizador_zapatos.png",
+      "stock_quantity": "6",
+      "imageRoute": "/frontend/piublic/impression_jabon_cocina.png",
       "seller_id": "10"
     }
   },
@@ -290,12 +290,12 @@
     "fields": {
       "id": "20",
       "product_type": "I",
-      "price": "4",
-      "name": "Funda para auriculares",
-      "description": "Esta funda te permitirá enrollar el cable de manera que no acabe haciéndose nudos. Tiene una tapa que se cierra para cubrir los auriculares. Tiene un tamaño muy manejable.",
+      "price": "8",
+      "name": "Huevos decorativos",
+      "description": "Elementos de decoración para cualquier espacio. En la foto aparecen impresos en rojo y blanco pero tengo más colores disponibles,no dudes en contactar conmigo para más detalles. Tienen 12 cm de altura",
       "show": "1",
       "stock_quantity": "7",
-      "imageRoute": "/frontend/public/impression_funda_auriculares.png",
+      "imageRoute": "/frontend/public/impression_huevos_decorativos.jpg",
       "seller_id": "7"
     }
   }
