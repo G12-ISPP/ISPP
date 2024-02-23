@@ -1,0 +1,302 @@
+[
+  {
+    "model": "products.Product",
+    "pk": "1",
+    "fields": {
+      "id": "1",
+      "product_type": "P",
+      "price": "170",
+      "name": "Impresora anycubic kobra 2 neo",
+      "description": "Vendo impresora 3D porque me he comprado otra. Es la Anycubic Kobra 2 Neo, tiene muy poco uso, en perfecto estado. La compré en Octubre del 2023, todavía tiene garantía. Comprada en la web oficial.",
+      "show": "1",
+      "stock_quantity": "1",
+      "imageRoute": "/frontend/public/printer_1.jpg",
+      "seller_id": "2"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "2",
+    "fields": {
+      "id": "2",
+      "product_type": "P",
+      "price": "720",
+      "name": "Impresora 3D FLSUN V400",
+      "description": "Excepcional impresora FLSUN V400. Una de la mas rapidas del mercado. Esta en perfecto estado. Se vende por cambio de maquina. Tambien se incluye webcam Logitech y sensor ADXL.",
+      "show": "1",
+      "stock_quantity": "1",
+      "imageRoute": "/frontend/public/printer_2.jpg",
+      "seller_id": "3"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "3",
+    "fields": {
+      "id": "3",
+      "product_type": "M",
+      "price": "21",
+      "name": "Filamento PLA multicolor",
+      "description": "Vendo filamentos PLA 1.75mm para cualquier impresora 3D. Incluye un único royo de un color a elegir de los que se muestran en la imagen.",
+      "show": "1",
+      "stock_quantity": "18",
+      "imageRoute": "/frontend/public/material_filamento_PLA.jpg",
+      "seller_id": "4"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "4",
+    "fields": {
+      "id": "4",
+      "product_type": "M",
+      "price": "25",
+      "name": "Filamento PLA color Negro",
+      "description": "Vendo bobina nueva a estrenar. Filamento PLA 1,75 mm. Compatible con todo tipo de impresoras 3d. El PLA es de ácido poliláctico. EL hilo es de color negro tal y como en la foto.",
+      "show": "1",
+      "stock_quantity": "2",
+      "imageRoute": "/frontend/public/material_filamento_negro.jpg",
+      "seller_id": "5"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "5",
+    "fields": {
+      "id": "5",
+      "product_type": "M",
+      "price": "19",
+      "name": "Filamento PLA 1,75 mm Gris",
+      "description": "Se vende filamento PLA de 1.75mm de la marca Gembird. Nuevo a estrenar, bien conservado. El filamento es de color gris.",
+      "show": "1",
+      "stock_quantity": "4",
+      "imageRoute": "/frontend/public/material_filamento_gris.jpg",
+      "seller_id": "3"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "6",
+    "fields": {
+      "id": "6",
+      "product_type": "M",
+      "price": "52",
+      "name": "Filamento PLA 1,75mm 3 colores",
+      "description": "Vendo rollos de filamento de impresión 3D de 1.75 mm de diámetro de color gris, amarillo y azul de la marca Kingroom. Se venden los tres colores juntos.",
+      "show": "1",
+      "stock_quantity": "1",
+      "imageRoute": "/frontend/public/material_filamento_3D.jpg",
+      "seller_id": "6"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "7",
+    "fields": {
+      "id": "7",
+      "product_type": "D",
+      "price": "33",
+      "name": "Diseño cabeza de dragon",
+      "description": "Diseño único de cabez de dragón. Listo para imprimir. Tiene una gran cantidad de detalles.",
+      "show": "1",
+      "stock_quantity": "1",
+      "imageRoute": "/frontend/public/design_dragon.jpg",
+      "seller_id": "11"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "8",
+    "fields": {
+      "id": "8",
+      "product_type": "D",
+      "price": "14",
+      "name": "Diseño Buzz Lightyear",
+      "description": "Diseño para impresora 3D de una figura de Buzz Lightyear. Tiene todos los detalles del personaje, no dudes en contactarme si tienes algnua duda.",
+      "show": "1",
+      "stock_quantity": "1",
+      "imageRoute": "/frontend/public/design_marciano.jpg",
+      "seller_id": "11"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "9",
+    "fields": {
+      "id": "9",
+      "product_type": "D",
+      "price": "3",
+      "name": "Diseño gallina",
+      "description": "Diseño para impresión 3D de una gallina. Está pensado para la diversión y el juego de los más pequeños. Los colores son los mostrados en la foto. Se puede ajustar al tamaño que se desee.",
+      "show": "1",
+      "stock_quantity": "1",
+      "imageRoute": "/frontend/public/design_gallina.jpg",
+      "seller_id": "10"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "10",
+    "fields": {
+      "id": "10",
+      "product_type": "D",
+      "price": "7",
+      "name": "Diseño conejo geométrico",
+      "description": "Se trata del diseño de un conejo mediante mallado poligonal. Ofrexco la opción de elegir el color y tamaño que se desee.",
+      "show": "1",
+      "stock_quantity": "1",
+      "imageRoute": "/frontend/public/design_conejo.jpg",
+      "seller_id": "11"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "11",
+    "fields": {
+      "id": "11",
+      "product_type": "I",
+      "price": "10",
+      "name": "Soporte para movil serpiente",
+      "description": "Soporte para móvil con tematica de serpiente. Hechoo para durar gracias a una gran resistencia. Está pensado para sujetar un teléfono móvil pero también puede servir para tablet o ipad.",
+      "show": "1",
+      "stock_quantity": "5",
+      "imageRoute": "/frontend/public/impression_cobra_soporte_movil.jpg",
+      "seller_id": "9"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "12",
+    "fields": {
+      "id": "12",
+      "product_type": "D",
+      "price": "12",
+      "name": "Diseño corazón humano",
+      "description": "Diseño del corazón humano con gran cantidad de detalles. Está pensado para ser impreso a tamaño real pero se puede adecuar al que se desee.",
+      "show": "1",
+      "stock_quantity": "1",
+      "imageRoute": "/frontend/public/design_corazon.jpg",
+      "seller_id": "8"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "13",
+    "fields": {
+      "id": "13",
+      "product_type": "D",
+      "price": "10",
+      "name": "Diseño hucha de cerdito",
+      "description": "Hucha de cerdito en 3D. No se aprecia en la foto pero en la parte superior tiene una ranura por la que caben todo tipo de monedas.",
+      "show": "1",
+      "stock_quantity": "1",
+      "imageRoute": "/frontend/public/design_hucha_cerdo.jpg",
+      "seller_id": "6"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "14",
+    "fields": {
+      "id": "14",
+      "product_type": "I",
+      "price": "16",
+      "name": "Figura Yoda",
+      "description": "Figura del personaje Yoda de la saga Star Wars. La figura tiene una altura de 10 cm. Ideal para coleccionistas o para regalar a un fan de la saga.",
+      "show": "1",
+      "stock_quantity": "3",
+      "imageRoute": "/frontend/public/impression_baby_yoda.jpg",
+      "seller_id": "7"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "15",
+    "fields": {
+      "id": "15",
+      "product_type": "I",
+      "price": "13",
+      "name": "Portacepillos de dientes",
+      "description": "Portacepillo de diente con capacidad para 4 cepillos con forma de diente. Es resistente al agua y se puede lavar con jabón.",
+      "show": "1",
+      "stock_quantity": "5",
+      "imageRoute": "/frontend/public/impression_cepillos_dientes.png",
+      "seller_id": "9"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "16",
+    "fields": {
+      "id": "16",
+      "product_type": "I",
+      "price": "16",
+      "name": "Figura de dos búhos",
+      "description": "Figura de dos búhos. En la imagen están impresos en color naranja pero puedo imprimirlo en el color que desee. No dudes en contactar si estás interesado. Tiene una altura de 10 cm.",
+      "show": "1",
+      "stock_quantity": "3",
+      "imageRoute": "/frontend/public/impression_buhos.jpg",
+      "seller_id": "7"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "17",
+    "fields": {
+      "id": "17",
+      "product_type": "I",
+      "price": "22",
+      "name": "Figura de corazón humano",
+      "description": "Figura de corazón humano de igual color a la foto. Tiene unas dimensiones de 15x7x7 cm. Ideal para decorar cualquier estancia de la casa de un amante de la anatomía.",
+      "show": "1",
+      "stock_quantity": "2",
+      "imageRoute": "/frontend/public/impression_corazon.jpg",
+      "seller_id": "9"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "18",
+    "fields": {
+      "id": "18",
+      "product_type": "I",
+      "price": "6",
+      "name": "Decoración esferas geométricas",
+      "description": "Figuras para decorar cualquier estancia de la casa. Las esferas tienen un diámetro de 15 cm. Disponibles en varios colores. También son ideales para el juego de los más peques de la casa.",
+      "show": "1",
+      "stock_quantity": "6",
+      "imageRoute": "/frontend/public/impression_decoracion.jpg",
+      "seller_id": "10"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "19",
+    "fields": {
+      "id": "19",
+      "product_type": "I",
+      "price": "16",
+      "name": "Dispensador de jabón de cocina",
+      "description": "Dispensador de jabón de cocina con escurridor para dejar el estropajo y no manchar la encimera. El dispensador tiene una capacidad de 100 ml.",
+      "show": "1",
+      "stock_quantity": "6",
+      "imageRoute": "/frontend/piublic/impression_jabon_cocina.png",
+      "seller_id": "10"
+    }
+  },
+  {
+    "model": "products.Product",
+    "pk": "20",
+    "fields": {
+      "id": "20",
+      "product_type": "I",
+      "price": "8",
+      "name": "Huevos decorativos",
+      "description": "Elementos de decoración para cualquier espacio. En la foto aparecen impresos en rojo y blanco pero tengo más colores disponibles,no dudes en contactar conmigo para más detalles. Tienen 12 cm de altura",
+      "show": "1",
+      "stock_quantity": "7",
+      "imageRoute": "/frontend/public/impression_huevos_decorativos.jpg",
+      "seller_id": "7"
+    }
+  }
+]
