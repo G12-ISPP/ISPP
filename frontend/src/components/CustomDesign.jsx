@@ -215,7 +215,9 @@ export default class CustomModel extends React.Component {
       });
 
       if (response.ok) {
-        alert('Datos enviados correctamente')
+        const responseData = await response.json();
+        const paypalPaymentUrl = responseData.paypal_payment_url; 
+        window.location.href = paypalPaymentUrl;
       } else {
         alert('Error al enviar los datos')
       }

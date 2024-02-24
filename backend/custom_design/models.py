@@ -23,7 +23,7 @@ class CustomDesign(models.Model):
     city = models.CharField(max_length=50,null=False,blank=False,default='a')
     buyer_mail = models.EmailField(max_length=254,null=False,blank=False,default='a@a.com')
 
-
+    payed = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     
