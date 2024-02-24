@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
 
-    name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     postal_code = models.CharField(max_length=5)
     city = models.CharField(max_length=50)
