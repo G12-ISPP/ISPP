@@ -1,0 +1,57 @@
+.title {
+    margin-bottom:  100px;
+  }
+
+.image-preview-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width:  600px;
+    max-height:  500px;
+    object-fit: contain;
+    margin-bottom:  20px;
+    border:  1px solid #ccc;
+    border-radius:  10px;
+    box-shadow:  0  2px  8px #004040;
+    background-color: #f0f0f0;
+    position: relative;
+  }
+  
+  .form {
+    margin-top:  30px;
+  }
+  
+  .form input[type="text"],
+  .form input[type="number"],
+  .form textarea {
+    width:   100%;
+    padding:   10px;
+    border:   2px solid #004040;
+    border-radius:   5px;
+    font-size:   16px;
+    background-color: #fff;
+    transition: border-color   0.3s ease;
+  }
+
+  .add-product-button {
+    display: block;
+    width: auto;
+    padding:  10px  20px;
+    margin:  50px auto;
+    background-color: #004040;
+    color: white;
+    border: none;
+    border-radius:  5px;
+    cursor: pointer;
+    transition: background-color  0.3s ease; 
+  }
+  
+  .add-product-button:hover {
+    background-color: #004040;
+  }
+
+  .select-container select {
+    background-repeat: no-repeat;
+    background-position: right  0.7em center;
+    background-size:  0.65em auto,  100%;
+  }
