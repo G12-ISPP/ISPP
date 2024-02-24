@@ -20,9 +20,11 @@ class ProductDetail extends React.Component {
     if (!product) {
       return <div>Loading...</div>;
     }
+    console.log(product.imageRoute.split('/')[3])
     return (
       <div>
         <h2>{product.name}</h2>
+        <img src={'/images/' + product.imageRoute.split('/')[3]} alt={product.name} />
         <p>{product.description}</p>
         <p>Price: {product.price} €</p>
       </div>
