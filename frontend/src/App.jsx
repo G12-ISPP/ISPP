@@ -6,13 +6,18 @@ import CustomDesign from "./components/CustomDesign.jsx";
 import { Navigation } from "./components/Navigation";
 import Header from "./components/Header/Header.jsx";
 import Navbar from "./components/Navbar/Navbar.jsx";
+import Product from "./components/Product/Product.jsx";
+
+import pathImage from './assets/design_buzz_lightyear.jpg';
 
 
 function App() {
   return (
     <BrowserRouter>
+
       <Header />
       <Navbar />
+
       <Navigation />
       <Routes>
         <Route path="/" element={<Navigate to="/tasks" />} />
@@ -20,8 +25,9 @@ function App() {
         <Route path="/tasks-create" element={<TaskFormPage />} />
         <Route path="/product-details/:id" element={<ProductDetail />} />
         <Route path="/designs/my-design" element={<CustomDesign />} />
-
       </Routes>
+
+      <Product name='Nombre del producto a mostrar' price='299,99€' pathImage={pathImage} pathDetails='/' />
     </BrowserRouter>
   );
 }
