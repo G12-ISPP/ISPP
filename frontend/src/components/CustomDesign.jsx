@@ -243,7 +243,7 @@ export default class CustomModel extends React.Component {
     }));
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/designs/my-design', {
+      const response = await fetch(`http://127.0.0.1:8000/designs/my-design`, {
         method: 'POST',
         body: formData,
       });
@@ -265,18 +265,20 @@ export default class CustomModel extends React.Component {
       <>
         <h1 className='title'>Mi diseño</h1>
         <div className='main'>
-          <Canvas dpr={[1, 2]} shadows camera={{ fov: 45 }} style={{ display: "flex", width: "500px", height: "300px", marginBottom: "50px", borderRadius: "15px", touchAction: "none" }}>
-            <Suspense fallback={<Loader />}>
-              <color attach="background" args={["#101010"]} />
-              <ambientLight intensity={0.5} />
-              <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-              <PresentationControls speed={1.5} global zoom={1.5} polar={[-0.1, Math.PI / 4]}>
-                <Stage environment={"sunset"} adjustCamera={true} key={this.state.modelUrl} scale={0.01}>
-                  <Model url={this.state.modelUrl} volumeAndArea={this.handleAreaAndVolume} />
-                </Stage>
-              </PresentationControls>
-            </Suspense>
-          </Canvas>
+          <div className='canvas-container'>
+            <Canvas dpr={[1, 2]} className='canvas' shadows camera={{ fov: 45 }} style={{ display: "flex", width: "500px", height: "300px", marginBottom: "50px", borderRadius: "15px", touchAction: "none" }}>
+              <Suspense fallback={<Loader />}>
+                <color attach="background" args={["#101010"]} />
+                <ambientLight intensity={0.5} />
+                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+                <PresentationControls speed={1.5} global zoom={1.5} polar={[-0.1, Math.PI / 4]}>
+                  <Stage environment={"sunset"} adjustCamera={true} key={this.state.modelUrl} scale={0.01}>
+                    <Model url={this.state.modelUrl} volumeAndArea={this.handleAreaAndVolume} />
+                  </Stage>
+                </PresentationControls>
+              </Suspense>
+            </Canvas>
+          </div>
           <form className='form'>
             <div className='form-group'>
               <label htmlFor="file" className='upload'> Sube tu diseño:</label>
