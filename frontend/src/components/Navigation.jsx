@@ -7,6 +7,7 @@ export function Navigation() {
       <Link to="/tasks">Tasks</Link>
       <Link to="/designs/my-design">Custom Design</Link>
       <Link to="/register">Register</Link>
+      <Link to="/login">Login</Link>
     </div>
   );
 }
