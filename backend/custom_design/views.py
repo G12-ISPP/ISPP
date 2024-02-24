@@ -21,7 +21,11 @@ def create_custom_design(request):
             area = data.get('area')
             volume = data.get('volume')
             weight = data.get('weight')
-            price = data.get('price')        
+            price = data.get('price')     
+            postal_code = data.get('postal_code')
+            address = data.get('address')
+            city = data.get('city'),
+            buyer_mail = data.get('buyer_mail')
             custom_design = CustomDesign.objects.create(
                 name=name,
                 quantity=quantity,
@@ -31,7 +35,11 @@ def create_custom_design(request):
                 volume=volume,
                 weight=weight,
                 price=price,
-                design_file=design_file
+                design_file=design_file,
+                postal_code=postal_code,
+                address=address,
+                city=city,
+                buyer_mail=buyer_mail
             )
             serializer = CustomDesignSerializer(custom_design, many=False)
             return Response(serializer.data, status=status.HTTP_201_CREATED)

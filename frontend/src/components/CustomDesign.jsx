@@ -95,7 +95,11 @@ export default class CustomModel extends React.Component {
       quality: 'Bajo',
       quantity: 1,
       price: 0,
-      modelUrl: '/bd_a_001.STL'
+      modelUrl: '/bd_a_001.STL',
+      postal_code: '',
+      city: '',
+      address: '',
+      buyer_mail: ''
     };
   }
 
@@ -160,7 +164,7 @@ export default class CustomModel extends React.Component {
   }
 
   handlePayment = async () => {
-    const { file, name, volume, area, dimensions, weight, quality, quantity, price } = this.state;
+    const { file, name, volume, area, dimensions, weight, quality, quantity, price, postal_code, city, address, buyer_mail } = this.state;
 
     if (!file) {
       alert('Debes subir un archivo');
@@ -168,6 +172,22 @@ export default class CustomModel extends React.Component {
     }
     if (name === '') {
       alert('Debes introducir un nombre');
+      return;
+    }
+
+    if (postal_code === '' || city === '' || address === '') {
+      alert('Debes completar todos los campos de dirección');
+      return;
+    }
+
+    if (buyer_mail === ''){
+      alert('Debes introducir un correo electrónico');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(buyer_mail)) {
+      alert('El correo electrónico ingresado no es válido');
       return;
     }
 
@@ -181,7 +201,11 @@ export default class CustomModel extends React.Component {
       weight,
       quality,
       quantity,
-      price
+      price,
+      postal_code,
+      city,
+      address,
+      buyer_mail
     }));
 
     try {
@@ -237,6 +261,22 @@ export default class CustomModel extends React.Component {
               <input type='button' id='low' name='quality' value='Bajo' onClick={() => this.handleQuality('Bajo')} />
               <input type='button' id='medium' name='quality' value='Medio' onClick={() => this.handleQuality('Medio')} />
               <input type='button' id='high' name='quality' value='Alto' onClick={() => this.handleQuality('Alto')} />
+            </div>
+            <div className='form-group'>
+              <label className='postal_code'>Código Postal:</label>
+              <input type='text' id='postal_code' name='postal_code' onChange={(event) => this.setState({ postal_code: event.target.value })} />
+            </div>
+            <div className='form-group'>
+              <label className='city'>Ciudad:</label>
+              <input type='text' id='city' name='city' onChange={(event) => this.setState({ city: event.target.value })} />
+            </div>
+            <div className='form-group'>
+              <label className='address'>Dirección:</label>
+              <input type='text' id='address' name='address' onChange={(event) => this.setState({ address: event.target.value })} />
+            </div>
+            <div className='form-group'>
+              <label className='buyer_mail'>Correo electrónico:</label>
+              <input type='text' id='buyer_mail' name='buyer_mail' onChange={(event) => this.setState({ buyer_mail: event.target.value })} />
             </div>
           </form>
         </div>
