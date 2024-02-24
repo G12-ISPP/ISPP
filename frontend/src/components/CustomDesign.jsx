@@ -108,8 +108,17 @@ export default class CustomModel extends React.Component {
     if (!file) {
       return;
     }
-    const url = URL.createObjectURL(file);
-    this.setState({ modelUrl: url, file: file });
+    const fileName = file.name;
+    const fileExtension = fileName.split('.').pop().toLowerCase();
+    if (fileExtension !== 'stl') {
+      alert('El archivo no es de formato STL. Por lo tanto lo ignoraremos. Por favor, sube un archivo STL.');
+      event.target.value = ''; 
+      return;
+    }else{
+      const url = URL.createObjectURL(file);
+      this.setState({ modelUrl: url, file: file });
+    }
+    
   }
 
   calculatePrice = (volume, quality) => {
@@ -119,7 +128,7 @@ export default class CustomModel extends React.Component {
   updatePriceBasedOnQuantity = () => {
     const { volume, quality, quantity } = this.state;
     let pricePerUnit = this.calculatePrice(volume, quality);
-    let totalPrice = pricePerUnit * quantity;
+    let totalPrice = (pricePerUnit+6) * quantity ;
     totalPrice = Math.max(totalPrice, 12.10);
     this.setState({ price: totalPrice.toFixed(2) });
   };
@@ -170,13 +179,18 @@ export default class CustomModel extends React.Component {
       alert('Debes subir un archivo');
       return;
     }
-    if (name === '') {
-      alert('Debes introducir un nombre');
+    if (name === '' && name.length >255) {
+      alert('Debes introducir un nombre de menos de 255 caracteres');
       return;
     }
 
     if (postal_code === '' || city === '' || address === '') {
       alert('Debes completar todos los campos de dirección');
+      return;
+    }
+
+    if(postal_code.length !== 5){
+      alert('El código postal debe tener 5 dígitos');
       return;
     }
 
@@ -188,6 +202,26 @@ export default class CustomModel extends React.Component {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(buyer_mail)) {
       alert('El correo electrónico ingresado no es válido');
+      return;
+    }
+
+    if(buyer_mail.length>255){
+      alert('El correo electrónico debe tener menos de 255 caracteres');
+      return;
+    }
+
+    if(city.length> 50){
+      alert('La ciudad debe tener menos de 50 caracteres');
+      return;
+    }
+
+    if(address.length>255){
+      alert('La dirección debe tener menos de 255 caracteres');
+      return;
+    }
+
+    if(quantity >100){
+      alert('La cantidad máxima es 100');
       return;
     }
 
