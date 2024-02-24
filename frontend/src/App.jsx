@@ -4,11 +4,13 @@ import { TaskFormPage } from "./pages/TaskFormPage";
 import  ProductDetail  from "./components/Product";
 import CustomDesign from "./components/CustomDesign.jsx";
 import { Navigation } from "./components/Navigation";
+import Header from "./components/Header/Header.jsx";
 
 
 function App() {
   return (
     <BrowserRouter>
+      <Header />
       <Navigation />
       <Routes>
         <Route path="/" element={<Navigate to="/tasks" />} />
