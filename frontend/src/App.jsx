@@ -4,6 +4,7 @@ import { TaskFormPage } from "./pages/TaskFormPage";
 import  ProductDetail  from "./components/Product";
 import CustomDesign from "./components/CustomDesign.jsx";
 import { Navigation } from "./components/Navigation";
+import UserDetail from "./components/User";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/tasks-create" element={<TaskFormPage />} />
         <Route path="/product-details/:id" element={<ProductDetail />} />
         <Route path="/designs/my-design" element={<CustomDesign />} />
+        <Route path="/user-details/:id" element={<UserDetail />} />
 
       </Routes>
     </BrowserRouter>

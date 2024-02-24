@@ -6,6 +6,7 @@ class ProductDetail extends React.Component {
     super(props);
     this.state = {
       product: null,
+      
     };
   }
 
@@ -13,15 +14,18 @@ class ProductDetail extends React.Component {
     const id = window.location.href.split('/')[4]
     const response = await fetch(`http://localhost:8000/products/api/v1/products/${id}/get_product_data/`);
     const product = await response.json();
-    this.setState({ product });
+    const response_user = await fetch(`http://localhost:8000/users/api/v1/users/${product.seller}/get_user_data/`);
+    const user = await response_user.json();
+    this.setState({ product, user });
+
   }
 
   render() {
-    const { product } = this.state;
-    if (!product) {
+    const { product, user } = this.state;
+    if (!product || !user) {
       return <div>Loading...</div>;
     }
-    console.log(product)
+    console.log(user)
     return (
       <>
     <h1 className='title'>Detalles de producto</h1>
@@ -30,7 +34,7 @@ class ProductDetail extends React.Component {
       <div className="summary">
         <div>
           <h2 className="title-detalle">{product.name}</h2>
-          <h3>{product.seller}</h3> {/*Aqui van los detalles del vendedor cuando se desarrolle */}
+          <h3>{user.name} {user.last_name}</h3> 
           <h3 className="title-detalle">Detalles:</h3>
           <p>{product.description}</p>
           <h3 className="title-detalle">Precio: {product.price} €</h3> 
