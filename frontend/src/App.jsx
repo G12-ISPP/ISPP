@@ -5,12 +5,14 @@ import  ProductDetail  from "./components/Product";
 import CustomDesign from "./components/CustomDesign.jsx";
 import { Navigation } from "./components/Navigation";
 import Header from "./components/Header/Header.jsx";
+import Navbar from "./components/Navbar/Navbar.jsx";
 
 
 function App() {
   return (
     <BrowserRouter>
       <Header />
+      <Navbar />
       <Navigation />
       <Routes>
         <Route path="/" element={<Navigate to="/tasks" />} />
