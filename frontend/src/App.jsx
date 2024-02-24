@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { TaskPage } from "./pages/TaskPage";
 import { TaskFormPage } from "./pages/TaskFormPage";
+import  ProductDetail  from "./components/Product";
 import { Navigation } from "./components/Navigation";
-import { ProductDetail } from "./components/Product";
+
 
 function App() {
   return (

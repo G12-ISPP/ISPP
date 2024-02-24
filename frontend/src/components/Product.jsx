@@ -1,27 +1,33 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getSomeProduct } from "../api/products.api";
+import React from "react";
 
-export function ProductDetail() {
-  const { id } = useParams();
-  const [product, setProduct] = useState(null);
-
-  useEffect(() => {
-    getSomeProduct(id)
-      .then((data) => setProduct(data))
-      .catch((error) => console.error(error));
-  }, [id]);
-  console.log("product", product);
-  if (!product) {
-    return <div>Loading...</div>;
+class ProductDetail extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      product: null,
+    };
   }
 
-  return (
-    <div>
-      <h2>{product.name}</h2>
-      <img src={product.image} alt={product.name} />
-      <p>{product.description}</p>
-      <p>Price: {product.price}</p>
-    </div>
-  );
+  async componentDidMount() {
+    const id = window.location.href.split('/')[4]
+    const response = await fetch(`http://localhost:8000/products/api/v1/products/${id}/get_product_data/`);
+    const product = await response.json();
+    this.setState({ product });
+  }
+
+  render() {
+    const { product } = this.state;
+    if (!product) {
+      return <div>Loading...</div>;
+    }
+    return (
+      <div>
+        <h2>{product.name}</h2>
+        <p>{product.description}</p>
+        <p>Price: {product.price} €</p>
+      </div>
+    );
+  }
 }
+
+export default ProductDetail;
