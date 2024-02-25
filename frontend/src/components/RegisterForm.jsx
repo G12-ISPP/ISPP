@@ -39,20 +39,17 @@ class RegisterForm extends React.Component {
 
       if (response.ok) {
         alert('Registro exitoso');
-        window.location.href = "/"; // Redirigir a la página principal
+        window.location.href = "/"; 
 
       } else {
         const data = await response.json();
         if (data.error) {
-          // Si hay un mensaje de error devuelto por el backend, mostrarlo
           this.setState({ errorMessage: data.error });
         } else {
-          // De lo contrario, mostrar un mensaje de error genérico
           this.setState({ errorMessage: 'Error en el registro' });
         }
       }
     } catch (error) {
-      // Manejo de errores en la comunicación con el backend
       console.error('Error al comunicarse con el backend:', error);
       this.setState({ errorMessage: 'Error de conexión con el servidor' });
     }
@@ -63,7 +60,7 @@ class RegisterForm extends React.Component {
     return (
       <div className='register-form'>
         <h2>User Registration</h2>
-        {this.state.errorMessage && <p className="error-message">{this.state.errorMessage}</p>} {/* Mostrar mensaje de error si existe */}
+        {this.state.errorMessage && <p className="error-message">{this.state.errorMessage}</p>} 
         <form onSubmit={this.handleSubmit}>
           <div className='form-group'>
             <label htmlFor='username'>Username:</label>

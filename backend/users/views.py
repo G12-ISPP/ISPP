@@ -13,7 +13,6 @@ from rest_framework.decorators import action
 from users.models import CustomUser
 from users.serializer import UserSerializer
 
-# Create your views here.
 class UsersView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = CustomUser.objects.all()
