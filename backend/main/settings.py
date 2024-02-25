@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # Dependencies
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
     'coreapi',
     # Modules
     'tasks',
@@ -117,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 
@@ -142,12 +143,16 @@ CORS_ALLOWED_ORIGINS = ['http://localhost:5173', 'http://127.0.0.1:5173']
 # Rest framework settings
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
 }
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 PAYPAL_CLIENT_ID = 'AUkHmwH6ogfAD37dz96UYFN01SXwVoAL-Cjj1lSkW4INLdjoFW5SPhrYV1Ilh9iY47TiiIBD93ld2W5g'
 PAYPAL_SECRET_KEY = 'EBx2jC9fTG5kVeLxxobG9b3NkFgV0PnfW1yQTTHH0oJjb5x3tqKpS1bdpMi6u79xWBWBb49nHw8OY5vw'
@@ -157,5 +162,4 @@ paypalrestsdk.configure({
     'client_id': PAYPAL_CLIENT_ID,
     'client_secret': PAYPAL_SECRET_KEY,
 })
-
 

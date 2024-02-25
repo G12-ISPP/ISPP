@@ -1,0 +1,56 @@
+project:
+  name: 'ISPP-2024-L2-12'
+  owner: 'L2'
+  teamId: '12'
+  identities: {}
+  notifications:
+    email: 'feedback.shar3d@gmail.com'
+  members:
+    member1:
+      name: 'Carlos'
+      surname: 'Baquero Villena' 
+      githubUsername: 'carloosbaquero'
+    member2:
+      name: 'Juan Jesús'
+      surname: 'Campos Garrido' 
+      githubUsername: 'jucamgar2'
+    member3:
+      name: 'Alejandro'
+      surname: 'Campano Galán' 
+      githubUsername: 'Alejandrocg024'
+    member4:
+      name: 'Antonio'
+      surname: 'Carretero Díaz' 
+      githubUsername: 'antcardia'
+    member5:
+      name: 'David'
+      surname: 'Cortabarra Romero' 
+      githubUsername: 'davcorrom'
+    member6:
+      name: 'María'
+      surname: 'Escalante Ramos' 
+      githubUsername: 'mariaescalante'
+    member7:
+      name: 'Diego'
+      surname: 'García Linares' 
+      githubUsername: 'diegarlin'
+    member8:
+      name: 'Alejandro'
+      surname: 'García Sánchez-Hermosilla' 
+      githubUsername: 'alegarsan11'
+    member9:
+      name: 'Úrsula'
+      surname: 'Garrucho Sánchez' 
+      githubUsername: 'ursgarsan'
+    member10:
+      name: 'Pablo'
+      surname: 'Mera Gómez' 
+      githubUsername: 'PabloMera6'
+    member11:
+      name: 'David'
+      surname: 'Reyes Alés' 
+      githubUsername: 'davra02'
+    member12:
+      name: 'Alejandro'
+      surname: 'Santiago Félix' 
+      githubUsername: 'alesanfe'
