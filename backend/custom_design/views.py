@@ -13,6 +13,10 @@ from django.shortcuts import get_object_or_404
 from django.http import FileResponse
 from django.http import JsonResponse
 import base64
+from django.conf import settings
+
+ruta_backend = settings.RUTA_BACKEND
+ruta_frontend = settings.RUTA_FRONTEND
 
 
 
@@ -90,8 +94,7 @@ def confirm(request, id):
 
         custom_design.payed = True
         custom_design.save()
-
-        return HttpResponseRedirect('http://localhost:5173/designs/details/' + str(custom_design.custom_design_id))
+        return HttpResponseRedirect(ruta_frontend+'/designs/details/' + str(custom_design.custom_design_id))
     else:
         return HttpResponse('El método HTTP no es compatible.', status=405)
 
@@ -99,7 +102,7 @@ def cancel(request, id):
     if request.method == 'GET':
         custom_design = get_object_or_404(CustomDesign, custom_design_id=id)
         custom_design.delete()
-        return HttpResponseRedirect('http://localhost:5173/designs/canceled')
+        return HttpResponseRedirect(ruta_frontend+'/designs/canceled')
     else:
         return HttpResponse('El método HTTP no es compatible.', status=405)
 
