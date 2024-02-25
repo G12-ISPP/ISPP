@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -6,6 +6,14 @@ const LoginForm = () => {
     password: ''
   });
   const [errorMessage, setErrorMessage] = useState('');
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsUserLoggedIn(true);
+    }
+  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -14,6 +22,11 @@ const LoginForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (isUserLoggedIn) {
+      setErrorMessage('There is already a user logged in.');
+      return;
+    }
 
     try {
       const response = await fetch('http://127.0.0.1:8000/users/login/', {
