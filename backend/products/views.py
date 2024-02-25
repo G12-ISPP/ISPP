@@ -1,12 +1,21 @@
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from products.models import Product
+from products.serializer import ProductSerializer
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from .models import Product
-from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
+
+ruta_backend = settings.RUTA_BACKEND
+ruta_frontend = settings.RUTA_FRONTEND
+
 
 @api_view(['POST'])
 @csrf_exempt
-@login_required
 def add_product(request):
     if request.method == 'POST':
         product_type = request.data.get('product_type')
@@ -41,27 +50,25 @@ def add_product(request):
             return JsonResponse({'error': 'La cantidad de stock debe ser un número entero válido'}, status=400)
 
         # Guardar el producto en la base de datos
-        product = Product(
-            product_type=product_type,
-            price=price,
-            name=name,
-            description=description,
-            stock_quantity=stock_quantity,
-            seller=request.user 
-        )
-        product.save()
+        if request.user.is_authenticated:
+            product = Product(
+                product_type=product_type,
+                price=price,
+                name=name,
+                description=description,
+                stock_quantity=stock_quantity,
+                seller=request.user 
+            )
+            product.save()
 
-        image = request.FILES.get('file')
-        image_name = f'{product.id}.jpg'  # Generar el nombre de la imagen basado en el ID del producto
-        product.imageRoute = image_name
-        product.save()
+            image = request.FILES.get('file')
+            image_name = f'{product.id}.jpg'  # Generar el nombre de la imagen basado en el ID del producto
+            product.imageRoute = image_name
+            product.save()
 
-        return JsonResponse({'message': 'Producto añadido correctamente'}, status=201)
+            return JsonResponse({'message': 'Producto añadido correctamente'}, status=201)
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
-
-from django.http import JsonResponse
-from django.core.files.storage import FileSystemStorage
 
 @api_view(['POST'])
 @csrf_exempt
@@ -75,3 +82,13 @@ def upload_image(request):
             return JsonResponse({'image_url': uploaded_file_url})
         return JsonResponse({'error': 'No se seleccionó ninguna imagen'}, status=400)
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+# Create your views here.
+class ProductsView(viewsets.ModelViewSet):
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()
+
+    @action(detail=True, methods=['get'])
+    def get_product_data(self, request, pk=None):
+        product = self.get_object()
+        serializer = self.get_serializer(product)
