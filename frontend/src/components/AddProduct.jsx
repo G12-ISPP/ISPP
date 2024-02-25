@@ -13,7 +13,7 @@ class Product extends Component {
       price:  0,
       stockQuantity: 1,
       productType: 'P',
-      imagePreview: '../../public/images/design_hucha_cerdo.jpg',
+      imagePreview: '../../images/design_hucha_cerdo.jpg',
       errors: {}
     };
 
@@ -71,7 +71,7 @@ class Product extends Component {
       formData.append('price', this.state.price);
       formData.append('stock_quantity', this.state.stockQuantity);
       formData.append('product_type', this.state.productType);
-      let petition1 = backend + '/products/add-product/';
+      let petition1 = backend + '/products/add-product';
       petition1 = petition1.replace(/"/g, '')
       let petition2 = backend + '/products/upload-image';
       petition2 = petition2.replace(/"/g, '')
@@ -84,7 +84,6 @@ class Product extends Component {
       })
       .then(response => {
         if (response.ok) {
-          // Subir la imagen al frontend
           const imageFormData = new FormData();
           imageFormData.append('file', this.state.file);
           return fetch(petition2, {
