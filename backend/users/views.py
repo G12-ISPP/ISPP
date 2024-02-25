@@ -1,16 +1,9 @@
-from rest_framework import generics
+from rest_framework import generics, status, viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.exceptions import ErrorDetail, APIException
-from rest_framework import status
-
-from django.shortcuts import render
-from .serializer import CustomUserSerializer
+from rest_framework.exceptions import ValidationError
 from .models import CustomUser
-from rest_framework.response import Response
-from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from users.models import CustomUser
 from users.serializer import UserSerializer
 
 class UsersView(viewsets.ModelViewSet):
@@ -26,15 +19,16 @@ class UsersView(viewsets.ModelViewSet):
       
 class UserCreateAPIView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
+    serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
         try:
             return super().post(request, *args, **kwargs)
-        except APIException as e:
-            # print(type(e.detail.values()[0].string))
-            error_message = str(next(iter(e.detail.values()))[0])
-            error_detail = ErrorDetail(string=error_message, code='generic_error')
-            
-            return Response({'error': error_detail}, status=status.HTTP_400_BAD_REQUEST)
+        except ValidationError as e:
+            error_detail = dict(e.detail)
+            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            error_message = str(e)
+            print(error_message)
+            return Response({'error': error_message}, status=status.HTTP_400_BAD_REQUEST)
