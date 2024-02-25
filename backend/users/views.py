@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, status, viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.exceptions import ErrorDetail, APIException
@@ -9,11 +9,12 @@ from .models import CustomUser
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import viewsets, status
+from rest_framework.exceptions import ValidationError
+from .models import CustomUser
+
 from rest_framework.decorators import action
-from users.models import CustomUser
 from users.serializer import UserSerializer
 
-# Create your views here.
 class UsersView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = CustomUser.objects.all()
@@ -39,6 +40,15 @@ class UserCreateAPIView(generics.CreateAPIView):
             error_detail = ErrorDetail(string=error_message, code='generic_error')
             
             return Response({'error': error_detail}, status=status.HTTP_400_BAD_REQUEST)
+        except ValidationError as e:
+            error_detail = dict(e.detail)
+            return Response(error_detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            error_message = str(e)
+            print(error_message)
+            return Response({'error': error_message}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class LoginView(APIView):
     def post(self, request):
