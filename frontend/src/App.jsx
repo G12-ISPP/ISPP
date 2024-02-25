@@ -7,7 +7,6 @@ import  ProductDetail  from "./components/Product";
 import CustomDesign from "./components/CustomDesign.jsx";
 import { Navigation } from "./components/Navigation";
 import UserDetail from "./components/User";
-import { LogoutPage } from "./pages/LogoutPage.jsx";
 
 function App() {
   return (
@@ -22,7 +21,6 @@ function App() {
         <Route path="/register" element={<RegisterFormPage />} /> 
         <Route path="/login" element={<LoginFormPage />} /> 
         <Route path="/user-details/:id" element={<UserDetail />} />
-        <Route path="/logout" element={<LogoutPage />} />
       </Routes>
     </BrowserRouter>
   );
