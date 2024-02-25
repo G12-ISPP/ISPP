@@ -7,3 +7,5 @@ channels_redis
 daphne
 whitenoise
 djangorestframework-simplejwt
+paypalrestsdk==1.13.3
+djangorestframework-simplejwt
