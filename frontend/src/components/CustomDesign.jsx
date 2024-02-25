@@ -95,7 +95,11 @@ export default class CustomModel extends React.Component {
       quality: 'Bajo',
       quantity: 1,
       price: 0,
-      modelUrl: '/bd_a_001.STL'
+      modelUrl: '/bd_a_001.STL',
+      postal_code: '',
+      city: '',
+      address: '',
+      buyer_mail: ''
     };
   }
 
@@ -104,8 +108,17 @@ export default class CustomModel extends React.Component {
     if (!file) {
       return;
     }
-    const url = URL.createObjectURL(file);
-    this.setState({ modelUrl: url, file: file });
+    const fileName = file.name;
+    const fileExtension = fileName.split('.').pop().toLowerCase();
+    if (fileExtension !== 'stl') {
+      alert('El archivo no es de formato STL. Por lo tanto lo ignoraremos. Por favor, sube un archivo STL.');
+      event.target.value = ''; 
+      return;
+    }else{
+      const url = URL.createObjectURL(file);
+      this.setState({ modelUrl: url, file: file });
+    }
+    
   }
 
   calculatePrice = (volume, quality) => {
@@ -115,7 +128,7 @@ export default class CustomModel extends React.Component {
   updatePriceBasedOnQuantity = () => {
     const { volume, quality, quantity } = this.state;
     let pricePerUnit = this.calculatePrice(volume, quality);
-    let totalPrice = pricePerUnit * quantity;
+    let totalPrice = (pricePerUnit+6) * quantity ;
     totalPrice = Math.max(totalPrice, 12.10);
     this.setState({ price: totalPrice.toFixed(2) });
   };
@@ -160,14 +173,55 @@ export default class CustomModel extends React.Component {
   }
 
   handlePayment = async () => {
-    const { file, name, volume, area, dimensions, weight, quality, quantity, price } = this.state;
+    const { file, name, volume, area, dimensions, weight, quality, quantity, price, postal_code, city, address, buyer_mail } = this.state;
 
     if (!file) {
       alert('Debes subir un archivo');
       return;
     }
-    if (name === '') {
-      alert('Debes introducir un nombre');
+    if (name === '' && name.length >255) {
+      alert('Debes introducir un nombre de menos de 255 caracteres');
+      return;
+    }
+
+    if (postal_code === '' || city === '' || address === '') {
+      alert('Debes completar todos los campos de dirección');
+      return;
+    }
+
+    if(postal_code.length !== 5){
+      alert('El código postal debe tener 5 dígitos');
+      return;
+    }
+
+    if (buyer_mail === ''){
+      alert('Debes introducir un correo electrónico');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(buyer_mail)) {
+      alert('El correo electrónico ingresado no es válido');
+      return;
+    }
+
+    if(buyer_mail.length>255){
+      alert('El correo electrónico debe tener menos de 255 caracteres');
+      return;
+    }
+
+    if(city.length> 50){
+      alert('La ciudad debe tener menos de 50 caracteres');
+      return;
+    }
+
+    if(address.length>255){
+      alert('La dirección debe tener menos de 255 caracteres');
+      return;
+    }
+
+    if(quantity >100){
+      alert('La cantidad máxima es 100');
       return;
     }
 
@@ -181,17 +235,23 @@ export default class CustomModel extends React.Component {
       weight,
       quality,
       quantity,
-      price
+      price,
+      postal_code,
+      city,
+      address,
+      buyer_mail
     }));
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/designs/my-design', {
+      const response = await fetch(`http://127.0.0.1:8000/designs/my-design`, {
         method: 'POST',
         body: formData,
       });
 
       if (response.ok) {
-        alert('Datos enviados correctamente')
+        const responseData = await response.json();
+        const paypalPaymentUrl = responseData.paypal_payment_url; 
+        window.location.href = paypalPaymentUrl;
       } else {
         alert('Error al enviar los datos')
       }
@@ -205,18 +265,20 @@ export default class CustomModel extends React.Component {
       <>
         <h1 className='title'>Mi diseño</h1>
         <div className='main'>
-          <Canvas dpr={[1, 2]} shadows camera={{ fov: 45 }} style={{ display: "flex", width: "500px", height: "300px", marginBottom: "50px", borderRadius: "15px", touchAction: "none" }}>
-            <Suspense fallback={<Loader />}>
-              <color attach="background" args={["#101010"]} />
-              <ambientLight intensity={0.5} />
-              <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-              <PresentationControls speed={1.5} global zoom={1.5} polar={[-0.1, Math.PI / 4]}>
-                <Stage environment={"sunset"} adjustCamera={true} key={this.state.modelUrl} scale={0.01}>
-                  <Model url={this.state.modelUrl} volumeAndArea={this.handleAreaAndVolume} />
-                </Stage>
-              </PresentationControls>
-            </Suspense>
-          </Canvas>
+          <div className='canvas-container'>
+            <Canvas dpr={[1, 2]} className='canvas' shadows camera={{ fov: 45 }} style={{ display: "flex", width: "500px", height: "300px", marginBottom: "50px", borderRadius: "15px", touchAction: "none" }}>
+              <Suspense fallback={<Loader />}>
+                <color attach="background" args={["#101010"]} />
+                <ambientLight intensity={0.5} />
+                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+                <PresentationControls speed={1.5} global zoom={1.5} polar={[-0.1, Math.PI / 4]}>
+                  <Stage environment={"sunset"} adjustCamera={true} key={this.state.modelUrl} scale={0.01}>
+                    <Model url={this.state.modelUrl} volumeAndArea={this.handleAreaAndVolume} />
+                  </Stage>
+                </PresentationControls>
+              </Suspense>
+            </Canvas>
+          </div>
           <form className='form'>
             <div className='form-group'>
               <label htmlFor="file" className='upload'> Sube tu diseño:</label>
@@ -237,6 +299,22 @@ export default class CustomModel extends React.Component {
               <input type='button' id='low' name='quality' value='Bajo' onClick={() => this.handleQuality('Bajo')} />
               <input type='button' id='medium' name='quality' value='Medio' onClick={() => this.handleQuality('Medio')} />
               <input type='button' id='high' name='quality' value='Alto' onClick={() => this.handleQuality('Alto')} />
+            </div>
+            <div className='form-group'>
+              <label className='postal_code'>Código Postal:</label>
+              <input type='text' id='postal_code' name='postal_code' onChange={(event) => this.setState({ postal_code: event.target.value })} />
+            </div>
+            <div className='form-group'>
+              <label className='city'>Ciudad:</label>
+              <input type='text' id='city' name='city' onChange={(event) => this.setState({ city: event.target.value })} />
+            </div>
+            <div className='form-group'>
+              <label className='address'>Dirección:</label>
+              <input type='text' id='address' name='address' onChange={(event) => this.setState({ address: event.target.value })} />
+            </div>
+            <div className='form-group'>
+              <label className='buyer_mail'>Correo electrónico:</label>
+              <input type='text' id='buyer_mail' name='buyer_mail' onChange={(event) => this.setState({ buyer_mail: event.target.value })} />
             </div>
           </form>
         </div>

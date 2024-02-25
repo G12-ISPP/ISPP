@@ -6,6 +6,8 @@ import { LoginFormPage } from "./pages/LoginFormPage.jsx";
 import  ProductDetail  from "./components/Product";
 import CustomDesign from "./components/CustomDesign.jsx";
 import { Navigation } from "./components/Navigation";
+import CustomDesignDetails from "./components/CustomDesignDetails.jsx";
+import CustonDesignCancelled from "./components/CustomDesignCancelled.jsx";
 import UserDetail from "./components/User";
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
         <Route path="/tasks-create" element={<TaskFormPage />} />
         <Route path="/product-details/:id" element={<ProductDetail />} />
         <Route path="/designs/my-design" element={<CustomDesign />} />
+        <Route path="/designs/details/:id" element={<CustomDesignDetails />} />
+        <Route path="/designs/cancelled" element={<CustonDesignCancelled />} />
         <Route path="/register" element={<RegisterFormPage />} /> 
         <Route path="/login" element={<LoginFormPage />} /> 
         <Route path="/user-details/:id" element={<UserDetail />} />
