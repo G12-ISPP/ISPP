@@ -5,6 +5,9 @@ import { Stage, PresentationControls, Html, useProgress } from '@react-three/dre
 import { MeshStandardMaterial, Color, Vector3 } from 'three';
 import './CustomDesign.css';
 
+const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
+const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
+
 const url = window.location.href;
 const url2 = url.split('/');
 const id = url2[url2.length - 1];
@@ -19,8 +22,10 @@ export default class CustomModelDetails extends React.Component{
 
     async componentDidMount() {
         try {
-            console.log(id)
-            const response = await fetch(`http://localhost:8000/designs/details/${id}`);
+            let petition = backend + '/designs/details/';
+            petition = petition.replace(/"/g, '')
+            petition = petition + id;
+            const response = await fetch(petition);
             const datos = await response.json();
             this.setState({ data:datos});
         } catch (error) {

@@ -5,6 +5,9 @@ import { Stage, PresentationControls, Html, useProgress } from '@react-three/dre
 import { MeshStandardMaterial, Color, Vector3 } from 'three';
 import './CustomDesign.css';
 
+const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
+const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
+
 const calculateAreaVolumeAndDimensions = (bufferGeometry) => {
   let volume = 0;
   let area = 0;
@@ -128,7 +131,8 @@ export default class CustomModel extends React.Component {
   updatePriceBasedOnQuantity = () => {
     const { volume, quality, quantity } = this.state;
     let pricePerUnit = this.calculatePrice(volume, quality);
-    let totalPrice = (pricePerUnit+6) * quantity ;
+    // 3 euros para nosotros, 3 para el impresor y 2 para el envío por cada pieza
+    let totalPrice = (pricePerUnit+8) * quantity ;
     totalPrice = Math.max(totalPrice, 12.10);
     this.setState({ price: totalPrice.toFixed(2) });
   };
@@ -243,7 +247,9 @@ export default class CustomModel extends React.Component {
     }));
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/designs/my-design`, {
+      let petition = backend + '/designs/my-design';
+      petition = petition.replace(/"/g, '')
+      const response = await fetch(petition, {
         method: 'POST',
         body: formData,
       });
@@ -325,7 +331,7 @@ export default class CustomModel extends React.Component {
             <h3>Área/Volumen: {this.state.area}cm²/ {this.state.volume}cm³ </h3>
             <h3>Peso: {this.state.weight}g</h3>
             <h3>Calidad: {this.state.quality}</h3>
-            <h3>Precio: <span>{this.state.price}€ (IVA incluido)</span></h3>
+            <h3>Precio: <span>{this.state.price}€ (IVA y gastos de envío incluidos)</span></h3>
           </div>
           <input className='buy' type='button' id='buy' name='buy' value='Pagar' onClick={this.handlePayment} />
         </div>

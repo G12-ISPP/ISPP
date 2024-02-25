@@ -1,5 +1,8 @@
 import React from 'react';
 
+const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
+const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
+
 class RegisterForm extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +32,10 @@ class RegisterForm extends React.Component {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/users/register/', {
+      const id = window.location.href.split('/')[4]
+      let petition = backend + '/users/register/';
+      petition = petition.replace(/"/g, '')
+      const response = await fetch(petition, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -1,6 +1,9 @@
 import React from "react";
 import './Product.css'
 
+const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
+const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
+
 class ProductDetail extends React.Component {
   constructor(props) {
     super(props);
@@ -12,9 +15,13 @@ class ProductDetail extends React.Component {
 
   async componentDidMount() {
     const id = window.location.href.split('/')[4]
-    const response = await fetch(`http://localhost:8000/products/api/v1/products/${id}/get_product_data/`);
+    let petition = backend + '/products/api/v1/products/' + id + '/get_product_data/';
+    petition = petition.replace(/"/g, '')
+    const response = await fetch(petition);
     const product = await response.json();
-    const response_user = await fetch(`http://localhost:8000/users/api/v1/users/${product.seller}/get_user_data/`);
+    let petition2 = backend + '/users/api/v1/users/' + product.seller + '/get_user_data/';
+    petition2 = petition2.replace(/"/g, '')
+    const response_user = await fetch(petition2);
     const user = await response_user.json();
     this.setState({ product, user });
 
@@ -34,7 +41,7 @@ class ProductDetail extends React.Component {
       <div className="summary">
         <div>
           <h2 className="title-detalle">{product.name}</h2>
-          <h3>{user.name} {user.last_name}</h3> 
+          <h3>{user.first_name} {user.last_name}</h3> 
           <h3 className="title-detalle">Detalles:</h3>
           <p>{product.description}</p>
           <h3 className="title-detalle">Precio: {product.price} €</h3> 
