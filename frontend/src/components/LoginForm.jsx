@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 
+const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
+const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
+
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     username: '',
@@ -29,7 +32,9 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/users/login/', {
+      let petition = backend + '/users/login/';
+      petition = petition.replace(/"/g, '')
+      const response = await fetch(petition, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

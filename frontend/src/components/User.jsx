@@ -1,6 +1,9 @@
 import React from "react";
 import './User.css'
 
+const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
+const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
+
 class UserDetail extends React.Component {
     constructor(props) {
         super(props);
@@ -11,7 +14,9 @@ class UserDetail extends React.Component {
 
     async componentDidMount() {
         const id = window.location.href.split('/')[4]
-        const response = await fetch(`http://localhost:8000/users/api/v1/users/${id}/get_user_data/`);
+        let petition = backend + '/users/api/v1/users/' + id + '/get_user_data/';
+        petition = petition.replace(/"/g, '')
+        const response = await fetch(petition);
         const user = await response.json();
         this.setState({ user });
     }
