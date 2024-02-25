@@ -2,3 +2,7 @@ django
 django-rest-framework
 django-cors-headers
 coreapi
+channels
+channels_redis
+daphne
+whitenoise

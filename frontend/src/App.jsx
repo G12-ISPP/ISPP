@@ -3,6 +3,7 @@ import { TaskPage } from "./pages/TaskPage";
 import { TaskFormPage } from "./pages/TaskFormPage";
 import CustomDesign from "./components/CustomDesign.jsx";
 import { Navigation } from "./components/Navigation";
+import { ChatPage } from "./pages/ChatPage"
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Navigation />
 
       <Routes>
+        <Route path="/chat" element={<ChatPage />} />
         <Route path="/" element={<Navigate to="/tasks" />} />
         <Route path="/tasks" element={<TaskPage />} />
         <Route path="/tasks-create" element={<TaskFormPage />} />
