@@ -10,12 +10,16 @@ const Button = (props) => {
   }
 
   const onButtonClick = () => {
-    window.location.href = path;
+    if (!pathDetails) {
+        window.location.href = '/';
+    } else {
+        window.location.href = pathDetails;
+    }
   }
 
   return (
     <div className={getButtonClass()} onClick={onButtonClick}>
-      {text}
+      <p className='btn-text'>{text}</p>
     </div>
   )
 }
@@ -23,6 +27,8 @@ const Button = (props) => {
 export default Button
 
 export const BUTTON_TYPES = {
-    HEADER: 'HEADER',
-    NAVBAR: 'NAVBAR',
+  HEADER: 'HEADER',
+  LARGE: 'LARGE',
+  MEDIUM: 'MEDIUM',
+  TRANSPARENT: 'TRANSPARENT',
 }

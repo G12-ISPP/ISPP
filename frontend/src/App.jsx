@@ -10,6 +10,7 @@ import Product from "./components/Product/Product.jsx";
 
 import pathImage from './assets/design_buzz_lightyear.jpg';
 import Artist from "./components/Artist/Artist.jsx";
+import Button, { BUTTON_TYPES } from "./components/Button/Button.jsx";
 
 
 function App() {
@@ -30,6 +31,11 @@ function App() {
 
       <Product name='Nombre del producto a mostrar' price='299,99€' pathImage={pathImage} pathDetails='/' />
       <Artist name='Nombre artista' pathImage={pathImage} pathDetails='/' />
+
+      <Button type={BUTTON_TYPES.MEDIUM} text='Comprar' path='/designs/my-design' />
+      <Button type={BUTTON_TYPES.LARGE} text='Ver detalles' path='/designs/my-design' />
+      <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' path='/designs/my-design' />
+
     </BrowserRouter>
   );
 }

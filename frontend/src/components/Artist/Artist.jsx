@@ -9,7 +9,11 @@ const Artist = (props) => {
     const { name, pathImage, pathDetails } = props
 
     const onButtonClick = () => {
-        window.location.href = pathDetails;
+        if (!pathDetails) {
+            window.location.href = '/';
+        } else {
+            window.location.href = pathDetails;
+        }
     }
 
     return (
