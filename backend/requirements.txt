@@ -2,3 +2,5 @@ django
 django-rest-framework
 django-cors-headers
 coreapi
+paypalrestsdk==1.13.3
+djangorestframework-simplejwt
