@@ -10,11 +10,13 @@ export const ChatComponent = ({ roomName }) => {
     websocket.current = new WebSocket(`ws://localhost:8000/ws/chat/${roomName}/`);
 
     websocket.current.onmessage = (e) => {
-      const data = JSON.parse(e.data);
-      if (data.message) {
-        setMessages((prevMessages) => [...prevMessages, data.message]);
-      }
-    };
+        const data = JSON.parse(e.data);
+        if (data.message) {
+          // Asumiendo que data contiene 'message' y 'author'
+          setMessages((prevMessages) => [...prevMessages, { text: data.message, author: data.author }]);
+        }
+      };
+      
 
     websocket.current.onclose = (e) => {
       console.error('Chat socket closed unexpectedly');
@@ -41,9 +43,10 @@ export const ChatComponent = ({ roomName }) => {
       <h2>Chat Room: {roomName}</h2>
       <ul>
         {messages.map((message, index) => (
-          <li key={index}>{message}</li>
+            <li key={index}><strong>{message.author}:</strong> {message.text}</li>
         ))}
       </ul>
+
       <form onSubmit={sendMessage}>
         <input
           type="text"

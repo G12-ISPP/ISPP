@@ -30,30 +30,41 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         user = self.scope["user"]
-        room_id = self.scope['url_route']['kwargs']['room_name']
+        author_name = user.username if not user.is_anonymous else "Anónimo"
+
+        room_id = int(self.scope['url_route']['kwargs']['room_name'])
         room = await sync_to_async(ChatRoom.objects.get)(id=room_id)
 
-        # Guardar el mensaje en la base de datos
-        await sync_to_async(Message.objects.create)(
-            room=room,
-            author=user,
-            content=message
-        )
 
-        # Enviar mensaje al grupo
+        # Asume que el usuario anónimo no puede guardar mensajes en la base de datos
+        if not user.is_anonymous:
+            await sync_to_async(Message.objects.create)(
+                room=room,
+                author=user,
+                content=message
+            )
+
+        # Enviar mensaje al grupo, incluyendo el nombre del autor
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': message,
+                'author': author_name  # Incluye el nombre de usuario o "Anónimo"
             }
         )
 
+
+
+    # Recibir mensaje del grupo
     # Recibir mensaje del grupo
     async def chat_message(self, event):
         message = event['message']
+        author = event['author']  # Recoge el autor del evento
 
-        # Enviar mensaje al WebSocket
+        # Enviar mensaje al WebSocket, incluyendo el autor
         await self.send(text_data=json.dumps({
-            'message': message
+            'message': message,
+            'author': author  # Envía el nombre de usuario al cliente
         }))
+
