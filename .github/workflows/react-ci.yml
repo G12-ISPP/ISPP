@@ -1,14 +1,33 @@
 name: react-ci
 on: [push]
+
 jobs:
   build-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js for frontend
+        uses: actions/setup-node@v3
         with:
           node-version: '14'
-      - run: cd frontend/
-      - run: npm i
-      - run: npm run dev
-      - run: npm run test
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend/
+          npm install
+
+      - name: Start Django backend in the background
+        run: |
+          cd backend/
+          python manage.py migrate
+          python manage.py runserver &
+
+      - name: Run frontend build and tests
+        run: |
+          cd frontend/
+          npm run test
+
+      - name: Stop Django backend
+        run: kill $(jobs -p) || true
