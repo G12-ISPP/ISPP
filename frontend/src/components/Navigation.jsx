@@ -14,8 +14,8 @@ export function Navigation() {
       <Link to="/tasks">Tasks</Link>
       <Link to="/designs/my-design">Custom Design</Link>
       <Link to="/register">Register</Link>
-      <Link to="/login">Login</Link>
-      {isLoggedIn && <button onClick={handleLogout}>Logout</button>}
+      <Link to="/login">Iniciar sesión</Link>
+      {isLoggedIn && <button onClick={handleLogout}>Cerrar sesión</button>}
     </div>
   );
 }

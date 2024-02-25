@@ -24,7 +24,7 @@ const LoginForm = () => {
     event.preventDefault();
 
     if (isUserLoggedIn) {
-      setErrorMessage('There is already a user logged in.');
+      setErrorMessage('Ya has iniciado sesión con un usuario, debes cerrar sesión antes.');
       return;
     }
 
@@ -43,7 +43,7 @@ const LoginForm = () => {
         window.location.href = "/";
       } else {
         const data = await response.json();
-        setErrorMessage(data.message || 'Invalid username or password');
+        setErrorMessage(data.message || 'El usuario o contraseña introducido no es válido.');
       }
     } catch (error) {
       console.error('Error al comunicarse con el backend:', error);
@@ -53,18 +53,18 @@ const LoginForm = () => {
 
   return (
     <div className='login-form'>
-      <h2>Login</h2>
+      <h2>Inicio de sesión</h2>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <form onSubmit={handleSubmit}>
         <div className='form-group'>
-          <label htmlFor='username'>Username:</label>
+          <label htmlFor='username'>Usuario:</label>
           <input type='text' id='username' name='username' value={formData.username} onChange={handleChange} required />
         </div>
         <div className='form-group'>
-          <label htmlFor='password'>Password:</label>
+          <label htmlFor='password'>Contraseña:</label>
           <input type='password' id='password' name='password' value={formData.password} onChange={handleChange} required />
         </div>
-        <button type='submit'>Login</button>
+        <button type='submit'>Iniciar sesión</button>
       </form>
     </div>
   );
