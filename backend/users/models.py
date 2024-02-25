@@ -1,10 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class CustomUser(AbstractUser):
 
     address = models.CharField(max_length=255)
-    postal_code = models.CharField(max_length=5)
+    postal_code = models.IntegerField(
+        validators=[    
+            MaxValueValidator(99999),
+            MinValueValidator(10000)
+        ]
+    )
     city = models.CharField(max_length=50)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
