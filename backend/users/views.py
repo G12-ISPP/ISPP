@@ -47,12 +47,6 @@ class UserCreateAPIView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         try:
             return super().post(request, *args, **kwargs)
-        except APIException as e:
-            # print(type(e.detail.values()[0].string))
-            error_message = str(next(iter(e.detail.values()))[0])
-            error_detail = ErrorDetail(string=error_message, code='generic_error')
-            
-            return Response({'error': error_detail}, status=status.HTTP_400_BAD_REQUEST)
         except ValidationError as e:
             error_detail = dict(e.detail)
             translated_errors = {key: [_(value[0])] for key, value in error_detail.items()}
