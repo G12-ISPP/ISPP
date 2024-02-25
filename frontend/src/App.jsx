@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar/Navbar.jsx";
 import Product from "./components/Product/Product.jsx";
 
 import pathImage from './assets/design_buzz_lightyear.jpg';
+import Artist from "./components/Artist/Artist.jsx";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
       </Routes>
 
       <Product name='Nombre del producto a mostrar' price='299,99€' pathImage={pathImage} pathDetails='/' />
+      <Artist name='Nombre artista' pathImage={pathImage} pathDetails='/' />
     </BrowserRouter>
   );
 }
