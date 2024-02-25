@@ -62,7 +62,6 @@ class RegisterForm extends React.Component {
     return (
         <div className='register-form'>
           <h2>Registro de usuario</h2>
-          {this.state.errorMessage && <p className="error-message">{this.state.errorMessage}</p>} 
           <form onSubmit={this.handleSubmit}>
             <div className='form-group'>
               <label htmlFor='username'>Nombre de usuario:</label>
