@@ -18,13 +18,13 @@ const Header = () => {
 
             <div className='search-box'>
                 <img src={searchIcon} className='search-icon' />
-                <input type='text' placeholder='Search for designs, printers, materials and more...' className='input-text' />
+                <input type='text' placeholder='Busca diseños, impresoras, materiales y más...' className='input-text' />
             </div>
 
             <div class="button-wrapper">
                 <img src={cartIcon} className='cart-icon' onClick={() => onButtonClick('/')} />
-                <Button type={BUTTON_TYPES.HEADER} text='Log in' path='/designs/my-design' />
-                <Button type={BUTTON_TYPES.HEADER} text='Sell' path='/designs/my-design' />
+                <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/designs/my-design' />
+                <Button type={BUTTON_TYPES.HEADER} text='Vender' path='/designs/my-design' />
             </div>
 
         </div>
