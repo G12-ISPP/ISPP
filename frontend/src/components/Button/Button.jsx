@@ -3,7 +3,7 @@ import './Button.css'
 
 const Button = (props) => {
 
-  const { type, text, pathDetails } = props
+  const { type, text, path } = props
 
   const getButtonClass = () => {
     return type.toLowerCase() + '-btn button';
