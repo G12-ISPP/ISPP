@@ -9,6 +9,7 @@
 }
 .artist:hover {
     background: #E0EEC6;
+    scale: 1.05;
 }
 
 .image {
