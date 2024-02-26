@@ -10,10 +10,10 @@ const Button = (props) => {
   }
 
   const onButtonClick = () => {
-    if (!pathDetails) {
+    if (!path) {
         window.location.href = '/';
     } else {
-        window.location.href = pathDetails;
+        window.location.href = path;
     }
   }
 

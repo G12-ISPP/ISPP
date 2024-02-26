@@ -40,8 +40,6 @@ function App() {
         <Route path="/products/add-product" element={<AddProduct/>} />
       </Routes>
 
-      <Navigation />
-
       <Footer />
 
     </BrowserRouter>

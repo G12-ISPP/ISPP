@@ -7,6 +7,13 @@ import Button, { BUTTON_TYPES } from '../Button/Button'
 
 const Header = () => {
 
+    const isLoggedIn = localStorage.getItem('token');
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        window.location.href = '/';
+    }
+
     const onButtonClick = (path) => {
         window.location.href = path;
     }
@@ -23,8 +30,10 @@ const Header = () => {
 
             <div className="button-wrapper">
                 <img src={cartIcon} className='cart-icon' onClick={() => onButtonClick('/')} />
-                <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/designs/my-design' />
-                <Button type={BUTTON_TYPES.HEADER} text='Vender' path='/designs/my-design' />
+                {!isLoggedIn &&<Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login'  />}
+                {!isLoggedIn &&<Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register'  />}
+                {isLoggedIn &&<Button type={BUTTON_TYPES.HEADER} text='Cerrar sesión' onClick={handleLogout}  />}
+                {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Vender' path='/products/add-product' />}
             </div>
 
         </div>
