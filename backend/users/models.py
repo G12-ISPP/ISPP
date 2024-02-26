@@ -11,7 +11,6 @@ class CustomUser(AbstractUser):
             MinValueValidator(10000)
         ]
     )
-    name = models.CharField(max_length=50, default='Juan')
     city = models.CharField(max_length=50)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
