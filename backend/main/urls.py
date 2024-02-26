@@ -26,5 +26,6 @@ urlpatterns = [
     path('designs/', include('custom_design.urls')),
     path('users/', include('users.urls')),
     path('chat/', include('chat.urls')),
+    path('products/', include('products.urls')),
 ]
 

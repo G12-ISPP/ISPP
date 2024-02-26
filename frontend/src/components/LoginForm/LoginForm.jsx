@@ -1,4 +1,10 @@
+import './LoginForm.css';
 import { useState, useEffect } from 'react';
+import Text, { TEXT_TYPES } from '../Text/Text';
+import Button, { BUTTON_TYPES } from '../Button/Button';
+
+const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
+const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -29,7 +35,9 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/users/login/', {
+      let petition = backend + '/users/login/';
+      petition = petition.replace(/"/g, '')
+      const response = await fetch(petition, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -52,20 +60,22 @@ const LoginForm = () => {
   }
 
   return (
-    <div className='login-form'>
-      <h2>Inicio de sesión</h2>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className='form-group'>
-          <label htmlFor='username'>Usuario:</label>
-          <input type='text' id='username' name='username' value={formData.username} onChange={handleChange} required />
-        </div>
-        <div className='form-group'>
-          <label htmlFor='password'>Contraseña:</label>
-          <input type='password' id='password' name='password' value={formData.password} onChange={handleChange} required />
-        </div>
-        <button type='submit'>Iniciar sesión</button>
-      </form>
+    <div className='login-container'>
+      <Text type={TEXT_TYPES.TITLE_BOLD} text='Iniciar sesión' />
+      <div className='form-container'>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <form className='form' onSubmit={handleSubmit}>
+          <div className='form-group'>
+            <label htmlFor='username'>Usuario:</label>
+            <input type='text' id='username' name='username' className='form-input' value={formData.username} onChange={handleChange} required />
+          </div>
+          <div className='form-group'>
+            <label htmlFor='password'>Contraseña:</label>
+            <input type='password' id='password' name='password' className='form-input' value={formData.password} onChange={handleChange} required />
+          </div>
+          <button className="large-btn button" type='submit'>Iniciar sesión</button>
+        </form>
+      </div>
     </div>
   );
 }

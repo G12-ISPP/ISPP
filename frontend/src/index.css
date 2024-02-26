@@ -3,7 +3,7 @@
   line-height: 1.5;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: #004040;
   background-color: #F1F7ED;
 
   font-synthesis: none;
@@ -23,6 +23,8 @@ a:hover {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
@@ -52,18 +54,32 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.slogan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 2em;
 }
+
+.section-title {
+  margin: 5em 10em 1em;
+}
+
+.blank-space {
+  margin: 8em;
+}
+
+/* Eliminar una vez creada lógica para artistas */
+/*===========================================================*/
+.artists-gr {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+/*================================================*/
+
+
 
 .error-message {
   color: red;

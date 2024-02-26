@@ -5,6 +5,9 @@ import { Stage, PresentationControls, Html, useProgress } from '@react-three/dre
 import { MeshStandardMaterial, Color, Vector3 } from 'three';
 import './CustomDesign.css';
 
+const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
+const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
+
 const calculateAreaVolumeAndDimensions = (bufferGeometry) => {
   let volume = 0;
   let area = 0;
@@ -128,7 +131,8 @@ export default class CustomModel extends React.Component {
   updatePriceBasedOnQuantity = () => {
     const { volume, quality, quantity } = this.state;
     let pricePerUnit = this.calculatePrice(volume, quality);
-    let totalPrice = (pricePerUnit+6) * quantity ;
+    // 3 euros para nosotros, 3 para el impresor y 2 para el envío por cada pieza
+    let totalPrice = (pricePerUnit+8) * quantity ;
     totalPrice = Math.max(totalPrice, 12.10);
     this.setState({ price: totalPrice.toFixed(2) });
   };
@@ -243,7 +247,9 @@ export default class CustomModel extends React.Component {
     }));
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/designs/my-design`, {
+      let petition = backend + '/designs/my-design';
+      petition = petition.replace(/"/g, '')
+      const response = await fetch(petition, {
         method: 'POST',
         body: formData,
       });
@@ -283,38 +289,38 @@ export default class CustomModel extends React.Component {
             <div className='form-group'>
               <label htmlFor="file" className='upload'> Sube tu diseño:</label>
               <div className='file-select'>
-                <input type='file' id='file' name='file' accept='.stl' onChange={this.handleFileChange} />
+                <input type='file' id='file' name='file' className='form-input' accept='.stl' onChange={this.handleFileChange} />
               </div>
             </div>
             <div className='form-group'>
               <label className='name'>Nombre:</label>
-              <input type='text' id='name' name='name' onChange={this.handleName} />
+              <input type='text' id='name' name='name' className='form-input' onChange={this.handleName} />
             </div>
             <div className='form-group'>
               <label className='quantity'>Cantidad:</label>
-              <input type='number' id='quantity' name='quantity' min={1} max={100} onChange={this.handleQuantity} value={this.state.quantity} onKeyDown={this.handleKeyDown} />
+              <input type='number' id='quantity' name='quantity' className='form-input' min={1} max={100} onChange={this.handleQuantity} value={this.state.quantity} onKeyDown={this.handleKeyDown} />
             </div>
             <div className='form-group'>
               <label className='quality'>Calidad:</label>
-              <input type='button' id='low' name='quality' value='Bajo' onClick={() => this.handleQuality('Bajo')} />
-              <input type='button' id='medium' name='quality' value='Medio' onClick={() => this.handleQuality('Medio')} />
-              <input type='button' id='high' name='quality' value='Alto' onClick={() => this.handleQuality('Alto')} />
+              <input type='button' id='low' name='quality' className='form-input' value='Bajo' onClick={() => this.handleQuality('Bajo')} />
+              <input type='button' id='medium' name='quality' className='form-input' value='Medio' onClick={() => this.handleQuality('Medio')} />
+              <input type='button' id='high' name='quality' className='form-input' value='Alto' onClick={() => this.handleQuality('Alto')} />
             </div>
             <div className='form-group'>
               <label className='postal_code'>Código Postal:</label>
-              <input type='text' id='postal_code' name='postal_code' onChange={(event) => this.setState({ postal_code: event.target.value })} />
+              <input type='text' id='postal_code' name='postal_code' className='form-input' onChange={(event) => this.setState({ postal_code: event.target.value })} />
             </div>
             <div className='form-group'>
               <label className='city'>Ciudad:</label>
-              <input type='text' id='city' name='city' onChange={(event) => this.setState({ city: event.target.value })} />
+              <input type='text' id='city' name='city' className='form-input' onChange={(event) => this.setState({ city: event.target.value })} />
             </div>
             <div className='form-group'>
               <label className='address'>Dirección:</label>
-              <input type='text' id='address' name='address' onChange={(event) => this.setState({ address: event.target.value })} />
+              <input type='text' id='address' name='address' className='form-input' onChange={(event) => this.setState({ address: event.target.value })} />
             </div>
             <div className='form-group'>
               <label className='buyer_mail'>Correo electrónico:</label>
-              <input type='text' id='buyer_mail' name='buyer_mail' onChange={(event) => this.setState({ buyer_mail: event.target.value })} />
+              <input type='text' id='buyer_mail' name='buyer_mail' className='form-input' onChange={(event) => this.setState({ buyer_mail: event.target.value })} />
             </div>
           </form>
         </div>
@@ -325,7 +331,7 @@ export default class CustomModel extends React.Component {
             <h3>Área/Volumen: {this.state.area}cm²/ {this.state.volume}cm³ </h3>
             <h3>Peso: {this.state.weight}g</h3>
             <h3>Calidad: {this.state.quality}</h3>
-            <h3>Precio: <span>{this.state.price}€ (IVA incluido)</span></h3>
+            <h3>Precio: <span>{this.state.price}€ (IVA y gastos de envío incluidos)</span></h3>
           </div>
           <input className='buy' type='button' id='buy' name='buy' value='Pagar' onClick={this.handlePayment} />
         </div>
