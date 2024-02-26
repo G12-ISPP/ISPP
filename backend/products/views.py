@@ -64,11 +64,6 @@ def add_product(request):
             )
             product.save()
 
-            image = request.FILES.get('file')
-            image_name = f'{product.id}.jpg'  # Generar el nombre de la imagen basado en el ID del producto
-            product.imageRoute = image_name
-            product.save()
-
             return JsonResponse({'message': 'Producto añadido correctamente'}, status=201)
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)

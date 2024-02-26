@@ -18,7 +18,7 @@ const Product = (props) => {
         if (!isImageRoute) {
             return pathImage;
         } else {
-            return '../../../public/images/' + pathImage;
+            return '/images/' + pathImage;
         }
     }
     const imageRoute = modifyImagePath(pathImage, isImageRoute);    
