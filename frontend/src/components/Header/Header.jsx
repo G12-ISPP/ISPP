@@ -31,6 +31,7 @@ const Header = () => {
                 {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />}
                 {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Cerrar sesión' path='logout' />}
                 {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Vender' path='/products/add-product' />}
+
             </div>
         </div>
     );

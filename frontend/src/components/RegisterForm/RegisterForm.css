@@ -1,0 +1,22 @@
+.register-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2em;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
+
+.form-input {
+    background: #D9D9D9;
+    color: #004040;
+    border: 0.1em #004040 solid;
+    border-radius: 0.25em;
+    box-sizing: border-box;
+    padding: 0.1em 0.5em;
+}
