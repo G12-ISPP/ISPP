@@ -1,4 +1,7 @@
+import './LoginForm.css';
 import { useState, useEffect } from 'react';
+import Text, { TEXT_TYPES } from '../Text/Text';
+import Button, { BUTTON_TYPES } from '../Button/Button';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -57,23 +60,23 @@ const LoginForm = () => {
   }
 
   return (
-    <>
-      <h1 className='title'>Inicio de sesión</h1>
-        <div className='main'>
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
-          <form className='form' onSubmit={handleSubmit}>
-            <div className='form-group'>
-              <label htmlFor='username'>Usuario:</label>
-              <input type='text' id='username' name='username' value={formData.username} onChange={handleChange} required />
-            </div>
-            <div className='form-group'>
-              <label htmlFor='password'>Contraseña:</label>
-              <input type='password' id='password' name='password' value={formData.password} onChange={handleChange} required />
-            </div>
-            <button class="large-btn button" type='submit'>Iniciar sesión</button>
-          </form>
-        </div>
-    </>
+    <div className='login-container'>
+      <Text type={TEXT_TYPES.TITLE_BOLD} text='Iniciar sesión' />
+      <div className='form-container'>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <form className='form' onSubmit={handleSubmit}>
+          <div className='form-group'>
+            <label htmlFor='username'>Usuario:</label>
+            <input type='text' id='username' name='username' className='form-input' value={formData.username} onChange={handleChange} required />
+          </div>
+          <div className='form-group'>
+            <label htmlFor='password'>Contraseña:</label>
+            <input type='password' id='password' name='password' className='form-input' value={formData.password} onChange={handleChange} required />
+          </div>
+          <button className="large-btn button" type='submit'>Iniciar sesión</button>
+        </form>
+      </div>
+    </div>
   );
 }
 
