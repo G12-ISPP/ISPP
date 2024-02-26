@@ -1,0 +1,14 @@
+.text {
+    color: #004040;
+    margin: 0;
+}
+
+.title-bold {
+    font-size: 1.8em;
+    font-weight: 700;
+}
+
+.title-normal {
+    font-size: 1.8em;
+    font-weight: 400;
+}

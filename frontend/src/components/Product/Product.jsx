@@ -1,6 +1,6 @@
 import React from 'react'
 import './Product.css'
-import designImage from '../../assets/design_buzz_lightyear.jpg'
+import defaultImage from '../../assets/default_product_image.png'
 
 const Product = (props) => {
 
@@ -14,16 +14,27 @@ const Product = (props) => {
         }
     }
 
+    function modifyImagePath(pathImage) {
+        let imagePath = defaultImage;
+
+        if (pathImage) {
+            imagePath = '../../../public/images/' + pathImage;
+        }
+
+        return imagePath;
+    }
+    const imageRoute = modifyImagePath(pathImage);
+
     return (
         <div className='product' onClick={onButtonClick}>
 
             <div className='product-image'>
-                <img src={pathImage} />
+                <img src={imageRoute || defaultImage} />
             </div>
 
             <div className='product-description'>
                 <p className='name'>{name}</p>
-                <p className='price'>{price}</p>
+                <p className='price'>{price}€</p>
             </div>
 
         </div>

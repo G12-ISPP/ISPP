@@ -85,10 +85,19 @@ def upload_image(request):
 
 # Create your views here.
 class ProductsView(viewsets.ModelViewSet):
-    serializer_class = ProductSerializer
-    queryset = Product.objects.all()
+  serializer_class = ProductSerializer
 
-    @action(detail=True, methods=['get'])
-    def get_product_data(self, request, pk=None):
-        product = self.get_object()
-        serializer = self.get_serializer(product)
+  def get_queryset(self):
+    queryset = Product.objects.all()
+    type_filter = self.request.query_params.get('product_type')
+    if type_filter:
+      queryset = queryset.filter(product_type=type_filter)
+    return queryset
+
+
+  @action(detail=True, methods=['get'])
+  def get_product_data(self, request, pk=None):
+      product = self.get_object()
+      serializer = self.get_serializer(product)
+      return Response(serializer.data, status=status.HTTP_200_OK)
+
