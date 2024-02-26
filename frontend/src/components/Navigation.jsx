@@ -16,6 +16,7 @@ export function Navigation() {
       <Link to="/login">Iniciar sesión</Link>
       {isLoggedIn && <button onClick={handleLogout}>Cerrar sesión</button>}
       <Link to="/register">Registrarse</Link>
+      <Link to="/products/add-product">Add product</Link>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { RegisterFormPage } from "./pages/RegisterFormPage.jsx";
 import { LoginFormPage } from "./pages/LoginFormPage.jsx"; 
 import  ProductDetail  from "./components/Product";
 import CustomDesign from "./components/CustomDesign.jsx";
+import AddProduct from "./components/AddProduct.jsx";
 import { Navigation } from "./components/Navigation";
 import Header from "./components/Header/Header.jsx";
 import Navbar from "./components/Navbar/Navbar.jsx";
@@ -36,6 +37,7 @@ function App() {
         <Route path="/register" element={<RegisterFormPage />} /> 
         <Route path="/login" element={<LoginFormPage />} /> 
         <Route path="/user-details/:id" element={<UserDetail />} />
+        <Route path="/products/add-product" element={<AddProduct/>} />
       </Routes>
 
       <Navigation />
