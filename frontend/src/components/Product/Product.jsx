@@ -10,7 +10,7 @@ const Product = (props) => {
         if (!pathDetails) {
             window.location.href = '/';
         } else {
-            window.location.href = pathDetails;
+            window.location.href = '/product-details/' + pathDetails;
         }
     }
 

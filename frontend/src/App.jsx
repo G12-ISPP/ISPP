@@ -17,6 +17,7 @@ import CustonDesignCancelled from "./components/CustomDesignCancelled.jsx";
 import UserDetail from "./components/User";
 import MainPage from "./pages/MainPage.jsx";
 import Footer from "./components/Footer/Footer.jsx";
+import Logout from "./components/Logout.jsx";
 
 
 function App() {
@@ -38,9 +39,8 @@ function App() {
         <Route path="/login" element={<LoginFormPage />} /> 
         <Route path="/user-details/:id" element={<UserDetail />} />
         <Route path="/products/add-product" element={<AddProduct/>} />
+        <Route path="/logout" element={<Logout />} />
       </Routes>
-
-      <Navigation />
 
       <Footer />
 

@@ -2,6 +2,7 @@ import React from 'react'
 import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsGrid/ProductsGrid'
 import Text, { TEXT_TYPES } from '../components/Text/Text'
 import Artist from '../components/Artist/Artist'
+import Button, { BUTTON_TYPES } from '../components/Button/Button'
 
 const MainPage = () => {
 
@@ -11,6 +12,7 @@ const MainPage = () => {
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='¡Explora la innovación en 3D!' />
                 <Text type={TEXT_TYPES.TITLE_NORMAL} text='Encuentra diseños, impresoras y materiales de alta calidad.' />
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='¡Haz tus ideas realidad!' />
+                <Button type={BUTTON_TYPES.LARGE} text='Solicitar impresión' path='/designs/my-design'  />
             </div>
 
             <div className="section-title">

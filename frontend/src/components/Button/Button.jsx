@@ -3,17 +3,17 @@ import './Button.css'
 
 const Button = (props) => {
 
-  const { type, text, pathDetails } = props
+  const { type, text, path } = props
 
   const getButtonClass = () => {
     return type.toLowerCase() + '-btn button';
   }
 
   const onButtonClick = () => {
-    if (!pathDetails) {
+    if (!path) {
         window.location.href = '/';
     } else {
-        window.location.href = pathDetails;
+        window.location.href = path;
     }
   }
 
