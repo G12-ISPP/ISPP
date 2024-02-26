@@ -37,7 +37,7 @@ class ProductDetail extends React.Component {
       <>
     <h1 className='title'>Detalles de producto</h1>
     <div className='main'>
-        <img className="img" src={'/images/' + product.imageRoute} alt={product.name} />
+        <img className="img" src={product.imageRoute ? '/images/' + product.imageRoute : product.image_url } alt={product.name} />
       <div className="summary">
         <div>
           <h2 className="title-detalle">{product.name}</h2>
