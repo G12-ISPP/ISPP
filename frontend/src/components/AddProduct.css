@@ -28,17 +28,7 @@
     margin-top:  50px;
   }
   
-  .form input[type="text"],
-  .form input[type="number"],
-  .form textarea {
-    width:   100%;
-    padding:   10px;
-    border:   2px solid #004040;
-    border-radius:   5px;
-    font-size:   16px;
-    background-color: #fff;
-    transition: border-color   0.3s ease;
-  }
+  
 
   .add-product-button {
     display: block;
@@ -61,4 +51,6 @@
     background-repeat: no-repeat;
     background-position: right  0.7em center;
     background-size:  0.65em auto,  100%;
+    background: #D9D9D9;
+    color: #004040;
   }

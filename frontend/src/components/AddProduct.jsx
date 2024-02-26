@@ -133,23 +133,23 @@ class Product extends Component {
                 Foto
               </label>
               <div className='file-select'>
-                <input type='file' id='file' name='file' accept='image/*' onChange={this.handleFileChange} />
+                <input type='file' id='file' name='file' className='form-input' accept='image/*' onChange={this.handleFileChange} />
                 {errors.file && <div className="error">{errors.file}</div>}
               </div>
             </div>
             <div className='form-group'>
               <label className='name'>Nombre</label>
-              <input type='text' id='name' name='name' value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} placeholder="Cerdito rosa"/>
+              <input type='text' id='name' name='name' className='form-input' value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} placeholder="Cerdito rosa"/>
               {errors.name && <div className="error">{errors.name}</div>}
             </div>
             <div className='form-group'>
               <label className='description'>Descripción</label>
-              <textarea id='description' name='description' value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Pieza de un cerdo con dimensiones de 20x12 cm, perfecto estado"/>
+              <textarea id='description' name='description' className='form-input' value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Pieza de un cerdo con dimensiones de 20x12 cm, perfecto estado"/>
               {errors.description && <div className="error">{errors.description}</div>}
             </div>
             <div className='form-group'>
               <label className='price'>Precio</label>
-              <input type='text' id='price' name='price' value={this.state.price} onChange={(e) => this.setState({ price: e.target.value })} placeholder="5.99"/>
+              <input type='text' id='price' name='price' className='form-input' value={this.state.price} onChange={(e) => this.setState({ price: e.target.value })} placeholder="5.99"/>
               {errors.price && <div className="error">{errors.price}</div>}
             </div>
             <div className='form-group'>
@@ -166,7 +166,7 @@ class Product extends Component {
             {this.state.productType !== 'D' && (
                 <div className='form-group'>
                     <label className='stock-quantity'>Cantidad</label>
-                    <input type='number' id='stock-quantity' name='stock-quantity' value={this.state.stockQuantity} onChange={(e) => this.setState({ stockQuantity: e.target.value })} placeholder="2"/>
+                    <input type='number' id='stock-quantity' name='stock-quantity' className='form-input' value={this.state.stockQuantity} onChange={(e) => this.setState({ stockQuantity: e.target.value })} placeholder="2"/>
                     {errors.stockQuantity && <div className="error">{errors.stockQuantity}</div>}
                 </div>
             )}
