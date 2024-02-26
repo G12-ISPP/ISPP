@@ -2,7 +2,7 @@ import React from 'react'
 import './Artist.css'
 import filledStar from '../../assets/bxs-star.svg'
 import emptyStar from '../../assets/bx-star.svg'
-import profilePic from '../../assets/design_buzz_lightyear.jpg'
+import defaultImage from '../../assets/default_artist_image.png'
 
 const Artist = (props) => {
 
@@ -16,11 +16,22 @@ const Artist = (props) => {
         }
     }
 
+    function modifyImagePath(pathImage) {
+        let imagePath = defaultImage;
+
+        if (pathImage) {
+            imagePath = '../../../public/images/' + pathImage;
+        }
+
+        return imagePath;
+    }
+    const imageRoute = modifyImagePath(pathImage);
+
     return (
         <div className='artist' onClick={onButtonClick}>
             
             <div className='artist-image'>
-                <img src={pathImage} className='image'/>
+                <img src={pathImage || defaultImage} className='image'/>
             </div>
 
             <div className='artist-description'>
