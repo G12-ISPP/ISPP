@@ -23,8 +23,8 @@ const Header = () => {
 
             <div className="button-wrapper">
                 <img src={cartIcon} className='cart-icon' onClick={() => onButtonClick('/')} />
-                <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/designs/my-design' />
-                <Button type={BUTTON_TYPES.HEADER} text='Vender' path='/designs/my-design' />
+                <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' pathDetails='/designs/my-design' />
+                <Button type={BUTTON_TYPES.HEADER} text='Vender' pathDetails='/designs/my-design' />
             </div>
 
         </div>

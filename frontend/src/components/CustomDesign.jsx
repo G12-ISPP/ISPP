@@ -289,38 +289,38 @@ export default class CustomModel extends React.Component {
             <div className='form-group'>
               <label htmlFor="file" className='upload'> Sube tu diseño:</label>
               <div className='file-select'>
-                <input type='file' id='file' name='file' accept='.stl' onChange={this.handleFileChange} />
+                <input type='file' id='file' name='file' className='form-input' accept='.stl' onChange={this.handleFileChange} />
               </div>
             </div>
             <div className='form-group'>
               <label className='name'>Nombre:</label>
-              <input type='text' id='name' name='name' onChange={this.handleName} />
+              <input type='text' id='name' name='name' className='form-input' onChange={this.handleName} />
             </div>
             <div className='form-group'>
               <label className='quantity'>Cantidad:</label>
-              <input type='number' id='quantity' name='quantity' min={1} max={100} onChange={this.handleQuantity} value={this.state.quantity} onKeyDown={this.handleKeyDown} />
+              <input type='number' id='quantity' name='quantity' className='form-input' min={1} max={100} onChange={this.handleQuantity} value={this.state.quantity} onKeyDown={this.handleKeyDown} />
             </div>
             <div className='form-group'>
               <label className='quality'>Calidad:</label>
-              <input type='button' id='low' name='quality' value='Bajo' onClick={() => this.handleQuality('Bajo')} />
-              <input type='button' id='medium' name='quality' value='Medio' onClick={() => this.handleQuality('Medio')} />
-              <input type='button' id='high' name='quality' value='Alto' onClick={() => this.handleQuality('Alto')} />
+              <input type='button' id='low' name='quality' className='form-input' value='Bajo' onClick={() => this.handleQuality('Bajo')} />
+              <input type='button' id='medium' name='quality' className='form-input' value='Medio' onClick={() => this.handleQuality('Medio')} />
+              <input type='button' id='high' name='quality' className='form-input' value='Alto' onClick={() => this.handleQuality('Alto')} />
             </div>
             <div className='form-group'>
               <label className='postal_code'>Código Postal:</label>
-              <input type='text' id='postal_code' name='postal_code' onChange={(event) => this.setState({ postal_code: event.target.value })} />
+              <input type='text' id='postal_code' name='postal_code' className='form-input' onChange={(event) => this.setState({ postal_code: event.target.value })} />
             </div>
             <div className='form-group'>
               <label className='city'>Ciudad:</label>
-              <input type='text' id='city' name='city' onChange={(event) => this.setState({ city: event.target.value })} />
+              <input type='text' id='city' name='city' className='form-input' onChange={(event) => this.setState({ city: event.target.value })} />
             </div>
             <div className='form-group'>
               <label className='address'>Dirección:</label>
-              <input type='text' id='address' name='address' onChange={(event) => this.setState({ address: event.target.value })} />
+              <input type='text' id='address' name='address' className='form-input' onChange={(event) => this.setState({ address: event.target.value })} />
             </div>
             <div className='form-group'>
               <label className='buyer_mail'>Correo electrónico:</label>
-              <input type='text' id='buyer_mail' name='buyer_mail' onChange={(event) => this.setState({ buyer_mail: event.target.value })} />
+              <input type='text' id='buyer_mail' name='buyer_mail' className='form-input' onChange={(event) => this.setState({ buyer_mail: event.target.value })} />
             </div>
           </form>
         </div>
