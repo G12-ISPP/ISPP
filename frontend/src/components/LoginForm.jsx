@@ -57,21 +57,23 @@ const LoginForm = () => {
   }
 
   return (
-    <div className='login-form'>
-      <h2>Inicio de sesión</h2>
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className='form-group'>
-          <label htmlFor='username'>Usuario:</label>
-          <input type='text' id='username' name='username' value={formData.username} onChange={handleChange} required />
+    <>
+      <h1 className='title'>Inicio de sesión</h1>
+        <div className='main'>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          <form className='form' onSubmit={handleSubmit}>
+            <div className='form-group'>
+              <label htmlFor='username'>Usuario:</label>
+              <input type='text' id='username' name='username' value={formData.username} onChange={handleChange} required />
+            </div>
+            <div className='form-group'>
+              <label htmlFor='password'>Contraseña:</label>
+              <input type='password' id='password' name='password' value={formData.password} onChange={handleChange} required />
+            </div>
+            <button class="large-btn button" type='submit'>Iniciar sesión</button>
+          </form>
         </div>
-        <div className='form-group'>
-          <label htmlFor='password'>Contraseña:</label>
-          <input type='password' id='password' name='password' value={formData.password} onChange={handleChange} required />
-        </div>
-        <button type='submit'>Iniciar sesión</button>
-      </form>
-    </div>
+    </>
   );
 }
 
