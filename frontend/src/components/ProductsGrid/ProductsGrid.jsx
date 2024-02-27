@@ -57,7 +57,7 @@ const ProductsGrid = (consts) => {
         <div className={getGridClass()}>
             {products.map(product => (
                 <div key={product.id}>
-                    <Product name={product.name} price={product.price} pathImage={product.imageRoute} pathDetails={product.id} />
+                    <Product name={product.name} price={product.price} pathImage={product.image_url ? product.image_url : product.imageRoute} pathDetails={product.id} isImageRoute={!product.image_url} />
                 </div>
             ))}
         </div>
