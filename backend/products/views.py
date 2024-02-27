@@ -59,13 +59,9 @@ def add_product(request):
                 name=name,
                 description=description,
                 stock_quantity=stock_quantity,
-                seller=request.user 
+                seller=request.user,
+                image=image 
             )
-            product.save()
-
-            image = request.FILES.get('file')
-            image_name = f'{product.id}.jpg'  # Generar el nombre de la imagen basado en el ID del producto
-            product.imageRoute = image_name
             product.save()
 
             return JsonResponse({'message': 'Producto añadido correctamente'}, status=201)
@@ -95,6 +91,10 @@ class ProductsView(viewsets.ModelViewSet):
     if type_filter:
       queryset = queryset.filter(product_type=type_filter)
     return queryset
+  
+  def get_serializer_context(self):
+        """Asegura que la request esté disponible en el contexto del serializador."""
+        return {'request': self.request}
 
 
   @action(detail=True, methods=['get'])
