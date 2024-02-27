@@ -1,6 +1,7 @@
 import React from 'react';
 import './RegisterForm.css';
 import Text, { TEXT_TYPES } from '../Text/Text';
+import Button, { BUTTON_TYPES } from '../Button/Button';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -124,7 +125,7 @@ class RegisterForm extends React.Component {
                 ¿Eres impresor?
               </label>
             </div>
-            <button className='large-btn button' type='submit'>Registrarse</button>
+            <Button type={BUTTON_TYPES.LARGE} text='Registrarse' action='submit' />
           </form>
         </div>
       </div>

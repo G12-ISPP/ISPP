@@ -3,14 +3,14 @@ import './Button.css'
 
 const Button = (props) => {
 
-  const { type, text, path } = props
+  const { type, text, path, action } = props
 
   const getButtonClass = () => {
     return type.toLowerCase() + '-btn button';
   }
 
   const onButtonClick = () => {
-    if (!path) {
+    if (!path && !action) {
         window.location.href = '/';
     } else {
         window.location.href = path;
@@ -18,9 +18,9 @@ const Button = (props) => {
   }
 
   return (
-    <div className={getButtonClass()} onClick={onButtonClick}>
+    <button className={getButtonClass()} onClick={action || onButtonClick} type={action}>
       <p className='btn-text'>{text}</p>
-    </div>
+    </button>
   )
 }
 

@@ -7,8 +7,8 @@ class CustomUser(AbstractUser):
     address = models.CharField(max_length=255)
     postal_code = models.IntegerField(
         validators=[    
-            MaxValueValidator(99999),
-            MinValueValidator(10000)
+            MaxValueValidator(52999),
+            MinValueValidator(1000)
         ]
     )
     city = models.CharField(max_length=50)
