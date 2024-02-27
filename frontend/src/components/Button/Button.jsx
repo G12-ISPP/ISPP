@@ -12,13 +12,13 @@ const Button = (props) => {
   const onButtonClick = () => {
     if (!path && !action) {
         window.location.href = '/';
-    } else {
-        window.location.href = path;
+    } else if (!action) {
+      window.location.href = path;
     }
   }
 
   return (
-    <button className={getButtonClass()} onClick={action || onButtonClick} type={action}>
+    <button className={getButtonClass()} onClick={onButtonClick} type={action}>
       <p className='btn-text'>{text}</p>
     </button>
   )
