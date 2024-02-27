@@ -4,7 +4,7 @@ import defaultImage from '../../assets/default_product_image.png'
 
 const Product = (props) => {
 
-    const { name, price, pathImage, pathDetails, isImageRoute } = props
+    const { name, price, pathImage, pathDetails } = props
 
     const onButtonClick = () => {
         if (!pathDetails) {
@@ -14,14 +14,16 @@ const Product = (props) => {
         }
     }
 
-    function modifyImagePath(pathImage, isImageRoute) {
-        if (!isImageRoute) {
-            return pathImage;
-        } else {
-            return '/images/' + pathImage;
+    function modifyImagePath(pathImage) {
+        let imagePath = defaultImage;
+
+        if (pathImage) {
+            imagePath = 'images/' + pathImage;
         }
+
+        return imagePath;
     }
-    const imageRoute = modifyImagePath(pathImage, isImageRoute);    
+    const imageRoute = modifyImagePath(pathImage);
 
     return (
         <div className='product' onClick={onButtonClick}>

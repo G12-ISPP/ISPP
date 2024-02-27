@@ -1,0 +1,10 @@
+.grid {
+    color: #004040;
+    margin: 0em 10em;
+}
+
+.main-page-gr {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
