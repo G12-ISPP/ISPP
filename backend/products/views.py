@@ -11,6 +11,7 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import status
+from django.contrib.auth.decorators import login_required
 
 ruta_backend = settings.RUTA_BACKEND
 ruta_frontend = settings.RUTA_FRONTEND
@@ -18,6 +19,7 @@ ruta_frontend = settings.RUTA_FRONTEND
 
 @api_view(['POST'])
 @csrf_exempt
+@login_required
 def add_product(request):
     if request.method == 'POST':
         product_type = request.data.get('product_type')
@@ -70,6 +72,7 @@ def add_product(request):
 
 @api_view(['POST'])
 @csrf_exempt
+@login_required
 def upload_image(request):
     if request.method == 'POST':
         image = request.FILES.get('file')

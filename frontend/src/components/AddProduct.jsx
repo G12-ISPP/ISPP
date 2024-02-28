@@ -14,12 +14,20 @@ class Product extends Component {
       stockQuantity: 1,
       productType: 'P',
       imagePreview: '../../images/design_hucha_cerdo.jpg',
-      errors: {}
+      errors: {},
     };
 
     this.handleFileChange = this.handleFileChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  componentDidMount() {
+    if (!localStorage.getItem('token')) {
+        alert('Debes iniciar sesión para subir un producto');
+        window.location.href = '/';
+    }
+  }
+  
 
   handleFileChange(event) {
     const selectedFile = event.target.files[0];
@@ -36,8 +44,12 @@ class Product extends Component {
   }
 
   validateForm() {
-    const { name, description, price, stockQuantity } = this.state;
+    const { name, description, price, stockQuantity, file, productType } = this.state;
     const errors = {};
+
+    if (!file) {
+      errors.file = 'La foto es obligatoria';
+    }
 
     if (!name.trim()) {
       errors.name = 'El nombre es obligatorio';
@@ -47,18 +59,24 @@ class Product extends Component {
       errors.description = 'La descripción es obligatoria';
     }
 
-    if (price <= 0) {
-      errors.price = 'El precio debe ser mayor que cero';
+    if (!/^\d+(\.\d{1,2})?$/.test(price)) {
+      errors.price = 'El precio debe tener el formato correcto (por ejemplo, 5.99)';
+    } else if (parseFloat(price) <= 0) {
+      errors.price = 'El precio debe ser mayor que 0';
     }
 
-    if (stockQuantity < 0) {
-      errors.stockQuantity = 'La cantidad de stock no puede ser negativa';
+    if (productType !== 'D') {
+      if (stockQuantity < 1) {
+        errors.stockQuantity = 'La cantidad de stock debe ser positiva';
+      }
+    } else {
+      this.setState({ stockQuantity: 1 });
     }
 
     this.setState({ errors });
 
     return Object.keys(errors).length === 0;
-  }
+}
 
   handleSubmit(event) {
     event.preventDefault();
@@ -112,7 +130,7 @@ class Product extends Component {
         alert('Error al enviar el formulario');
       });
     } else {
-      alert('Por favor, corrija los errores en el formulario');
+      
     }
   }
   
@@ -171,6 +189,9 @@ class Product extends Component {
                 </div>
             )}
           </form>
+          {Object.keys(errors).length > 0 && (
+            <div className="error-message">Por favor, corrija los errores en el formulario</div>
+          )}
         </div>
         <button className='add-product-button' type='button' onClick={this.handleSubmit}>Añadir Producto</button>
       </>
