@@ -67,6 +67,7 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   margin: 2em;
+  text-align: center;
 }
 
 .section-title {
@@ -79,4 +80,20 @@ button:focus-visible {
 
 .error-message {
   color: red;
+}
+
+@media screen and (max-width: 767px) {
+
+  .slogan {
+    padding: 2em 3em;
+    box-sizing: border-box;
+    margin: 0;
+    font-size: 0.8em;
+  }
+  .section-title {
+    margin: 1em 1.5em;
+    margin-top: 1em;
+    font-size: 0.8em;
+  }
+
 }

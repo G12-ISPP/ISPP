@@ -89,10 +89,30 @@
     .product {
         width: 8em;
         height: 10em;
-        border-radius: 0.5em;
     }
     .product img {
         height: 6.5em;
+        border-radius: 0.5em 0.5em 0em 0em;
+    }
+    .product-description {
+        padding: 0em 0.5em;
+    }
+    .product p {
+        font-size: 0.8em;
+    }
+    .price {
+        font-size: 0.8em;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .product {
+        width: 10em;
+        height: 12em;
+        border-radius: 0.5em;
+    }
+    .product img {
+        height: 8.75em;
         border-radius: 0.5em 0.5em 0em 0em;
     }
     .product-description {

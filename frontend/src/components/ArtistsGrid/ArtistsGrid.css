@@ -10,7 +10,7 @@
     justify-content: space-around;
 }
 
-@media (max-width:  767px) {
+@media (max-width: 767px) {
     .grid {
         overflow-x: auto; 
         white-space: nowrap;
@@ -22,8 +22,9 @@
         flex-wrap: nowrap;
         justify-content: flex-start;
         gap: 1em;
-        padding: 0em 1em;
+        padding: 0em 1.2em;
         box-sizing: border-box;
+        margin-bottom: 1.5em;
     }
     .main-page-gr > * {
         margin: 0;

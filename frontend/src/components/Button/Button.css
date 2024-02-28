@@ -88,5 +88,9 @@
         width: 10em;
         font-size: 1em;
     }
+    .large-btn {
+        width: 17em;
+        font-size: 1.1em;
+    }
     
 }
