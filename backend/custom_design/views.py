@@ -14,6 +14,8 @@ from django.http import FileResponse
 from django.http import JsonResponse
 import base64
 from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 ruta_backend = settings.RUTA_BACKEND
 ruta_frontend = settings.RUTA_FRONTEND
@@ -91,12 +93,26 @@ def create_custom_design(request):
 def confirm(request, id):
     if request.method == 'GET':
         custom_design = get_object_or_404(CustomDesign, custom_design_id=id)
-
         custom_design.payed = True
         custom_design.save()
+        send_confirmation_email(custom_design)
         return HttpResponseRedirect(ruta_frontend+'/designs/details/' + str(custom_design.custom_design_id))
     else:
         return HttpResponse('El método HTTP no es compatible.', status=405)
+
+def send_confirmation_email(cd):
+    try:
+        asunto = 'Confirmación de tu pedido en Shar3d'
+        contexto = {'cd': cd}
+        mensaje = render_to_string('confirmation_email.html', contexto)
+
+        sender_email = settings.EMAIL_HOST_USER
+        recipient_email = cd.buyer_mail
+        
+        send_mail(asunto, '', sender_email, [recipient_email], html_message=mensaje)
+    except Exception as e:
+        print(f"Error al enviar el correo: {e}")
+
 
 def cancel(request, id):
     if request.method == 'GET':
