@@ -13,6 +13,13 @@
   
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 100vh;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -66,19 +73,8 @@ button:focus-visible {
 }
 
 .blank-space {
-  margin: 8em;
+  margin: 2em;
 }
-
-/* Eliminar una vez creada lógica para artistas */
-/*===========================================================*/
-.artists-gr {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-/*================================================*/
-
-
 
 .error-message {
   color: red;

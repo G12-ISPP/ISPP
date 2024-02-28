@@ -144,10 +144,13 @@ const Header = ({
 						)}
 					</div>
 				</div>
-				{!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login' />}
-				{!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />}
-				{isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Cerrar sesión' path='logout' />}
-				{isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Vender' path='/products/add-product' />}
+				<div className="button-wrapper">
+          <img src={cartIcon} className='cart-icon' onClick={() => onButtonClick('/')} />
+          {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login' />}
+          {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />}
+          {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Cerrar sesión' path='/logout' />}
+          {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Vender' path='/products/add-product' />}
+        </div>
 
 			</div>
 

@@ -15,5 +15,5 @@ class Product(models.Model):
     show = models.BooleanField(default=True)
     stock_quantity = models.IntegerField(default=0)
     seller = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE)
-    # The images are stored in the fronted /public folder
     imageRoute = models.CharField(max_length=100, default='')
+    image = models.ImageField(upload_to='products/')
