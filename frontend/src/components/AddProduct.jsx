@@ -19,6 +19,7 @@ class Product extends Component {
 
     this.handleFileChange = this.handleFileChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.validateForm = this.validateForm.bind(this);
   }
 
   componentDidMount() {
@@ -27,7 +28,6 @@ class Product extends Component {
         window.location.href = '/';
     }
   }
-  
 
   handleFileChange(event) {
     const selectedFile = event.target.files[0];
@@ -46,41 +46,45 @@ class Product extends Component {
   validateForm() {
     const { name, description, price, stockQuantity, file, productType } = this.state;
     const errors = {};
-
+  
     if (!file) {
       errors.file = 'La foto es obligatoria';
     }
-
+  
     if (!name.trim()) {
       errors.name = 'El nombre es obligatorio';
     }
-
+  
     if (!description.trim()) {
       errors.description = 'La descripción es obligatoria';
     }
-
+  
     if (!/^\d+(\.\d{1,2})?$/.test(price)) {
       errors.price = 'El precio debe tener el formato correcto (por ejemplo, 5.99)';
-    } else if (parseFloat(price) <= 0) {
-      errors.price = 'El precio debe ser mayor que 0';
+    } else if (parseFloat(price) <= 0 || parseFloat(price) >= 1000000) {
+      errors.price = 'El precio debe estar entre 0 y 1,000,000';
     }
-
+  
     if (productType !== 'D') {
-      if (stockQuantity < 1) {
-        errors.stockQuantity = 'La cantidad de stock debe ser positiva';
+      const stockQuantityValue = parseInt(stockQuantity);
+      if (isNaN(stockQuantityValue) || stockQuantityValue < 1 || stockQuantityValue > 100 || Number(stockQuantity) !== stockQuantityValue) {
+        errors.stockQuantity = 'La cantidad debe ser un número entero entre 1 y 100';
       }
     } else {
-      this.setState({ stockQuantity: 1 });
+      const stockQuantityValue = parseInt(stockQuantity);
+      if (isNaN(stockQuantityValue) || stockQuantityValue !== 1) {
+        errors.stockQuantity = 'Para un diseño, solo puedes enviar una cantidad de 1';
+      }
     }
-
+  
     this.setState({ errors });
-
+  
     return Object.keys(errors).length === 0;
-}
-
+  }
+  
   handleSubmit(event) {
     event.preventDefault();
-       
+
     if (this.validateForm()) {
       const formData = new FormData();
       formData.append('file', this.state.file);
@@ -130,11 +134,9 @@ class Product extends Component {
         alert('Error al enviar el formulario');
       });
     } else {
-      
+      return;
     }
   }
-  
-  
 
   render() {
     const { errors } = this.state;
@@ -184,7 +186,7 @@ class Product extends Component {
             {this.state.productType !== 'D' && (
                 <div className='form-group'>
                     <label className='stock-quantity'>Cantidad</label>
-                    <input type='number' id='stock-quantity' name='stock-quantity' className='form-input' value={this.state.stockQuantity} onChange={(e) => this.setState({ stockQuantity: e.target.value })} placeholder="2"/>
+                    <input type='number' id='stock-quantity' name='stock-quantity' className='form-input' value={this.state.stockQuantity}  min={1} max={100} onChange={(e) => this.setState({ stockQuantity: e.target.value })} placeholder="2"/>
                     {errors.stockQuantity && <div className="error">{errors.stockQuantity}</div>}
                 </div>
             )}

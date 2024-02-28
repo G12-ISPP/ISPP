@@ -40,16 +40,16 @@ def add_product(request):
         # Validar el precio
         try:
             price = float(price)
-            if price <= 0:
-                return JsonResponse({'error': 'El precio debe ser mayor que cero'}, status=400)
+            if not (0 < price < 1000000):
+                return JsonResponse({'error': 'El precio debe estar entre 0 y 1,000,000'}, status=400)
         except ValueError:
             return JsonResponse({'error': 'El precio debe ser un número válido'}, status=400)
 
         # Validar la cantidad de stock
         try:
             stock_quantity = int(stock_quantity)
-            if stock_quantity < 0:
-                return JsonResponse({'error': 'La cantidad de stock no puede ser negativa'}, status=400)
+            if not (0 < stock_quantity <= 100):
+                return JsonResponse({'error': 'La cantidad debe estar entre 1 y 100'}, status=400)
         except ValueError:
             return JsonResponse({'error': 'La cantidad de stock debe ser un número entero válido'}, status=400)
 
