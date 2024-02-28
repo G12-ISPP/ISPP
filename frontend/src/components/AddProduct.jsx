@@ -31,15 +31,27 @@ class Product extends Component {
 
   handleFileChange(event) {
     const selectedFile = event.target.files[0];
-    this.setState({ file: selectedFile });
+    const allowedExtensions = ["jpg", "jpeg", "png"];
+    const fileExtension = selectedFile ? selectedFile.name.split('.').pop().toLowerCase() : null;
+  
+    if (!selectedFile) {
+      this.setState({ file: null });
+      return;
+    }
+  
+    if (!allowedExtensions.includes(fileExtension)) {
+      this.setState({ file: null, errors: { file: 'Por favor, seleccione un archivo de imagen válido (.jpg, .jpeg, .png)' } });
+      return;
+    }
+  
+    this.setState({ file: selectedFile, errors: { file: '' } });
+  
     if (selectedFile) {
       const reader = new FileReader();
       reader.onloadend = () => {
         this.setState({ imagePreview: reader.result });
       };
       reader.readAsDataURL(selectedFile);
-    } else {
-      this.setState({ imagePreview: null });
     }
   }
 
@@ -153,7 +165,7 @@ class Product extends Component {
                 Foto
               </label>
               <div className='file-select'>
-                <input type='file' id='file' name='file' className='form-input' accept='image/*' onChange={this.handleFileChange} />
+                <input type='file' id='file' name='file' className='form-input' accept='.jpg, .jpeg, .png' onChange={this.handleFileChange} />
                 {errors.file && <div className="error">{errors.file}</div>}
               </div>
             </div>
