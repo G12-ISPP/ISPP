@@ -9,7 +9,7 @@ class ProductDetail extends React.Component {
     super(props);
     this.state = {
       product: null,
-      
+
     };
   }
 
@@ -32,27 +32,55 @@ class ProductDetail extends React.Component {
     if (!product || !user) {
       return <div>Loading...</div>;
     }
-    console.log(user)
+
+    const cart = this.props.cart;
+    const setCart = this.props.setCart;
+
+    const addProduct = product => {
+      let cartCopy = [...cart];
+
+      let existingProduct = cartCopy.find(cartProduct => cartProduct.id == product.id);
+
+      if (existingProduct) {
+        if ((product.stock_quantity - existingProduct.quantity) < 1) return
+        existingProduct.quantity += 1
+      } else {
+        cartCopy.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          imageRoute: product.imageRoute,
+          stock_quantity: product.stock_quantity,
+          quantity: 1
+        })
+      }
+
+      setCart(cartCopy)
+      localStorage.setItem('cart', JSON.stringify(cart));
+    };
+
     return (
       <>
-    <h1 className='title'>Detalles de producto</h1>
-    <div className='main'>
-        <img className="img" src={'/images/' + product.imageRoute} alt={product.name} />
-      <div className="summary">
-        <div>
-          <h2 className="title-detalle">{product.name}</h2>
-          <h3>{user.first_name} {user.last_name}</h3> 
-          <h3 className="title-detalle">Detalles:</h3>
-          <p>{product.description}</p>
-          <h3 className="title-detalle">Precio: {product.price} €</h3> 
-        </div>
-        <div className="buy">
-          <h3>Cantidad de stock: {product.stock_quantity}</h3>
-          <button className="buy-button">Comprar</button>
+        <h1 className='title'>Detalles de producto</h1>
+        <div className='main'>
+          <img className="img" src={product.imageRoute ? '/images/' + product.imageRoute : product.image_url} alt={product.name} />
+          <div className="summary">
+            <div>
+              <h2 className="title-detalle">{product.name}</h2>
+              <h3>{user.first_name} {user.last_name}</h3>
+              <h3 className="title-detalle">Detalles:</h3>
+              <p>{product.description}</p>
+              <h3 className="title-detalle">Precio: {product.price} €</h3>
+            </div>
+            <div className="buy">
+              <h3>Cantidad de stock: {product.stock_quantity}</h3>
+              <button onClick={() => addProduct(product)}>
+                Añadir al carrito
+              </button>
+            </div>
           </div>
-      </div>
-    </div>
-  
+        </div>
+
       </>
     );
   }

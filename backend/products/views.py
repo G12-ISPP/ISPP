@@ -11,6 +11,7 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import status
+from django.contrib.auth.decorators import login_required
 
 ruta_backend = settings.RUTA_BACKEND
 ruta_frontend = settings.RUTA_FRONTEND
@@ -18,6 +19,7 @@ ruta_frontend = settings.RUTA_FRONTEND
 
 @api_view(['POST'])
 @csrf_exempt
+@login_required
 def add_product(request):
     if request.method == 'POST':
         product_type = request.data.get('product_type')
@@ -38,16 +40,16 @@ def add_product(request):
         # Validar el precio
         try:
             price = float(price)
-            if price <= 0:
-                return JsonResponse({'error': 'El precio debe ser mayor que cero'}, status=400)
+            if not (0 < price < 1000000):
+                return JsonResponse({'error': 'El precio debe estar entre 0 y 1,000,000'}, status=400)
         except ValueError:
             return JsonResponse({'error': 'El precio debe ser un número válido'}, status=400)
 
         # Validar la cantidad de stock
         try:
             stock_quantity = int(stock_quantity)
-            if stock_quantity < 0:
-                return JsonResponse({'error': 'La cantidad de stock no puede ser negativa'}, status=400)
+            if not (0 < stock_quantity <= 100):
+                return JsonResponse({'error': 'La cantidad debe estar entre 1 y 100'}, status=400)
         except ValueError:
             return JsonResponse({'error': 'La cantidad de stock debe ser un número entero válido'}, status=400)
 
@@ -59,25 +61,28 @@ def add_product(request):
                 name=name,
                 description=description,
                 stock_quantity=stock_quantity,
-                seller=request.user 
+                seller=request.user,
+                image=image 
             )
-            product.save()
-
-            image = request.FILES.get('file')
-            image_name = f'{product.id}.jpg'  # Generar el nombre de la imagen basado en el ID del producto
-            product.imageRoute = image_name
             product.save()
 
             return JsonResponse({'message': 'Producto añadido correctamente'}, status=201)
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
+ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png']
+
 @api_view(['POST'])
 @csrf_exempt
+@login_required
 def upload_image(request):
     if request.method == 'POST':
         image = request.FILES.get('file')
         if image:
+            file_extension = image.name.split('.')[-1].lower()
+            if file_extension not in ALLOWED_EXTENSIONS:
+                return JsonResponse({'error': 'Formato de archivo no válido. Solo se permiten archivos JPG, JPEG y PNG'}, status=400)
+            
             fs = FileSystemStorage(location='/public')
             filename = fs.save(image.name, image)
             uploaded_file_url = fs.url(filename)
@@ -95,6 +100,10 @@ class ProductsView(viewsets.ModelViewSet):
     if type_filter:
       queryset = queryset.filter(product_type=type_filter)
     return queryset
+  
+  def get_serializer_context(self):
+        """Asegura que la request esté disponible en el contexto del serializador."""
+        return {'request': self.request}
 
 
   @action(detail=True, methods=['get'])

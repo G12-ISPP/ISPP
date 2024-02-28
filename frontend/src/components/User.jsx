@@ -33,7 +33,7 @@ class UserDetail extends React.Component {
 
                 {user.is_designer || user.is_printer ? (
                     <div>
-                        <h2 className='title'>Rol de {user.name} {user.last_name}</h2>
+                        <h2 className='title'>Rol de {user.first_name} {user.last_name}</h2>
                         <div className="summary">
                             <h3>{user.is_designer === true ? 'Diseñador ' : null}
                                 {user.is_printer === true ? ' Impresor' : null}</h3>
@@ -47,7 +47,7 @@ class UserDetail extends React.Component {
 
                     <div className="summary">
                         <div>
-                            <h2 className="title-detalle">{user.name}</h2>
+                            <h2 className="title-detalle">{user.first_name} {user.last_name}</h2>
 
                             <h3 className="title-detalle">Localización:</h3>
                             <p>{user.address}</p>

@@ -27,6 +27,7 @@
 .header-btn:hover {
     background-color: #E0EEC6;
     scale: 1.05;
+    border: #E0EEC6;
 }
 
 .medium-btn {

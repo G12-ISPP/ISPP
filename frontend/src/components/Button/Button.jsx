@@ -3,24 +3,24 @@ import './Button.css'
 
 const Button = (props) => {
 
-  const { type, text, path } = props
+  const { type, text, path, action } = props
 
   const getButtonClass = () => {
     return type.toLowerCase() + '-btn button';
   }
 
   const onButtonClick = () => {
-    if (!path) {
+    if (!path && !action) {
         window.location.href = '/';
-    } else {
-        window.location.href = path;
+    } else if (!action) {
+      window.location.href = path;
     }
   }
 
   return (
-    <div className={getButtonClass()} onClick={onButtonClick}>
+    <button className={getButtonClass()} onClick={onButtonClick} type={action}>
       <p className='btn-text'>{text}</p>
-    </div>
+    </button>
   )
 }
 

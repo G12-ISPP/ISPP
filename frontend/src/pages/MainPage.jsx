@@ -1,8 +1,8 @@
 import React from 'react'
 import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsGrid/ProductsGrid'
 import Text, { TEXT_TYPES } from '../components/Text/Text'
-import Artist from '../components/Artist/Artist'
 import Button, { BUTTON_TYPES } from '../components/Button/Button'
+import ArtistsGrid from '../components/ArtistsGrid/ArtistsGrid'
 
 const MainPage = () => {
 
@@ -18,32 +18,21 @@ const MainPage = () => {
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Diseños destacados' />
             </div>
-
             <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} elementType={ELEMENT_TYPES.DESIGN} />
 
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Mejores artistas' />
             </div>
-
-            {/* Sustituir luego por la lógica para artistas una vez se puedan hacer peticiones al backend para los usuarios */}
-            <div className="artists-gr grid">
-                <Artist name='Nombre artista' pathDetails='/' />
-                <Artist name='Nombre artista' pathDetails='/' />
-                <Artist name='Nombre artista' pathDetails='/' />
-                <Artist name='Nombre artista' pathDetails='/' />
-                <Artist name='Nombre artista' pathDetails='/' />
-            </div>
+            <ArtistsGrid gridType={GRID_TYPES.MAIN_PAGE} />
 
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Impresoras a la venta' />
             </div>
-
             <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} elementType={ELEMENT_TYPES.PRINTER} />
 
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Materiales a la venta' />
             </div>
-
             <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} elementType={ELEMENT_TYPES.MATERIAL} />
 
             <div className='blank-space' />
