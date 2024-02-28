@@ -65,3 +65,47 @@
     justify-content: space-between;
     width: 16em;
 }
+
+/* Estilos para pantallas pequeñas (menos de  768px) */
+@media (max-width:  767px) {
+    .header {
+        flex-direction: column;
+        padding:  0.25em  4%; /* Reducir el padding horizontal para pantallas más pequeñas */
+    }
+
+    .logo {
+        width:  10em; /* Reducir el tamaño del logo para pantallas más pequeñas */
+    }
+
+    .search-box {
+        width:  100%; /* Hacer que la caja de búsqueda ocupe todo el ancho disponible */
+        margin-top:  0.5em; /* Reducir el margen superior para pantallas más pequeñas */
+        margin-bottom:  0.5em; /* Reducir el margen inferior para pantallas más pequeñas */
+    }
+
+    .button-wrapper {
+        flex-direction: column; /* Cambiar la dirección del flex para que los botones se apilen verticalmente */
+        width:  100%; /* Hacer que el contenedor de botones ocupe todo el ancho disponible */
+        justify-content: center; /* Centrar los botones verticalmente */
+    }
+
+    .header-btn {
+        width:  100%; /* Hacer que los botones ocupen todo el ancho disponible */
+        margin-bottom:  0.5em; /* Añadir un margen inferior para separar los botones */
+    }
+}
+
+/* Estilos para pantallas muy pequeñas (menos de  480px) */
+@media (max-width:  479px) {
+    .logo {
+        width:  8em; /* Reducir aún más el tamaño del logo para pantallas muy pequeñas */
+    }
+
+    .search-box input {
+        font-size:  0.7em; /* Reducir el tamaño de la fuente para pantallas muy pequeñas */
+    }
+
+    .header-btn {
+        font-size:  0.7em; /* Reducir el tamaño de la fuente para pantallas muy pequeñas */
+    }
+}
