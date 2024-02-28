@@ -38,7 +38,7 @@
     width: 1.2em;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1024px) {
     .artist {
         width: 10em;
         height: 13em;
@@ -55,5 +55,22 @@
     }
     .star {
         width: 1em;
+    }
+}
+
+@media screen and (min-height: 1600px) {
+    .artist {
+        width: 35em;
+        height: 40em;
+    }
+    .image {
+        height: 35em;
+        border-radius: 50%;
+    }
+    .artist p {
+        font-size: 3em;
+    }
+    .star {
+        width: 3em;
     }
 }

@@ -14,7 +14,7 @@ const Header = () => {
 
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth > 767) {
+            if (window.innerWidth > 1024) {
                 setMenuVisible(true);
             } else {
                 setMenuVisible(false);

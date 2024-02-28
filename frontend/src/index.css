@@ -82,7 +82,7 @@ button:focus-visible {
   color: red;
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1024px) {
 
   .slogan {
     padding: 2em 3em;
@@ -96,4 +96,16 @@ button:focus-visible {
     font-size: 0.8em;
   }
 
+}
+
+@media screen and (min-height: 1600px) {
+  .slogan {
+    font-size: 2.5em;
+  }
+  .section-title {
+    font-size: 2.5em;
+  }
+  .blank-space {
+    margin: 5em;
+  }
 }

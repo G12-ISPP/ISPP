@@ -1,7 +1,6 @@
 .grid {
     color: #004040;
     margin: 0em 10em;
-    
 }
 
 .main-page-gr {
@@ -10,7 +9,8 @@
     justify-content: space-around;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
+
     .grid {
         overflow-x: auto; 
         white-space: nowrap;
@@ -30,5 +30,58 @@
         margin: 0;
         padding: 0;
         width: auto;
+    }
+
+}
+
+@media (min-width: 767px) and (max-width: 1024px) {
+    .grid::-webkit-scrollbar {
+        height: 0.25em;
+    }
+    
+    .grid::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    
+    .grid::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+    
+    .grid::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+}
+
+@media screen and (max-width: 1450px) {
+    .grid {
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 80%;
+        padding: 0;
+        margin: 0;
+        align-self: center;
+    }
+    .main-page-gr {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        gap: 1em;
+        box-sizing: border-box;
+        margin-bottom: 1.5em;
+    }
+
+    .grid::-webkit-scrollbar {
+        height: 0.5em;
+    }
+    
+    .grid::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    
+    .grid::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+    
+    .grid::-webkit-scrollbar-thumb:hover {
+        background: #555;
     }
 }

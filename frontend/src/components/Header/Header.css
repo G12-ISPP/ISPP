@@ -92,13 +92,13 @@
     transition: all 0.4s ease;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1025px) {
     .mobile-menu-icon {
         display: none;
     }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     .header {
         transition: all 0.4s ease;
     }
@@ -140,4 +140,28 @@
         width: 100%;
         justify-content: space-between;
     }
+}
+
+@media screen and (min-height: 1600px) {
+
+    .logo {
+        width: 30em;
+    }
+    .search-box {
+        max-height: 6em;
+        border-radius: 1em;
+    }
+    .search-box input {
+        font-size: 2em;
+    }
+    .search-icon {
+        width: 4em;
+    }
+    .cart-icon {
+        width: 5em;
+    }
+    .button-wrapper {
+        width: 60em;
+    }
+    
 }

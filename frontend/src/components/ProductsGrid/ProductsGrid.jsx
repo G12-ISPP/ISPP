@@ -74,6 +74,7 @@ export const GRID_TYPES = {
 
 export const ELEMENT_TYPES = {
     DESIGN: 'D',
+    IMPRESSION: 'I',
     PRINTER: 'P',
     MATERIAL: 'M',
 }
