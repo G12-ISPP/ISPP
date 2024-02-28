@@ -2,6 +2,7 @@ from rest_framework import generics, status, viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.exceptions import ErrorDetail, APIException
+from rest_framework.decorators import api_view, parser_classes
 from rest_framework import status
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
@@ -76,4 +77,3 @@ class LogoutView(APIView):
             return Response({'message': 'Logout successful'}, status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)    
-
