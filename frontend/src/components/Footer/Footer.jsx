@@ -12,7 +12,7 @@ const Footer = () => {
     }
 
     return (
-        <div className='footer'>
+        <footer className='footer'>
             <div className='footer-section'>
                 <img src={logo} className='logo-footer' onClick={() => onButtonClick('/')} />
                 <div className='social'>
@@ -42,7 +42,7 @@ const Footer = () => {
                     <a href='/'>Política de cookies</a>
                 </p>
             </div>
-        </div>
+        </footer>
     )
 }
 

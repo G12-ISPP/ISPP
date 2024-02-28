@@ -15,13 +15,17 @@ const Product = (props) => {
     }
 
     function modifyImagePath(pathImage, isImageRoute) {
+        let imagePath = defaultImage;
+
         if (!isImageRoute) {
-            return pathImage;
+            imagePath = pathImage;
         } else {
-            return '/images/' + pathImage;
+            imagePath = 'images/' + pathImage;
         }
+
+        return imagePath;
     }
-    const imageRoute = modifyImagePath(pathImage, isImageRoute);    
+    const imageRoute = modifyImagePath(pathImage, isImageRoute);
 
     return (
         <div className='product' onClick={onButtonClick}>
