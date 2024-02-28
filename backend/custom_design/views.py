@@ -4,6 +4,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from .models import CustomDesign
 from .serializer import CustomDesignSerializer
+from django.views.decorators.csrf import csrf_exempt
 import json
 from paypalrestsdk import Payment
 from django.shortcuts import redirect
@@ -12,6 +13,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.http import FileResponse
 from django.http import JsonResponse
+from users.serializer import UserSerializer
 import base64
 from django.conf import settings
 
@@ -111,3 +113,17 @@ def details(request, id):
     custom_design = get_object_or_404(CustomDesign, custom_design_id=id)
     serializer = CustomDesignSerializer(custom_design)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@csrf_exempt
+def loguedUser(request):
+    print(request.user)
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            user = request.user
+            serializer = UserSerializer(user)
+            print(user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            print("no logueado")
+            return Response({"message": "No hay usuario logueado"}, status=status.HTTP_200_OK)
