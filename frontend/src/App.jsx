@@ -42,7 +42,7 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/chat/:roomId" element={<ChatPage />} />
         <Route path="/" element={<MainPage />} />
         <Route path="/tasks" element={<TaskPage />} />
         <Route path="/tasks-create" element={<TaskFormPage />} />

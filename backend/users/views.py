@@ -1,5 +1,5 @@
 from rest_framework import generics, status, viewsets
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.exceptions import ErrorDetail, APIException
 from rest_framework.decorators import api_view, parser_classes
@@ -19,7 +19,6 @@ from django.utils.translation import gettext_lazy as _
 from functools import wraps
 from django.utils.translation import activate
 from django.conf import settings
-
 
 class UsersView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
@@ -63,10 +62,17 @@ class LoginView(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
         user = authenticate(username=username, password=password)
+        
         if user is None:
             raise APIException('Invalid username or password')
+        
         refresh = RefreshToken.for_user(user)
-        return Response({'token': str(refresh.access_token), 'message': 'Login successful'}, status=status.HTTP_200_OK)
+        
+        return Response({
+            'token': str(refresh.access_token),
+            'userId': user.id,  # Aquí devolvemos el userID
+            'message': 'Login successful'
+        }, status=status.HTTP_200_OK)
     
 class LogoutView(APIView):
     def post(self, request):
@@ -77,3 +83,4 @@ class LogoutView(APIView):
             return Response({'message': 'Logout successful'}, status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)    
+        
