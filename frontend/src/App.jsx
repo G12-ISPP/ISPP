@@ -19,6 +19,7 @@ import UserDetail from "./components/User";
 import MainPage from "./pages/MainPage.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import Cart from "./components/Cart/Cart.jsx";
+import Logout from "./components/Logout.jsx";
 
 function App() {
   const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
@@ -58,9 +59,8 @@ function App() {
           cart={cart}
           setCart={setCart}
         />} />
+        <Route path="/logout" element={<Logout />} />
       </Routes>
-
-      <Navigation />
 
       <Footer />
 
