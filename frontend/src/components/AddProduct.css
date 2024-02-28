@@ -17,6 +17,10 @@
     position: relative;
 }
 
+.error {
+  color: red;
+}
+
 @media screen and (max-width:  768px) {
   .image-preview-container {
     max-width: calc(100% -  30px);
@@ -26,9 +30,8 @@
   
   .form {
     margin-top:  50px;
+    margin-bottom: 50px;
   }
-  
-  
 
   .add-product-button {
     display: block;
@@ -53,4 +56,33 @@
     background-size:  0.65em auto,  100%;
     background: #D9D9D9;
     color: #004040;
+  }
+
+  .error-message {
+    position: absolute;
+    left:   50%;
+    transform: translateX(-50%);
+    color: red;
+    font-size:   14px;
+    bottom: -30px;
+    padding:   10px   20px; 
+    background-color: transparent; 
+    border:  2px solid red; 
+    border-radius:   5px; 
+    box-shadow:   0   2px   8px rgba(0,   0,   0,   0.2);
+}
+
+
+@media screen and (max-width:   768px) {
+    .error-message {
+        font-size:   12px;
+        bottom: -30px; /* Ajusta el espacio entre el mensaje de error y el formulario para pantallas pequeñas */
+        left:   50%; /* Ajusta la posición horizontal al centro para pantallas pequeñas */
+        transform: translateX(-50%); /* Centra el mensaje de error horizontalmente para pantallas pequeñas */
+        padding:   8px   16px; /* Ajusta el padding para pantallas pequeñas */
+    }
+}
+  
+  .main {
+    position: relative;
   }
