@@ -134,9 +134,6 @@ const Header = ({
 											<button className='button cart-btn' onClick={() => onButtonClick('/cart')}>
 												Ver detalles
 											</button>
-											<button className='button cart-btn'>
-												Compra rápida
-											</button>
 										</div>
 									</div>
 								</>

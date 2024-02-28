@@ -19,6 +19,8 @@ import UserDetail from "./components/User";
 import MainPage from "./pages/MainPage.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import Cart from "./components/Cart/Cart.jsx";
+import OrderDetails from "./components/OrderDetails.jsx";
+import OrderCancelled from "./components/OrderCancelled.jsx";
 
 
 function App() {
@@ -59,6 +61,8 @@ function App() {
           cart={cart}
           setCart={setCart}
         />} />
+        <Route path="/order/details/:id" element={<OrderDetails />} />
+        <Route path="/order/cancelled" element={<OrderCancelled />} />
       </Routes>
 
       <Navigation />
