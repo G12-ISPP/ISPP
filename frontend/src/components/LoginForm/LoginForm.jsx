@@ -48,6 +48,7 @@ const LoginForm = () => {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token); // Almacena el token en el localStorage
+        localStorage.setItem('username', formData.username)
         window.location.href = "/";
       } else {
         const data = await response.json();

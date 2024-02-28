@@ -14,12 +14,16 @@ import os
 from pathlib import Path
 import paypalrestsdk
 from dotenv import load_dotenv
+from datetime import timedelta
+
 
 
 load_dotenv()
 
 RUTA_BACKEND = os.getenv('RUTA_BACKEND')
 RUTA_FRONTEND = os.getenv('RUTA_FRONTEND')
+
+ASGI_APPLICATION = "main.routing.application"
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +41,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Ajusta a la duración deseada
+    # otras configuraciones...
+}
+
 
 # Application definition
 
@@ -52,6 +61,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'coreapi',
+    'channels',
     # Modules
     'tasks',
     'users',
@@ -72,6 +82,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'main.auth_middleware.TokenAuthMiddleware',
 ]
 
 ROOT_URLCONF = 'main.urls'
@@ -129,10 +140,6 @@ AUTH_PASSWORD_VALIDATORS = [
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'MIDDLEWARE': [
-            'main.middleware.TokenAuthMiddleware',
-            # Otras middlewares...
-        ],
         'CONFIG': {
             'hosts': [('127.0.0.1', 6379)],
         },

@@ -1,0 +1,93 @@
+
+  .window {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 500px;
+    height: 500px; /* Define un alto fijo para el contenedor */
+    overflow-y: auto; /* Habilita el desplazamiento vertical cuando el contenido excede el alto */
+    margin: auto;
+    overflow-x: hidden;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .window ul{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-left: 0px;
+    padding: 2px;
+  }
+
+  .window li {
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 5px 10px; /* Reduce el padding vertical para hacer el li más estrecho */
+    color: black;
+    display: flex; /* Habilita la disposición flex para alinear elementos internos */
+    flex-direction: column; /* Organiza el contenido en una columna */
+    max-width: 200px;
+
+  }
+  
+  .message-author {
+  font-size: 0.8em; /* Hace el texto del autor más pequeño */
+  text-align: left; /* Alinea el texto a la izquierda */
+  color: #555; /* Color suave para el nombre del autor */
+}
+
+  
+  .message-text {
+    color: black; /* Asegura que el texto del mensaje sea negro */
+    text-align: left; /* Asegura que el texto del mensaje esté alineado a la izquierda */
+  }
+  
+  .my-message, .other-message {
+    width: 90%; /* Hace que el li sea menos ancho, ajusta según necesites */
+    margin-top: 2px; /* Espaciado superior para separar los mensajes */
+  }
+  
+  .my-message {
+    margin-left: auto;
+    background-color: #dcf8c6; /* Un color de fondo para diferenciar tus mensajes */
+  }
+  
+  .other-message {
+    margin-right: auto;
+    background-color: #f0f0f0; /* Un color de fondo para los mensajes de otros usuarios */
+  }
+  
+
+
+  form {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-top: 1px solid #ccc; /* Separador entre el chat y el formulario */
+  }
+  
+  form input[type="text"] {
+    flex-grow: 1; /* Hace que el input ocupe la mayor parte del espacio */
+    margin-right: 10px; /* Espacio entre el input y el botón */
+    padding: 8px 10px;
+    border-radius: 20px; /* Bordes redondeados para el input */
+    border: 1px solid #ccc; /* Borde sutil para el input */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra interna sutil */
+  }
+  
+  form button {
+    padding: 8px 15px;
+    background-color: #004040; /* Un color de fondo vibrante para el botón */
+    color: white; /* Texto blanco para el botón */
+    border: none;
+    border-radius: 20px; /* Bordes redondeados para el botón */
+    cursor: pointer; /* Cambia el cursor a una mano cuando se pasa sobre el botón */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra externa para darle profundidad */
+  }
+  
+  form button:hover {
+    background-color: #002D2D; /* Color más oscuro al pasar el mouse para feedback */
+  }
+  

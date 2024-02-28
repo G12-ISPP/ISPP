@@ -1,5 +1,6 @@
 import React from 'react';
-import ChatComponent from '../components/ChatComponent.jsx';
+import ChatComponent from '../components/Chat/ChatComponent';
+
 
 export const ChatPage = () => {
   // Asume que tienes el ID de la sala disponible. Aquí usamos '1' como ejemplo.

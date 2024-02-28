@@ -1,14 +1,13 @@
-import json
-from channels.generic.websocket import AsyncWebsocketConsumer
-from asgiref.sync import sync_to_async
-
+from channels.db import database_sync_to_async
 from chat.models import ChatRoom, Message
-
+from channels.generic.websocket import AsyncWebsocketConsumer
+import json
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'chat_%s' % self.room_name
+        self.room_id = self.scope['url_route']['kwargs']['room_id']
+        # Usa self.room_id para formar el nombre del grupo
+        self.room_group_name = 'chat_%s' % self.room_id
 
         # Unirse a un grupo de chat
         await self.channel_layer.group_add(
@@ -32,13 +31,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user = self.scope["user"]
         author_name = user.username if not user.is_anonymous else "Anónimo"
 
-        room_id = int(self.scope['url_route']['kwargs']['room_name'])
-        room = await sync_to_async(ChatRoom.objects.get)(id=room_id)
-
+        # Ya tienes room_id, no necesitas obtenerlo de nuevo
+        room = await database_sync_to_async(ChatRoom.objects.get)(id=self.room_id)
 
         # Asume que el usuario anónimo no puede guardar mensajes en la base de datos
         if not user.is_anonymous:
-            await sync_to_async(Message.objects.create)(
+            await database_sync_to_async(Message.objects.create)(
                 room=room,
                 author=user,
                 content=message
@@ -54,9 +52,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             }
         )
 
-
-
-    # Recibir mensaje del grupo
     # Recibir mensaje del grupo
     async def chat_message(self, event):
         message = event['message']
@@ -67,4 +62,3 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'message': message,
             'author': author  # Envía el nombre de usuario al cliente
         }))
-

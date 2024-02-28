@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import './ChatComponent.css'
+
+
 
 export const ChatComponent = ({ roomId }) => {
   const [messages, setMessages] = useState([]);
@@ -33,7 +36,7 @@ export const ChatComponent = ({ roomId }) => {
 
     // Asumiendo que tu WebSocket también requiere autenticación
     // y que puedes enviar el token como parte de la URL o de alguna otra manera.
-    websocket.current = new WebSocket(`ws://localhost:8000/ws/chat/${roomId}/?token=${localStorage.getItem('token')}`);
+    websocket.current = new WebSocket(`ws://localhost:8000/ws/chat/${roomId}?token=${localStorage.getItem('token')}`);
 
     websocket.current.onmessage = (e) => {
       const data = JSON.parse(e.data);
@@ -64,11 +67,18 @@ export const ChatComponent = ({ roomId }) => {
   return (
     <div>
       <h2>Chat Room: {roomId}</h2>
+      
+      <div className='window'>
       <ul>
         {messages.map((message, index) => (
-          <li key={index}><strong>{message.author}:</strong> {message.text}</li>
+          <li key={index} className={message.author === localStorage.getItem('username') ? 'my-message' : 'other-message'}>
+            <div className="message-author"><strong>{message.author}</strong></div>
+            <div className="message-text">{message.text}</div>
+          </li>
         ))}
       </ul>
+
+    </div>
       <form onSubmit={sendMessage}>
         <input
           type="text"

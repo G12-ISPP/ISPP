@@ -7,6 +7,7 @@ from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.urls import path
 from .consumers import ChatConsumer
+from .auth_middleware import TokenAuthMiddleware
 
 
 
@@ -14,9 +15,9 @@ django_asgi_app = get_asgi_application()
 
 application = ProtocolTypeRouter({
   "http": django_asgi_app,
-  "websocket": AuthMiddlewareStack(
+  "websocket": TokenAuthMiddleware(  
       URLRouter([
-          path("ws/chat/<str:room_name>/", ChatConsumer.as_asgi()),
+          path("ws/chat/<int:room_id>", ChatConsumer.as_asgi()),  
       ])
   ),
 })
