@@ -65,7 +65,7 @@ const Cart = ({
     setErrors({});
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(buyer_mail)) {
+    if (!emailRegex.test(buyerEmail)) {
       errors.buyerEmail = 'El correo electrónico no es válido';
       setErrors(errors);
     }    
@@ -115,6 +115,7 @@ const Cart = ({
         // Obtener la URL de pago de PayPal desde los datos de respuesta
         const paypalPaymentUrl = responseData.paypal_payment_url; 
         // Redirigir a la URL de pago de PayPal
+        setCart([]);
         window.location.href = paypalPaymentUrl;
       } else {
         // Si la respuesta no es satisfactoria, mostrar un mensaje de error
