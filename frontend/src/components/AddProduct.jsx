@@ -44,7 +44,7 @@ class Product extends Component {
       return;
     }
   
-    this.setState({ file: selectedFile, errors: { file: '' } });
+    this.setState({ file: selectedFile});
   
     if (selectedFile) {
       const reader = new FileReader();
