@@ -16,6 +16,7 @@ const Header = ({
 		localStorage.removeItem('token');
 		setIsLoggedIn(null);
 		alert('Deslogueo exitoso!!');
+		window.location.href = '/';
 	};
 
 	const [active, setActive] = useState(false);
