@@ -66,46 +66,78 @@
     width: 16em;
 }
 
-/* Estilos para pantallas pequeñas (menos de  768px) */
-@media (max-width:  767px) {
-    .header {
-        flex-direction: column;
-        padding:  0.25em  4%; /* Reducir el padding horizontal para pantallas más pequeñas */
-    }
+.mobile-menu-icon {
+    width: 2.5em;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-    .logo {
-        width:  10em; /* Reducir el tamaño del logo para pantallas más pequeñas */
-    }
+.logo-responsive {
+    display: none;
+}
 
-    .search-box {
-        width:  100%; /* Hacer que la caja de búsqueda ocupe todo el ancho disponible */
-        margin-top:  0.5em; /* Reducir el margen superior para pantallas más pequeñas */
-        margin-bottom:  0.5em; /* Reducir el margen inferior para pantallas más pequeñas */
-    }
+.header-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background: #004040;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3em 0em;
+    box-sizing: border-box;
+    transition: all 0.4s ease;
+}
 
-    .button-wrapper {
-        flex-direction: column; /* Cambiar la dirección del flex para que los botones se apilen verticalmente */
-        width:  100%; /* Hacer que el contenedor de botones ocupe todo el ancho disponible */
-        justify-content: center; /* Centrar los botones verticalmente */
-    }
-
-    .header-btn {
-        width:  100%; /* Hacer que los botones ocupen todo el ancho disponible */
-        margin-bottom:  0.5em; /* Añadir un margen inferior para separar los botones */
+@media (min-width: 768px) {
+    .mobile-menu-icon {
+        display: none;
     }
 }
 
-/* Estilos para pantallas muy pequeñas (menos de  480px) */
-@media (max-width:  479px) {
+@media (max-width: 767px) {
+    .header {
+        transition: all 0.4s ease;
+    }
     .logo {
-        width:  8em; /* Reducir aún más el tamaño del logo para pantallas muy pequeñas */
+        width: 12em;
     }
-
+    .mobile-menu-icon {
+        display: block;
+    }
+    .search-box {
+        width: 85%;
+        max-height: 3em;
+    }
     .search-box input {
-        font-size:  0.7em; /* Reducir el tamaño de la fuente para pantallas muy pequeñas */
+        font-size: 1em;
     }
-
-    .header-btn {
-        font-size:  0.7em; /* Reducir el tamaño de la fuente para pantallas muy pequeñas */
+    .search-icon {
+        width: 2em;
+    }
+    .button-wrapper {
+        flex-direction: column;
+        gap: 1em;
+        margin-top: 1.5em;
+    }
+    .cart-icon {
+        width: 2.5em;
+    }
+    .logo-container-fullscreen {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        padding: 0em 2em;
+        box-sizing: border-box;
+        flex-direction: row;
+    }
+    .logo-container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
     }
 }

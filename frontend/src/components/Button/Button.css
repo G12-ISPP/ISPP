@@ -81,3 +81,12 @@
     background-color: #E0EEC6;
     scale: 1.05;
 }
+
+@media screen and (max-width: 767px) {
+
+    .header-btn {
+        width: 10em;
+        font-size: 1em;
+    }
+    
+}
