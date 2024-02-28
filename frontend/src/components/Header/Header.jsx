@@ -28,16 +28,12 @@ const Header = ({
 		setCart(results);
 	};
 
-	const cleanCart = () => {
-		setCart([]);
-	};
-
 	const onButtonClick = (path) => {
 		window.location.href = path;
 	};
 
 	const totalPrice = () => {
-		return cart.reduce((total, product) => total + parseFloat(product.price), 0);
+		return cart.reduce((total, product) => total + (parseFloat(product.price)*parseFloat(product.quantity)), 0);
 	}
 
 	const cartTotal = () => {
@@ -56,7 +52,8 @@ const Header = ({
 				<div className='container-icon'>
 					<div
 						className='container-cart-icon'
-						onClick={() => setActive(!active)}
+						onClick={() => onButtonClick('/cart')}
+						onMouseEnter={() => setActive(true)}
 					>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
@@ -79,6 +76,8 @@ const Header = ({
 					</div>
 
 					<div
+					onMouseEnter={() => setActive(true)}
+						onMouseLeave={() => setActive(false)}
 						className={`container-cart-products ${active ? '' : 'hidden-cart'
 							}`}
 					>
@@ -130,13 +129,14 @@ const Header = ({
 								</div>
 								
 								<div className='buy'>
-									<button className='buy-button' onClick={cleanCart}>
-										Vaciar Carrito
-									</button>
-
-									<button className='buy-button'>
-										Completar compra
-									</button>
+									<div className="button-container">
+										<button className='button cart-btn' onClick={() => onButtonClick('/cart')}>
+											Ver detalles
+										</button>
+										<button className='button cart-btn'>
+											Compra rápida
+										</button>
+									</div>
 								</div>
 							</>
 						) : (

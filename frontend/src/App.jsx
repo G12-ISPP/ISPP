@@ -18,6 +18,7 @@ import CustonDesignCancelled from "./components/CustomDesignCancelled.jsx";
 import UserDetail from "./components/User";
 import MainPage from "./pages/MainPage.jsx";
 import Footer from "./components/Footer/Footer.jsx";
+import Cart from "./components/Cart/Cart.jsx";
 
 
 function App() {
@@ -28,14 +29,14 @@ function App() {
     localStorage.setItem("cart", JSON.stringify(cart))
   }, [cart])
 
-  
+
 
   return (
     <BrowserRouter>
 
       <Header
-      cart = {cart}
-      setCart = {setCart}
+        cart={cart}
+        setCart={setCart}
       />
       <Navbar />
 
@@ -44,8 +45,8 @@ function App() {
         <Route path="/tasks" element={<TaskPage />} />
         <Route path="/tasks-create" element={<TaskFormPage />} />
         <Route path="/product-details/:id" element={<ProductDetail
-          cart = {cart}
-          setCart = {setCart}
+          cart={cart}
+          setCart={setCart}
         />} />
         <Route path="/designs/my-design" element={<CustomDesign />} />
         <Route path="/designs/details/:id" element={<CustomDesignDetails />} />
@@ -54,6 +55,10 @@ function App() {
         <Route path="/login" element={<LoginFormPage />} />
         <Route path="/user-details/:id" element={<UserDetail />} />
         <Route path="/products/add-product" element={<AddProduct />} />
+        <Route path="/cart" element={<Cart
+          cart={cart}
+          setCart={setCart}
+        />} />
       </Routes>
 
       <Navigation />

@@ -38,9 +38,11 @@ class ProductDetail extends React.Component {
 
     const addProduct = product => {
       let cartCopy = [...cart];
+
       let existingProduct = cartCopy.find(cartProduct => cartProduct.id == product.id);
 
       if (existingProduct) {
+        if((product.stock_quantity - existingProduct.quantity) < 1) return
         existingProduct.quantity += 1
       } else {
         cartCopy.push({
@@ -48,6 +50,7 @@ class ProductDetail extends React.Component {
           name: product.name,
           price: product.price,
           imageRoute: product.imageRoute,
+          stock_quantity: product.stock_quantity,
           quantity: 1
         })
       }
