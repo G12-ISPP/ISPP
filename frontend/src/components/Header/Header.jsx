@@ -15,7 +15,7 @@ const Header = ({
 	const handleLogout = () => {
 		localStorage.removeItem('token');
 		setIsLoggedIn(null);
-		window.location.href = '/';
+		alert('Deslogueo exitoso!!');
 	};
 
 	const [active, setActive] = useState(false);
@@ -147,7 +147,7 @@ const Header = ({
 					</div>
 					{!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login' />}
 					{!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />}
-					{isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Cerrar sesión' path='/logout' />}
+					{isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Cerrar sesión' onClick={handleLogout} />}
 					{isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Vender' path='/products/add-product' />}
 				</div>
 			</div>

@@ -3,7 +3,7 @@ import './Button.css'
 
 const Button = (props) => {
 
-  const { type, text, path, action } = props
+  const { type, text, path, action, onClick } = props
 
   const getButtonClass = () => {
     return type.toLowerCase() + '-btn button';
@@ -18,7 +18,7 @@ const Button = (props) => {
   }
 
   return (
-    <button className={getButtonClass()} onClick={onButtonClick} type={action}>
+    <button className={getButtonClass()} onClick={onClick || onButtonClick} type={action}>
       <p className='btn-text'>{text}</p>
     </button>
   )
