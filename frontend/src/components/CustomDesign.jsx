@@ -222,12 +222,12 @@ export default class CustomModel extends React.Component {
     if (name === '' || name.length >255) {
       this.state.errors.name = 'Debes introducir un nombre de menos de 255 caracteres';
     }
-    if(quantity < 1 || quantity > 100){
+    if(quantity < 1 || quantity > 100 || quantity!=Math.round(quantity)){
       this.state.errors.quantity = 'La cantidad debe ser un número entre 1 y 100';
     }
 
-    if(typeof postal_code === 'undefined'||postal_code < 1000 || postal_code > 52999){
-      this.state.errors.postal_code = 'El código postal debe ser un número entre 1000 y 52999';
+    if(typeof postal_code === 'undefined'||postal_code < 1000 || postal_code > 52999 || postal_code===Math.round(postal_code)){
+      this.state.errors.postal_code = 'El código postal debe ser un número entero entre 1000 y 52999';
     }
 
     if(typeof city==='undefined' ||city === '' || city.length > 50){
@@ -275,6 +275,7 @@ export default class CustomModel extends React.Component {
       petition = petition.replace(/"/g, '')
       const response = await fetch(petition, {
         method: 'POST',
+        headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`},
         body: formData,
       });
 

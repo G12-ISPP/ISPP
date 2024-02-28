@@ -23,6 +23,7 @@ ruta_frontend = settings.RUTA_FRONTEND
 
 
 @api_view(['POST'])
+@csrf_exempt
 @parser_classes((MultiPartParser, FormParser))
 def create_custom_design(request):
     data_json = request.POST.get('data')
@@ -59,6 +60,11 @@ def create_custom_design(request):
                 buyer_mail=buyer_mail,
                 payed=False
             )
+
+            if request.user.is_authenticated:
+                custom_design.buyer = request.user
+                custom_design.save()
+
             paypal_payment = Payment({
                 "intent": "sale",
                 "payer": {
