@@ -64,33 +64,31 @@ const Cart = ({
 
     setErrors({});
 
+    const newErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(buyerEmail)) {
-      errors.buyerEmail = 'El correo electrónico no es válido';
-      setErrors(errors);
-    }    
-
-    if (buyerEmail.length>255){
-      errors.buyerEmail = 'El correo electrónico no puede tener más de 255 caracteres';
-      setErrors(errors);
+    if (!buyerEmail || buyerEmail === '' || buyerEmail.length > 255) {
+      newErrors.buyerEmail = 'Debes introducir un correo de menos de 255 caracteres';
+    } else if (!emailRegex.test(buyerEmail)) {
+      newErrors.buyerEmail = 'Debes introducir un correo válido';
     }
 
-    if (address.length>255){
-      errors.address = 'La dirección no puede tener más de 255 caracteres';
-      setErrors(errors);
+    if (!city || city === '' || city.length > 50) {
+      newErrors.city = 'Debes introducir una ciudad de menos de 50 caracteres';
     }
 
-    if (city.length>50){
-      errors.city = 'La ciudad no puede tener más de 50 caracteres';
-      setErrors(errors);
+    if (!address || address === '' || address.length > 255) {
+      newErrors.address = 'Debes introducir una dirección de menos de 255 caracteres';
     }
 
-    if (postalCode<1000 || postalCode>52999){
-      errors.postalCode = 'El código postal debe estar entre 1000 y 52999';
-      setErrors(errors);
+    if (postalCode < 1000 || postalCode > 52999) {
+      newErrors.postalCode = 'El código postal debe estar entre 1000 y 52999';
     }
 
-    if (Object.keys(errors).length > 0) return;
+    // Actualizar el estado de los errores si hay nuevos errores
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
     try {
       const formData = new FormData();
@@ -101,14 +99,14 @@ const Cart = ({
       formData.append('postal_code', postalCode);
       let petition = backend + '/newOrder';
       petition = petition.replace(/"/g, '');
-      
-      // Hacer la petición y esperar la respuesta
+      const token = localStorage.getItem('token');
+      const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
       const response = await fetch(petition, {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+        headers: headers,
         body: formData
       });
-  
+ 
       // Verificar si la respuesta es satisfactoria
       if (response.ok) {
         // Obtener el cuerpo de la respuesta como JSON
@@ -174,22 +172,22 @@ const Cart = ({
                 <form>
                   <div className='form-group'>
                     <label className='buyer_mail'>Correo electrónico:</label>
-                    <input type='text' id='buyer_mail' name='buyer_mail' value={buyerEmail} className='form-input' onChange={e => setBuyerEmail(e.target.value)} required />
+                    <input type='text' id='buyer_mail' name='buyer_mail' value={buyerEmail} className='form-input' onChange={e => setBuyerEmail(e.target.value)} />
                     {errors.buyerEmail && <div className='error'>{errors.buyerEmail}</div>}
                   </div>
                   <div className="form-group">
                     <label className='address'>Dirección:</label>
-                    <input type='text' id='address' name='address' value={address} className='form-input' onChange={e => setAddress(e.target.value)} required />
+                    <input type='text' id='address' name='address' value={address} className='form-input' onChange={e => setAddress(e.target.value)}  />
                     {errors.address && <div className='error'>{errors.address}</div>}
                   </div>
                   <div className="form-group">
                     <label className='city'>Ciudad:</label>
-                    <input type='text' id='city' name='city'  value={city} className='form-input' onChange={e => setCity(e.target.value)} required />
+                    <input type='text' id='city' name='city'  value={city} className='form-input' onChange={e => setCity(e.target.value)} />
                     {errors.city && <div className='error'>{errors.city}</div>}
                   </div>
                   <div className="form-group">
                     <label className='postal_code'>Código Postal:</label>
-                    <input type='number' id='postal_code' name='postal_code' min={1000} max={52999} value={postalCode} className='form-input' onChange={e => setPostalCode(e.target.value)} required />
+                    <input type='number' id='postal_code' name='postal_code' min={1000} max={52999} value={postalCode} className='form-input' onChange={e => setPostalCode(e.target.value)}/>
                     {errors.postalCode && <div className='error'>{errors.postalCode}</div>}
                   </div>
                   <button onClick={handleCheckout}>Finalizar la compra</button>
