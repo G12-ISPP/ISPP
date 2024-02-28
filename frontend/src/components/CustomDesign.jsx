@@ -99,11 +99,32 @@ export default class CustomModel extends React.Component {
       quantity: 1,
       price: 0,
       modelUrl: '/bd_a_001.STL',
-      postal_code: '',
+      postal_code: 1,
       city: '',
       address: '',
-      buyer_mail: ''
+      buyer_mail: '',
+      errors:{}
     };
+  }
+
+  async componentDidMount() {
+        
+    try {
+
+      let petition = backend + '/designs/loguedUser';
+        petition = petition.replace(/"/g, '');
+        const response = await fetch(petition, {
+          headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
+      });
+      const datos = await response.json();
+      this.state.buyer_mail = datos.email;
+      this.state.postal_code = datos.postal_code;
+      this.state.city = datos.city;
+      this.state.address = datos.address;
+        
+    } catch (error) {
+        console.log(error);
+    }
   }
 
   handleFileChange = (event) => {
@@ -171,6 +192,22 @@ export default class CustomModel extends React.Component {
     this.setState({ quantity: quantity }, this.updatePriceBasedOnQuantity);
   }
 
+  handlePostalCode = (event) => {
+    this.setState({ postal_code: event.target.value });
+  }
+
+  handleCity = (event) => {
+    this.setState({ city: event.target.value });
+  }
+
+  handleAddress = (event) => {
+    this.setState({ address: event.target.value });
+  }
+
+  handleBuyerMail = (event) => {
+    this.setState({ buyer_mail: event.target.value });
+  }
+
   handleKeyDown = (event) => {
     if (event.key === ',')
       event.preventDefault();
@@ -178,54 +215,41 @@ export default class CustomModel extends React.Component {
 
   handlePayment = async () => {
     const { file, name, volume, area, dimensions, weight, quality, quantity, price, postal_code, city, address, buyer_mail } = this.state;
-
+    this.state.errors = {};
     if (!file) {
-      alert('Debes subir un archivo');
-      return;
+      this.state.errors.file = 'Debes subir un archivo';
     }
-    if (name === '' && name.length >255) {
-      alert('Debes introducir un nombre de menos de 255 caracteres');
-      return;
+    if (name === '' || name.length >255) {
+      this.state.errors.name = 'Debes introducir un nombre de menos de 255 caracteres';
     }
-
-    if (postal_code === '' || city === '' || address === '') {
-      alert('Debes completar todos los campos de dirección');
-      return;
+    if(quantity < 1 || quantity > 100 || quantity!=Math.round(quantity)){
+      this.state.errors.quantity = 'La cantidad debe ser un número entre 1 y 100';
     }
 
-    if(postal_code.length !== 5){
-      alert('El código postal debe tener 5 dígitos');
-      return;
+    if(typeof postal_code === 'undefined'||postal_code < 1000 || postal_code > 52999 || postal_code===Math.round(postal_code)){
+      this.state.errors.postal_code = 'El código postal debe ser un número entero entre 1000 y 52999';
     }
 
-    if (buyer_mail === ''){
-      alert('Debes introducir un correo electrónico');
-      return;
+    if(typeof city==='undefined' ||city === '' || city.length > 50){
+      this.state.errors.city = 'Debes introducir una ciudad de menos de 255 caracteres';
+    }
+
+    if(typeof address==='undefined' ||address === '' || address.length > 255){
+      this.state.errors.address = 'Debes introducir una dirección de menos de 255 caracteres';
+    }
+
+    if(typeof buyer_mail === 'undefined' ||buyer_mail === '' || buyer_mail.length > 255){
+      this.state.errors.buyer_mail = 'Debes introducir un correo de menos de 255 caracteres';
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(buyer_mail)) {
-      alert('El correo electrónico ingresado no es válido');
-      return;
+      this.state.errors.buyer_mail = 'Debes introducir un correo válido';
     }
 
-    if(buyer_mail.length>255){
-      alert('El correo electrónico debe tener menos de 255 caracteres');
-      return;
-    }
+    
 
-    if(city.length> 50){
-      alert('La ciudad debe tener menos de 50 caracteres');
-      return;
-    }
-
-    if(address.length>255){
-      alert('La dirección debe tener menos de 255 caracteres');
-      return;
-    }
-
-    if(quantity >100){
-      alert('La cantidad máxima es 100');
+    if (Object.keys(this.state.errors).length > 0) {
       return;
     }
 
@@ -251,6 +275,7 @@ export default class CustomModel extends React.Component {
       petition = petition.replace(/"/g, '')
       const response = await fetch(petition, {
         method: 'POST',
+        headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`},
         body: formData,
       });
 
@@ -290,15 +315,18 @@ export default class CustomModel extends React.Component {
               <label htmlFor="file" className='upload'> Sube tu diseño:</label>
               <div className='file-select'>
                 <input type='file' id='file' name='file' className='form-input' accept='.stl' onChange={this.handleFileChange} />
+                {this.state.errors.file && <p className="error-message">{this.state.errors.file}</p>}
               </div>
             </div>
             <div className='form-group'>
               <label className='name'>Nombre:</label>
               <input type='text' id='name' name='name' className='form-input' onChange={this.handleName} />
+              {this.state.errors.name && <p className="error-message">{this.state.errors.name}</p>}
             </div>
             <div className='form-group'>
               <label className='quantity'>Cantidad:</label>
               <input type='number' id='quantity' name='quantity' className='form-input' min={1} max={100} onChange={this.handleQuantity} value={this.state.quantity} onKeyDown={this.handleKeyDown} />
+              {this.state.errors.quantity && <p className="error-message">{this.state.errors.quantity}</p>}
             </div>
             <div className='form-group'>
               <label className='quality'>Calidad:</label>
@@ -308,19 +336,23 @@ export default class CustomModel extends React.Component {
             </div>
             <div className='form-group'>
               <label className='postal_code'>Código Postal:</label>
-              <input type='text' id='postal_code' name='postal_code' className='form-input' onChange={(event) => this.setState({ postal_code: event.target.value })} />
+              <input type='number' id='postal_code' name='postal_code' className='form-input' min={1000} max={52999} value={this.state.postal_code} onChange={this.handlePostalCode} />
+              {this.state.errors.postal_code && <p className="error-message">{this.state.errors.postal_code}</p>}
             </div>
             <div className='form-group'>
               <label className='city'>Ciudad:</label>
-              <input type='text' id='city' name='city' className='form-input' onChange={(event) => this.setState({ city: event.target.value })} />
+              <input type='text' id='city' name='city' className='form-input' value={this.state.city} onChange={this.handleCity} />
+              {this.state.errors.city && <p className="error-message">{this.state.errors.city}</p>}
             </div>
             <div className='form-group'>
               <label className='address'>Dirección:</label>
-              <input type='text' id='address' name='address' className='form-input' onChange={(event) => this.setState({ address: event.target.value })} />
+              <input type='text' id='address' name='address' className='form-input' value={this.state.address} onChange={this.handleAddress} />
+              {this.state.errors.address && <p className="error-message">{this.state.errors.address}</p>}
             </div>
             <div className='form-group'>
               <label className='buyer_mail'>Correo electrónico:</label>
-              <input type='text' id='buyer_mail' name='buyer_mail' className='form-input' onChange={(event) => this.setState({ buyer_mail: event.target.value })} />
+              <input type='text' id='buyer_mail' name='buyer_mail' className='form-input' value={this.state.buyer_mail} onChange={this.handleBuyerMail} />
+              {this.state.errors.buyer_mail && <p className="error-message">{this.state.errors.buyer_mail}</p>}
             </div>
           </form>
         </div>
