@@ -105,6 +105,7 @@ const Cart = ({
       // Hacer la petición y esperar la respuesta
       const response = await fetch(petition, {
         method: 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
         body: formData
       });
   
@@ -174,22 +175,22 @@ const Cart = ({
                   <div className='form-group'>
                     <label className='buyer_mail'>Correo electrónico:</label>
                     <input type='text' id='buyer_mail' name='buyer_mail' value={buyerEmail} className='form-input' onChange={e => setBuyerEmail(e.target.value)} required />
-                    {errors.buyerEmail && <p className='error-message'>{errors.buyerEmail}</p>}
+                    {errors.buyerEmail && <div className='error'>{errors.buyerEmail}</div>}
                   </div>
                   <div className="form-group">
                     <label className='address'>Dirección:</label>
                     <input type='text' id='address' name='address' value={address} className='form-input' onChange={e => setAddress(e.target.value)} required />
-                    {errors.address && <p className='error-message'>{errors.address}</p>}
+                    {errors.address && <div className='error'>{errors.address}</div>}
                   </div>
                   <div className="form-group">
                     <label className='city'>Ciudad:</label>
                     <input type='text' id='city' name='city'  value={city} className='form-input' onChange={e => setCity(e.target.value)} required />
-                    {errors.city && <p className='error-message'>{errors.city}</p>}
+                    {errors.city && <div className='error'>{errors.city}</div>}
                   </div>
                   <div className="form-group">
                     <label className='postal_code'>Código Postal:</label>
                     <input type='number' id='postal_code' name='postal_code' min={1000} max={52999} value={postalCode} className='form-input' onChange={e => setPostalCode(e.target.value)} required />
-                    {errors.postalCode && <p className='error-message'>{errors.postalCode}</p>}
+                    {errors.postalCode && <div className='error'>{errors.postalCode}</div>}
                   </div>
                   <button onClick={handleCheckout}>Finalizar la compra</button>
                 </form>

@@ -29,8 +29,6 @@ ruta_frontend = settings.RUTA_FRONTEND
 @api_view(['POST'])
 @csrf_exempt
 def create_order(request):
-    print(request.data)
-    
     order = Order.objects.create(
         id= uuid.uuid4(),
         price = 0,
@@ -43,6 +41,8 @@ def create_order(request):
         date = datetime.now(),
         payed = False
     )
+    if request.user.is_authenticated:
+        order.buyer = request.user
     cart = json.loads(request.data['cart'])
     price = 0
     for item in cart:
