@@ -14,3 +14,8 @@ class LoginTestCase(TestCase):
         data = {'username': 'UserTest123', 'password': 'UserPass123'}
         response = self.client.post('/users/login/', data, format='json')
         self.assertEqual(response.status_code, 200)
+    
+    def test_login_diff_password(self):
+        data = {'username': 'UserTest123', 'password': 'UserPass12'}
+        response = self.client.post('/users/login/', data, format='json')
+        self.assertEqual(response.status_code, 500) 
