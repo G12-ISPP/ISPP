@@ -79,14 +79,15 @@ export const ChatComponent = ({ roomId }) => {
       </ul>
 
     </div>
-      <form onSubmit={sendMessage}>
+      <form className='f' onSubmit={sendMessage}>
         <input
+          className='fi'
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type a message..."
         />
-        <button type="submit">Send</button>
+        <button className='fb' type="submit">Send</button>
       </form>
     </div>
   );
