@@ -144,7 +144,7 @@ const Cart = ({
           {cart.map(product => (
             <div className='box' key={product.id}>
               <div className='img-container'> 
-                <img src={'/images/' + product.imageRoute} alt={product.name} />
+                <img src={product.image_url ? product.image_url : '/images/' + product.imageRoute} alt={product.name} />
               </div>
               <div className="content">
                 <div>
