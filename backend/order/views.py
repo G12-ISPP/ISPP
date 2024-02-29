@@ -53,7 +53,6 @@ def create_order(request):
             if product.product_type != 'D':
                 if product.stock_quantity < quantity:
                     return JsonResponse({'error': 'No hay suficiente stock de ' + product.name}, status=400)
-                product.stock_quantity -= quantity
                 price += 2*quantity
             OrderProduct.objects.create(order=order, product=product, quantity=quantity)
             product.save()
@@ -93,7 +92,12 @@ def create_order(request):
 def confirm_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order.payed = True
-    order.save()
+    op = OrderProduct.objects.filter(order=order)
+    for order_product in op:
+        product = order_product.product
+        if(product.product_type != 'D'):
+            product.stock_quantity -= order_product.quantity
+            product.save()
     return HttpResponseRedirect(ruta_frontend + '/order/details/' + str(order.id))
 
 def cancel_order(request, order_id):

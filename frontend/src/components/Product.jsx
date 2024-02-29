@@ -1,5 +1,6 @@
 import React from "react";
 import './Product.css'
+import Button, { BUTTON_TYPES } from './Button/Button';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -74,9 +75,7 @@ class ProductDetail extends React.Component {
             </div>
             <div className="buy">
               <h3>Cantidad de stock: {product.stock_quantity}</h3>
-              <button onClick={() => addProduct(product)}>
-                Añadir al carrito
-              </button>
+              <Button type={BUTTON_TYPES.LARGE} text='Añadir al carrito' onClick={()=> addProduct(product)} />
             </div>
           </div>
         </div>

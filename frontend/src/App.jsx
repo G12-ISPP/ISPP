@@ -64,8 +64,6 @@ function App() {
         <Route path="/order/cancelled" element={<OrderCancelled />} />
       </Routes>
 
-      <Navigation />
-
       <Footer />
 
     </BrowserRouter>

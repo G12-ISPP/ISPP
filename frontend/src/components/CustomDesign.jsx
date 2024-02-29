@@ -4,6 +4,7 @@ import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 import { Stage, PresentationControls, Html, useProgress } from '@react-three/drei';
 import { MeshStandardMaterial, Color, Vector3 } from 'three';
 import './CustomDesign.css';
+import Button, { BUTTON_TYPES } from './Button/Button';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -310,7 +311,7 @@ export default class CustomModel extends React.Component {
               </Suspense>
             </Canvas>
           </div>
-          <form className='form'>
+          <form className='form' onSubmit={this.handlePayment}>
             <div className='form-group'>
               <label htmlFor="file" className='upload'> Sube tu diseño:</label>
               <div className='file-select'>
@@ -365,7 +366,7 @@ export default class CustomModel extends React.Component {
             <h3>Calidad: {this.state.quality}</h3>
             <h3>Precio: <span>{this.state.price}€ (IVA y gastos de envío incluidos)</span></h3>
           </div>
-          <input className='buy' type='button' id='buy' name='buy' value='Pagar' onClick={this.handlePayment} />
+          <Button type={BUTTON_TYPES.LARGE} text='Pagar' onClick={this.handlePayment} />
         </div>
       </>
     );

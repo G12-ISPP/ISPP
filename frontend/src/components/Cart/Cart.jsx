@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Cart.css';
 import { FaTrash } from "react-icons/fa";
 import Text, { TEXT_TYPES } from '../Text/Text';
+import Button, { BUTTON_TYPES } from '../Button/Button';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -82,6 +83,10 @@ const Cart = ({
 
     if (postalCode < 1000 || postalCode > 52999) {
       newErrors.postalCode = 'El código postal debe estar entre 1000 y 52999';
+    }
+
+    if (cart.length === 0) {
+      newErrors.cart = 'Debes añadir al menos un producto al carrito';
     }
 
     // Actualizar el estado de los errores si hay nuevos errores
@@ -166,6 +171,7 @@ const Cart = ({
             <p><span>Total envío</span> <span></span></p>
             <hr />
             <p><span>Total</span> <span>{totalPrice() + 5} €</span></p>
+            {errors.cart && <div className='error'>{errors.cart}</div>}
             <div className='checkout-form'>
               <h2>Datos del comprador</h2>
               <div class='form'>
@@ -190,7 +196,7 @@ const Cart = ({
                     <input type='number' id='postal_code' name='postal_code' min={1000} max={52999} value={postalCode} className='form-input' onChange={e => setPostalCode(e.target.value)}/>
                     {errors.postalCode && <div className='error'>{errors.postalCode}</div>}
                   </div>
-                  <button onClick={handleCheckout}>Finalizar la compra</button>
+                  <Button type={BUTTON_TYPES.LARGE} text='Finalizar compra' onClick={handleCheckout} />
                 </form>
               </div>
             </div>
