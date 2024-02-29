@@ -20,6 +20,8 @@ import MainPage from "./pages/MainPage.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import Cart from "./components/Cart/Cart.jsx";
 import { ChatPage } from "./pages/ChatPage"
+import 'react-chat-elements/dist/main.css';
+
 
 function App() {
   const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")

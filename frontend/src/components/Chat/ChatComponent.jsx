@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './ChatComponent.css'
+import 'react-chat-elements/dist/main.css';
+import { MessageBox } from 'react-chat-elements'
+
+
 
 const ChatComponent = ({ roomId }) => {
   const [messages, setMessages] = useState([]);
@@ -32,10 +36,9 @@ const ChatComponent = ({ roomId }) => {
   // Función para enviar un nuevo mensaje
   const sendMessage = (e) => {
     const token = localStorage.getItem('token');
-    const username = localStorage.getItem('username');
     e.preventDefault();
     if (!newMessage.trim()) return;
-
+  
     const content = newMessage;
     fetch(`${backend}/chat/${roomId}/post_message/`, {
       method: 'POST',
@@ -44,18 +47,23 @@ const ChatComponent = ({ roomId }) => {
         'Content-Type': 'application/json',
       },
       credentials: 'include',
-      body: JSON.stringify({ content, username }),
+      body: JSON.stringify({ content }),
     })
     .then(response => response.json())
     .then(data => {
       console.log(data);
+      // Limpia el campo de entrada después de enviar el mensaje exitosamente
+      setNewMessage('');
       console.log("FETCHING");
-      // Llama a fetchMessages solo después de que la respuesta ha sido procesada.
-      fetchMessages();
+      // Asegúrate de llamar a fetchMessages para actualizar la lista de mensajes
+      // Considera añadir un pequeño retraso aquí si los mensajes no se actualizan como se espera
+      setTimeout(fetchMessages, 200); // Ajusta este tiempo según sea necesario
     })
-    .catch(error => console.error('Error:', error));
-
-    
+    .catch(error => {
+      console.error('Error:', error);
+      // Considera también limpiar el mensaje en caso de error si es lo que deseas
+      // setNewMessage('');
+    });
   }
 
   // Cargar mensajes cuando el componente se monta y establecer intervalo para recargar mensajes
@@ -69,17 +77,18 @@ const ChatComponent = ({ roomId }) => {
   return (
     <div>
       <div className='window'>
-        {/* {messages.map((msg, index) => (
-          <p key={index}><strong>{msg.author__username}:</strong> {msg.content}</p>
-        ))} */}
-        <ul>
-        {messages.map((message, index) => (
-          <li key={index} className={message.author__username === localStorage.getItem('username') ? 'my-message' : 'other-message'}>
-            <div className="message-author"><strong>{message.author__username}</strong></div>
-            <div className="message-text">{message.content}</div>
-          </li>
-        ))}
-      </ul>
+        {
+          messages.map((message, index) => (
+            <MessageBox
+              key={index}
+              position={message.author__username === localStorage.getItem('username') ? 'right' : 'left'} // Ajusta la posición basada en si el mensaje fue enviado o recibido
+              type="text"
+              text={message.content}
+              title={message.author__username}
+              // Para más personalización, puedes añadir aquí otras props como `date`, `avatar`, etc.
+            />
+          ))
+        }
       </div>
       <form className='f' onSubmit={sendMessage}>
         <input

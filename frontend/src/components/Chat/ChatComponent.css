@@ -1,8 +1,6 @@
 .window {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 500px;
+   
+    width: 500px;
     height: 500px; /* Define un alto fijo para el contenedor */
     overflow-y: auto; /* Habilita el desplazamiento vertical cuando el contenido excede el alto */
     margin: auto;
@@ -12,24 +10,6 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
-  .window ul{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-left: 0px;
-    padding: 2px;
-  }
-
-  .window li {
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    padding: 5px 10px; /* Reduce el padding vertical para hacer el li más estrecho */
-    color: black;
-    display: flex; /* Habilita la disposición flex para alinear elementos internos */
-    flex-direction: column; /* Organiza el contenido en una columna */
-    max-width: 200px;
-
-  }
 
   .message-author {
   font-size: 0.8em; /* Hace el texto del autor más pequeño */
@@ -89,3 +69,4 @@
   .fb:hover {
     background-color: #002D2D; /* Color más oscuro al pasar el mouse para feedback */
   }
+
