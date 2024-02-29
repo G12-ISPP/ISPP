@@ -19,3 +19,8 @@ class LoginTestCase(TestCase):
         data = {'username': 'UserTest123', 'password': 'UserPass12'}
         response = self.client.post('/users/login/', data, format='json')
         self.assertEqual(response.status_code, 500) 
+    
+    def test_login_non_existent_user(self):
+        data = {'username': 'UserTest', 'password': 'UserPass12'}
+        response = self.client.post('/users/login/', data, format='json')
+        self.assertEqual(response.status_code, 500)
