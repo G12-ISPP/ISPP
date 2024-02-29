@@ -81,3 +81,29 @@
     background-color: #E0EEC6;
     scale: 1.05;
 }
+
+@media screen and (max-width: 1024px) {
+
+    .header-btn {
+        width: 10em;
+        font-size: 1em;
+    }
+    .large-btn {
+        width: 17em;
+        font-size: 1.1em;
+    }
+    
+}
+
+@media screen and (min-height: 1600px) {
+
+    .header-btn {
+        width: 12em;
+        font-size: 2em;
+    }
+    .large-btn {
+        width: 17em;
+        font-size: 1em;
+    }
+
+}

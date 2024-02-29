@@ -21,7 +21,6 @@ import MainPage from "./pages/MainPage.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import Cart from "./components/Cart/Cart.jsx";
 
-
 function App() {
   const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
   const [cart, setCart] = useState(cartLocalStorage)
@@ -72,3 +71,4 @@ function App() {
 }
 
 export default App;
+
