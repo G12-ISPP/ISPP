@@ -331,9 +331,9 @@ export default class CustomModel extends React.Component {
             </div>
             <div className='form-group'>
               <label className='quality'>Calidad:</label>
-              <input type='button' id='low' name='quality' className='form-input' value='Bajo' onClick={() => this.handleQuality('Bajo')} />
-              <input type='button' id='medium' name='quality' className='form-input' value='Medio' onClick={() => this.handleQuality('Medio')} />
-              <input type='button' id='high' name='quality' className='form-input' value='Alto' onClick={() => this.handleQuality('Alto')} />
+              <Button type={BUTTON_TYPES.FAT} text='Bajo' onClick={() => this.handleQuality('Bajo')} />
+              <Button type={BUTTON_TYPES.FAT} text='Medio' onClick={() => this.handleQuality('Medio')} />
+              <Button type={BUTTON_TYPES.FAT} text='Alto' onClick={() => this.handleQuality('Alto')} />
             </div>
             <div className='form-group'>
               <label className='postal_code'>Código Postal:</label>
