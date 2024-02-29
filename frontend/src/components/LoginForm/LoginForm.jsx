@@ -63,7 +63,7 @@ const LoginForm = () => {
     <div className='login-container'>
       <Text type={TEXT_TYPES.TITLE_BOLD} text='Iniciar sesión' />
       <div className='form-container'>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        {errorMessage && <p className="error">{errorMessage}</p>}
         <form className='form' onSubmit={handleSubmit}>
           <div className='form-group'>
             <label htmlFor='username'>Usuario:</label>
