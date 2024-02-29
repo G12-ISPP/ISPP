@@ -21,6 +21,11 @@ const MainPage = () => {
             <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} elementType={ELEMENT_TYPES.DESIGN} />
 
             <div className="section-title">
+                <Text type={TEXT_TYPES.TITLE_BOLD} text='Piezas destacadas' />
+            </div>
+            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} elementType={ELEMENT_TYPES.IMPRESSION} />
+
+            <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Mejores artistas' />
             </div>
             <ArtistsGrid gridType={GRID_TYPES.MAIN_PAGE} />

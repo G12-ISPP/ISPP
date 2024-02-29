@@ -51,6 +51,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  font-family: inherit;
 }
 button:hover {
   border-color: #646cff;
@@ -66,6 +67,7 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   margin: 2em;
+  text-align: center;
 }
 
 .section-title {
@@ -78,4 +80,32 @@ button:focus-visible {
 
 .error-message {
   color: red;
+}
+
+@media screen and (max-width: 1024px) {
+
+  .slogan {
+    padding: 2em 3em;
+    box-sizing: border-box;
+    margin: 0;
+    font-size: 0.8em;
+  }
+  .section-title {
+    margin: 1em 1.5em;
+    margin-top: 1em;
+    font-size: 0.8em;
+  }
+
+}
+
+@media screen and (min-height: 1600px) {
+  .slogan {
+    font-size: 2.5em;
+  }
+  .section-title {
+    font-size: 2.5em;
+  }
+  .blank-space {
+    margin: 5em;
+  }
 }
