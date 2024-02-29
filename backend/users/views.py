@@ -66,5 +66,9 @@ class LoginView(APIView):
         if user is None:
             raise APIException('Invalid username or password')
         refresh = RefreshToken.for_user(user)
-        return Response({'token': str(refresh.access_token), 'message': 'Login successful'}, status=status.HTTP_200_OK)
+        return Response({
+            'token': str(refresh.access_token),
+            'userId': user.id,  # Aquí devolvemos el userID
+            'message': 'Login successful'
+        }, status=status.HTTP_200_OK)
     
