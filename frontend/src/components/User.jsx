@@ -1,5 +1,6 @@
 import React from "react";
 import './User.css'
+import Button, { BUTTON_TYPES } from './Button/Button';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -58,7 +59,7 @@ class UserDetail extends React.Component {
                             <p>{user.email}</p>
                         </div>
                         <div className="chat">
-                        <button className="buy-button">Chat</button>
+                        <Button type={BUTTON_TYPES.LARGE} text='Chat' />
                     </div>  
                     </div>
 
