@@ -24,6 +24,8 @@ class Order(models.Model):
     payment = models.CharField(max_length=1, choices=PAYMENT_CHOICES)
     date = models.DateField(auto_now_add=True)
     products = models.ManyToManyField('products.Product', through='OrderProduct')
+    payed = models.BooleanField(default=False)
+    buyer_mail = models.EmailField(max_length=254,null=False,blank=False,default='a@a.com')
 
 class OrderProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)

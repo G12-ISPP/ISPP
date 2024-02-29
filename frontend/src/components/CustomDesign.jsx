@@ -4,6 +4,7 @@ import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 import { Stage, PresentationControls, Html, useProgress } from '@react-three/drei';
 import { MeshStandardMaterial, Color, Vector3 } from 'three';
 import './CustomDesign.css';
+import Button, { BUTTON_TYPES } from './Button/Button';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -310,23 +311,23 @@ export default class CustomModel extends React.Component {
               </Suspense>
             </Canvas>
           </div>
-          <form className='form'>
+          <form className='form' onSubmit={this.handlePayment}>
             <div className='form-group'>
               <label htmlFor="file" className='upload'> Sube tu diseño:</label>
               <div className='file-select'>
                 <input type='file' id='file' name='file' className='form-input' accept='.stl' onChange={this.handleFileChange} />
-                {this.state.errors.file && <p className="error-message">{this.state.errors.file}</p>}
+                {this.state.errors.file && <div className="error">{this.state.errors.file}</div>}
               </div>
             </div>
             <div className='form-group'>
               <label className='name'>Nombre:</label>
               <input type='text' id='name' name='name' className='form-input' onChange={this.handleName} />
-              {this.state.errors.name && <p className="error-message">{this.state.errors.name}</p>}
+              {this.state.errors.name && <div className="error">{this.state.errors.name}</div>}
             </div>
             <div className='form-group'>
               <label className='quantity'>Cantidad:</label>
               <input type='number' id='quantity' name='quantity' className='form-input' min={1} max={100} onChange={this.handleQuantity} value={this.state.quantity} onKeyDown={this.handleKeyDown} />
-              {this.state.errors.quantity && <p className="error-message">{this.state.errors.quantity}</p>}
+              {this.state.errors.quantity && <div className="error">{this.state.errors.quantity}</div>}
             </div>
             <div className='form-group'>
               <label className='quality'>Calidad:</label>
@@ -337,22 +338,22 @@ export default class CustomModel extends React.Component {
             <div className='form-group'>
               <label className='postal_code'>Código Postal:</label>
               <input type='number' id='postal_code' name='postal_code' className='form-input' min={1000} max={52999} value={this.state.postal_code} onChange={this.handlePostalCode} />
-              {this.state.errors.postal_code && <p className="error-message">{this.state.errors.postal_code}</p>}
+              {this.state.errors.postal_code && <div className="error">{this.state.errors.postal_code}</div>}
             </div>
             <div className='form-group'>
               <label className='city'>Ciudad:</label>
               <input type='text' id='city' name='city' className='form-input' value={this.state.city} onChange={this.handleCity} />
-              {this.state.errors.city && <p className="error-message">{this.state.errors.city}</p>}
+              {this.state.errors.city && <div className="error">{this.state.errors.city}</div>}
             </div>
             <div className='form-group'>
               <label className='address'>Dirección:</label>
               <input type='text' id='address' name='address' className='form-input' value={this.state.address} onChange={this.handleAddress} />
-              {this.state.errors.address && <p className="error-message">{this.state.errors.address}</p>}
+              {this.state.errors.address && <div className="error">{this.state.errors.address}</div>}
             </div>
             <div className='form-group'>
               <label className='buyer_mail'>Correo electrónico:</label>
               <input type='text' id='buyer_mail' name='buyer_mail' className='form-input' value={this.state.buyer_mail} onChange={this.handleBuyerMail} />
-              {this.state.errors.buyer_mail && <p className="error-message">{this.state.errors.buyer_mail}</p>}
+              {this.state.errors.buyer_mail && <div className="error">{this.state.errors.buyer_mail}</div>}
             </div>
           </form>
         </div>
@@ -365,7 +366,7 @@ export default class CustomModel extends React.Component {
             <h3>Calidad: {this.state.quality}</h3>
             <h3>Precio: <span>{this.state.price}€ (IVA y gastos de envío incluidos)</span></h3>
           </div>
-          <input className='buy' type='button' id='buy' name='buy' value='Pagar' onClick={this.handlePayment} />
+          <Button type={BUTTON_TYPES.LARGE} text='Pagar' onClick={this.handlePayment} />
         </div>
       </>
     );
