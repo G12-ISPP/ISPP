@@ -15,8 +15,16 @@ class UsersTestCase(TestCase):
         self.assertEqual(response.status_code, 400)
         u = CustomUser.objects.filter(username='UserTest123').exists()
         self.assertFalse(u)
+
     def test_register_no_username(self):
         data = {'password': 'UserPass123', 'name': 'NameTest', 'address': 'AddressTest', 'postal_code': '06228', 'city': 'Sevilla'}
+        response = self.client.post('/users/api/v1/users/', data, format='json')
+        self.assertEqual(response.status_code, 400)
+        u = CustomUser.objects.filter(username='UserTest123').exists()
+        self.assertFalse(u)
+
+    def test_register_no_address(self):
+        data = {'username': 'UserTest123', 'password': 'UserPass123', 'name': 'NameTest', 'postal_code': '06228', 'city': 'Sevilla'}
         response = self.client.post('/users/api/v1/users/', data, format='json')
         self.assertEqual(response.status_code, 400)
         u = CustomUser.objects.filter(username='UserTest123').exists()
