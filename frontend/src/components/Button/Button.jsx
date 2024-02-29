@@ -31,4 +31,5 @@ export const BUTTON_TYPES = {
   LARGE: 'LARGE',
   MEDIUM: 'MEDIUM',
   TRANSPARENT: 'TRANSPARENT',
+  FAT: 'FAT'
 }

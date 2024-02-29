@@ -22,6 +22,8 @@ import Cart from "./components/Cart/Cart.jsx";
 import { ChatPage } from "./pages/ChatPage"
 import 'react-chat-elements/dist/main.css';
 
+import OrderDetails from "./components/OrderDetails.jsx";
+import OrderCancelled from "./components/OrderCancelled.jsx";
 
 function App() {
   const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
@@ -62,9 +64,9 @@ function App() {
           cart={cart}
           setCart={setCart}
         />} />
+        <Route path="/order/details/:id" element={<OrderDetails />} />
+        <Route path="/order/cancelled" element={<OrderCancelled />} />
       </Routes>
-
-      <Navigation />
 
       <Footer />
 
