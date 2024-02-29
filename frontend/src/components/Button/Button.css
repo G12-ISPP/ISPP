@@ -76,6 +76,7 @@
     font-size: 0.8em;
     font-weight: 700;
     transition: 0.3s;
+    background: transparent;
 }
 .transparent-btn:hover {
     background-color: #E0EEC6;
