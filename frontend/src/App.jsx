@@ -60,8 +60,6 @@ function App() {
         />} />
       </Routes>
 
-      <Navigation />
-
       <Footer />
 
     </BrowserRouter>

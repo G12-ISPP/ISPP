@@ -120,7 +120,7 @@ const Header = ({ cart,setCart }) => {
                                                 {cart.map(product => (
                                                     <div className='cart-product' key={product.id}>
                                                         <div className="info-cart-product">
-                                                            <img className="cart-img" src={'/images/' + product.imageRoute} alt={product.name} />
+                                                            <img className="cart-img" src={product.image_url ? product.image_url : '/images/' + product.imageRoute} alt={product.name} />
                                                         </div>
                                                         <div className="info-cart-product">
                                                             <div className="titulo-producto-carrito">{product.name}</div>
