@@ -31,6 +31,7 @@ const Header = ({ cart,setCart }) => {
 
 	const handleLogout = () => {
 		localStorage.removeItem('token');
+        setCart([]);
 		setIsLoggedIn(null);
 		alert('Deslogueo exitoso!!');
 		window.location.href = '/';
@@ -163,12 +164,7 @@ const Header = ({ cart,setCart }) => {
 
                                             <div className='buy'>
                                                 <div className="button-container">
-                                                    <button className='button cart-btn' onClick={() => onButtonClick('/cart')}>
-                                                        Ver detalles
-                                                    </button>
-                                                    <button className='button cart-btn'>
-                                                        Compra rápida
-                                                    </button>
+                                                    <Button type={BUTTON_TYPES.LARGE} text='Ver detalles' onClick={() => onButtonClick('/cart')} />
                                                 </div>
                                             </div>
                                         </>
@@ -181,7 +177,7 @@ const Header = ({ cart,setCart }) => {
                         )}
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login' />}
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />}
-                        {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Cerrar sesión' path='logout' />}
+                        {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Cerrar sesión' onClick={handleLogout} />}
                         {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Vender' path='/products/add-product' />}
                     </div>
                 </>
