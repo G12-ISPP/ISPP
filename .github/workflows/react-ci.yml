@@ -5,16 +5,6 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
 
-    services:
-      backend:
-        command: |
-          cd backend
-          pip install -r requirements.txt
-          python manage.py migrate
-          python manage.py runserver localhost:8000
-        ports:
-          - 8000:8000
-
     env:
       VITE_APP_BACKEND: ${{ secrets.VITE_APP_BACKEND }}
       VITE_APP_FRONTEND: ${{ secrets.VITE_APP_FRONTEND }}
@@ -32,6 +22,13 @@ jobs:
         run: |
           cd frontend/
           npm install
+
+      - name: Start Django backend in the background
+        run: |
+          cd backend/
+          pip install -r requirements.txt
+          python manage.py migrate
+          python manage.py runserver localhost:8000 &
 
       - name: Run frontend build and tests
         run: |
