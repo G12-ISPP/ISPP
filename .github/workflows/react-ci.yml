@@ -4,6 +4,11 @@ on: [push]
 jobs:
   build-test:
     runs-on: ubuntu-latest
+
+    env:
+      VITE_APP_BACKEND: ${{ secrets.VITE_APP_BACKEND }}
+      VITE_APP_FRONTEND: ${{ secrets.VITE_APP_FRONTEND }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
