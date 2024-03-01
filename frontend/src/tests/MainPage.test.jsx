@@ -8,21 +8,15 @@ import { setupServer } from 'msw/node';
 const server = setupServer(
   http.get('/products/api/v1/products', (req, res, ctx) => {
     // Check if the request has the correct query parameter
-    if (req.url.searchParams.get('product_type')) {
-      return res(
-        ctx.status(200),
-        ctx.json([
-          { id: 1, name: 'Product 1', price: 100 },
-          { id: 2, name: 'Product 2', price: 200 },
-          // Add more products here...
-        ])
-      );
-    } else {
-      return res(
-        ctx.status(400),
-        ctx.json({ message: 'Error al obtener los productos' })
-      );
-    }
+    return res(
+      ctx.status(200),
+      ctx.json([
+        { id: 1, name: 'Product 1', price: 100 },
+        { id: 2, name: 'Product 2', price: 200 },
+        // Add more products here...
+      ])
+    );
+
   })
 );
 
