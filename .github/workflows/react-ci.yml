@@ -23,13 +23,17 @@ jobs:
           cd frontend/
           npm install
 
-      - name: Run backend, frontend build and tests
+      - name: Start Django backend in the background
         run: |
           cd backend/
           pip install -r requirements.txt
           python manage.py migrate
           python manage.py runserver &
-          cd ..
+        ports:
+          - 8000:8000
+
+      - name: Run frontend build and tests
+        run: |
           cd frontend/
           npm run test
 
