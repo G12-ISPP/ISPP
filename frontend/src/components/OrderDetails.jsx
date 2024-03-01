@@ -72,7 +72,7 @@ export default class CustomModelDetails extends React.Component{
                             <hr />
                             {data && <p><span>Correo electrónico:</span> <span>{data.buyer ? data.buyer : data.buyer_mail}</span></p>}
                             {data && <p><span>Ciudad:</span> <span>{data.city}</span></p>}
-                            {data && <p><span>Código Postal::</span> <span>{data.postal_code}</span></p>}
+                            {data && <p><span>Código Postal:</span> <span>{data.postal_code.toString().padStart(5, "0")}</span></p>}
                             {data && <p><span>Dirección:</span> <span>{data.address}</span></p>}
                         </div>
                         
