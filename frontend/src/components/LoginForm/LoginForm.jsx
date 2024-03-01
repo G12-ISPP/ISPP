@@ -63,7 +63,7 @@ const LoginForm = () => {
     <div className='login-container'>
       <Text type={TEXT_TYPES.TITLE_BOLD} text='Iniciar sesión' />
       <div className='form-container'>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        {errorMessage && <p className="error">{errorMessage}</p>}
         <form className='form' onSubmit={handleSubmit}>
           <div className='form-group'>
             <label htmlFor='username'>Usuario:</label>
@@ -73,7 +73,7 @@ const LoginForm = () => {
             <label htmlFor='password'>Contraseña:</label>
             <input type='password' id='password' name='password' className='form-input' value={formData.password} onChange={handleChange} required />
           </div>
-          <button className="large-btn button" type='submit'>Iniciar sesión</button>
+          <Button type={BUTTON_TYPES.LARGE} text='Iniciar sesión' action='submit' />
         </form>
       </div>
     </div>

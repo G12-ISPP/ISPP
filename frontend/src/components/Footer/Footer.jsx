@@ -12,7 +12,7 @@ const Footer = () => {
     }
 
     return (
-        <div className='footer'>
+        <footer className='footer'>
             <div className='footer-section'>
                 <img src={logo} className='logo-footer' onClick={() => onButtonClick('/')} />
                 <div className='social'>
@@ -24,10 +24,10 @@ const Footer = () => {
             <div className='footer-section'>
                 <p className='footer-section-title'>El equipo de SHAR3D</p>
                 <p className='footer-section-element'>
-                    <a href='/'>Sobre nosotros</a>
+                    <a href='https://landing-page-shar3d.vercel.app/'>Sobre nosotros</a>
                 </p>
                 <p className='footer-section-element'>
-                    <a href='/'>Contacto</a>
+                    <a href='https://landing-page-shar3d.vercel.app/#contact'>Contacto</a>
                 </p>
             </div>
             <div className='footer-section'>
@@ -42,7 +42,7 @@ const Footer = () => {
                     <a href='/'>Política de cookies</a>
                 </p>
             </div>
-        </div>
+        </footer>
     )
 }
 

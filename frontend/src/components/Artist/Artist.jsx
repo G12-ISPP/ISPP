@@ -6,13 +6,13 @@ import defaultImage from '../../assets/default_artist_image.png'
 
 const Artist = (props) => {
 
-    const { name, pathImage, pathDetails } = props
+    const { username, pathImage, pathDetails } = props
 
     const onButtonClick = () => {
         if (!pathDetails) {
             window.location.href = '/';
         } else {
-            window.location.href = pathDetails;
+            window.location.href = 'user-details/' + pathDetails;
         }
     }
 
@@ -20,7 +20,7 @@ const Artist = (props) => {
         let imagePath = defaultImage;
 
         if (pathImage) {
-            imagePath = '../../../public/images/' + pathImage;
+            imagePath = 'images/' + pathImage;
         }
 
         return imagePath;
@@ -35,7 +35,7 @@ const Artist = (props) => {
             </div>
 
             <div className='artist-description'>
-                <p className='name'>{name}</p>
+                <p className='name'>{username}</p>
                 {/* Sustituir por la lógica de opiniones en un futuro */}
                 <div className='stars-container'>
                     <img src={filledStar} className='star' />

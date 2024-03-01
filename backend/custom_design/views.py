@@ -4,6 +4,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from .models import CustomDesign
 from .serializer import CustomDesignSerializer
+from django.views.decorators.csrf import csrf_exempt
 import json
 from paypalrestsdk import Payment
 from django.shortcuts import redirect
@@ -12,8 +13,11 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.http import FileResponse
 from django.http import JsonResponse
+from users.serializer import UserSerializer
 import base64
 from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 ruta_backend = settings.RUTA_BACKEND
 ruta_frontend = settings.RUTA_FRONTEND
@@ -21,6 +25,7 @@ ruta_frontend = settings.RUTA_FRONTEND
 
 
 @api_view(['POST'])
+@csrf_exempt
 @parser_classes((MultiPartParser, FormParser))
 def create_custom_design(request):
     data_json = request.POST.get('data')
@@ -57,6 +62,11 @@ def create_custom_design(request):
                 buyer_mail=buyer_mail,
                 payed=False
             )
+
+            if request.user.is_authenticated:
+                custom_design.buyer = request.user
+                custom_design.save()
+
             paypal_payment = Payment({
                 "intent": "sale",
                 "payer": {
@@ -91,12 +101,26 @@ def create_custom_design(request):
 def confirm(request, id):
     if request.method == 'GET':
         custom_design = get_object_or_404(CustomDesign, custom_design_id=id)
-
         custom_design.payed = True
         custom_design.save()
+        send_confirmation_email(custom_design)
         return HttpResponseRedirect(ruta_frontend+'/designs/details/' + str(custom_design.custom_design_id))
     else:
         return HttpResponse('El método HTTP no es compatible.', status=405)
+
+def send_confirmation_email(cd):
+    try:
+        asunto = 'Confirmación de tu pedido en Shar3d'
+        contexto = {'cd': cd}
+        mensaje = render_to_string('confirmation_email.html', contexto)
+
+        sender_email = settings.EMAIL_HOST_USER
+        recipient_email = cd.buyer_mail
+        
+        send_mail(asunto, '', sender_email, [recipient_email], html_message=mensaje)
+    except Exception as e:
+        print(f"Error al enviar el correo: {e}")
+
 
 def cancel(request, id):
     if request.method == 'GET':
@@ -111,3 +135,17 @@ def details(request, id):
     custom_design = get_object_or_404(CustomDesign, custom_design_id=id)
     serializer = CustomDesignSerializer(custom_design)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@csrf_exempt
+def loguedUser(request):
+    print(request.user)
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            user = request.user
+            serializer = UserSerializer(user)
+            print(user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            print("no logueado")
+            return Response({"message": "No hay usuario logueado"}, status=status.HTTP_200_OK)

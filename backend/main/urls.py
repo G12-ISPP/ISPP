@@ -16,6 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from order.views import create_order, confirm_order, cancel_order, order_details
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +27,8 @@ urlpatterns = [
     path('designs/', include('custom_design.urls')),
     path('users/', include('users.urls')),
     path('products/', include('products.urls')),
-]
+    path('newOrder', create_order, name='create_order'),
+    path('order/confirm/<str:order_id>', confirm_order, name='confirm_order'),
+    path('order/cancel/<str:order_id>', cancel_order, name='cancel_order'),
+    path('order/details/<uuid:order_id>', order_details, name='order_details'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
