@@ -109,6 +109,11 @@ def cancel_order(request, order_id):
 def order_details(request, order_id):
     try:
         order = Order.objects.get(id=order_id)
+        order_products = list(OrderProduct.objects.filter(order_id=order_id))
+        products = []
+        for p in order_products:
+            products.append({'id': p.product_id, 'quantity':p.quantity})
+
         order_details = {
             'id': order.id,
             'buyer': order.buyer.email if order.buyer else None,
@@ -121,7 +126,9 @@ def order_details(request, order_id):
             'date': order.date,
             'payed': order.payed,
             'buyer_mail': order.buyer_mail,
+            'products': products
         }
+
         return JsonResponse(order_details)
     except Order.DoesNotExist:
         return JsonResponse({'error': 'El pedido no existe'}, status=404)
