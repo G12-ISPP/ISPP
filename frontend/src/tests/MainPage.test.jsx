@@ -9,7 +9,6 @@ const server = setupServer(
   http.get('/products/api/v1/products', (req, res, ctx) => {
     // Check if the request has the correct query parameter
     return res(
-      ctx.status(200),
       ctx.json([
         { id: 1, name: 'Product 1', price: 100 },
         { id: 2, name: 'Product 2', price: 200 },
@@ -20,7 +19,7 @@ const server = setupServer(
   })
 );
 
-beforeAll(() => server.listen());
+beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
