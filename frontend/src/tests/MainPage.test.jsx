@@ -3,6 +3,23 @@ import { render, screen } from "@testing-library/react";
 import MainPage from '../pages/MainPage'
 import '@testing-library/jest-dom'
 
+
+// Crea una versión simulada del módulo (Mock de la llamada a la api)
+export const getAllProducts = async () => [
+  {
+    id: 1,
+    name: 'Impresora 3D',
+    price: 1000,
+    image_url: 'https://www.example.com/image.png',
+  },
+  {
+    id: 2,
+    name: 'Material 3D',
+    price: 100,
+    image_url: 'https://www.example.com/image.png',
+  },
+];
+
 test('renders MainPage without crashing', () => {
   render(<MainPage />)
 })
