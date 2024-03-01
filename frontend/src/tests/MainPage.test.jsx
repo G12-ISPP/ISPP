@@ -6,23 +6,31 @@ import { http } from 'msw';
 import { setupServer } from 'msw/node';
 
 const server = setupServer(
-  http.get('/products/api/v1/products', (req, res, ctx) => {
-    // Check if the request has the correct query parameter
+  http.get('/undefined/products/api/v1/products', (req, res, ctx) => {
     return res(
+      ctx.status(200),
       ctx.json([
         { id: 1, name: 'Product 1', price: 100 },
         { id: 2, name: 'Product 2', price: 200 },
         // Add more products here...
       ])
     );
-
+  }),
+  http.get('/undefined/users/api/v1/users', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json([
+        { id: 1, name: 'User 1' },
+        { id: 2, name: 'User 2' },
+        // Add more users here...
+      ])
+    );
   })
 );
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
-
 
 test('renders MainPage without crashing', () => {
   render(<MainPage />)
