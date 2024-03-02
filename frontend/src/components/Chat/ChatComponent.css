@@ -1,6 +1,6 @@
 .window {
    
-    width: 500px;
+    width: 700px;
     height: 500px; /* Define un alto fijo para el contenedor */
     overflow-y: auto; /* Habilita el desplazamiento vertical cuando el contenido excede el alto */
     margin: auto;
@@ -41,6 +41,8 @@
 
 
   .f {
+    bottom: 0;
+    position: sticky;
     display: flex;
     justify-content: space-between;
     padding: 10px;
@@ -70,3 +72,27 @@
     background-color: #002D2D; /* Color más oscuro al pasar el mouse para feedback */
   }
 
+
+  .back-button-container {
+    position: absolute; /* Fija el contenedor en la pantalla */
+    top: 100; /* Alinea el contenedor en la parte superior */
+    left: 0; /* Alinea el contenedor a la izquierda */
+    z-index: 1000; /* Asegura que el botón esté sobre otros elementos */
+  }
+  
+  .back-button {
+    background-color: #004040; /* Color de fondo */
+    color: #ffffff; /* Color del texto */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin: 10px; /* Agrega un poco de espacio alrededor del botón */
+  }
+  
+  .left-arrow {
+    margin-right: 5px;
+    font-size: 20px; /* Ajusta el tamaño de la flecha */
+  }

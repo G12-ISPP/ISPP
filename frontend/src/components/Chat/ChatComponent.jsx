@@ -1,20 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import './ChatComponent.css'
 import 'react-chat-elements/dist/main.css';
 import { MessageBox } from 'react-chat-elements'
+import { useNavigate } from 'react-router-dom';
 
 
 
 const ChatComponent = ({ roomId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-
   const backend = import.meta.env.VITE_APP_BACKEND;
+  let navigate = useNavigate();
+  const endOfMessagesRef = useRef(null);
+  const messagesContainerRef = useRef(null);
+
+
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  };
  
   // Función para cargar los mensajes de la sala de chat
   const fetchMessages = () => {
-    const token = localStorage.getItem('token'); // Asume que el token está almacenado en localStorage
-    fetch(`${backend}/chat/${roomId}/messages/`, {
+    const token = localStorage.getItem('token'); 
+    return fetch(`${backend}/chat/${roomId}/messages/`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -52,31 +62,39 @@ const ChatComponent = ({ roomId }) => {
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      // Limpia el campo de entrada después de enviar el mensaje exitosamente
       setNewMessage('');
       console.log("FETCHING");
-      // Asegúrate de llamar a fetchMessages para actualizar la lista de mensajes
-      // Considera añadir un pequeño retraso aquí si los mensajes no se actualizan como se espera
-      setTimeout(fetchMessages, 200); // Ajusta este tiempo según sea necesario
+      setTimeout(fetchMessages, 200); 
+      setTimeout(() => {
+        scrollToBottom();
+      }, 250); // Ajusta este tiempo si es necesario
     })
     .catch(error => {
       console.error('Error:', error);
-      // Considera también limpiar el mensaje en caso de error si es lo que deseas
-      // setNewMessage('');
-    });
+      setNewMessage('');
+    })
+    
   }
 
-  // Cargar mensajes cuando el componente se monta y establecer intervalo para recargar mensajes
   useEffect(() => {
-    fetchMessages();
-    const intervalId = setInterval(fetchMessages, 5000); // Ajustar según necesidades
-
-    return () => clearInterval(intervalId); // Limpiar intervalo al desmontar componente
-  }, [roomId]);
-
+    fetchMessages().then(() => {
+      setTimeout(() => {
+        scrollToBottom();
+      }, 250); // Ajusta este tiempo si es necesario
+    });
+    // Establece un intervalo para actualizar mensajes, si es necesario, pero sin hacer scroll
+    const intervalId = setInterval(fetchMessages, 5000);
+    return () => clearInterval(intervalId);
+  }, [roomId]); 
+  
   return (
     <div>
-      <div className='window'>
+       <div className="back-button-container">
+        <button onClick={() => navigate(-1)} className="back-button">
+          <i className="left-arrow">←</i> Volver
+        </button>
+      </div>
+      <div className='window' ref={messagesContainerRef}>
         {
           messages.map((message, index) => (
             <MessageBox
@@ -89,8 +107,7 @@ const ChatComponent = ({ roomId }) => {
             />
           ))
         }
-      </div>
-      <form className='f' onSubmit={sendMessage}>
+         <form className='f' onSubmit={sendMessage}>
         <input
           className='fi'
           type="text"
@@ -100,6 +117,7 @@ const ChatComponent = ({ roomId }) => {
         />
         <button className='fb' type="submit">Send</button>
       </form>
+      </div>
     </div>
   );
 };
