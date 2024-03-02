@@ -1,5 +1,6 @@
 .window {
-   
+    scrollbar-width: thin; /* "auto" o "thin" */
+    scrollbar-color: #888 #f1f1f1; /* [thumb] [track] */
     width: 700px;
     height: 500px; /* Define un alto fijo para el contenedor */
     overflow-y: auto; /* Habilita el desplazamiento vertical cuando el contenido excede el alto */
@@ -8,6 +9,8 @@
     border: 1px solid #ccc;
     border-radius: 15px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 
 
@@ -96,3 +99,23 @@
     margin-right: 5px;
     font-size: 20px; /* Ajusta el tamaño de la flecha */
   }
+
+  /* Estiliza el scrollbar completo */
+.window::-webkit-scrollbar {
+  width: 8px; /* Controla el ancho del scrollbar */
+}
+
+/* Estiliza el fondo del track del scrollbar */
+.window::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Cambia al color de fondo deseado */
+}
+
+/* Estiliza el thumb del scrollbar (la parte que se mueve) */
+.window::-webkit-scrollbar-thumb {
+  background: #888; /* Cambia al color deseado */
+}
+
+/* Cambia el color del thumb al pasar el mouse */
+.window::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Cambia al color deseado */
+}
