@@ -16,10 +16,10 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "VITE_APP_BACKEND=${{ secrets.VITE_APP_BACKEND }}" >> /frontend/.env
-          echo "VITE_APP_FRONTEND=${{ secrets.VITE_APP_FRONTEND }}" >> /frontend/.env
-          echo "RUTA_BACKEND=${{ secrets.RUTA_BACKEND }}" >> /backend/.env
-          echo "RUTA_FRONTEND=${{ secrets.RUTA_FRONTEND }}" >> /backend/.env
+          echo "VITE_APP_BACKEND=${{ secrets.VITE_APP_BACKEND }}" >> ./frontend/.env
+          echo "VITE_APP_FRONTEND=${{ secrets.VITE_APP_FRONTEND }}" >> ./frontend/.env
+          echo "RUTA_BACKEND=${{ secrets.RUTA_BACKEND }}" >> ./backend/.env
+          echo "RUTA_FRONTEND=${{ secrets.RUTA_FRONTEND }}" >> ./backend/.env
 
       - name: Install frontend dependencies
         run: |

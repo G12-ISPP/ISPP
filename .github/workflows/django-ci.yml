@@ -17,8 +17,8 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "RUTA_BACKEND=${{ secrets.RUTA_BACKEND }}" >> /backend/.env
-          echo "RUTA_FRONTEND=${{ secrets.RUTA_FRONTEND }}" >> /backend/.env
+          echo "RUTA_BACKEND=${{ secrets.RUTA_BACKEND }}" >> ./backend/.env
+          echo "RUTA_FRONTEND=${{ secrets.RUTA_FRONTEND }}" >> ./backend/.env
 
       - name: Install Dependencies
         run: |
