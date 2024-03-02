@@ -111,4 +111,3 @@ class ProductsView(viewsets.ModelViewSet):
       product = self.get_object()
       serializer = self.get_serializer(product)
       return Response(serializer.data, status=status.HTTP_200_OK)
-

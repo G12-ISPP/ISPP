@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import create_custom_design, confirm, cancel,details
+from .views import create_custom_design, confirm, cancel,details, loguedUser
 from django.conf import settings
 from django.conf.urls.static import static  
 
@@ -8,4 +8,5 @@ urlpatterns = [
     path('confirm/<int:id>', confirm, name='confirm'),
     path('cancel/<int:id>', cancel, name='cancel'),
     path('details/<int:id>', details, name='details'),
+    path('loguedUser', loguedUser, name='loguedUser')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

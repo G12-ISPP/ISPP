@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmación de pedido en Shar3d</title>
+</head>
+<body>
+    <header>
+        <h1>Confirmación de tu pedido en Shar3d</h1>
+    </header>
+
+    <p>Buenas {{ cd.name }},</p>
+    <p>Tu pedido ha sido realizado con éxito.</p>
+
+    <p>Información del pedido:</p>
+    <ul>
+        <li>Cantidad: {{ cd.quantity }}</li>
+        <li>Calidad: {{ cd.quality }}</li>
+        <li>Área: {{ cd.area }}</li>
+        <li>Volumen: {{ cd.volume }}</li>
+        <li>Precio: {{ cd.price }}</li>
+    </ul>
+
+    <p>Información del envío:</p>
+    <ul>
+        <li>Dirección: {{ cd.address }}</li>
+        <li>CP: {{ cd.postal_code }}</li>
+        <li>Ciudad: {{ cd.city }}</li>
+        <li>Fecha de compra: {{ cd.date }}</li>
+    </ul>
+</body>
+</html>

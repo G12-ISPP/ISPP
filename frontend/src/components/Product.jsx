@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './Product.css'
+import Button, { BUTTON_TYPES } from './Button/Button';
+import Text, { TEXT_TYPES } from "./Text/Text";
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -61,22 +63,24 @@ class ProductDetail extends React.Component {
 
     return (
       <>
-        <h1 className='title'>Detalles de producto</h1>
-        <div className='main'>
-          <img className="img" src={product.imageRoute ? '/images/' + product.imageRoute : product.image_url} alt={product.name} />
-          <div className="summary">
+        <div className="section-title-container">
+          <Text type={TEXT_TYPES.TITLE_BOLD} text='Detalles del producto' />
+        </div>
+        <div className='product-container'>
+          <div className='product-img-container'>
+            <img id="podruct-img" className="img" src={product.imageRoute ? '/images/' + product.imageRoute : product.image_url} alt={product.name} />
+          </div>
+          <div className="product-summary">
             <div>
-              <h2 className="title-detalle">{product.name}</h2>
+              <h2 className="product-detail-label">{product.name}</h2>
               <h3>{user.first_name} {user.last_name}</h3>
-              <h3 className="title-detalle">Detalles:</h3>
+              <h3 className="product-detail-label">Detalles:</h3>
               <p>{product.description}</p>
-              <h3 className="title-detalle">Precio: {product.price} €</h3>
+              <h3 className="product-detail-label">Precio: {product.price} €</h3>
             </div>
-            <div className="buy">
+            <div className="buy-container">
               <h3>Cantidad de stock: {product.stock_quantity}</h3>
-              <button onClick={() => addProduct(product)}>
-                Añadir al carrito
-              </button>
+              <Button type={BUTTON_TYPES.LARGE} text='Añadir al carrito' onClick={() => addProduct(product)} />
             </div>
           </div>
         </div>
