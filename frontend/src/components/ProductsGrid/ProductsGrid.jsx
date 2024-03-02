@@ -41,7 +41,7 @@ const ProductsGrid = (consts) => {
 
         async function loadProducts() {
             const res = await getAllProducts(elementType);
-
+            console.log(res);
             {/*Adaptar código cuando se añada funcionalidad de destacados*/}
             if (gridType === GRID_TYPES.MAIN_PAGE) {
                 setProducts(res.slice(0, 5));
