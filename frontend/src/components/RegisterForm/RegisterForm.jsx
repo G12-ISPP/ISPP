@@ -95,35 +95,27 @@ class RegisterForm extends React.Component {
             <form className='register-form' onSubmit={this.handleSubmit}>
               <div className='register-form-group'>
                 <input type='text' id='username' name='username' className='form-input' placeholder='Nombre de usuario' value={this.state.username} onChange={this.handleChange} required />
-                {errors.username && <p className="error-message">{errors.username[0]}</p>}
               </div>
               <div className='register-form-group'>
                 <input type='email' id='email' name='email' className='form-input' placeholder='Correo electrónico' value={this.state.email} onChange={this.handleChange} required />
-                {errors.email && <p className="error-message">{errors.email[0]}</p>}
               </div>
               <div className='register-form-group'>
                 <input type='password' id='password' name='password' className='form-input' placeholder='Contraseña' value={this.state.password} onChange={this.handleChange} required />
-                {errors.password && <p className="error-message">{errors.password[0]}</p>}
               </div>
               <div className='register-form-group'>
                 <input type='text' id='first_name' name='first_name' className='form-input' placeholder='Nombre' value={this.state.first_name} onChange={this.handleChange} required />
-                {errors.first_name && <p className="error-message">{errors.first_name[0]}</p>}
               </div>
               <div className='register-form-group'>
                 <input type='text' id='last_name' name='last_name' className='form-input' placeholder='Apellidos' value={this.state.last_name} onChange={this.handleChange} required />
-                {errors.last_name && <p className="error-message">{errors.last_name[0]}</p>}
               </div>
               <div className='register-form-group'>
                 <input type='text' id='address' name='address' className='form-input' placeholder='Dirección' value={this.state.address} onChange={this.handleChange} required />
-                {errors.address && <p className="error-message">{errors.address[0]}</p>}
               </div>
               <div className='register-form-group'>
                 <input type='text' id='postal_code' name='postal_code' className='form-input' placeholder='Código postal' value={this.state.postal_code} onChange={this.handleChange} required />
-                {errors.postal_code && <p className="error-message">{errors.postal_code[0]}</p>}
               </div>
               <div className='register-form-group'>
                 <input type='text' id='city' name='city' className='form-input' placeholder='Ciudad' value={this.state.city} onChange={this.handleChange} required />
-                {errors.city && <p className="error-message">{errors.city[0]}</p>}
               </div>
               <div className="role-selector">
                 <label htmlFor='is_designer' className='checkbox-label'>
@@ -134,6 +126,16 @@ class RegisterForm extends React.Component {
                   <input type='checkbox' id='is_printer' name='is_printer' checked={this.state.is_printer} onChange={this.handleChange} />
                   ¿Eres impresor?
                 </label>
+              </div>
+              <div className="error-messages-container">
+                {errors.username && <p className="register-error-message">{'Nombre de usuario: ' + errors.username[0]}</p>}
+                {errors.email && <p className="register-error-message">{'Email: ' + errors.email[0]}</p>}
+                {errors.password && <p className="register-error-message">{'Contraseña: ' + errors.password[0]}</p>}
+                {errors.first_name && <p className="register-error-message">{'Nombre: ' + errors.first_name[0]}</p>}
+                {errors.last_name && <p className="register-error-message">{'Apellidos: ' + errors.last_name[0]}</p>}
+                {errors.address && <p className="register-error-message">{'Dirección: ' + errors.address[0]}</p>}
+                {errors.postal_code && <p className="register-error-message">{'Código postal: ' + errors.postal_code[0]}</p>}
+                {errors.city && <p className="register-error-message">{'Ciudad: ' + errors.city[0]}</p>}
               </div>
               <Button type={BUTTON_TYPES.LARGE} text='Registrarse' action='submit' />
             </form>

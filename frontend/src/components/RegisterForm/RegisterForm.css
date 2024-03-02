@@ -126,6 +126,7 @@
     color: #004040;
     font-size: 0.8em;
     font-weight: normal;
+    font-family: system-ui;
     width: 100%;
 }
 .register-form-group input::placeholder {
@@ -184,6 +185,12 @@
     display: flex;
     align-items: center;
     gap: 0.2em;
+}
+
+.register-error-message {
+    color: red;
+    margin: 0;
+    font-size: 0.9em;
 }
 
 @media screen and (max-width: 1024px) {
