@@ -274,10 +274,12 @@ export default class CustomModel extends React.Component {
     try {
       let petition = backend + '/designs/my-design';
       petition = petition.replace(/"/g, '')
+      const token = localStorage.getItem('token');
+      const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
       const response = await fetch(petition, {
         method: 'POST',
-        headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`},
-        body: formData,
+        headers: headers,
+        body: formData
       });
 
       if (response.ok) {
@@ -311,7 +313,7 @@ export default class CustomModel extends React.Component {
               </Suspense>
             </Canvas>
           </div>
-          <form className='form' onSubmit={this.handlePayment}>
+          <form className='form'>
             <div className='form-group'>
               <label htmlFor="file" className='upload'> Sube tu diseño:</label>
               <div className='file-select'>
@@ -331,9 +333,9 @@ export default class CustomModel extends React.Component {
             </div>
             <div className='form-group'>
               <label className='quality'>Calidad:</label>
-              <Button type={BUTTON_TYPES.FAT} text='Bajo' onClick={() => this.handleQuality('Bajo')} />
-              <Button type={BUTTON_TYPES.FAT} text='Medio' onClick={() => this.handleQuality('Medio')} />
-              <Button type={BUTTON_TYPES.FAT} text='Alto' onClick={() => this.handleQuality('Alto')} />
+              <input type='button' id='low' name='quality'  className='fat-btn' value='Bajo' onClick={() => this.handleQuality('Bajo')} />
+              <input type='button' id='medium' name='quality' className='fat-btn' value='Medio' onClick={() => this.handleQuality('Medio')} />
+              <input type='button' id='high' name='quality' className='fat-btn' value='Alto' onClick={() => this.handleQuality('Alto')} />
             </div>
             <div className='form-group'>
               <label className='postal_code'>Código Postal:</label>
