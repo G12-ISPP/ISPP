@@ -54,9 +54,9 @@ test('contains expected texts', () => {
 
 function mockFetch(object) {
     vi.spyOn(window, 'fetch').mockImplementationOnce(() => {
-        return Promise.resolve({
+        return ({
             ok: true,
-            json: () => Promise.resolve(object),
+            json: () => (object),
         });
     });
 }
