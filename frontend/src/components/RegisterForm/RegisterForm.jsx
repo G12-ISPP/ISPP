@@ -76,16 +76,16 @@ class RegisterForm extends React.Component {
 
     return (
       <div className='register'>
-        <div className="brand-container">
-          <div className="back-button" onClick={() => this.onButtonClick('/')}>
-            <img src={arrow} className="arrow" />
-            <p className="back">Volver</p>
+        <div className="brand-container-register">
+          <div className="back-button-register" onClick={() => this.onButtonClick('/')}>
+            <img src={arrow} className="arrow-register" />
+            <p className="back-register">Volver</p>
           </div>
           <img src={logo} className="logo-register" onClick={() => this.onButtonClick('/')} />
-          <div className="slogans">
-            <p className="slogan-text">¡Bienvenido!</p>
-            <p className="slogan-text">Explora la innovación en 3D.</p>
-            <p className="slogan-text">Únete a nuestra comunidad.</p>
+          <div className="slogans-register">
+            <p className="slogan-text-register">¡Bienvenido!</p>
+            <p className="slogan-text-register">Explora la innovación en 3D.</p>
+            <p className="slogan-text-register">Únete a nuestra comunidad.</p>
           </div>
         </div>
         <div className='register-form-container'>
@@ -137,7 +137,7 @@ class RegisterForm extends React.Component {
                 {errors.postal_code && <p className="register-error-message">{'Código postal: ' + errors.postal_code[0]}</p>}
                 {errors.city && <p className="register-error-message">{'Ciudad: ' + errors.city[0]}</p>}
               </div>
-              <Button type={BUTTON_TYPES.LARGE} text='Registrarse' action='submit' />
+              <Button type={BUTTON_TYPES.AUTHENTICATION} text='Registrarse' action='submit' />
             </form>
           </div>
         </div>
