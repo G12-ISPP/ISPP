@@ -23,7 +23,7 @@ jobs:
         run: |
           python backend/manage.py makemigrations
           python backend/manage.py migrate
-          python backend/manage.py loaddaata backend/population/01_Users.json backend/population/02_Products.json
+          python backend/manage.py loaddata backend/population/01_Users.json backend/population/02_Products.json
 
       - name: Run Tests
         run: python backend/manage.py test
