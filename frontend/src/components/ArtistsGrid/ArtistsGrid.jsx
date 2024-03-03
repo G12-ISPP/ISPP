@@ -42,11 +42,13 @@ const ArtistsGrid = (consts) => {
         async function loadArtists() {
             const res = await getAllArtists();
 
-            {/*Adaptar código cuando se añada funcionalidad de destacados*/}
-            if (gridType === GRID_TYPES.MAIN_PAGE) {
-                setArtists(res.slice(0, 5));
-            } else {
-                setArtists(res);
+            if (res && Array.isArray(res)) { // Verificar si res no es undefined y es un array
+                {/*Adaptar código cuando se añada funcionalidad de destacados*/}
+                if (gridType === GRID_TYPES.MAIN_PAGE) {
+                    setArtists(res.slice(0, 5));
+                } else {
+                    setArtists(res);
+                }
             }
         }
         loadArtists();
