@@ -58,7 +58,7 @@ export default class CustomModelDetails extends React.Component{
                 <div className="project">
                     <div className="shop">
                         {data && <>{data.products.map((p, index) => (
-                            <OrderProductResume name={data.products[index].name} price={data.products[index].price} 
+                            <OrderProductResume key={index} name={data.products[index].name} price={data.products[index].price} 
                             image_url={data.products[index].image_url} imageRoute={data.products[index].imageRoute}
                             id={data.products[index].id} quantity={data.products[index].quantity} />
                         ))}</>}
