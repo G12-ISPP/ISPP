@@ -70,26 +70,6 @@ def add_product(request):
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
-ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png']
-
-@api_view(['POST'])
-@csrf_exempt
-@login_required
-def upload_image(request):
-    if request.method == 'POST':
-        image = request.FILES.get('file')
-        if image:
-            file_extension = image.name.split('.')[-1].lower()
-            if file_extension not in ALLOWED_EXTENSIONS:
-                return JsonResponse({'error': 'Formato de archivo no válido. Solo se permiten archivos JPG, JPEG y PNG'}, status=400)
-            
-            fs = FileSystemStorage(location='/public')
-            filename = fs.save(image.name, image)
-            uploaded_file_url = fs.url(filename)
-            return JsonResponse({'image_url': uploaded_file_url})
-        return JsonResponse({'error': 'No se seleccionó ninguna imagen'}, status=400)
-    return JsonResponse({'error': 'Método no permitido'}, status=405)
-
 # Create your views here.
 class ProductsView(viewsets.ModelViewSet):
   serializer_class = ProductSerializer
