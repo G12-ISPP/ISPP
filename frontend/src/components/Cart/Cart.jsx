@@ -178,7 +178,7 @@ const Cart = ({
             {errors.cart && <div className='error'>{errors.cart}</div>}
             <div className='checkout-form'>
               <h2>Datos del comprador</h2>
-              <div class='form'>
+              <div className='form'>
                 <form>
                   <div className='form-group'>
                     <label className='buyer_mail'>Correo electrónico:</label>
