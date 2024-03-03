@@ -67,26 +67,30 @@ const Cart = ({
 
     const newErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!buyerEmail || buyerEmail === '' || buyerEmail.length > 255) {
-      newErrors.buyerEmail = 'Debes introducir un correo de menos de 255 caracteres';
-    } else if (!emailRegex.test(buyerEmail)) {
-      newErrors.buyerEmail = 'Debes introducir un correo válido';
+    if (!buyerEmail || buyerEmail === '') {
+        newErrors.buyerEmail = 'Por favor, introduce tu correo electrónico.';
+    } else if (buyerEmail.length > 255 || !emailRegex.test(buyerEmail)) {
+        newErrors.buyerEmail = 'Por favor, verifica que el correo electrónico sea válido y tenga menos de 255 caracteres.';
     }
 
-    if (!city || city === '' || city.length > 50) {
-      newErrors.city = 'Debes introducir una ciudad de menos de 50 caracteres';
+    if (!city || city === '') {
+        newErrors.city = 'Por favor, introduce el nombre de tu ciudad.';
+    } else if (city.length > 50) {
+        newErrors.city = 'La ciudad debe tener menos de 50 caracteres.';
     }
 
-    if (!address || address === '' || address.length > 255) {
-      newErrors.address = 'Debes introducir una dirección de menos de 255 caracteres';
+    if (!address || address === '') {
+        newErrors.address = 'Por favor, introduce tu dirección.';
+    }   else if (address.length > 255) {
+        newErrors.address = 'La dirección debe tener menos de 255 caracteres.';
     }
 
     if (postalCode < 1000 || postalCode > 52999) {
-      newErrors.postalCode = 'El código postal debe estar entre 1000 y 52999';
+        newErrors.postalCode = 'El código postal debe estar entre 1000 y 52999.';
     }
 
     if (cart.length === 0) {
-      newErrors.cart = 'Debes añadir al menos un producto al carrito';
+        newErrors.cart = 'Debes añadir al menos un producto al carrito.';
     }
 
     // Actualizar el estado de los errores si hay nuevos errores

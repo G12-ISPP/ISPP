@@ -21,6 +21,8 @@ from django.http import JsonResponse
 import uuid
 from .serializer import OrderSerializer
 from datetime import datetime
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 ruta_backend = settings.RUTA_BACKEND
 ruta_frontend = settings.RUTA_FRONTEND
@@ -98,7 +100,22 @@ def confirm_order(request, order_id):
         if(product.product_type != 'D'):
             product.stock_quantity -= order_product.quantity
             product.save()
+    send_order_confirmation_email(order, op)
+    
     return HttpResponseRedirect(ruta_frontend + '/order/details/' + str(order.id))
+
+def send_order_confirmation_email(order, order_products):
+    try:
+        asunto = 'Confirmación de tu pedido en Shar3d'
+        contexto = {'order': order, 'order_products': order_products}
+        mensaje = render_to_string('order_confirmation_email.html', contexto)
+
+        sender_email = settings.EMAIL_HOST_USER
+        recipient_email = order.buyer_mail
+
+        send_mail(asunto, '', sender_email, [recipient_email], html_message=mensaje)
+    except Exception as e:
+        print(f"Error al enviar el correo: {e}")
 
 def cancel_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
