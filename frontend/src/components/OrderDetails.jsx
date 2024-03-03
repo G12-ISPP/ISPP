@@ -26,7 +26,6 @@ export default class CustomModelDetails extends React.Component{
             petition = petition + id;
             const response = await fetch(petition);
             const datos = await response.json();
-            console.log(datos.buyer)
             let i = 0
             for (const p in datos.products) {
                 let petition2 = backend + '/products/api/v1/products/' + datos.products[i].id + '/get_product_data/';
