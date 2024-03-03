@@ -1,6 +1,8 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views import View
+
+from chat.serializers import ChatRoomSerializer
 from .models import ChatRoom, Message
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
@@ -73,8 +75,25 @@ def get_messages(request, room_id):
         return JsonResponse(list(messages), safe=False)
     else:
         return JsonResponse({'error': 'User is not a member of this chatroom'}, status=403)
+    
 
+@require_http_methods(["GET"])
+def get_chatroom(request, room_id):
+    token = request.headers.get('Authorization', '').split(' ')[1]
+    user = get_user_from_token(token)
+    
+    if user is None:
+        return JsonResponse({'error': 'Invalid token'}, status=401)
 
+    room = get_object_or_404(ChatRoom, id=room_id)
+    
+    if user in room.members.all():
+        room_serializer = ChatRoomSerializer(room)  # Serializa la instancia de ChatRoom
+        return JsonResponse(room_serializer.data, safe=False)  # Devuelve los datos serializados
+    else:
+        return JsonResponse({'error': 'User is not a member of this chatroom'}, status=403)
+    
+    
 class GetOrCreateChatRoom(APIView):
     def post(self, request):
         print("HOLA DESDE EL POST EN EL BACKKKKKK")

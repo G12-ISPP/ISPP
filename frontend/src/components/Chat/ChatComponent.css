@@ -1,11 +1,11 @@
 .window {
+    display: flex;
+    flex-direction: column;
     scrollbar-width: thin; /* "auto" o "thin" */
     scrollbar-color: #888 #f1f1f1; /* [thumb] [track] */
     width: 700px;
-    height: 500px; /* Define un alto fijo para el contenedor */
-    overflow-y: auto; /* Habilita el desplazamiento vertical cuando el contenido excede el alto */
+    height: 550px; /* Define un alto fijo para el contenedor */
     margin: auto;
-    overflow-x: hidden;
     border: 1px solid #ccc;
     border-radius: 15px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -118,4 +118,15 @@
 /* Cambia el color del thumb al pasar el mouse */
 .window::-webkit-scrollbar-thumb:hover {
   background: #555; /* Cambia al color deseado */
+}
+
+
+.messages-container {
+  height: 100%;
+  flex: 1; /* Hace que ocupe todo el espacio disponible */
+  overflow-y: auto; /* Permite scroll en los mensajes */
+}
+
+.title{
+  align-items: center;
 }
