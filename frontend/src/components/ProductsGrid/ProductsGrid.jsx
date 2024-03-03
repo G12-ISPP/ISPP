@@ -42,11 +42,13 @@ const ProductsGrid = (consts) => {
         async function loadProducts() {
             const res = await getAllProducts(elementType);
 
-            {/*Adaptar código cuando se añada funcionalidad de destacados*/}
-            if (gridType === GRID_TYPES.MAIN_PAGE) {
-                setProducts(res.slice(0, 5));
-            } else {
-                setProducts(res);
+            if (res && Array.isArray(res)) { // Verificar si res no es undefined y es un array
+                {/*Adaptar código cuando se añada funcionalidad de destacados*/}
+                if (gridType === GRID_TYPES.MAIN_PAGE) {
+                    setProducts(res.slice(0, 5));
+                } else {
+                    setProducts(res);
+                }
             }
         }
         loadProducts();
