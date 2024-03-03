@@ -156,7 +156,7 @@ const Cart = ({
                   <h3>Precio: {product.price}€</h3>
                 </div>
                 <div className='cart-right'>
-                  <a className='trash' onClick={() => deleteProduct(product)}>
+                  <a className='trash' href='/cart' onClick={() => deleteProduct(product)}>
                     <FaTrash />
                   </a>
                   <div className='button-container'>
@@ -178,7 +178,7 @@ const Cart = ({
             {errors.cart && <div className='error'>{errors.cart}</div>}
             <div className='checkout-form'>
               <h2>Datos del comprador</h2>
-              <div class='form'>
+              <div className='form'>
                 <form>
                   <div className='form-group'>
                     <label className='buyer_mail'>Correo electrónico:</label>

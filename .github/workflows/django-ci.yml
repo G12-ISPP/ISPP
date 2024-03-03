@@ -26,7 +26,10 @@ jobs:
           pip install -r backend/requirements.txt
 
       - name: Run Migrations
-        run: python backend/manage.py migrate
+        run: |
+          python backend/manage.py makemigrations
+          python backend/manage.py migrate
+          python backend/manage.py loaddata backend/population/01_Users.json backend/population/02_Products.json
 
       - name: Run Tests
         run: python backend/manage.py test
