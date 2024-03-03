@@ -107,8 +107,6 @@ class Product extends Component {
       formData.append('product_type', this.state.productType);
       let petition1 = backend + '/products/add-product';
       petition1 = petition1.replace(/"/g, '')
-      let petition2 = backend + '/products/upload-image';
-      petition2 = petition2.replace(/"/g, '')
       fetch(petition1, {
         method: 'POST',
         headers: {
@@ -118,23 +116,6 @@ class Product extends Component {
       })
       .then(response => {
         if (response.ok) {
-          const imageFormData = new FormData();
-          imageFormData.append('file', this.state.file);
-          return fetch(petition2, {
-            method: 'POST',
-            headers: {
-              'Authorization': 'Bearer ' + localStorage.getItem('token')
-            },
-            body: imageFormData
-          });
-        } else {
-          throw new Error('Error al añadir el producto');
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.image_url) {
-          this.setState({ imagePreview: data.image_url });
           alert('Producto añadido correctamente');
           window.location.href = '/';
         } else {
