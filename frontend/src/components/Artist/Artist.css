@@ -16,6 +16,7 @@
     width: 100%;
     height: 13.3em;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .artist-description {
@@ -35,4 +36,41 @@
 
 .star {
     width: 1.2em;
+}
+
+@media screen and (max-width: 1024px) {
+    .artist {
+        width: 10em;
+        height: 13em;
+    }
+    .image {
+        height: 10em;
+        border-radius: 50%;
+    }
+    .artist-description {
+        padding: 0em 0.5em;
+    }
+    .artist p {
+        font-size: 1em;
+    }
+    .star {
+        width: 1em;
+    }
+}
+
+@media screen and (min-height: 1600px) {
+    .artist {
+        width: 35em;
+        height: 40em;
+    }
+    .image {
+        height: 35em;
+        border-radius: 50%;
+    }
+    .artist p {
+        font-size: 3em;
+    }
+    .star {
+        width: 3em;
+    }
 }

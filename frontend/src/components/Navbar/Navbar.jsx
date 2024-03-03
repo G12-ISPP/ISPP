@@ -11,6 +11,7 @@ const Navbar = () => {
         <div className='navbar'>
             <ul>
                 <li onClick={() => onButtonClick('/')}>Diseños</li>
+                <li onClick={() => onButtonClick('/')}>Piezas</li>
                 <li onClick={() => onButtonClick('/')}>Impresoras</li>
                 <li onClick={() => onButtonClick('/')}>Materiales</li>
                 <li onClick={() => onButtonClick('/')}>Artistas</li>

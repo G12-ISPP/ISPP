@@ -70,7 +70,107 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 16em;
+    width: 17em;
+}
+
+.mobile-menu-icon {
+    width: 2.5em;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.logo-responsive {
+    display: none;
+}
+
+.header-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background: #004040;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3em 0em;
+    box-sizing: border-box;
+    transition: all 0.4s ease;
+}
+
+@media (min-width: 1025px) {
+    .mobile-menu-icon {
+        display: none;
+    }
+}
+
+@media (max-width: 1024px) {
+    .header {
+        transition: all 0.4s ease;
+    }
+    .logo {
+        width: 12em;
+    }
+    .mobile-menu-icon {
+        display: block;
+    }
+    .search-box {
+        width: 85%;
+        max-height: 3em;
+    }
+    .search-box input {
+        font-size: 1em;
+    }
+    .search-icon {
+        width: 2em;
+    }
+    .button-wrapper {
+        flex-direction: column;
+        gap: 1em;
+        margin-top: 1.5em;
+    }
+    .cart-icon {
+        width: 2.5em;
+    }
+    .logo-container-fullscreen {
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        padding: 0em 2em;
+        box-sizing: border-box;
+        flex-direction: row;
+    }
+    .logo-container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+@media screen and (min-height: 1600px) {
+
+    .logo {
+        width: 30em;
+    }
+    .search-box {
+        max-height: 6em;
+        border-radius: 1em;
+    }
+    .search-box input {
+        font-size: 2em;
+    }
+    .search-icon {
+        width: 4em;
+    }
+    .cart-icon {
+        width: 5em;
+    }
+    .button-wrapper {
+        width: 60em;
+    }
+    
 }
 
 .icon-cart {
@@ -92,8 +192,8 @@
 	top: 55%;
 	right: 0;
 
-	background-color: #000;
-	color: #fff;
+	background-color: #002D2D;
+	color: #D9D9D9;
 	width: 25px;
 	height: 25px;
 
