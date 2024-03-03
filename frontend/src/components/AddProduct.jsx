@@ -151,17 +151,17 @@ class Product extends Component {
               </div>
             </div>
             <div className='form-group'>
-              <label className='name'>Nombre</label>
+              <label htmlFor='name'>Nombre</label>
               <input type='text' id='name' name='name' className='form-input' value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} placeholder="Cerdito rosa"/>
               {errors.name && <div className="error">{errors.name}</div>}
             </div>
             <div className='form-group'>
-              <label className='description'>Descripción</label>
+              <label htmlFor='description'>Descripción</label>
               <textarea id='description' name='description' className='form-input' value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Pieza de un cerdo con dimensiones de 20x12 cm, perfecto estado"/>
               {errors.description && <div className="error">{errors.description}</div>}
             </div>
             <div className='form-group'>
-              <label className='price'>Precio</label>
+              <label htmlFor='price'>Precio</label>
               <input type='text' id='price' name='price' className='form-input' value={this.state.price} onChange={(e) => this.setState({ price: e.target.value })} placeholder="5.99"/>
               {errors.price && <div className="error">{errors.price}</div>}
             </div>
@@ -178,7 +178,7 @@ class Product extends Component {
             </div>
             {this.state.productType !== 'D' && (
                 <div className='form-group'>
-                    <label className='stock-quantity'>Cantidad</label>
+                    <label htmlFor='stock-quantity'>Cantidad</label>
                     <input type='number' id='stock-quantity' name='stock-quantity' className='form-input' value={this.state.stockQuantity}  min={1} max={100} onChange={(e) => this.setState({ stockQuantity: e.target.value })} placeholder="2"/>
                     {errors.stockQuantity && <div className="error">{errors.stockQuantity}</div>}
                 </div>
