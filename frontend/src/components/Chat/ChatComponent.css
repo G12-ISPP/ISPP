@@ -1,0 +1,132 @@
+.window {
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: thin; /* "auto" o "thin" */
+    scrollbar-color: #888 #f1f1f1; /* [thumb] [track] */
+    width: 700px;
+    height: 550px; /* Define un alto fijo para el contenedor */
+    margin: auto;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+
+  .message-author {
+  font-size: 0.8em; /* Hace el texto del autor más pequeño */
+  text-align: left; /* Alinea el texto a la izquierda */
+  color: #555; /* Color suave para el nombre del autor */
+}
+
+
+  .message-text {
+    color: black; /* Asegura que el texto del mensaje sea negro */
+    text-align: left; /* Asegura que el texto del mensaje esté alineado a la izquierda */
+  }
+
+  .my-message, .other-message {
+    width: 90%; /* Hace que el li sea menos ancho, ajusta según necesites */
+    margin-top: 2px; /* Espaciado superior para separar los mensajes */
+  }
+
+  .my-message {
+    margin-left: auto;
+    background-color: #dcf8c6; /* Un color de fondo para diferenciar tus mensajes */
+  }
+
+  .other-message {
+    margin-right: auto;
+    background-color: #f0f0f0; /* Un color de fondo para los mensajes de otros usuarios */
+  }
+
+
+
+  .f {
+    bottom: 0;
+    position: sticky;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-top: 1px solid #ccc; /* Separador entre el chat y el formulario */
+  }
+
+  .fi[type="text"] {
+    flex-grow: 1; /* Hace que el input ocupe la mayor parte del espacio */
+    margin-right: 10px; /* Espacio entre el input y el botón */
+    padding: 8px 10px;
+    border-radius: 20px; /* Bordes redondeados para el input */
+    border: 1px solid #ccc; /* Borde sutil para el input */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra interna sutil */
+  }
+
+  .fb {
+    padding: 8px 15px;
+    background-color: #004040; /* Un color de fondo vibrante para el botón */
+    color: white; /* Texto blanco para el botón */
+    border: none;
+    border-radius: 20px; /* Bordes redondeados para el botón */
+    cursor: pointer; /* Cambia el cursor a una mano cuando se pasa sobre el botón */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra externa para darle profundidad */
+  }
+
+  .fb:hover {
+    background-color: #002D2D; /* Color más oscuro al pasar el mouse para feedback */
+  }
+
+
+  .back-button-container {
+    position: absolute; /* Fija el contenedor en la pantalla */
+    top: 100; /* Alinea el contenedor en la parte superior */
+    left: 0; /* Alinea el contenedor a la izquierda */
+    z-index: 1000; /* Asegura que el botón esté sobre otros elementos */
+  }
+  
+  .back-button {
+    background-color: #004040; /* Color de fondo */
+    color: #ffffff; /* Color del texto */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin: 10px; /* Agrega un poco de espacio alrededor del botón */
+  }
+  
+  .left-arrow {
+    margin-right: 5px;
+    font-size: 20px; /* Ajusta el tamaño de la flecha */
+  }
+
+  /* Estiliza el scrollbar completo */
+.window::-webkit-scrollbar {
+  width: 8px; /* Controla el ancho del scrollbar */
+}
+
+/* Estiliza el fondo del track del scrollbar */
+.window::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Cambia al color de fondo deseado */
+}
+
+/* Estiliza el thumb del scrollbar (la parte que se mueve) */
+.window::-webkit-scrollbar-thumb {
+  background: #888; /* Cambia al color deseado */
+}
+
+/* Cambia el color del thumb al pasar el mouse */
+.window::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Cambia al color deseado */
+}
+
+
+.messages-container {
+  height: 100%;
+  flex: 1; /* Hace que ocupe todo el espacio disponible */
+  overflow-y: auto; /* Permite scroll en los mensajes */
+}
+
+.title{
+  align-items: center;
+}
