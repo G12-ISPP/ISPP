@@ -1,0 +1,33 @@
+name: Frontend CI
+
+on: [push]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      backend:
+        image: alesanfel/shar3d_backend
+        ports:
+          - 8000:8000
+        options: --name=backend-container
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up environment variables
+        run: |
+          echo "VITE_APP_BACKEND=${{ secrets.VITE_APP_BACKEND }}" >> ./frontend/.env
+          echo "VITE_APP_FRONTEND=${{ secrets.VITE_APP_FRONTEND }}" >> ./frontend/.env
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend/
+          npm install
+
+      - name: Run frontend tests
+        run: |
+          cd frontend/
+          npm run test
