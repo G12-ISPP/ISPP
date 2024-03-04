@@ -86,14 +86,14 @@ def create_order(request):
         payment_url = paypal_payment.links[1]['href']  
         return Response({'paypal_payment_url': payment_url}, status=status.HTTP_200_OK)
     else:
-        messages.error(request, 'Error al procesar el pago con PayPal.')
-        return redirect('/checkout/')
+        return redirect('/order/cancel/' + str(order.id))
 
     return JsonResponse({'success': 'Pedido creado exitosamente'}, status=201)
 
 def confirm_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order.payed = True
+    order.save()
     op = OrderProduct.objects.filter(order=order)
     for order_product in op:
         product = order_product.product
@@ -126,11 +126,6 @@ def cancel_order(request, order_id):
 def order_details(request, order_id):
     try:
         order = Order.objects.get(id=order_id)
-        order_products = list(OrderProduct.objects.filter(order_id=order_id))
-        products = []
-        for p in order_products:
-            products.append({'id': p.product_id, 'quantity':p.quantity})
-
         order_details = {
             'id': order.id,
             'buyer': order.buyer.email if order.buyer else None,
@@ -143,9 +138,7 @@ def order_details(request, order_id):
             'date': order.date,
             'payed': order.payed,
             'buyer_mail': order.buyer_mail,
-            'products': products
         }
-
         return JsonResponse(order_details)
     except Order.DoesNotExist:
         return JsonResponse({'error': 'El pedido no existe'}, status=404)
