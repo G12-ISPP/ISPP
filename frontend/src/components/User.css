@@ -1,54 +1,94 @@
 .title {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-  }
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
 
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 50px;
+  margin-bottom: 100px;
+}
+
+.user-img-container {
+  display: flex;
+  flex-direction: column;
+  width: 22%;
+  height: 100px;
+  border-radius: 0.8em;
+  padding: 0em 1em;
+}
+
+.user-img-container img {
+  width: 100%;
+  max-width: 100%;
+  height: 25em;
+  border-radius: 50%;
+  object-fit: contain;
+  box-sizing: border-box;
+  background: #D9D9D9;
+}
+
+.profile-summary {
+  border: none !important;
+  padding: 0.25em 2em;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 38%;
+  border-radius: 0.8em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title-detalle {
+  justify-content: center;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.main-info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-role-container {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  background: #D9D9D9;
+  padding: 0.5em;
+  border-radius: 0.8em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-role {
+  font-weight: bold;
+  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  text-align: center;
+}
+
+.section-title-container {
+  align-self: center;
+}
+
+@media screen and (max-width: 768px) {
   .main {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-top: 50px;
-    margin-bottom: 100px;
-  }
-
-  .summary {
-    border: none !important;
-    padding: 20px;
-    display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 500px;
-    margin: auto;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    gap: 5em;
   }
 
   .img {
-    border-radius: 50%;
-    max-width: 100%;
-    margin-left: 100px;
-    max-width: 100%; /* Establecer un ancho máximo del 100% */
-    max-height: 400px; /* Establecer una altura máxima de 200px */
-
+    margin-left: 0;
+    margin-bottom: 5em;
+    height: 10em;
   }
-
-  .title-detalle {
-    justify-content: center;
-    margin-bottom: 10px;
-    font-weight: bold;
-  }
-
-
-  @media screen and (max-width: 768px) {
-    .main {
-      flex-direction: column; 
-      align-items: center; 
-    }
-
-    .img {
-      margin-left: 0;
-      margin-bottom: 20px; 
-    }
-  }
-
+}

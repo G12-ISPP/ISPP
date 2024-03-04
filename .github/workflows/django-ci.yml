@@ -1,6 +1,7 @@
 name: django-ci
 
 on: [push]
+
 jobs:
   build-test:
     runs-on: ubuntu-latest
@@ -14,13 +15,22 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Set environment variables
+        run: |
+          echo "RUTA_BACKEND=${{ secrets.RUTA_BACKEND }}" >> ./backend/.env
+          echo "RUTA_FRONTEND=${{ secrets.RUTA_FRONTEND }}" >> ./backend/.env
+
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r backend/requirements.txt
 
       - name: Run Migrations
-        run: python backend/manage.py migrate
+        run: |
+          python backend/manage.py makemigrations
+          python backend/manage.py migrate
+          python backend/manage.py loaddata backend/population/01_Users.json backend/population/02_Products.json
 
       - name: Run Tests
         run: python backend/manage.py test
+

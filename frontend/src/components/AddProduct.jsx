@@ -107,8 +107,6 @@ class Product extends Component {
       formData.append('product_type', this.state.productType);
       let petition1 = backend + '/products/add-product';
       petition1 = petition1.replace(/"/g, '')
-      let petition2 = backend + '/products/upload-image';
-      petition2 = petition2.replace(/"/g, '')
       fetch(petition1, {
         method: 'POST',
         headers: {
@@ -118,23 +116,6 @@ class Product extends Component {
       })
       .then(response => {
         if (response.ok) {
-          const imageFormData = new FormData();
-          imageFormData.append('file', this.state.file);
-          return fetch(petition2, {
-            method: 'POST',
-            headers: {
-              'Authorization': 'Bearer ' + localStorage.getItem('token')
-            },
-            body: imageFormData
-          });
-        } else {
-          throw new Error('Error al añadir el producto');
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.image_url) {
-          this.setState({ imagePreview: data.image_url });
           alert('Producto añadido correctamente');
           window.location.href = '/';
         } else {
@@ -170,17 +151,17 @@ class Product extends Component {
               </div>
             </div>
             <div className='form-group'>
-              <label className='name'>Nombre</label>
+              <label htmlFor='name'>Nombre</label>
               <input type='text' id='name' name='name' className='form-input' value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} placeholder="Cerdito rosa"/>
               {errors.name && <div className="error">{errors.name}</div>}
             </div>
             <div className='form-group'>
-              <label className='description'>Descripción</label>
+              <label htmlFor='description'>Descripción</label>
               <textarea id='description' name='description' className='form-input' value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Pieza de un cerdo con dimensiones de 20x12 cm, perfecto estado"/>
               {errors.description && <div className="error">{errors.description}</div>}
             </div>
             <div className='form-group'>
-              <label className='price'>Precio</label>
+              <label htmlFor='price'>Precio</label>
               <input type='text' id='price' name='price' className='form-input' value={this.state.price} onChange={(e) => this.setState({ price: e.target.value })} placeholder="5.99"/>
               {errors.price && <div className="error">{errors.price}</div>}
             </div>
@@ -197,7 +178,7 @@ class Product extends Component {
             </div>
             {this.state.productType !== 'D' && (
                 <div className='form-group'>
-                    <label className='stock-quantity'>Cantidad</label>
+                    <label htmlFor='stock-quantity'>Cantidad</label>
                     <input type='number' id='stock-quantity' name='stock-quantity' className='form-input' value={this.state.stockQuantity}  min={1} max={100} onChange={(e) => this.setState({ stockQuantity: e.target.value })} placeholder="2"/>
                     {errors.stockQuantity && <div className="error">{errors.stockQuantity}</div>}
                 </div>

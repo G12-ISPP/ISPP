@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from datetime import timedelta
 import os
 from pathlib import Path
 import paypalrestsdk
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
     'order',
     'products',
     'custom_design',
+    'chat'
 ]
 
 MIDDLEWARE = [
@@ -71,8 +73,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'main.urls'
@@ -149,7 +149,10 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Cors authorization
+
 CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_CREDENTIALS = True
 
 # Rest framework settings
 REST_FRAMEWORK = {
@@ -158,6 +161,12 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=2),  # Ejemplo para un token que dura 5 días
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=5),  # Ejemplo para un token de actualización que dura 10 días
+    # Puedes ajustar estas duraciones según tus necesidades
 }
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -174,4 +183,14 @@ paypalrestsdk.configure({
     'client_id': PAYPAL_CLIENT_ID,
     'client_secret': PAYPAL_SECRET_KEY,
 })
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.office365.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'shar3d@outlook.es'
+EMAIL_HOST_PASSWORD = 'ispp.correos.confirmacion'
+
+
+
 
