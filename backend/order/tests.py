@@ -5,6 +5,8 @@ from django.contrib.auth import get_user_model
 from rest_framework.test import APITestCase
 from .models import Order, OrderProduct
 from products.models import Product
+from .views import send_order_confirmation_email
+from django.core import mail
 import json
 import uuid
 
@@ -29,6 +31,7 @@ class BaseTestCase(APITestCase):
         self.order = Order.objects.create(
             buyer=self.custom_user,
             price=100,
+            buyer_mail = 'test@example.com',
             status='P',
             address='123 Test Street',
             city='Test City',
@@ -85,6 +88,37 @@ class ConfirmOrderTestCase(BaseTestCase):
         self.assertTrue(self.order.payed)
         self.product.refresh_from_db()
         self.assertEqual(self.product.stock_quantity, 9)
+        
+    def test_send_order_confirmation_email(self):
+
+        op = OrderProduct.objects.filter(order=self.order)
+                
+        send_order_confirmation_email(self.order, op)
+
+        email = mail.outbox[0]
+        
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(email.subject, 'Confirmación de tu pedido en Shar3d')
+        self.assertEqual(email.to, ['test@example.com'])
+        
+        html_content = None
+        for content, content_type in email.alternatives:
+            if content_type == 'text/html':
+                html_content = content
+                break
+
+        self.assertIsNotNone(html_content)  # Verificar que hay contenido HTML
+        
+        # Verificar si las cadenas está presente en el contenido HTML
+        self.assertIn('Buenas testuser,', html_content) 
+        self.assertIn('ID de pedido: ' + str(self.order.id), html_content)
+        self.assertIn('Precio total: ' + str(self.order.price), html_content)
+        self.assertIn('Estado: ' + self.order.get_status_display(), html_content)
+        self.assertIn('Dirección: ' + self.order.address, html_content)
+        self.assertIn('CP: ' + self.order.postal_code, html_content)
+        self.assertIn('Ciudad: ' + self.order.city, html_content)
+        
+        mail.outbox.clear()
 
 class CancelOrderTestCase(BaseTestCase):
     def test_cancel_order(self):
@@ -103,7 +137,7 @@ class OrderDetailsTestCase(BaseTestCase):
         self.assertEqual(order_details, {
             'id': str(self.order.id),
             'buyer': self.custom_user.email,
-            'buyer_mail': 'a@a.com',
+            'buyer_mail': 'test@example.com',
             'price': '100.00',
             'status': 'P',
             'address': '123 Test Street',
