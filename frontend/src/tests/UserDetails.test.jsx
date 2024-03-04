@@ -175,6 +175,29 @@ describe("User roles", () => {
         /* ASSERT */
         expect(() => {screen.getByText("Diseñador").to.exist});
     });
+  test("Designer", async () => {
+        /* ARRANGE */
+        const user = {
+            address: "Avenida Reina Mercedes, 16, 4B",
+            city: "Sevilla",
+            email: "davidhernandez@gmail.com",
+            first_name: "David",
+            is_designer: false,
+            is_printer: true,
+            last_name: "Hernández de la Prada",
+            postal_code: 41012
+        };
+    
+        mockFetch(user);
+
+        /* ACT */
+        const { container } = render(<UserDetail />);
+
+        await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
+
+        /* ASSERT */
+        expect(() => {screen.getByText("Impresor").to.exist});
+    });
 });
 
 
