@@ -1,7 +1,9 @@
-import UserDetail from '../components/User';
-import { render, waitFor, screen } from "@testing-library/react";
-import { expect } from "chai";
+import React from 'react';
+import { render, waitFor, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { expect } from 'chai';
 import { vi } from 'vitest';
+import UserDetail from '../components/User';
 
 describe("OK User Details", () => {
     test("Normal", async () => {
@@ -20,7 +22,7 @@ describe("OK User Details", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<UserDetail />);
+        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -44,7 +46,7 @@ describe("OK User Details", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<UserDetail />);
+        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -68,7 +70,7 @@ describe("OK User Details", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<UserDetail />);
+        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -95,7 +97,7 @@ describe("Injection User Details", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<UserDetail />);
+        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -119,7 +121,7 @@ describe("Injection User Details", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<UserDetail />);
+        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -143,7 +145,7 @@ describe("Injection User Details", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<UserDetail />);
+        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -168,7 +170,7 @@ describe("User roles", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<UserDetail />);
+        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -187,11 +189,11 @@ describe("User roles", () => {
             last_name: "Hernández de la Prada",
             postal_code: 41012
         };
-    
+
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<UserDetail />);
+        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -223,6 +225,7 @@ function assertInjectionUserDetails(user, container) {
 function mockFetch(object) {
     vi.spyOn(window, 'fetch').mockImplementationOnce(() => {
         return Promise.resolve({
+            ok: true,
             json: () => Promise.resolve(object),
         });
     });
