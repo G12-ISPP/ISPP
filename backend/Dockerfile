@@ -1,5 +1,6 @@
 # base image
-FROM python:3.8
+FROM python:3.11.4-slim-buster
+
 # setup environment variable
 ENV DockerHOME=/home/app/webapp
 
