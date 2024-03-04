@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 from rest_framework.documentation import include_docs_urls
 from products.views import ProductsView  
-from .views import add_product, upload_image
+from .views import add_product
 from django.conf import settings
 from django.conf.urls.static import static  
 
@@ -12,5 +12,4 @@ router.register('products', ProductsView, basename='products')  # Register the P
 urlpatterns = [
     path('api/v1/', include(router.urls)),
     path('add-product', add_product, name='add_product'),
-    path('upload-image', upload_image, name='upload_image'),
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

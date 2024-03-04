@@ -86,14 +86,14 @@ def create_order(request):
         payment_url = paypal_payment.links[1]['href']  
         return Response({'paypal_payment_url': payment_url}, status=status.HTTP_200_OK)
     else:
-        messages.error(request, 'Error al procesar el pago con PayPal.')
-        return redirect('/checkout/')
+        return redirect('/order/cancel/' + str(order.id))
 
     return JsonResponse({'success': 'Pedido creado exitosamente'}, status=201)
 
 def confirm_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order.payed = True
+    order.save()
     op = OrderProduct.objects.filter(order=order)
     for order_product in op:
         product = order_product.product

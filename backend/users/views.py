@@ -1,3 +1,5 @@
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, status, viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -66,5 +68,16 @@ class LoginView(APIView):
         if user is None:
             raise APIException('Invalid username or password')
         refresh = RefreshToken.for_user(user)
-        return Response({'token': str(refresh.access_token), 'message': 'Login successful'}, status=status.HTTP_200_OK)
+        return Response({
+            'token': str(refresh.access_token),
+            'userId': user.id,  # Aquí devolvemos el userID
+            'message': 'Login successful'
+        }, status=status.HTTP_200_OK)
     
+
+def get_user_id_by_username(request, username):
+    # Busca el usuario por username. Si no existe, devuelve un error 404
+    user = get_object_or_404(CustomUser, username=username)
+    
+    # Devuelve el id del usuario como respuesta JSON
+    return JsonResponse({'user_id': user.id})
