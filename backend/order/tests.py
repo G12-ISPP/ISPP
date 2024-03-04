@@ -87,8 +87,7 @@ class ConfirmOrderTestCase(BaseTestCase):
         self.order.refresh_from_db()
         self.assertTrue(self.order.payed)
         self.product.refresh_from_db()
-        self.assertEqual(self.product.stock_quantity, 9)
-        
+        self.assertEqual(self.product.stock_quantity, 9)        
     def test_send_order_confirmation_email(self):
 
         op = OrderProduct.objects.filter(order=self.order)
