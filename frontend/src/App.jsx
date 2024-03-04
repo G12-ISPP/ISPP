@@ -19,6 +19,9 @@ import UserDetail from "./components/User";
 import MainPage from "./pages/MainPage.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import Cart from "./components/Cart/Cart.jsx";
+import { ChatPage } from "./pages/ChatPage"
+import 'react-chat-elements/dist/main.css';
+
 import OrderDetails from "./components/OrderDetails.jsx";
 import OrderCancelled from "./components/OrderCancelled.jsx";
 
@@ -45,6 +48,7 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/tasks" element={<TaskPage />} />
         <Route path="/tasks-create" element={<TaskFormPage />} />
+        <Route path="/chat/:roomId" element={<ChatPage />} />
         <Route path="/product-details/:id" element={<ProductDetail
           cart={cart}
           setCart={setCart}
