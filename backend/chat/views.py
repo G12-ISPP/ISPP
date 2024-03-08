@@ -29,7 +29,7 @@ def get_user_from_token(token):
         User = get_user_model()
         user = User.objects.get(id=user_id)
         return user
-    except (TokenError, InvalidToken, User.DoesNotExist) as e:
+    except (TokenError, InvalidToken, CustomUser.DoesNotExist) as e:
         # Maneja los errores si el token es inválido o el usuario no existe
         print(e)
         return None
@@ -37,6 +37,7 @@ def get_user_from_token(token):
 @csrf_exempt
 def post_message(request, room_id):
     if request.method == 'POST':
+    
         data = json.loads(request.body.decode('utf-8'))
         content = data.get('content', '')
         username = data.get('username', '')
