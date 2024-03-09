@@ -9,6 +9,32 @@
     justify-content: space-around;
 }
 
+.unlimited-gr {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    margin: 3em 10em !important;
+}
+
+.artists-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+.artists-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.last {
+    display: flex;
+    flex-direction: row;
+    gap: 1.25em;
+    align-self: flex-start;
+}
+
 @media (max-width: 1024px) {
 
     .grid {
