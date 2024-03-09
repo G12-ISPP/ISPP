@@ -136,7 +136,7 @@ export default class BuyPlan extends React.Component{
                         <br></br>
                         **Mensualmente se cobrará por los planes que hayas comprado hasta que los canceles
                     </div>
-                    <h2 >Selecciona el plan que queiras comprar</h2>
+                    <h2 >Selecciona el plan que quieras comprar</h2>
                     <form onSubmit={this.handleSubmit}>
                         <label>
                             Plan Comprador
