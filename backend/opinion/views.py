@@ -30,6 +30,13 @@ class OpinionView(viewsets.ModelViewSet):
             # Verificar que todos los campos requeridos estén presentes
             if not all([description, score, target_user, date]):
                 return JsonResponse({'error': 'Todos los campos son obligatorios'}, status=400)
+            
+            # Verificar que user y target_user es distintio
+            if request.user == target_user:
+                return JsonResponse({'error': 'No puedes dejarte una opinion a ti mismo'}, status=403)
+
+            if int(score) < 1 or int(score) > 5:
+                return JsonResponse({'error': 'La puntuacin debe estar entre 1 y 5'}, status=400)
 
             # Guardar la opinion en la base de datos
             if request.user.is_authenticated:
