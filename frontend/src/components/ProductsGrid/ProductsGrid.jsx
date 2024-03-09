@@ -55,6 +55,21 @@ const ProductsGrid = (consts) => {
         }
     }
 
+    const transformTypeName = (elementType) => {
+        switch (elementType) {
+            case 'D':
+                return 'Diseños';
+            case 'I':
+                return 'Piezas';
+            case 'P':
+                return 'Impresoras';
+            case 'M':
+                return 'Materiales';
+            default:
+                return 'Productos';
+        }
+    }
+
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
@@ -80,7 +95,7 @@ const ProductsGrid = (consts) => {
         <div className={getGridClass()}>
             {gridType === GRID_TYPES.UNLIMITED ? (
                 <>
-                    <Text type={TEXT_TYPES.TITLE_BOLD} text='Diseños' />
+                    <Text type={TEXT_TYPES.TITLE_BOLD} text={transformTypeName(elementType)} />
                     <div className='products-container'>
                         {products.map((group, groupIndex) => (
                             <div key={groupIndex} className={`products-row ${group.length < 5 ? 'last' : ''}`}>
