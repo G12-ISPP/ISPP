@@ -22,7 +22,11 @@ from django.template.loader import render_to_string
 ruta_backend = settings.RUTA_BACKEND
 ruta_frontend = settings.RUTA_FRONTEND
 
-
+@api_view(['GET'])
+def list_searching_printer_designs(request):
+    designs = CustomDesign.objects.filter(status='searching')
+    serializer = CustomDesignSerializer(designs, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @csrf_exempt
@@ -60,7 +64,8 @@ def create_custom_design(request):
                 address=address,
                 city=city,
                 buyer_mail=buyer_mail,
-                payed=False
+                payed=False,
+                status='searching',
             )
 
             if request.user.is_authenticated:
@@ -132,6 +137,12 @@ def cancel(request, id):
 
 @api_view(['GET'])
 def details(request, id):
+    custom_design = get_object_or_404(CustomDesign, custom_design_id=id)
+    serializer = CustomDesignSerializer(custom_design)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def details_to_printer(request, id):
     custom_design = get_object_or_404(CustomDesign, custom_design_id=id)
     serializer = CustomDesignSerializer(custom_design)
     return Response(serializer.data, status=status.HTTP_200_OK)
