@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './Cart.css';
-import { FaTrash } from "react-icons/fa";
-import Text, { TEXT_TYPES } from '../Text/Text';
-import Button, { BUTTON_TYPES } from '../Button/Button';
+import {FaTrash} from "react-icons/fa";
+import Button, {BUTTON_TYPES} from '../Button/Button';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -22,8 +21,14 @@ const Cart = ({
       try {
         let petition = backend + '/designs/loguedUser';
         petition = petition.replace(/"/g, '');
+
+        // Obtén el token de acceso del localStorage
+        const accessToken = localStorage.getItem('authTokens');
+        const parsedAccessToken = JSON.parse(accessToken);
+        if (!parsedAccessToken || !parsedAccessToken.access) return;
+
         const response = await fetch(petition, {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+          headers: { 'Authorization': `Bearer ${parsedAccessToken.access}` }
         });
         const datos = await response.json();
         // Actualizar el estado con los datos obtenidos

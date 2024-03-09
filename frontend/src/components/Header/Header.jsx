@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './Header.css';
 import logo from '../../assets/logo.png';
 import searchIcon from '../../assets/bx-search.svg';
 import cartIcon from '../../assets/bx-cart.svg';
 import menuIcon from '../../assets/bx-menu.svg';
 import exitIcon from '../../assets/bx-x.svg';
-import Button, { BUTTON_TYPES } from '../Button/Button';
+import Button, {BUTTON_TYPES} from '../Button/Button';
+import AuthContext from "../../context/AuthContext.jsx";
 
 const Header = ({ cart,setCart }) => {
 
-	const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'));
+	const [isLoggedIn, setIsLoggedIn] = useState( localStorage.getItem('authTokens'));
     const [menuVisible, setMenuVisible] = useState(false);
     const [isHeaderFullScreen, setIsHeaderFullScreen] = useState(false);
+    let { logoutUser } = useContext(AuthContext);
+
 
     useEffect(() => {
         const handleResize = () => {
@@ -22,19 +25,25 @@ const Header = ({ cart,setCart }) => {
             }
         }
 
+        const interval = setInterval(() => {
+            setIsLoggedIn(localStorage.getItem('authTokens'));
+        }, 500);
+
         window.addEventListener('resize', handleResize);
 
         handleResize();
 
-        return () => window.removeEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            clearInterval(interval);
+        }
     }, []);
 
 	const handleLogout = () => {
-		localStorage.removeItem('token');
         setCart([]);
+        logoutUser();
 		setIsLoggedIn(null);
 		alert('Deslogueo exitoso!!');
-		window.location.href = '/';
 	};
 
     const [active, setActive] = useState(false);

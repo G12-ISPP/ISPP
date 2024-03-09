@@ -1,25 +1,20 @@
+import json
+
+from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from rest_framework_simplejwt.tokens import AccessToken
 
 from chat.serializers import ChatRoomSerializer
-from .models import ChatRoom, Message
-from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 from users.models import CustomUser
-from django.views.decorators.http import require_http_methods
-from django.utils.timezone import now
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.tokens import AccessToken
-from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from django.contrib.auth import get_user_model
-import json
+from .models import ChatRoom, Message
+
 
 def get_user_from_token(token):
     try:

@@ -1,14 +1,15 @@
 import './LoginForm.css';
-import { useState, useEffect } from 'react';
-import Text, { TEXT_TYPES } from '../Text/Text';
-import Button, { BUTTON_TYPES } from '../Button/Button';
+import {useEffect, useState, useContext} from 'react';
+import Button, {BUTTON_TYPES} from '../Button/Button';
 import logo from '../../assets/logo.png';
 import arrow from '../../assets/bx-left-arrow-alt.svg';
+import AuthContext from "../../context/AuthContext.jsx";
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
 
 const LoginForm = () => {
+  let { loginUser } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     username: '',
     password: ''
@@ -32,42 +33,8 @@ const LoginForm = () => {
     setFormData({ ...formData, [name]: value });
   }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (isUserLoggedIn) {
-      setErrorMessage('Ya has iniciado sesión con un usuario, debes cerrar sesión antes.');
-      return;
-    }
-
-    try {
-      let petition = backend + '/users/login/';
-      petition = petition.replace(/"/g, '')
-      const response = await fetch(petition, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('token', data.token); // Almacena el token en el localStorage
-        localStorage.setItem('username', formData.username);
-        localStorage.setItem('userId', data.userId);
-        window.location.href = "/";
-      } else {
-        const data = await response.json();
-        setErrorMessage(data.message || 'El usuario o contraseña introducido no es válido.');
-      }
-    } catch (error) {
-      console.error('Error al comunicarse con el backend:', error);
-      setErrorMessage('Error de conexión con el servidor');
-    }
-  }
-
   return (
+
     <div className='login'>
       <div className="brand-container-login">
         <div className="back-button-login" onClick={() => onButtonClick('/')}>
@@ -85,7 +52,7 @@ const LoginForm = () => {
         <div className='login-data-container'>
           <p className="login-form-title">Iniciar sesión</p>
           <p className="login-form-subtitle">¿No tienes cuenta? <span className="register-link" onClick={() => onButtonClick('/register')}>Regístrate</span></p>
-          <form className='login-form' onSubmit={handleSubmit}>
+          <form className='login-form' onSubmit={loginUser}>
             <div className='login-form-group'>
               <input type='text' id='username' name='username' className='form-input' placeholder='Nombre de usuario' value={formData.username} onChange={handleChange} required />
             </div>

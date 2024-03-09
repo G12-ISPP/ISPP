@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
 import ChatComponent from '../components/Chat/ChatComponent';
 
 export const ChatPage = () => {
@@ -15,11 +15,16 @@ export const ChatPage = () => {
     // Construye la URL con el roomId
     const url = `${backend}/chat/chatroom/${roomId}`;
 
+    // Obtén el token de acceso del localStorage
+    const accessToken = localStorage.getItem('authTokens');
+    const parsedAccessToken = JSON.parse(accessToken);
+    if (!parsedAccessToken || !parsedAccessToken.access) return;
+
     // Realiza la petición fetch dentro de useEffect
     fetch(url, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${token}`, // Asume que el esquema de autorización es Bearer
+        'Authorization': `Bearer ${parsedAccessToken.access}`, // Asume que el esquema de autorización es Bearer
         'Content-Type': 'application/json',
       },
     })
@@ -47,5 +52,6 @@ export const ChatPage = () => {
   }, [roomId, token]); // Dependencias del efecto: roomId y token
 
   // Pasa roomId y roomName obtenidos al ChatComponent
+  console.log(roomId, roomName, roomMate)
   return <ChatComponent roomId={roomId} roomName={roomName} roomMate={roomMate}  />;
 };
