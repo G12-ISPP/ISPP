@@ -28,7 +28,6 @@ export const AuthProvider = ({children}) => {
             refresh: refresh,
         };
         setAuthTokens(data);
-        console.log(jwtDecode(data.access));
         setUser(jwtDecode(data.access));
         localStorage.setItem("authTokens", JSON.stringify(data));
     };
