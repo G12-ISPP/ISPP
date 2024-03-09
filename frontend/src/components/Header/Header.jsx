@@ -218,6 +218,7 @@ const Header = ({ cart,setCart }) => {
                                         <p className='cart-empty'>El carrito está vacío</p>
                                     )}
                                 </div>
+                                
                             </div>
                         </>
                         )}
