@@ -36,6 +36,7 @@ class ChatViewTestClase(TestCase):
             city='test3'
         )
         chat = ChatRoom.objects.create(
+            id=1,
             title='test',
 
         )
@@ -118,3 +119,35 @@ class ChatViewTestClase(TestCase):
         response = self.client.get('/chat/1/post_message/', data=data_message, headers=headers, format='json')
         self.assertEqual(response.status_code, 405)
 
+    def test_post_message_succes(self):
+        data = {'username': 'test2', 'password': 'test2'}
+        response_login = self.client.post('/users/login/', data, format='json')
+        token = response_login.data['token']
+        headers = {'Authorization': 'Bearer ' + token}
+        data_message = {"content": "This is the message content.","username": "sender_username"}
+        data_message_json = json.dumps(data_message)  # Convert to JSON string
+        data_message_bytes = data_message_json.encode('utf-8')  # Convert to bytes
+        response = self.client.post('/chat/1/post_message/', data_message_bytes , headers=headers, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+    
+    def test_post_message_fail_invalid_token(self):
+        data = {'username': 'test', 'password': 'test'}
+        response_login = self.client.post('/users/login/', data, format='json')
+        token = response_login.data['token'] + 'invalid'
+        headers = {'Authorization': 'Bearer ' + token}
+        data_message = {"content": "This is the message content.","username": "sender_username"}
+        data_message_json = json.dumps(data_message)  # Convert to JSON string
+        data_message_bytes = data_message_json.encode('utf-8')
+        response = self.client.post('/chat/1/post_message/', data_message_bytes , headers=headers, content_type='application/json')
+        self.assertEqual(response.status_code, 401)
+    
+    def test_post_message_fail_user_not_member(self):
+        data = {'username': 'test', 'password': 'test'} 
+        response_login = self.client.post('/users/login/', data, format='json')
+        token = response_login.data['token']
+        headers = {'Authorization': 'Bearer ' + token}
+        data_message = {"content": "This is the message content.","username": "sender_username"}
+        data_message_json = json.dumps(data_message)
+        data_message_bytes = data_message_json.encode('utf-8')
+        response = self.client.post('/chat/1/post_message/', data_message_bytes , headers=headers, content_type='application/json')
+        self.assertEqual(response.status_code, 401)

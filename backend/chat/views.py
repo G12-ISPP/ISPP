@@ -37,12 +37,10 @@ def get_user_from_token(token):
 @csrf_exempt
 def post_message(request, room_id):
     if request.method == 'POST':
-    
         data = json.loads(request.body.decode('utf-8'))
         content = data.get('content', '')
         username = data.get('username', '')
 
-        #user = CustomUser.objects.filter(username=username).first()
         token = request.headers.get('Authorization', '').split(' ')[1]
         user = get_user_from_token(token)
         room = get_object_or_404(ChatRoom, id=room_id)
