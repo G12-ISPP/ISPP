@@ -12,6 +12,7 @@ from django.conf import settings
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 ruta_backend = settings.RUTA_BACKEND
 ruta_frontend = settings.RUTA_FRONTEND
@@ -77,11 +78,16 @@ class ProductsView(viewsets.ModelViewSet):
   def get_queryset(self):
     queryset = Product.objects.all()
     type_filter = self.request.query_params.get('product_type')
+    search_query = self.request.query_params.get('search')
     seller_filter = self.request.query_params.get('seller')  
+    
     if type_filter:
       queryset = queryset.filter(product_type=type_filter)
     if seller_filter: 
         queryset = queryset.filter(seller_id=seller_filter)
+    if search_query:
+        queryset = queryset.filter(Q(name__icontains=search_query) | Q(description__icontains=search_query))
+            
     return queryset
   
   def get_serializer_context(self):
