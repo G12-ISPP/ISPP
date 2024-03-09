@@ -77,8 +77,11 @@ class ProductsView(viewsets.ModelViewSet):
   def get_queryset(self):
     queryset = Product.objects.all()
     type_filter = self.request.query_params.get('product_type')
+    seller_filter = self.request.query_params.get('seller')  
     if type_filter:
       queryset = queryset.filter(product_type=type_filter)
+    if seller_filter: 
+        queryset = queryset.filter(seller_id=seller_filter)
     return queryset
   
   def get_serializer_context(self):
