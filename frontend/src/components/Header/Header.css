@@ -323,4 +323,25 @@
     width: 100%;
     z-index: 1;
     border-radius: 10px;
+    overflow-y: auto;
+    height: 70dvh;
 }
+
+.container-search::-webkit-scrollbar {
+    width: 8px;
+}
+
+.container-search::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+.container-search::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+.container-search::-webkit-scrollbar-thumb:hover {
+    background-color: #999;
+}
+
+
