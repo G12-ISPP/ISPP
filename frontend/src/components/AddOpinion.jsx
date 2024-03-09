@@ -17,13 +17,6 @@ class Opinion extends Component {
         this.validateForm = this.validateForm.bind(this);
     }
 
-    componentDidMount() {
-        if (!localStorage.getItem('token')) {
-            alert('Debes iniciar sesión para opinar sobre un usuario');
-            window.location.href = '/';
-        }
-    }
-
     validateForm() {
         const { target_user, date, score, description } = this.state;
         const errors = {};
@@ -56,7 +49,9 @@ class Opinion extends Component {
             .then(response => {
                 if (response.ok) {
                     alert('Opinión añadida correctamente');
-                    window.location.href = '/';
+                    window.location.href = '/user-details/' + this.state.target_user;
+                } else if (response.status === 401) {
+                    throw new Error('Debes iniciar sesión para añadir una opinión');
                 } else {
                     return response.text();
                 }
@@ -68,7 +63,7 @@ class Opinion extends Component {
             })
             .catch(error => {
                 console.error('Error al enviar el formulario:', error);
-                alert('Error al enviar el formulario');
+                alert(error);
             });
 
     }
