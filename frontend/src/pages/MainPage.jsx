@@ -13,6 +13,7 @@ const MainPage = () => {
                 <Text type={TEXT_TYPES.TITLE_NORMAL} text='Encuentra diseños, impresoras y materiales de alta calidad.' />
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='¡Haz tus ideas realidad!' />
                 <Button type={BUTTON_TYPES.LARGE} text='Solicitar impresión' path='/designs/my-design'  />
+                {localStorage.getItem('token')? <Button type={BUTTON_TYPES.LARGE} text='Comprar plan' path='/buy-plan' /> : null}
             </div>
 
             <div className="section-title">

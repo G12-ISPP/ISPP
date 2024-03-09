@@ -14,6 +14,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import viewsets, status
 from rest_framework.exceptions import ValidationError
 from .models import CustomUser
+from django.views.decorators.csrf import csrf_exempt
+from paypalrestsdk import Payment
 
 from rest_framework.decorators import action
 from users.serializer import UserSerializer
@@ -21,7 +23,10 @@ from django.utils.translation import gettext_lazy as _
 from functools import wraps
 from django.utils.translation import activate
 from django.conf import settings
+from datetime import datetime
+from django.http import HttpResponseRedirect
 
+ruta_frontend = settings.RUTA_FRONTEND
 
 class UsersView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
@@ -81,3 +86,64 @@ def get_user_id_by_username(request, username):
     
     # Devuelve el id del usuario como respuesta JSON
     return JsonResponse({'user_id': user.id})
+
+@api_view(['POST'])
+@csrf_exempt
+def buy_plan(request):
+    if request.user.is_authenticated:
+        sellerP = request.data['sellerPlan']
+        buyerP = request.data['buyerPlan']
+        designerP = request.data['designerPlan']
+        price = 0
+        if sellerP :
+            price += 15
+        if buyerP :
+            price += 10
+        if designerP :
+            price += 15
+
+        url = '/obtainPlan/' + str(request.data['sellerPlan']) + '/' + str(request.data['buyerPlan']) + '/'  + str(request.data['designerPlan']) +'/' + str(request.user.id)
+        cancel_url = ruta_frontend + 'cancel-plan'
+        paypal_payment = Payment({
+                "intent": "sale",
+                "payer": {
+                    "payment_method": "paypal"
+                },
+                "transactions": [{
+                    "amount": {
+                        "total": str(price),
+                        "currency": "EUR"
+                    },
+                    "description": "Encargo de diseño personalizado."
+                }],
+                "redirect_urls": {
+                    "return_url": request.build_absolute_uri(url),
+                    "cancel_url": request.build_absolute_uri(cancel_url)
+                }
+            })
+
+        if paypal_payment.create():
+            payment_url = paypal_payment.links[1]['href']  
+            return Response({'paypal_payment_url': payment_url}, status=status.HTTP_200_OK)
+        else:
+            return redirect('/')
+        
+
+    return JsonResponse({'success': 'Plan comprado exitosamente'}, status=201)
+
+def obtain_plan(request, plan_seller, plan_buyer, plan_designer,user_id):
+    user = CustomUser.objects.get(id=user_id)
+    if plan_buyer:
+        user.buyer_plan = True
+        user.buyer_plan_date = datetime.now()
+    if plan_seller:
+        user.seller_plan = True
+        user.seller_plan_date = datetime.now()
+    if plan_designer:
+        user.designer_plan = True
+        user.designer_plan_date = datetime.now()
+
+    user.save()
+    return HttpResponseRedirect(ruta_frontend + '/confirm-plan')
+
+

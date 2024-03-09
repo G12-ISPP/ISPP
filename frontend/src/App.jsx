@@ -21,6 +21,9 @@ import Footer from "./components/Footer/Footer.jsx";
 import Cart from "./components/Cart/Cart.jsx";
 import { ChatPage } from "./pages/ChatPage"
 import 'react-chat-elements/dist/main.css';
+import BuyPlan from "./components/BuyPlan/BuyPlan.jsx";
+import CancelPlan from "./components/BuyPlan/CancelPlan.jsx";
+import ConfirmPlan from "./components/BuyPlan/ConfirmPlan.jsx";
 
 import OrderDetails from "./components/OrderDetails.jsx";
 import OrderCancelled from "./components/OrderCancelled.jsx";
@@ -66,6 +69,9 @@ function App() {
         />} />
         <Route path="/order/details/:id" element={<OrderDetails />} />
         <Route path="/order/cancelled" element={<OrderCancelled />} />
+        <Route path="/buy-plan" element={<BuyPlan/>} />
+        <Route path="/cancel-plan" element={<CancelPlan/>} />
+        <Route path="/confirm-plan" element={<ConfirmPlan/>} />
       </Routes>
 
       <Footer />
