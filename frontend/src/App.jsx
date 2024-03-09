@@ -14,6 +14,7 @@ import Product from "./components/Product/Product.jsx";
 import Artist from "./components/Artist/Artist.jsx";
 import Button, { BUTTON_TYPES } from "./components/Button/Button.jsx";
 import CustomDesignDetails from "./components/CustomDesignDetails.jsx";
+import SearchResults from "./components/SearchResults.jsx";
 import CustonDesignCancelled from "./components/CustomDesignCancelled.jsx";
 import UserDetail from "./components/User";
 import MainPage from "./pages/MainPage.jsx";
@@ -66,6 +67,7 @@ function App() {
         />} />
         <Route path="/order/details/:id" element={<OrderDetails />} />
         <Route path="/order/cancelled" element={<OrderCancelled />} />
+        <Route path="/search-results" element={<SearchResults />} />
       </Routes>
 
       <Footer />

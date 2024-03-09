@@ -12,6 +12,7 @@ const Header = ({ cart,setCart }) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'));
     const [menuVisible, setMenuVisible] = useState(false);
     const [isHeaderFullScreen, setIsHeaderFullScreen] = useState(false);
+    const [searchText, setSearchText] = useState('');
 
     useEffect(() => {
         const handleResize = () => {
@@ -64,6 +65,49 @@ const Header = ({ cart,setCart }) => {
         setIsHeaderFullScreen(!isHeaderFullScreen);
     }
 
+    const handleSearchClick = () => {
+        const backend = import.meta.env.VITE_APP_BACKEND;
+        const combinedPromise = Promise.all([
+            fetch(`${backend}/products/api/v1/products/?search=${searchText}`).then(response => response.json()),
+            fetch(`${backend}/users/api/v1/users/?search=${searchText}`).then(response => response.json())
+        ]);
+    
+        combinedPromise
+            .then(([productsData, usersData]) => {
+                const searchResults = {
+                    productsData: productsData,
+                    usersData: usersData
+                };
+                localStorage.setItem('searchResults', JSON.stringify(searchResults));
+                localStorage.setItem('searchText', searchText);
+                window.location.href = '/search-results';
+            })
+            .catch(error => {
+                console.error('Error al realizar la búsqueda:', error);
+            });
+    };
+    
+
+    const handleSearchChange = (event) => {
+        setSearchText(event.target.value);
+        const backend = import.meta.env.VITE_APP_BACKEND;
+        const combinedPromise = Promise.all([
+            fetch(`${backend}/products/api/v1/products/?search=${searchText}`).then(response => response.json()),
+            fetch(`${backend}/users/api/v1/users/?search=${searchText}`).then(response => response.json())
+        ]);
+
+        combinedPromise
+            .then(([productsData, usersData]) => {
+                const combinedResults = {
+                    products: productsData,
+                    users: usersData
+                };
+            })
+            .catch(error => {
+                console.error('Error al realizar la búsqueda:', error);
+            });
+    };
+
     return (
         <div className={isHeaderFullScreen ? 'header-fullscreen' : 'header'}>
             <div className={isHeaderFullScreen ? 'logo-container-fullscreen' : 'logo-container'}>
@@ -73,10 +117,12 @@ const Header = ({ cart,setCart }) => {
                 
             {menuVisible && (
                 <>
-                    <div className='search-box'>
-                        <img src={searchIcon} className='search-icon' />
-                        <input type='text' placeholder={isHeaderFullScreen ? 'Busca diseños, impresoras y más...' : 'Busca diseños, impresoras, materiales y más...'} className='input-text' />
-                    </div>
+                <div className='search-box'>
+                    <img src={searchIcon} className='search-icon' onClick={handleSearchClick}/>
+                    <input type='text' placeholder={isHeaderFullScreen ? 'Busca diseños, impresoras y más...' : 'Busca diseños, impresoras, materiales y más...'} className='input-text' 
+                    value={searchText}
+                    onChange={handleSearchChange}/>
+                </div>
                     <div className="button-wrapper">
                         {isHeaderFullScreen && (
                             <img src={cartIcon} className='cart-icon' onClick={() => onButtonClick('/cart')} />
