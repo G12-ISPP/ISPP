@@ -10,7 +10,7 @@ const Navbar = () => {
     return (
         <div className='navbar'>
             <ul>
-                <li onClick={() => onButtonClick('/')}>Diseños</li>
+                <li onClick={() => onButtonClick('/designs')}>Diseños</li>
                 <li onClick={() => onButtonClick('/')}>Piezas</li>
                 <li onClick={() => onButtonClick('/')}>Impresoras</li>
                 <li onClick={() => onButtonClick('/')}>Materiales</li>

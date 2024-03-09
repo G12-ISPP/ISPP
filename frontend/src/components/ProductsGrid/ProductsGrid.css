@@ -9,6 +9,29 @@
     justify-content: space-around;
 }
 
+.unlimited-gr {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    margin: 3em 10em !important;
+}
+
+.products-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+.products-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.last {
+    align-self: flex-start;
+}
+
 @media (max-width: 1024px) {
 
     .grid {
