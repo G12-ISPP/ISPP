@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './ArtistsGrid.css'
 import Artist from '../Artist/Artist';
 import Text, { TEXT_TYPES } from '../Text/Text';
+import Paginator from '../Paginator/Paginator';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -36,9 +37,8 @@ const ArtistsGrid = (consts) => {
         }
     }
 
-    const groupArtists = async () => {
+    const groupArtists = (artists) => {
         try {
-            const artists = await getAllArtists();
 
             const groupsOfArtists = artists.reduce((acc, artist, index) => {
                 const groupIndex = Math.floor(index / 5);
@@ -50,12 +50,17 @@ const ArtistsGrid = (consts) => {
             }, []);
 
             return groupsOfArtists;
+
         } catch (error) {
             console.error('Error al obtener y agrupar los artistas: ', error);
+            return [];
         }
     }
 
     const [artists, setArtists] = useState([]);
+    const [page, setPage] = useState(1);
+    const [artistsPerPage, setArtistsPerPage] = useState(5);
+    const [numPages, setNumPages] = useState(0);
 
     useEffect(() => {
 
@@ -67,14 +72,17 @@ const ArtistsGrid = (consts) => {
                 if (gridType === GRID_TYPES.MAIN_PAGE) {
                     setArtists(res.slice(0, 5));
                 } else {
-                    const groupsOfArtists = await groupArtists();
+                    const numPages = Math.ceil(res.length / artistsPerPage);
+                    setNumPages(numPages);
+                    const allArtists = res.slice((page - 1) * artistsPerPage, page * artistsPerPage);
+                    const groupsOfArtists = groupArtists(allArtists);
                     setArtists(groupsOfArtists);
                 }
             }
         }
         loadArtists();
 
-    }, [])
+    }, [gridType, page, artistsPerPage]);
 
     return (
         <div className={getGridClass()}>
@@ -90,6 +98,7 @@ const ArtistsGrid = (consts) => {
                         </div>
                     ))}
                 </div>
+                <Paginator page={page} setPage={setPage} numPages={numPages} />
             </>
             ) : (
                 artists.map(artist => (

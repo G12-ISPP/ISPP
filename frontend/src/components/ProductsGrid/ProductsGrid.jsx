@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './ProductsGrid.css'
 import Product from '../Product/Product';
 import Text, { TEXT_TYPES } from '../Text/Text';
+import Paginator from '../Paginator/Paginator';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -41,9 +42,8 @@ const ProductsGrid = (consts) => {
         }
     }
 
-    const groupProducts = async (elementType, filter) => {
+    const groupProducts = (products) => {
         try {
-            const products = await getAllProducts(elementType, filter);
 
             const groupsOfProducts = products.reduce((acc, product, index) => {
                 const groupIndex = Math.floor(index / 5);
@@ -55,8 +55,10 @@ const ProductsGrid = (consts) => {
             }, []);
 
             return groupsOfProducts;
+            
         } catch (error) {
             console.error('Error al obtener y agrupar los productos: ', error);
+            return [];
         }
     }
 
@@ -76,6 +78,9 @@ const ProductsGrid = (consts) => {
     }
 
     const [products, setProducts] = useState([]);
+    const [page, setPage] = useState(1);
+    const [productsPerPage, setProductsPerPage] = useState(5);
+    const [numPages, setNumPages] = useState(0);
 
     useEffect(() => {
 
@@ -87,14 +92,17 @@ const ProductsGrid = (consts) => {
                 if (gridType === GRID_TYPES.MAIN_PAGE) {
                     setProducts(res.slice(0, 5));
                 } else {
-                    const groupsOfProducts = await groupProducts(elementType, filter);
+                    const numPages = Math.ceil(res.length / productsPerPage);
+                    setNumPages(numPages);
+                    const allProducts = res.slice((page - 1) * productsPerPage, page * productsPerPage);
+                    const groupsOfProducts = groupProducts(allProducts);
                     setProducts(groupsOfProducts);
                 }
             }
         }
         loadProducts();
 
-    }, [gridType, elementType, filter]);
+    }, [gridType, elementType, filter, page, productsPerPage]);
 
     return (
         <div className={getGridClass()}>
@@ -110,6 +118,7 @@ const ProductsGrid = (consts) => {
                             </div>
                         ))}
                     </div>
+                    <Paginator page={page} setPage={setPage} numPages={numPages} />
                 </>
             ) : (
                 products.map(product => (
