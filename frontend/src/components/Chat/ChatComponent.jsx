@@ -161,7 +161,7 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
             <button className='fb' type="submit">Enviar</button>
           </form>
         </div>
-      </div> : <div class="contenedor-centrado"> <h2 className='mis-chats'>Elige un usuario con el que comenzar a chatear.</h2> </div>}
+      </div> : <div className="contenedor-centrado"> <h2 className='mis-chats'>Elige un usuario con el que comenzar a chatear.</h2> </div>}
     </div>
   );
 };

@@ -47,5 +47,5 @@ export const ChatPage = () => {
   }, [roomId, token]); // Dependencias del efecto: roomId y token
 
   // Pasa roomId y roomName obtenidos al ChatComponent
-  return <ChatComponent roomId={roomId ? roomId : 0} roomName={roomName} roomMate={roomMate}  />;
+  return <ChatComponent roomId={roomId || 0} roomName={roomName} roomMate={roomMate}  />;
 };

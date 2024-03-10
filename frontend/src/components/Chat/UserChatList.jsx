@@ -5,9 +5,8 @@ import 'react-chat-elements/dist/main.css'; // Importar estilos de react-chat-el
 import { useNavigate } from 'react-router-dom';
 
 
-function UserChatList({lastMessage}) {
+function UserChatList() {
   const [users, setUsers] = useState([]);
-  const [chatListData, setChatListData] = useState([]);
   const backend = import.meta.env.VITE_APP_BACKEND;
 
   let navigate = useNavigate();
@@ -89,33 +88,6 @@ function UserChatList({lastMessage}) {
   
     return lastMessage;
   };
-  
-  
-  // const getLastMessage = (userId) => {
-  //   let lastMessage;
-    
-  //   const token = localStorage.getItem('token'); 
-  //   return fetch(`${backend}/chat/${room}/messages/`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Authorization': `Bearer ${token}`,
-  //     },
-  //     credentials: 'include'
-  //   })
-  //   .then(response => {
-  //     if (!response.ok) {
-  //         throw new Error(`HTTP error! status: ${response.status}`);
-  //     }
-  //     return response.json();
-  //   })
-  //   .then(data => {
-  //     return  data[-1].content;
-  //   })
-  //   .catch(error => console.error('Error fetching messages:', error));
-
-    
-  // };
-
 
   useEffect(() => {
     const fetchUsersAndLastMessages = async () => {
