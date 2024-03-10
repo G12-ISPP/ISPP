@@ -79,11 +79,15 @@ class ProductsView(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     type_filter = self.request.query_params.get('product_type')
     search_query = self.request.query_params.get('search')
-
+    seller_filter = self.request.query_params.get('seller')  
+    
     if type_filter:
       queryset = queryset.filter(product_type=type_filter)
+    if seller_filter: 
+        queryset = queryset.filter(seller_id=seller_filter)
     if search_query:
-            queryset = queryset.filter(Q(name__icontains=search_query) | Q(description__icontains=search_query))
+        queryset = queryset.filter(Q(name__icontains=search_query) | Q(description__icontains=search_query))
+            
     return queryset
   
   def get_serializer_context(self):
