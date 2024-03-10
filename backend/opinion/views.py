@@ -16,7 +16,6 @@ class OpinionView(viewsets.ModelViewSet):
     ruta_backend = settings.RUTA_BACKEND
     ruta_frontend = settings.RUTA_FRONTEND
 
-
     @api_view(['POST'])
     @csrf_exempt
     @login_required
@@ -24,21 +23,23 @@ class OpinionView(viewsets.ModelViewSet):
         if request.method == 'POST':
             description = request.data.get('description')
             score = request.data.get('score')
-            target_user = CustomUser.objects.get(id=request.data.get('target_user'))
+            target_user_id = request.data.get('target_user')
             date = request.data.get('date')
 
-            # Verificar que todos los campos requeridos estén presentes
-            if not all([description, score, target_user, date]):
+            if not all([description, score, target_user_id, date]):
                 return JsonResponse({'error': 'Todos los campos son obligatorios'}, status=400)
-            
-            # Verificar que user y target_user es distintio
-            if request.user == target_user:
-                return JsonResponse({'error': 'No puedes dejarte una opinion a ti mismo'}, status=403)
+
+            if request.user.id == int(target_user_id):
+                return JsonResponse({'error': 'No puedes dejarte una opinión a ti mismo'}, status=403)
 
             if int(score) < 1 or int(score) > 5:
-                return JsonResponse({'error': 'La puntuacin debe estar entre 1 y 5'}, status=400)
+                return JsonResponse({'error': 'La puntuación debe estar entre 1 y 5'}, status=400)
 
-            # Guardar la opinion en la base de datos
+            try:
+                target_user = CustomUser.objects.get(id=target_user_id)
+            except CustomUser.DoesNotExist:
+                return JsonResponse({'error': 'El usuario objetivo no existe'}, status=400)
+
             if request.user.is_authenticated:
                 opinion = Opinion(
                     author=get_user_from_token(request.headers.get('Authorization', '').split(' ')[1]),
@@ -49,6 +50,6 @@ class OpinionView(viewsets.ModelViewSet):
                 )
                 opinion.save()
 
-                return JsonResponse({'message': 'Opinion añadido correctamente'}, status=201)
+                return JsonResponse({'message': 'Opinión añadida correctamente'}, status=201)
 
         return JsonResponse({'error': 'Método no permitido'}, status=405)

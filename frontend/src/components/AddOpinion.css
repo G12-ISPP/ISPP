@@ -19,14 +19,16 @@
     margin:  50px auto;
     background-color: #004040;
     color: white;
-    border: none;
+    border: 2px solid #004040;
     border-radius:  5px;
     cursor: pointer;
     transition: background-color  0.3s ease; 
   }
   
   .add-opinion-button:hover {
-    background-color: #004040;
+    background: #E0EEC6;
+    color: #004040;
+    border: 2px solid #004040;
   }
 
   .error-message {
@@ -57,3 +59,27 @@
   .main {
     position: relative;
   }
+  .login-button {
+    text-align: center;
+    display: block;
+    width: auto;
+    padding:  10px  20px;
+    margin:  50px auto;
+    background-color: #004040;
+    color: white;
+    border: 2px solid #004040;
+    border-radius:  5px;
+    cursor: pointer;
+    transition: background-color  0.3s ease; 
+} 
+
+  .login-button:hover {
+    background: #E0EEC6;
+    color: #004040;
+    border: 2px solid #004040;
+  }
+
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
