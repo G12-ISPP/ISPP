@@ -16,7 +16,7 @@ const Navbar = () => {
                 <li onClick={() => onButtonClick('/')}>Materiales</li>
                 <li onClick={() => onButtonClick('/')}>Artistas</li>
                 <li onClick={() => onButtonClick('/')}>Comunidad</li>
-                <li onClick={() => onButtonClick('/chat/')}>Mis chats</li>
+                <li onClick={() => onButtonClick('/chat/')} onKeyDown={() => onButtonClick('/chat/')}>Mis chats</li>
             </ul>
         </div>
     )
