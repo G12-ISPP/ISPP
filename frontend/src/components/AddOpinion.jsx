@@ -7,6 +7,7 @@ class Opinion extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            showForm: false,
             target_user: this.props.target_user,
             date: new Date().toISOString().replace('T', ' ').substring(0, 19),
             score: 1,
@@ -15,6 +16,10 @@ class Opinion extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.validateForm = this.validateForm.bind(this);
+    }
+
+    toggleForm = () => {
+        this.setState(prevState => ({ showForm: !prevState.showForm }));
     }
 
     validateForm() {
@@ -73,21 +78,27 @@ class Opinion extends Component {
         return (
             <>
                 <h1 className='title'>Opiniones</h1>
-                <div className='main'>
-                    <form className='form' onSubmit={this.handleSubmit}>
-                        <div className='form-group'>
-                            <label htmlFor='description'>Descripción</label>
-                            <input type='text' id='description' name='description' value={this.state.description} onChange={e => this.setState({ description: e.target.value })} />
-                        </div>
-                        <div className='form-group'>
-                            <label htmlFor='score'>Puntuación</label>
-                            <input type='number' min={1} max={5} id='score' name='score' value={this.state.score} onChange={e => this.setState({ score: e.target.value })} />
-                        </div>
-                    </form>
+                <button className='add-opinion-button' onClick={this.toggleForm}>
+                    {this.state.showForm ? 'Ocultar formulario' : 'Añadir mi opinión'}
+                </button>
+                {this.state.showForm && (
+                    <>
+                        <div className='main'>
 
-                </div>
-
-                <button className='add-opinion-button' type='submit' onClick={this.handleSubmit}>Añadir Opinión</button>
+                            <form className='form' onSubmit={this.handleSubmit}>
+                                <div className='form-group'>
+                                    <label htmlFor='description'>Descripción</label>
+                                    <input type='text' id='description' name='description' value={this.state.description} onChange={e => this.setState({ description: e.target.value })} />
+                                </div>
+                                <div className='form-group'>
+                                    <label htmlFor='score'>Puntuación</label>
+                                    <input type='number' min={1} max={5} id='score' name='score' value={this.state.score} onChange={e => this.setState({ score: e.target.value })} />
+                                </div>
+                            </form>
+                        </div>
+                        <button className='add-opinion-button' type='submit' onClick={this.handleSubmit}>Publicar Opinión</button>
+                    </>
+                )}
             </>
         );
     }
