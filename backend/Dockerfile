@@ -19,7 +19,7 @@ RUN pip install --upgrade pip
 
 # Install necessary system libraries
 RUN apt-get update \
-    && apt-get install -y libx11-6 libgl1-mesa-glx \
+    && apt-get install -y libx11-6 libgl1-mesa-glx libxrender1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -38,7 +38,6 @@ RUN python ./manage.py loaddata ./population/01_Users.json ./population/02_Produ
 EXPOSE 8000
 # start server
 CMD python ./manage.py runserver 0.0.0.0:8000
-
 
 # To build -> docker build -t my-django-app .
 # To run -> docker run -p 8000:8000 my-django-app
