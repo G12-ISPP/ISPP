@@ -12,7 +12,16 @@ const MainPage = () => {
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='¡Explora la innovación en 3D!' />
                 <Text type={TEXT_TYPES.TITLE_NORMAL} text='Encuentra diseños, impresoras y materiales de alta calidad.' />
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='¡Haz tus ideas realidad!' />
+            </div>
+
+            <div className="slogan">
+                <Text type={TEXT_TYPES.TITLE_NORMAL} text='¿Tienes un modelo en formato STL que quieras imprimir?' />
                 <Button type={BUTTON_TYPES.LARGE} text='Solicitar impresión' path='/designs/my-design'  />
+            </div>
+
+            <div className="slogan">
+                <Text type={TEXT_TYPES.TITLE_NORMAL} text='¿No puedes imprimirlo porque tu diseño no es STL?' />
+                <Button type={BUTTON_TYPES.LARGE} text='Convertir a STL' path='/convert-to-stl'  />
             </div>
 
             <div className="section-title">
