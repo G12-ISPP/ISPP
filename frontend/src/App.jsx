@@ -10,8 +10,10 @@ import AddProduct from "./components/AddProduct.jsx";
 import Header from "./components/Header/Header.jsx";
 import Navbar from "./components/Navbar/Navbar.jsx";
 import CustomDesignDetails from "./components/CustomDesignDetails.jsx";
+import SearchResults from "./components/SearchResults.jsx";
 import CustonDesignCancelled from "./components/CustomDesignCancelled.jsx";
 import UserDetail from "./components/User";
+import ProductsList from "./components/ProductsList.jsx"
 import MainPage from "./pages/MainPage.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import Cart from "./components/Cart/Cart.jsx";
@@ -56,6 +58,7 @@ function App() {
         <Route path="/register" element={<RegisterFormPage />} />
         <Route path="/login" element={<LoginFormPage />} />
         <Route path="/user-details/:id" element={<UserDetail />} />
+        <Route path="/user-details/:id/products" element={<ProductsList />} />
         <Route path="/products/add-product" element={<AddProduct />} />
         <Route path="/cart" element={<Cart
           cart={cart}
@@ -64,6 +67,7 @@ function App() {
         <Route path="/order/details/:id" element={<OrderDetails />} />
         <Route path="/order/cancelled" element={<OrderCancelled />} />
         <Route path="/convert-to-stl" element={<ConvertToSTL />} />
+        <Route path="/search-results" element={<SearchResults />} />
       </Routes>
 
       <Footer />
