@@ -19,6 +19,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from django.contrib.auth import get_user_model
+from users.serializer import CustomUserSerializer
 import json
 
 def get_user_from_token(token):
@@ -93,6 +94,23 @@ def get_chatroom(request, room_id):
     else:
         return JsonResponse({'error': 'User is not a member of this chatroom'}, status=403)
     
+def chat_users(request):
+    token = request.headers.get('Authorization', '').split(' ')[1]
+    current_user = get_user_from_token(token)
+    
+    if current_user is None:
+        return JsonResponse({'error': 'Invalid token'}, status=401)
+
+    # Obtiene los IDs de los ChatRoom donde el usuario actual es miembro
+    chatrooms_ids = current_user.chatrooms.values_list('id', flat=True)
+
+    # Encuentra todos los usuarios que son miembros de los mismos ChatRoom, excluyendo al usuario actual
+    users = CustomUser.objects.filter(chatrooms__id__in=chatrooms_ids).exclude(id=current_user.id).distinct()
+
+    # Prepara la respuesta con los usuarios
+    users_data = [{'id': user.id, 'username': user.username} for user in users]
+
+    return JsonResponse({'users': users_data})
     
 class GetOrCreateChatRoom(APIView):
     def post(self, request):
@@ -125,3 +143,21 @@ class GetOrCreateChatRoom(APIView):
 
         return Response({'chatroomID': chatroom.id}, status=status.HTTP_200_OK)
     
+class ChatRoomUsersAPIView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        # Obtener todos los chatrooms del usuario actual
+        user_chatrooms = request.user.chatrooms.all()
+
+        # Obtener todos los usuarios únicos de esos chatrooms, excluyendo el usuario actual
+        users_ids = set()
+        for room in user_chatrooms:
+            users_ids.update(room.members.exclude(id=request.user.id).values_list('id', flat=True))
+
+        # Obtener los objetos de usuario correspondientes
+        users = CustomUser.objects.filter(id__in=users_ids)
+
+        # Serializar los datos de los usuarios
+        serializer = CustomUserSerializer(users, many=True)
+
+        return Response(serializer.data)

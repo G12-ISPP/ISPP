@@ -32,7 +32,7 @@ const UserDetail = () => {
   const handleChatClick = async () => {
     const currentUserID = localStorage.getItem('userId');
     const otherUserID = user?.id;
-    const petition = `${import.meta.env.VITE_APP_BACKEND}/chat/chatroom/`;
+    const petition = `${backend}/chat/chatroom/`;
     const token = localStorage.getItem('token');
 
     try {

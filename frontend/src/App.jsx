@@ -48,6 +48,7 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/tasks" element={<TaskPage />} />
         <Route path="/tasks-create" element={<TaskFormPage />} />
+        <Route path="/chat/" element={<ChatPage />} />
         <Route path="/chat/:roomId" element={<ChatPage />} />
         <Route path="/product-details/:id" element={<ProductDetail
           cart={cart}
