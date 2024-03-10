@@ -36,8 +36,8 @@ class Opinion extends Component {
             errors.description = 'La descripción es obligatoria';
         }
 
-        if (score < 1 || score > 5) {
-            errors.score = 'La puntuación debe estar entre 1 y 5';
+        if (!Number.isInteger(parseFloat(score)) || score < 1 || score > 5) {
+            errors.score = 'La puntuación debe ser un número entero entre 1 y 5';
         }
 
         this.setState({ errors });
@@ -86,52 +86,61 @@ class Opinion extends Component {
     };
 
     render() {
-        const { errors, isAuthenticated } = this.state;
+        const { errors, isAuthenticated, showForm } = this.state;
 
         return (
-            <>
+            <div className='opiniones'>
                 <h1 className='title'>Opiniones</h1>
-                <button className='add-opinion-button' onClick={this.toggleForm}>
-                    {this.state.showForm ? 'Ocultar formulario' : 'Añadir mi opinión'}
-                </button>
-                {errors.login && <p className='error'>{errors.login} <a className='login-button' href="/login">Iniciar sesión</a></p>}
-                {this.state.showForm && isAuthenticated && (
-                    <>
-                        <div className='main'>
-                            <form className='form' onSubmit={this.handleSubmit}>
-                                <div className='form-group'>
-                                    <label htmlFor='description'>Descripción</label>
-                                    <textarea
-                                        type='text'
-                                        id='description'
-                                        name='description'
-                                        value={this.state.description}
-                                        onChange={(e) => this.setState({ description: e.target.value })}
-                                        rows={5}
-                                    />
-                                    {errors.description && <span className='error'>{errors.description}</span>}
-                                </div>
-                                <div className='form-group'>
-                                    <label htmlFor='score'>Puntuación</label>
-                                    <input
-                                        type='number'
-                                        min={1}
-                                        max={5}
-                                        id='score'
-                                        name='score'
-                                        value={this.state.score}
-                                        onChange={(e) => this.setState({ score: e.target.value })}
-                                    />
-                                    {errors.score && <span className='error'>{errors.score}</span>}
-                                </div>
-                            </form>
-                        </div>
-                        <button className='add-opinion-button' type='submit' onClick={this.handleSubmit}>
-                            Publicar Opinión
-                        </button>
-                    </>
+                <div className='button-container'>
+                    <button className='add-opinion-button' onClick={this.toggleForm}>
+                        {showForm ? 'Ocultar formulario' : 'Añadir mi opinión'}
+                    </button>
+                </div>
+                {errors.login && (
+                    <p className='error'>
+                        {errors.login} <a className='login-button' href="/login">Iniciar sesión</a>
+                    </p>
                 )}
-            </>
+                {showForm && isAuthenticated && (
+                    <div className='main'>
+                        <form className='form' onSubmit={this.handleSubmit}>
+                            <div className='form-group'>
+                                <label htmlFor='description'>Descripción</label>
+                                <textarea
+                                    type='text'
+                                    id='description'
+                                    name='description'
+                                    value={this.state.description}
+                                    onChange={(e) => this.setState({ description: e.target.value })}
+                                    rows={5}
+                                />
+                                {errors.description && <span className='error'>{errors.description}</span>}
+                            </div>
+                            <div className='form-group'>
+                                <label htmlFor='score'>Puntuación</label>
+                                <input
+                                    type='number'
+                                    min={1}
+                                    max={5}
+                                    id='score'
+                                    name='score'
+                                    value={this.state.score}
+                                    onChange={(e) => this.setState({ score: e.target.value })}
+                                />
+                                {errors.score && <span className='error'>{errors.score}</span>}
+                            </div>
+                            <div className='button-container'>
+                                <button className='add-opinion-button' type='submit' onClick={this.handleSubmit}>
+                                    Publicar Opinión
+                                </button>
+                            </div>
+                        </form>
+
+
+                    </div>
+
+                )}
+            </div>
         );
     }
 }
