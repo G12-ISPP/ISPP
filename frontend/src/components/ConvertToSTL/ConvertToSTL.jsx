@@ -1,5 +1,3 @@
-// En tu archivo ConvertToSTL.jsx
-
 import React, { useState } from 'react';
 import './ConvertToSTL.css';
 
@@ -55,7 +53,16 @@ const ConvertToSTL = () => {
             })
                 .then(response => {
                     if (response.ok) {
-                        // Aquí puedes manejar la respuesta, por ejemplo, mostrar un mensaje de éxito
+                        // Manejar la respuesta como un archivo descargable
+                        response.blob().then(blob => {
+                            const url = window.URL.createObjectURL(new Blob([blob]));
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.setAttribute('download', `output_${Date.now()}.stl`);
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        });
                         alert('Archivo convertido y procesado correctamente');
                     } else {
                         throw new Error('Error al convertir el archivo');
@@ -93,3 +100,4 @@ const ConvertToSTL = () => {
 };
 
 export default ConvertToSTL;
+
