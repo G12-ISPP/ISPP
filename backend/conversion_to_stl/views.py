@@ -11,6 +11,13 @@ from conversion_to_stl.to_stl import MeshProcessor
 # Create your views here.
 
 
+import os
+import uuid
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+from .mesh_processor import MeshProcessor  # Asegúrate de importar tu clase MeshProcessor
+
 @api_view(['POST'])
 @csrf_exempt
 def convert_to_stl(request):
@@ -21,17 +28,14 @@ def convert_to_stl(request):
         if not image:
             return JsonResponse({'error': 'La foto es obligatoria'}, status=400)
 
-        # Generar un nombre de archivo único con la fecha actual y milisegundos
-        current_datetime = datetime.now()
-        current_date = current_datetime.strftime('%Y%m%d_%H%M%S')
-        milliseconds = current_datetime.microsecond // 1000
-        file_name = f'{current_date}_{milliseconds}_{image.name}'
+        # Generar un nombre de archivo único con un UUID
+        unique_filename = str(uuid.uuid4())
+        file_name = f'{unique_filename}.jpg'  # Utiliza la extensión de archivo adecuada
 
         # Rutas de archivos temporales y de salida
         temp_dir = 'media/tmp/'
         temp_path = os.path.join(temp_dir, file_name)
-        output_stl_path = os.path.join(temp_dir, f'output_{current_date}_{milliseconds}.stl')
-        print(temp_path)
+        output_stl_path = os.path.join(temp_dir, f'output_{unique_filename}.stl')
 
         # Verificar si la carpeta temporal existe, si no, crearla
         if not os.path.exists(temp_dir):
@@ -48,7 +52,7 @@ def convert_to_stl(request):
         # Abrir y leer el archivo STL convertido
         with open(output_stl_path, 'rb') as stl_file:
             response = HttpResponse(stl_file.read(), content_type='application/octet-stream')
-            response['Content-Disposition'] = f'attachment; filename=output_{current_date}_{milliseconds}.stl'
+            response['Content-Disposition'] = f'attachment; filename=output_{unique_filename}.stl'
 
         # Eliminar archivos temporales
         os.remove(temp_path)
@@ -57,5 +61,6 @@ def convert_to_stl(request):
         return response
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
 
 
