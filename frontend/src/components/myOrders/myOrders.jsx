@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import '../Cart/Cart.css';
+import myOrder from '../../assets/myOrder.png';
+
 
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
@@ -61,7 +63,7 @@ const MyOrders = () => {
                             return (
                             <div className='box' key={order.pk} onClick={handleClick}>
                             <div className='img-container'> 
-                            <img src={order.image_url ? order.image_url : '/images/' + order.imageRoute} alt={order.date} />
+                            <img src={myOrder} alt={order.date} />
                             </div>
                             <div className="content">
                             <div>
