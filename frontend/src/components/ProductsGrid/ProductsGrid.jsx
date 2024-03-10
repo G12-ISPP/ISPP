@@ -8,15 +8,20 @@ const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
 
 const ProductsGrid = (consts) => {
 
-    const { gridType, elementType } = consts
+    const { gridType, elementType, filter } = consts
 
     const getGridClass = () => {
         return gridType.toLowerCase() + '-gr grid';
     }
 
-    const getAllProducts = async (elementType) => {
+    const getAllProducts = async (elementType, filter) => {
         try {
-            let petition = backend + '/products/api/v1/products/?product_type=' + elementType;
+            let petition = backend + '/products/api/v1/products/';
+            if (filter) {
+                petition += '?' + filter;
+            } else if (elementType) {
+                petition += '?product_type=' + elementType;
+            }
             petition = petition.replace(/"/g, '')
             const response = await fetch(petition, {
                 method: 'GET',
@@ -36,9 +41,9 @@ const ProductsGrid = (consts) => {
         }
     }
 
-    const groupProducts = async (elementType) => {
+    const groupProducts = async (elementType, filter) => {
         try {
-            const products = await getAllProducts(elementType);
+            const products = await getAllProducts(elementType, filter);
 
             const groupsOfProducts = products.reduce((acc, product, index) => {
                 const groupIndex = Math.floor(index / 5);
@@ -75,21 +80,21 @@ const ProductsGrid = (consts) => {
     useEffect(() => {
 
         async function loadProducts() {
-            const res = await getAllProducts(elementType);
+            const res = await getAllProducts(elementType, filter);
 
             if (res && Array.isArray(res)) { // Verificar si res no es undefined y es un array
                 {/*Adaptar código cuando se añada funcionalidad de destacados*/}
                 if (gridType === GRID_TYPES.MAIN_PAGE) {
                     setProducts(res.slice(0, 5));
                 } else {
-                    const groupsOfProducts = await groupProducts(elementType);
+                    const groupsOfProducts = await groupProducts(elementType, filter);
                     setProducts(groupsOfProducts);
                 }
             }
         }
         loadProducts();
 
-    }, [gridType, elementType]);
+    }, [gridType, elementType, filter]);
 
     return (
         <div className={getGridClass()}>
@@ -98,9 +103,9 @@ const ProductsGrid = (consts) => {
                     <Text type={TEXT_TYPES.TITLE_BOLD} text={transformTypeName(elementType)} />
                     <div className='products-container'>
                         {products.map((group, groupIndex) => (
-                            <div key={groupIndex} className={`products-row ${group.length < 5 ? 'last' : ''}`}>
-                                {group.map((product) => (
-                                    <Product name={product.name} price={product.price} pathImage={product.image_url ? product.image_url : product.imageRoute} pathDetails={product.id} isImageRoute={!product.image_url} />
+                            <div key={`group-${groupIndex}`} className={`products-row ${group.length < 5 ? 'last' : ''}`}>
+                                {group.map((product, productIndex) => (
+                                    <Product name={product.name} price={product.price} pathImage={product.image_url ? product.image_url : product.imageRoute} pathDetails={product.id} isImageRoute={!product.image_url} key={`product-${groupIndex}-${productIndex}`} />
                                 ))}
                             </div>
                         ))}
