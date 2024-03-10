@@ -4,10 +4,6 @@ import { useParams } from 'react-router-dom';
 
 const backend = import.meta.env.VITE_APP_BACKEND;
 
-const url = window.location.href;
-const url2 = url.split('/');
-const id = url2[url2.length - 1];
-
 const CustomDesignPrinters = () => {
     const { id } = useParams();
     const [data, setData] = useState(null);
@@ -26,6 +22,27 @@ const CustomDesignPrinters = () => {
         fetchData();
     }, [id]);
 
+    const handlePrint = async () => {
+        try {
+            const response = await fetch(`${backend}/designs/update-status/${id}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                },
+            });
+            const result = await response.json();
+            if (result.status === 'success') {
+                alert('Asignación realizada. Ya puede empezar a imprimir la pieza');
+                window.location.href = '/';
+            } else {
+                alert('Error al actualizar el diseño.');
+            }
+        } catch (error) {
+            console.error('Error al actualizar el diseño:', error);
+        }
+    };
+
     return (
         <>
             <div className="custom-design-printers">
@@ -37,7 +54,7 @@ const CustomDesignPrinters = () => {
                 <p>Calidad: {data && data.quality}</p>
                 <p>Cantidad: {data && data.quantity}</p>
                 <p>Precio: {data && data.price}€</p>
-                <button onClick={() => console.log('Imprimiendo diseño...')}>Imprimir</button>
+                <button onClick={handlePrint}>Imprimir</button>
             </div>
         </>
     );

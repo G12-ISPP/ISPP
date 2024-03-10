@@ -16,7 +16,7 @@ from django.http import JsonResponse
 from users.serializer import UserSerializer
 import base64
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
 
 ruta_backend = settings.RUTA_BACKEND
@@ -146,6 +146,38 @@ def details_to_printer(request, id):
     custom_design = get_object_or_404(CustomDesign, custom_design_id=id)
     serializer = CustomDesignSerializer(custom_design)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@csrf_exempt
+def update_design_status(request, design_id):
+    if request.method == 'POST':
+        try:
+            design = CustomDesign.objects.get(custom_design_id=design_id)
+            design.status = 'printing'
+            design.printer = request.user
+            design.save()
+
+            body = f"""
+            Ha sido seleccionado para imprimir la pieza que se adjunta en este correo. Por favor, una vez finalizada la impresión, acuda a Correos y envíala a la ciudad {design.city}, a la dirección {design.address}.
+            Recibirás el coste de impresión de {design.price - design.quantity * (3+3+2)} €, más 3 euros por el servicio, y los gastos de envío.
+            """
+
+            subject = 'Puede empezar a imprimir'
+            from_email = settings.EMAIL_HOST_USER
+            to = [design.printer.email]
+
+            email = EmailMessage(subject, body, from_email, to)
+            email.attach_file(design.design_file.path) 
+
+            email.send()
+
+            return JsonResponse({'status': 'success', 'message': 'Diseño actualizado a imprimiendo y correo enviado.'})
+        except CustomDesign.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Diseño no encontrado.'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Método no permitido.'})
+
+
 
 @api_view(['GET'])
 @csrf_exempt
