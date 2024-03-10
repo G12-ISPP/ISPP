@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+import uuid
 
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -9,14 +9,6 @@ from conversion_to_stl.to_stl import MeshProcessor
 
 
 # Create your views here.
-
-
-import os
-import uuid
-from django.http import JsonResponse, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view
-from .mesh_processor import MeshProcessor  # Asegúrate de importar tu clase MeshProcessor
 
 @api_view(['POST'])
 @csrf_exempt
