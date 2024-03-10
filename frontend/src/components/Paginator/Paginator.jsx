@@ -38,6 +38,17 @@ const Paginator = (props) => {
         }
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            const newPage = parseInt(input, 10);
+            if (newPage >= 1 && newPage <= numPages) {
+                setPage(newPage);
+            } else {
+                setInput(page);
+            }
+        }
+    };
+
     return (
         <div className='paginator'>
             {page === 1 ? null : (
@@ -46,7 +57,7 @@ const Paginator = (props) => {
                 </button>
             )}
             <div className="page-counter">
-                <input className='page-selector' type='number' value={input} onChange={handleInputChange} onBlur={handleInputBlur} min='1' />
+                <input className='page-selector' type='number' value={input} onChange={handleInputChange} onBlur={handleInputBlur} onKeyDown={handleKeyDown} />
                 <p className='actual-page'>de {numPages}</p>
             </div>
             {page === numPages ? null : (
