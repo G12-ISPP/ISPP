@@ -17,6 +17,7 @@ const MainPage = () => {
             <div className="slogan">
                 <Text type={TEXT_TYPES.TITLE_NORMAL} text='¿Tienes un modelo en formato STL que quieras imprimir?' />
                 <Button type={BUTTON_TYPES.LARGE} text='Solicitar impresión' path='/designs/my-design'  />
+                {localStorage.getItem('token')? <Button type={BUTTON_TYPES.LARGE} text='Comprar plan' path='/buy-plan' /> : null}
             </div>
 
             <div className="slogan">

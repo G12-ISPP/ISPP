@@ -18,6 +18,9 @@ import Footer from "./components/Footer/Footer.jsx";
 import Cart from "./components/Cart/Cart.jsx";
 import {ChatPage} from "./pages/ChatPage"
 import 'react-chat-elements/dist/main.css';
+import BuyPlan from "./components/BuyPlan/BuyPlan.jsx";
+import CancelPlan from "./components/BuyPlan/CancelPlan.jsx";
+import ConfirmPlan from "./components/BuyPlan/ConfirmPlan.jsx";
 
 import OrderDetails from "./components/OrderDetails.jsx";
 import OrderCancelled from "./components/OrderCancelled.jsx";
@@ -38,7 +41,6 @@ function App() {
     useEffect(() => {
         localStorage.setItem("cart", JSON.stringify(cart))
     }, [cart])
-
 
     return (
         <BrowserRouter>
@@ -73,6 +75,9 @@ function App() {
                     <Route path="/convert-to-stl" element={<ConvertToSTL/>}/>
                     <Route path="/myOrders" element={<MyOrders/>}/>
                     <Route path="/search-results" element={<SearchResults/>}/>
+                    <Route path="/buy-plan" element={<BuyPlan/>} />
+                    <Route path="/cancel-plan" element={<CancelPlan/>} />
+                    <Route path="/confirm-plan" element={<ConfirmPlan/>} />
                 </Routes>
                 <Footer/>
             </AuthProvider>
