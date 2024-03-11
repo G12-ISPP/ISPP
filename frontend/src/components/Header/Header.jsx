@@ -6,6 +6,7 @@ import cartIcon from '../../assets/bx-cart.svg';
 import menuIcon from '../../assets/bx-menu.svg';
 import exitIcon from '../../assets/bx-x.svg';
 import Button, { BUTTON_TYPES } from '../Button/Button';
+import { CgProfile } from "react-icons/cg";
 
 const Header = ({ cart,setCart }) => {
 
@@ -108,6 +109,8 @@ const Header = ({ cart,setCart }) => {
                 console.error('Error al realizar la búsqueda:', error);
             });
     };
+
+    const currentUserID = localStorage.getItem('userId');
 
     return (
         <div className={isHeaderFullScreen ? 'header-fullscreen' : 'header'}>
@@ -265,6 +268,9 @@ const Header = ({ cart,setCart }) => {
                             </div>
                         </>
                         )}
+                        <a href={`/user-details/${currentUserID}`}>
+                            <CgProfile className="icon-cart"/>
+                        </a>
                         {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Pedidos' path='/myOrders' />}
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login' />}
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />}
