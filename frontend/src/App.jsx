@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { TaskPage } from "./pages/TaskPage";
 import { TaskFormPage } from "./pages/TaskFormPage";
 import { RegisterFormPage } from "./pages/RegisterFormPage.jsx";
@@ -7,12 +7,8 @@ import { LoginFormPage } from "./pages/LoginFormPage.jsx";
 import ProductDetail from "./components/Product";
 import CustomDesign from "./components/CustomDesign.jsx";
 import AddProduct from "./components/AddProduct.jsx";
-import { Navigation } from "./components/Navigation";
 import Header from "./components/Header/Header.jsx";
 import Navbar from "./components/Navbar/Navbar.jsx";
-import Product from "./components/Product/Product.jsx";
-import Artist from "./components/Artist/Artist.jsx";
-import Button, { BUTTON_TYPES } from "./components/Button/Button.jsx";
 import CustomDesignDetails from "./components/CustomDesignDetails.jsx";
 import SearchResults from "./components/SearchResults.jsx";
 import CustonDesignCancelled from "./components/CustomDesignCancelled.jsx";
@@ -26,6 +22,7 @@ import 'react-chat-elements/dist/main.css';
 
 import OrderDetails from "./components/OrderDetails.jsx";
 import OrderCancelled from "./components/OrderCancelled.jsx";
+import ConvertToSTL from "./components/ConvertToSTL/ConvertToSTL.jsx";
 import MyOrders from './components/myOrders/myOrders.jsx';
 
 function App() {
@@ -70,6 +67,7 @@ function App() {
         />} />
         <Route path="/order/details/:id" element={<OrderDetails />} />
         <Route path="/order/cancelled" element={<OrderCancelled />} />
+        <Route path="/convert-to-stl" element={<ConvertToSTL />} />
         <Route path="/myOrders" element={<MyOrders />} />
         <Route path="/search-results" element={<SearchResults />} />
       </Routes>
