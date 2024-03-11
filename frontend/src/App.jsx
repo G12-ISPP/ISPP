@@ -24,6 +24,12 @@ import OrderCancelled from "./components/OrderCancelled.jsx";
 import {AuthProvider} from "./context/AuthContext.jsx";
 import ConvertToSTL from "./components/ConvertToSTL/ConvertToSTL.jsx";
 import MyOrders from './components/myOrders/myOrders.jsx';
+import ProductsList from "./components/ProductsList.jsx";
+import DesignsPage from "./pages/DesignsPage.jsx";
+import PiecesPage from "./pages/PiecesPage.jsx";
+import PrintersPage from "./pages/PrintersPage.jsx";
+import MaterialsPage from "./pages/MaterialsPage.jsx";
+import ArtistsPage from "./pages/ArtistsPage.jsx";
 
 function App() {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
@@ -47,21 +53,21 @@ function App() {
                     <Route path="/tasks" element={<TaskPage/>}/>
                     <Route path="/tasks-create" element={<TaskFormPage/>}/>
                     <Route path="/chat/:roomId" element={<ChatPage/>}/>
-                    <Route path="/product-details/:id" element={<ProductDetail
-                        cart={cart}
-                        setCart={setCart}
-                    />}/>
+                    <Route path="/product-details/:id" element={<ProductDetail cart={cart} setCart={setCart}/>}/>
+                    <Route path="/designs" element={<DesignsPage/>}/>
                     <Route path="/designs/my-design" element={<CustomDesign/>}/>
                     <Route path="/designs/details/:id" element={<CustomDesignDetails/>}/>
                     <Route path="/designs/cancelled" element={<CustonDesignCancelled/>}/>
+                    <Route path="/pieces" element={<PiecesPage/>}/>
+                    <Route path="/printers" element={<PrintersPage/>}/>
+                    <Route path="/materials" element={<MaterialsPage/>}/>
+                    <Route path="/artists" element={<ArtistsPage/>}/>
                     <Route path="/register" element={<RegisterFormPage/>}/>
                     <Route path="/login" element={<LoginFormPage/>}/>
                     <Route path="/user-details/:id" element={<UserDetail/>}/>
+                    <Route path="/user-details/:id/products" element={<ProductsList/>}/>
                     <Route path="/products/add-product" element={<AddProduct/>}/>
-                    <Route path="/cart" element={<Cart
-                        cart={cart}
-                        setCart={setCart}
-                    />}/>
+                    <Route path="/cart" element={<Cart cart={cart} setCart={setCart}/>}/>
                     <Route path="/order/details/:id" element={<OrderDetails/>}/>
                     <Route path="/order/cancelled" element={<OrderCancelled/>}/>
                     <Route path="/convert-to-stl" element={<ConvertToSTL/>}/>
