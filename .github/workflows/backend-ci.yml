@@ -32,5 +32,7 @@ jobs:
           python backend/manage.py loaddata backend/population/01_Users.json backend/population/02_Products.json
 
       - name: Run Tests
-        run: python backend/manage.py test
+        run: | 
+	  cd backend
+	  python manage.py test
 
