@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from order.views import create_order, confirm_order, cancel_order, order_details
+from order.views import create_order, confirm_order, cancel_order, order_details, my_orders
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,4 +33,5 @@ urlpatterns = [
     path('order/confirm/<str:order_id>', confirm_order, name='confirm_order'),
     path('order/cancel/<str:order_id>', cancel_order, name='cancel_order'),
     path('order/details/<uuid:order_id>', order_details, name='order_details'),
+    path('order/myorders', my_orders, name='my_orders')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

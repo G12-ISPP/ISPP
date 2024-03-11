@@ -23,6 +23,8 @@ from .serializer import OrderSerializer
 from datetime import datetime
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from users.models import CustomUser
+from django.core.serializers import serialize
 
 ruta_backend = settings.RUTA_BACKEND
 ruta_frontend = settings.RUTA_FRONTEND
@@ -126,6 +128,11 @@ def cancel_order(request, order_id):
 def order_details(request, order_id):
     try:
         order = Order.objects.get(id=order_id)
+        order_products = list(OrderProduct.objects.filter(order_id=order_id))
+        products = []
+        for p in order_products:
+            products.append({'id': p.product_id, 'quantity':p.quantity})
+
         order_details = {
             'id': order.id,
             'buyer': order.buyer.email if order.buyer else None,
@@ -138,7 +145,36 @@ def order_details(request, order_id):
             'date': order.date,
             'payed': order.payed,
             'buyer_mail': order.buyer_mail,
+            'products': products
         }
         return JsonResponse(order_details)
     except Order.DoesNotExist:
         return JsonResponse({'error': 'El pedido no existe'}, status=404)
+
+@api_view(['GET'])
+def my_orders(request):
+    try:
+        if request.user.is_authenticated:
+            username = request.user
+            user = CustomUser.objects.get(username=username)
+            orders = Order.objects.filter(buyer=user.id)
+            
+            orders_serialized = serialize('json', orders)
+            orders_list = [item['fields'] for item in json.loads(orders_serialized)]
+            for i, order in enumerate(orders):
+                orders_list[i]['pk'] = str(order.pk)
+                productId = list(OrderProduct.objects.filter(order_id=order.pk))[0].product_id
+                product = Product.objects.get(pk=productId)
+                orders_list[i]['imageRoute'] = product.imageRoute
+
+            
+            empty = not orders_list
+            
+            orders_data = {
+                'orders': orders_list,
+                'empty': empty
+            }
+        return JsonResponse(orders_data)
+    except Exception as e:
+        print(e)
+        return JsonResponse({'error': 'Internal server error'}, status=500)
