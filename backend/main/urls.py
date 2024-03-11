@@ -27,6 +27,7 @@ urlpatterns = [
     path('designs/', include('custom_design.urls')),
     path('users/', include('users.urls')),
     path('products/', include('products.urls')),
+    path('opinion/', include('opinion.urls')),
     path('chat/', include('chat.urls')),
     path('newOrder', create_order, name='create_order'),
     path('order/confirm/<str:order_id>', confirm_order, name='confirm_order'),
