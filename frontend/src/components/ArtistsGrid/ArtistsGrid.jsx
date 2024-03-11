@@ -73,6 +73,11 @@ const ArtistsGrid = (consts) => {
                 if (gridType === GRID_TYPES.MAIN_PAGE) {
                     setArtists(res.slice(0, 5));
                 } else {
+                    if (window.innerWidth < 768) {
+                        setArtistsPerPage(12);
+                    } else if (window.innerWidth > 767 && window.innerWidth < 1024) {
+                        setArtistsPerPage(15);
+                    }
                     const numPages = Math.ceil(res.length / artistsPerPage);
                     setNumPages(numPages);
                     const allArtists = res.slice((page - 1) * artistsPerPage, page * artistsPerPage);

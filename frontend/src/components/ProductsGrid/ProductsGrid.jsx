@@ -84,7 +84,7 @@ const ProductsGrid = (consts) => {
 
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(1);
-    const [productsPerPage, setProductsPerPage] = window.innerWidth > 767 ? useState(25) : useState(12);
+    const [productsPerPage, setProductsPerPage] = useState(25);
     const [numPages, setNumPages] = useState(0);
 
     useEffect(() => {
@@ -97,6 +97,11 @@ const ProductsGrid = (consts) => {
                 if (gridType === GRID_TYPES.MAIN_PAGE) {
                     setProducts(res.slice(0, 5));
                 } else {
+                    if (window.innerWidth < 768) {
+                        setProductsPerPage(12);
+                    } else if (window.innerWidth > 767 && window.innerWidth < 1024) {
+                        setProductsPerPage(15);
+                    }
                     const numPages = Math.ceil(res.length / productsPerPage);
                     setNumPages(numPages);
                     const allProducts = res.slice((page - 1) * productsPerPage, page * productsPerPage);
