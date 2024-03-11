@@ -26,11 +26,26 @@ from django.conf import settings
 from datetime import datetime
 from django.http import HttpResponseRedirect
 
+from django.db.models import Q
+
 ruta_frontend = settings.RUTA_FRONTEND
 
 class UsersView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = CustomUser.objects.all()
+
+    def get_queryset(self):
+        search_query = self.request.query_params.get('search')
+
+        queryset = CustomUser.objects.all()
+        if search_query:
+            queryset = queryset.filter(
+                Q(username__icontains=search_query) | 
+                Q(first_name__icontains=search_query) |
+                Q(last_name__icontains=search_query)
+            )
+
+        return queryset
 
   # New function
     @action(detail=True, methods=['get'])

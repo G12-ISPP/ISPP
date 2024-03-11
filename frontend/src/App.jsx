@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { TaskPage } from "./pages/TaskPage";
 import { TaskFormPage } from "./pages/TaskFormPage";
 import { RegisterFormPage } from "./pages/RegisterFormPage.jsx";
@@ -7,15 +7,13 @@ import { LoginFormPage } from "./pages/LoginFormPage.jsx";
 import ProductDetail from "./components/Product";
 import CustomDesign from "./components/CustomDesign.jsx";
 import AddProduct from "./components/AddProduct.jsx";
-import { Navigation } from "./components/Navigation";
 import Header from "./components/Header/Header.jsx";
 import Navbar from "./components/Navbar/Navbar.jsx";
-import Product from "./components/Product/Product.jsx";
-import Artist from "./components/Artist/Artist.jsx";
-import Button, { BUTTON_TYPES } from "./components/Button/Button.jsx";
 import CustomDesignDetails from "./components/CustomDesignDetails.jsx";
+import SearchResults from "./components/SearchResults.jsx";
 import CustonDesignCancelled from "./components/CustomDesignCancelled.jsx";
 import UserDetail from "./components/User";
+import ProductsList from "./components/ProductsList.jsx"
 import MainPage from "./pages/MainPage.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import Cart from "./components/Cart/Cart.jsx";
@@ -27,6 +25,8 @@ import ConfirmPlan from "./components/BuyPlan/ConfirmPlan.jsx";
 
 import OrderDetails from "./components/OrderDetails.jsx";
 import OrderCancelled from "./components/OrderCancelled.jsx";
+import ConvertToSTL from "./components/ConvertToSTL/ConvertToSTL.jsx";
+import MyOrders from './components/myOrders/myOrders.jsx';
 
 function App() {
   const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
@@ -62,6 +62,7 @@ function App() {
         <Route path="/register" element={<RegisterFormPage />} />
         <Route path="/login" element={<LoginFormPage />} />
         <Route path="/user-details/:id" element={<UserDetail />} />
+        <Route path="/user-details/:id/products" element={<ProductsList />} />
         <Route path="/products/add-product" element={<AddProduct />} />
         <Route path="/cart" element={<Cart
           cart={cart}
@@ -72,6 +73,9 @@ function App() {
         <Route path="/buy-plan" element={<BuyPlan/>} />
         <Route path="/cancel-plan" element={<CancelPlan/>} />
         <Route path="/confirm-plan" element={<ConfirmPlan/>} />
+        <Route path="/convert-to-stl" element={<ConvertToSTL />} />
+        <Route path="/myOrders" element={<MyOrders />} />
+        <Route path="/search-results" element={<SearchResults />} />
       </Routes>
 
       <Footer />

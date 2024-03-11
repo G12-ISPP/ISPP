@@ -61,7 +61,8 @@ INSTALLED_APPS = [
     'order',
     'products',
     'custom_design',
-    'chat'
+    'chat',
+    "conversion_to_stl"
 ]
 
 MIDDLEWARE = [
