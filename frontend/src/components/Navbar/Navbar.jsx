@@ -10,11 +10,11 @@ const Navbar = () => {
     return (
         <div className='navbar'>
             <ul>
-                <li onClick={() => onButtonClick('/')}>Diseños</li>
-                <li onClick={() => onButtonClick('/')}>Piezas</li>
-                <li onClick={() => onButtonClick('/')}>Impresoras</li>
-                <li onClick={() => onButtonClick('/')}>Materiales</li>
-                <li onClick={() => onButtonClick('/')}>Artistas</li>
+                <li onClick={() => onButtonClick('/designs')}>Diseños</li>
+                <li onClick={() => onButtonClick('/pieces')}>Piezas</li>
+                <li onClick={() => onButtonClick('/printers')}>Impresoras</li>
+                <li onClick={() => onButtonClick('/materials')}>Materiales</li>
+                <li onClick={() => onButtonClick('/artists')}>Artistas</li>
                 <li onClick={() => onButtonClick('/')}>Comunidad</li>
             </ul>
         </div>

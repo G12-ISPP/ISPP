@@ -38,5 +38,6 @@ urlpatterns = [
     path('buyPlan/',buy_plan, name='buy_plan'),
     path('obtainPlan/<str:plan_seller>/<str:plan_buyer>/<str:plan_designer>/<str:user_id>',obtain_plan, name='obtain_plan'),
     path('conversion/', include('conversion_to_stl.urls')),
-    path('order/myorders', my_orders, name='my_orders')
+    path('order/myorders', my_orders, name='my_orders'),
+    path('', include('tokens.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
