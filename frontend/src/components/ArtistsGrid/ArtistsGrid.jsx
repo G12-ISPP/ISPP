@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import './ArtistsGrid.css'
 import Artist from '../Artist/Artist';
+import Text, { TEXT_TYPES } from '../Text/Text';
+import Paginator from '../Paginator/Paginator';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -26,7 +28,8 @@ const ArtistsGrid = (consts) => {
 
             if (response.ok) {
                 const data = await response.json();
-                return data;
+                const designers = data.filter(artist => artist.is_designer === true);
+                return designers;
             } else {
                 console.error('Error al obtener los artistas');
             }
@@ -35,7 +38,30 @@ const ArtistsGrid = (consts) => {
         }
     }
 
+    const groupArtists = (artists) => {
+        try {
+
+            const groupsOfArtists = artists.reduce((acc, artist, index) => {
+                const groupIndex = Math.floor(index / 5);
+                if (!acc[groupIndex]) {
+                    acc[groupIndex] = [];
+                }
+                acc[groupIndex].push(artist);
+                return acc;
+            }, []);
+
+            return groupsOfArtists;
+
+        } catch (error) {
+            console.error('Error al obtener y agrupar los artistas: ', error);
+            return [];
+        }
+    }
+
     const [artists, setArtists] = useState([]);
+    const [page, setPage] = useState(1);
+    const [artistsPerPage, setArtistsPerPage] = useState(25);
+    const [numPages, setNumPages] = useState(0);
 
     useEffect(() => {
 
@@ -47,21 +73,44 @@ const ArtistsGrid = (consts) => {
                 if (gridType === GRID_TYPES.MAIN_PAGE) {
                     setArtists(res.slice(0, 5));
                 } else {
-                    setArtists(res);
+                    if (window.innerWidth < 768) {
+                        setArtistsPerPage(12);
+                    } else if (window.innerWidth > 767 && window.innerWidth < 1024) {
+                        setArtistsPerPage(15);
+                    }
+                    const numPages = Math.ceil(res.length / artistsPerPage);
+                    setNumPages(numPages);
+                    const allArtists = res.slice((page - 1) * artistsPerPage, page * artistsPerPage);
+                    const groupsOfArtists = groupArtists(allArtists);
+                    setArtists(groupsOfArtists);
                 }
             }
         }
         loadArtists();
 
-    }, [])
+    }, [gridType, page, artistsPerPage]);
 
     return (
         <div className={getGridClass()}>
-            {artists.map(artist => (
-                <div key={artist.id}>
-                    <Artist username={artist.username} pathImage='' pathDetails={artist.id} />
+            {gridType === GRID_TYPES.UNLIMITED ? (
+                <div className='artists-container'>
+                    <Text type={TEXT_TYPES.TITLE_BOLD} text='Artistas' />
+                    {artists.map((group, groupIndex) => (
+                        <div key={groupIndex} className={`artists-row ${group.length < 5 ? 'last' : ''}`}>
+                            {group.map((artist, artistIndex) => (
+                                <Artist username={artist.username} pathImage='' pathDetails={artist.id} key={`artist-${groupIndex}-${artistIndex}`} />
+                            ))}
+                        </div>
+                    ))}
+                    <Paginator page={page} setPage={setPage} numPages={numPages} />
                 </div>
-            ))}
+            ) : (
+                artists.map(artist => (
+                    <div key={artist.id}>
+                        <Artist username={artist.username} pathImage='' pathDetails={artist.id} />
+                    </div>
+                ))
+            )}
         </div>
     )
 }

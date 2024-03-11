@@ -22,6 +22,11 @@ import 'react-chat-elements/dist/main.css';
 
 import OrderDetails from "./components/OrderDetails.jsx";
 import OrderCancelled from "./components/OrderCancelled.jsx";
+import DesignsPage from './pages/DesignsPage.jsx';
+import PiecesPage from './pages/PiecesPage.jsx';
+import PrintersPage from './pages/PrintersPage.jsx';
+import MaterialsPage from './pages/MaterialsPage.jsx';
+import ArtistsPage from './pages/ArtistsPage.jsx';
 import ConvertToSTL from "./components/ConvertToSTL/ConvertToSTL.jsx";
 import MyOrders from './components/myOrders/myOrders.jsx';
 
@@ -53,9 +58,14 @@ function App() {
           cart={cart}
           setCart={setCart}
         />} />
+        <Route path="/designs" element={<DesignsPage />} />
         <Route path="/designs/my-design" element={<CustomDesign />} />
         <Route path="/designs/details/:id" element={<CustomDesignDetails />} />
         <Route path="/designs/cancelled" element={<CustonDesignCancelled />} />
+        <Route path="/pieces" element={<PiecesPage />} />
+        <Route path="/printers" element={<PrintersPage />} />
+        <Route path="/materials" element={<MaterialsPage />} />
+        <Route path="/artists" element={<ArtistsPage />} />
         <Route path="/register" element={<RegisterFormPage />} />
         <Route path="/login" element={<LoginFormPage />} />
         <Route path="/user-details/:id" element={<UserDetail />} />
