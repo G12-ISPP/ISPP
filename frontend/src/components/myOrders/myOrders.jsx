@@ -76,10 +76,13 @@ const MyOrders = () => {
                 break;
             case 'C':
                 estadoSearch = 'Cancelado'
+                break;
             case 'E':
                 estadoSearch = 'Enviado'
+                break;
             case 'R':
                 estadoSearch = 'En Reparto'
+                break;
             default:
                 break;
         }
@@ -138,10 +141,13 @@ const MyOrders = () => {
                                   break;
                               case 'C':
                                   estado = 'Cancelado'
+                                  break;
                               case 'E':
                                   estado = 'Enviado'
+                                  break;
                               case 'R':
                                   estado = 'En Reparto'
+                                  break;
                               default:
                                   break;
                             }
