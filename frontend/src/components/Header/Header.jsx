@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './Header.css';
 import logo from '../../assets/logo.png';
 import searchIcon from '../../assets/bx-search.svg';
@@ -6,13 +6,16 @@ import cartIcon from '../../assets/bx-cart.svg';
 import menuIcon from '../../assets/bx-menu.svg';
 import exitIcon from '../../assets/bx-x.svg';
 import Button, { BUTTON_TYPES } from '../Button/Button';
+import AuthContext from "../../context/AuthContext.jsx";
 
 const Header = ({ cart,setCart }) => {
 
 	const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'));
     const [menuVisible, setMenuVisible] = useState(false);
     const [isHeaderFullScreen, setIsHeaderFullScreen] = useState(false);
-
+    const { logoutUser } = useContext(AuthContext);
+    const [searchText, setSearchText] = useState('');
+    const [searchResults, setSearchResults] = useState({ productsData: [], usersData: [] });
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth > 1024) {
@@ -33,6 +36,7 @@ const Header = ({ cart,setCart }) => {
 		localStorage.removeItem('token');
         setCart([]);
 		setIsLoggedIn(null);
+        logoutUser();
 		alert('Deslogueo exitoso!!');
 		window.location.href = '/';
 	};
@@ -64,6 +68,50 @@ const Header = ({ cart,setCart }) => {
         setIsHeaderFullScreen(!isHeaderFullScreen);
     }
 
+    const handleSearchClick = () => {
+        const backend = import.meta.env.VITE_APP_BACKEND;
+        const combinedPromise = Promise.all([
+            fetch(`${backend}/products/api/v1/products/?search=${searchText}`).then(response => response.json()),
+            fetch(`${backend}/users/api/v1/users/?search=${searchText}`).then(response => response.json())
+        ]);
+    
+        combinedPromise
+            .then(([productsData, usersData]) => {
+                const searchResults = {
+                    productsData: productsData,
+                    usersData: usersData
+                };
+                localStorage.setItem('searchResults', JSON.stringify(searchResults));
+                localStorage.setItem('searchText', searchText);
+                window.location.href = '/search-results';
+            })
+            .catch(error => {
+                console.error('Error al realizar la búsqueda:', error);
+            });
+    };
+    
+
+    const handleSearchChange = (event) => {
+        const searchTerm = event.target.value;
+        setSearchText(searchTerm);
+        const backend = import.meta.env.VITE_APP_BACKEND;
+        const combinedPromise = Promise.all([
+            fetch(`${backend}/products/api/v1/products/?search=${searchTerm}`).then((response) =>
+                response.json()
+            ),
+            fetch(`${backend}/users/api/v1/users/?search=${searchTerm}`).then((response) => response.json()),
+        ]);
+
+        combinedPromise
+            .then(([productsData, usersData]) => {
+                setSearchResults({ productsData, usersData });
+                console.log(productsData)
+            })
+            .catch((error) => {
+                console.error('Error al realizar la búsqueda:', error);
+            });
+    };
+
     return (
         <div className={isHeaderFullScreen ? 'header-fullscreen' : 'header'}>
             <div className={isHeaderFullScreen ? 'logo-container-fullscreen' : 'logo-container'}>
@@ -73,10 +121,55 @@ const Header = ({ cart,setCart }) => {
                 
             {menuVisible && (
                 <>
-                    <div className='search-box'>
-                        <img src={searchIcon} className='search-icon' />
-                        <input type='text' placeholder={isHeaderFullScreen ? 'Busca diseños, impresoras y más...' : 'Busca diseños, impresoras, materiales y más...'} className='input-text' />
-                    </div>
+                <div className='search-box'>
+                    <img src={searchIcon} className='search-icon' onClick={handleSearchClick}/>
+                    <input type='text' placeholder={isHeaderFullScreen ? 'Busca diseños, impresoras y más...' : 'Busca diseños, impresoras, materiales y más...'} className='input-text' 
+                    value={searchText}
+                    onChange={handleSearchChange}/>
+
+{searchText && ( 
+                                    <div className="container-search">
+                                        <div className='row-product'>
+                                            {searchResults.productsData.map(product => (
+                                                
+                                                <div className='cart-product' key={product.id} onClick={() => window.location.href = `/product-details/${product.id}`}>
+                                                    <div className="info-cart-product">
+                                                        <img className="cart-img" src={product.image_url ? product.image_url : '/images/' + product.imageRoute} alt={product.name} />
+                                                    </div>
+                                                    <div className="info-cart-product">
+                                                        <div className="titulo-producto-carrito">{product.name}</div>
+                                                    </div>
+                                                    <div className="info-cart-product">
+                                                        <div className="cantidad-producto-carrito">
+                                                            <div>Cantidad:</div>
+                                                            <div>{product.stock_quantity}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="info-cart-product">
+                                                        <div className="precio-producto-carrito">
+                                                            {product.price} €
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            ))}
+                                            {searchResults.usersData.map(user => (
+                                                <div className='cart-product' key={user.id} onClick={() => window.location.href = `/user-details/${user.id}`}>
+                                                    <div className="info-cart-product">
+                                                        <img className="cart-img" src='/images/avatar.svg' alt={user.username} />
+                                                    </div>
+                                                    <div className="info-cart-product">
+                                                        <span>{user.username}</span>
+                                                    </div>
+                                                    <div className="info-cart-product">
+                                                        <span>{user.first_name} {user.last_name}</span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                </div>
                     <div className="button-wrapper">
                         {isHeaderFullScreen && (
                             <img src={cartIcon} className='cart-icon' onClick={() => onButtonClick('/cart')} />
@@ -175,6 +268,7 @@ const Header = ({ cart,setCart }) => {
                             </div>
                         </>
                         )}
+                        {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Pedidos' path='/myOrders' />}
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login' />}
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />}
                         {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Cerrar sesión' onClick={handleLogout} />}
