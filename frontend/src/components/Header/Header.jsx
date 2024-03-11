@@ -268,9 +268,9 @@ const Header = ({ cart,setCart }) => {
                             </div>
                         </>
                         )}
-                        <a href={`/user-details/${currentUserID}`}>
+                        {isLoggedIn && <a href={`/user-details/${currentUserID}`}>
                             <CgProfile className="icon-cart"/>
-                        </a>
+                        </a>}
                         {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Pedidos' path='/myOrders' />}
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login' />}
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />}
