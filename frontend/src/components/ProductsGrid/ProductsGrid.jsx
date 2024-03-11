@@ -19,7 +19,7 @@ const ProductsGrid = (consts) => {
         try {
             let petition = backend + '/products/api/v1/products/';
             if (filter) {
-                petition += '?' + filter;
+                petition += filter;
             } else if (elementType) {
                 petition += '?product_type=' + elementType;
             }

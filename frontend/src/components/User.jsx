@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import './User.css';
 import Button, { BUTTON_TYPES } from './Button/Button';
 import Text, { TEXT_TYPES } from "./Text/Text";
+import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsGrid/ProductsGrid'
+
+const id = window.location.href.split('/')[4];
 
 const UserDetail = () => {
   const [user, setUser] = useState(null);
@@ -10,7 +13,7 @@ const UserDetail = () => {
 
   useEffect(() => {
     const backend = import.meta.env.VITE_APP_BACKEND; // Asegúrate de ajustar esto según tu configuración
-    const id = window.location.href.split('/')[4];
+    // const id = window.location.href.split('/')[4];
     const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
 
     const fetchUserData = async () => {
@@ -55,6 +58,14 @@ const UserDetail = () => {
     }
   };
 
+  const handleProductListClick = async () => {
+    try {
+      navigate(`/user-details/`+id+`/products`);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -94,8 +105,16 @@ const UserDetail = () => {
               <div className="chat">
                 <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
               </div>  
+              <div className="chat">
+                <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
+              </div>
           </div>
+          
       </div>
+      <div className="section-title-container">
+                <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
+      </div>
+      <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?seller='+id} />
     </>
   );
 };

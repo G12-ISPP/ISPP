@@ -29,7 +29,7 @@ def get_user_from_token(token):
         User = get_user_model()
         user = User.objects.get(id=user_id)
         return user
-    except (TokenError, InvalidToken, User.DoesNotExist) as e:
+    except (TokenError, InvalidToken, CustomUser.DoesNotExist) as e:
         # Maneja los errores si el token es inválido o el usuario no existe
         print(e)
         return None
@@ -41,7 +41,6 @@ def post_message(request, room_id):
         content = data.get('content', '')
         username = data.get('username', '')
 
-        #user = CustomUser.objects.filter(username=username).first()
         token = request.headers.get('Authorization', '').split(' ')[1]
         user = get_user_from_token(token)
         room = get_object_or_404(ChatRoom, id=room_id)
