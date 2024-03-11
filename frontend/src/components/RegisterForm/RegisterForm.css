@@ -7,6 +7,23 @@
     padding: 0.1em 0.5em;
 }
 
+.avatar {
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: 0.2em #004040 solid;
+}
+
+.edit-icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    position: relative;
+    top: -6.5em;
+}
+
 .register {
     display: flex;
     flex-direction: row;
