@@ -83,6 +83,7 @@ class LoginView(APIView):
             raise APIException('Invalid username or password')
         refresh = RefreshToken.for_user(user)
         return Response({
+            'refresh': str(refresh),
             'token': str(refresh.access_token),
             'userId': user.id,  # Aquí devolvemos el userID
             'message': 'Login successful'

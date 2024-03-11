@@ -73,7 +73,7 @@ def create_order(request):
                 },
                 "transactions": [{
                     "amount": {
-                        "total": str(price),
+                        "total": str(order.price),
                         "currency": "EUR"
                     },
                     "description": "Encargo de diseño personalizado."
