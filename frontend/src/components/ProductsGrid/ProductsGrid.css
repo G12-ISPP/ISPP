@@ -1,19 +1,21 @@
 .grid {
     color: #004040;
-    margin: 0em 10em;
 }
 
 .main-page-gr {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    margin: 0em 10em;
 }
 
 .unlimited-gr {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1.5em;
-    margin: 3em 10em !important;
+    margin: 3em 10em;
+    flex-wrap: wrap;
 }
 
 .products-container {
@@ -25,20 +27,14 @@
 .products-row {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-}
-
-.last {
-    display: flex;
-    flex-direction: row;
     gap: 1.25em;
-    align-self: flex-start;
 }
 
 @media (max-width: 1024px) {
 
     .grid {
-        overflow-x: auto; 
+        overflow-x: auto;
+        overflow-y: hidden;
         white-space: nowrap;
         width: 100%;
         padding: 0;
@@ -56,6 +52,9 @@
         margin: 0;
         padding: 0;
         width: auto;
+    }
+    .unlimited-gr {
+        margin: 1.5em 0em;
     }
 
 }
@@ -79,20 +78,46 @@
 }
 
 @media (min-width: 1025px) and (max-width: 1450px) {
-    .grid {
+    .main-page-gr {
         overflow-x: auto;
         overflow-y: hidden;
         width: 80%;
         padding: 0;
         margin: 0;
         align-self: center;
-    }
-    .main-page-gr {
         flex-wrap: nowrap;
         justify-content: flex-start;
         gap: 1em;
         box-sizing: border-box;
         margin-bottom: 1.5em;
+    }
+
+    .unlimited-gr {
+        margin: 3em 5em;
+    }
+
+    .products-row {
+        display: flex;
+        flex-direction: row;
+        gap: 1em;
+    }
+    .products-row .product {
+        width: 10em;
+        height: 12em;
+        border-radius: 0.5em;
+    }
+    .products-row .product img {
+        height: 8.75em;
+        border-radius: 0.5em 0.5em 0em 0em;
+    }
+    .products-row .product-description {
+        padding: 0em 0.5em;
+    }
+    .products-row .product p {
+        font-size: 0.8em;
+    }
+    .products-row .price {
+        font-size: 0.8em;
     }
 
     .grid::-webkit-scrollbar {
@@ -121,6 +146,7 @@
         margin: 0;
         align-self: center;
     }
+
     .main-page-gr {
         flex-wrap: nowrap;
         justify-content: flex-start;

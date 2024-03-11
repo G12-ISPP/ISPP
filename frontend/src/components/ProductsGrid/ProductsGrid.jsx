@@ -46,7 +46,12 @@ const ProductsGrid = (consts) => {
         try {
 
             const groupsOfProducts = products.reduce((acc, product, index) => {
-                const groupIndex = Math.floor(index / 5);
+                let groupIndex = Math.floor(index / 5);
+                if (window.innerWidth > 767 && window.innerWidth < 1024) {
+                    groupIndex = Math.floor(index / 3);
+                } else if (window.innerWidth < 768) {
+                    groupIndex = Math.floor(index / 2);
+                }
                 if (!acc[groupIndex]) {
                     acc[groupIndex] = [];
                 }
@@ -55,7 +60,7 @@ const ProductsGrid = (consts) => {
             }, []);
 
             return groupsOfProducts;
-            
+
         } catch (error) {
             console.error('Error al obtener y agrupar los productos: ', error);
             return [];
@@ -79,7 +84,7 @@ const ProductsGrid = (consts) => {
 
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(1);
-    const [productsPerPage, setProductsPerPage] = useState(5);
+    const [productsPerPage, setProductsPerPage] = window.innerWidth > 767 ? useState(25) : useState(12);
     const [numPages, setNumPages] = useState(0);
 
     useEffect(() => {
@@ -107,19 +112,17 @@ const ProductsGrid = (consts) => {
     return (
         <div className={getGridClass()}>
             {gridType === GRID_TYPES.UNLIMITED ? (
-                <>
+                <div className='products-container'>
                     <Text type={TEXT_TYPES.TITLE_BOLD} text={transformTypeName(elementType)} />
-                    <div className='products-container'>
-                        {products.map((group, groupIndex) => (
-                            <div key={`group-${groupIndex}`} className={`products-row ${group.length < 5 ? 'last' : ''}`}>
-                                {group.map((product, productIndex) => (
-                                    <Product name={product.name} price={product.price} pathImage={product.image_url ? product.image_url : product.imageRoute} pathDetails={product.id} isImageRoute={!product.image_url} key={`product-${groupIndex}-${productIndex}`} />
-                                ))}
-                            </div>
-                        ))}
-                    </div>
+                    {products.map((group, groupIndex) => (
+                        <div key={`group-${groupIndex}`} className={`products-row ${group.length < 5 ? 'last' : ''}`}>
+                            {group.map((product, productIndex) => (
+                                <Product name={product.name} price={product.price} pathImage={product.image_url ? product.image_url : product.imageRoute} pathDetails={product.id} isImageRoute={!product.image_url} key={`product-${groupIndex}-${productIndex}`} />
+                            ))}
+                        </div>
+                    ))}
                     <Paginator page={page} setPage={setPage} numPages={numPages} />
-                </>
+                </div>
             ) : (
                 products.map(product => (
                     <div key={product.id}>

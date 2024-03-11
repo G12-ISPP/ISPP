@@ -60,7 +60,7 @@ const ArtistsGrid = (consts) => {
 
     const [artists, setArtists] = useState([]);
     const [page, setPage] = useState(1);
-    const [artistsPerPage, setArtistsPerPage] = useState(5);
+    const [artistsPerPage, setArtistsPerPage] = useState(25);
     const [numPages, setNumPages] = useState(0);
 
     useEffect(() => {
@@ -88,9 +88,8 @@ const ArtistsGrid = (consts) => {
     return (
         <div className={getGridClass()}>
             {gridType === GRID_TYPES.UNLIMITED ? (
-                <>
-                <Text type={TEXT_TYPES.TITLE_BOLD} text='Artistas' />
                 <div className='artists-container'>
+                    <Text type={TEXT_TYPES.TITLE_BOLD} text='Artistas' />
                     {artists.map((group, groupIndex) => (
                         <div key={groupIndex} className={`artists-row ${group.length < 5 ? 'last' : ''}`}>
                             {group.map((artist, artistIndex) => (
@@ -98,9 +97,8 @@ const ArtistsGrid = (consts) => {
                             ))}
                         </div>
                     ))}
+                    <Paginator page={page} setPage={setPage} numPages={numPages} />
                 </div>
-                <Paginator page={page} setPage={setPage} numPages={numPages} />
-            </>
             ) : (
                 artists.map(artist => (
                     <div key={artist.id}>
