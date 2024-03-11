@@ -16,13 +16,16 @@ from pathlib import Path
 import paypalrestsdk
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 RUTA_BACKEND = os.getenv('RUTA_BACKEND')
 RUTA_FRONTEND = os.getenv('RUTA_FRONTEND')
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -34,6 +37,7 @@ SECRET_KEY = 'django-insecure-ue=8vh&2&4r_wy3*slet3m-kt76j3)rd!8bg$l%khu7*e0fghy
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -48,7 +52,7 @@ INSTALLED_APPS = [
     # Dependencies
     'corsheaders',
     'rest_framework',
-    'rest_framework_simplejwt.token_blacklist',
+    'rest_framework.authtoken',
     'coreapi',
     # Modules
     'tasks',
@@ -59,6 +63,8 @@ INSTALLED_APPS = [
     'custom_design',
     'chat',
     'tokens'
+    'chat',
+    "conversion_to_stl"
 ]
 
 MIDDLEWARE = [
@@ -92,6 +98,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -101,6 +108,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -120,6 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -130,6 +139,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -143,7 +153,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Cors authorization
 
-CORS_ORIGIN_ALLOW_ALL = True  # TODO: Change this to False and add the frontend URL
+CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -200,11 +210,12 @@ AUTH_USER_MODEL = 'users.CustomUser'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
 PAYPAL_CLIENT_ID = 'AUkHmwH6ogfAD37dz96UYFN01SXwVoAL-Cjj1lSkW4INLdjoFW5SPhrYV1Ilh9iY47TiiIBD93ld2W5g'
 PAYPAL_SECRET_KEY = 'EBx2jC9fTG5kVeLxxobG9b3NkFgV0PnfW1yQTTHH0oJjb5x3tqKpS1bdpMi6u79xWBWBb49nHw8OY5vw'
 
 paypalrestsdk.configure({
-    'mode': 'sandbox',
+    'mode': 'sandbox',  
     'client_id': PAYPAL_CLIENT_ID,
     'client_secret': PAYPAL_SECRET_KEY,
 })
@@ -215,3 +226,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'shar3d@outlook.es'
 EMAIL_HOST_PASSWORD = 'ispp.correos.confirmacion'
+
+
+
+
