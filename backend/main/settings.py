@@ -62,8 +62,7 @@ INSTALLED_APPS = [
     'products',
     'custom_design',
     'chat',
-    'tokens'
-    'chat',
+    'tokens',
     "conversion_to_stl"
 ]
 

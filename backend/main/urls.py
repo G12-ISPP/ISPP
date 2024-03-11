@@ -34,6 +34,6 @@ urlpatterns = [
     path('order/cancel/<str:order_id>', cancel_order, name='cancel_order'),
     path('order/details/<uuid:order_id>', order_details, name='order_details'),
     path('conversion/', include('conversion_to_stl.urls')),
-    path('order/myorders', my_orders, name='my_orders')
+    path('order/myorders', my_orders, name='my_orders'),
     path('', include('tokens.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
