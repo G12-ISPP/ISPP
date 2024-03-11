@@ -31,6 +31,7 @@ import PiecesPage from './pages/PiecesPage.jsx';
 import PrintersPage from './pages/PrintersPage.jsx';
 import MaterialsPage from './pages/MaterialsPage.jsx';
 import ArtistsPage from './pages/ArtistsPage.jsx';
+import MyOrders from './components/myOrders/myOrders.jsx';
 
 function App() {
   const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
@@ -79,6 +80,7 @@ function App() {
         />} />
         <Route path="/order/details/:id" element={<OrderDetails />} />
         <Route path="/order/cancelled" element={<OrderCancelled />} />
+        <Route path="/myOrders" element={<MyOrders />} />
         <Route path="/search-results" element={<SearchResults />} />
       </Routes>
 
