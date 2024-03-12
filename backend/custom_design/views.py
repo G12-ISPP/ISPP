@@ -24,7 +24,15 @@ ruta_frontend = settings.RUTA_FRONTEND
 
 @api_view(['GET'])
 def list_searching_printer_designs(request):
+    if not request.user.is_authenticated:
+        return Response({'message': 'No estás logueado. Por favor, inicia sesión.'}, status=status.HTTP_401_UNAUTHORIZED)
+    elif not request.user.is_printer:
+        return Response({'message': 'No tienes permiso para acceder a esta página. Solo los impresores pueden ver los diseños.'}, status=status.HTTP_403_FORBIDDEN)
+
     designs = CustomDesign.objects.filter(status='searching')
+    if not designs.exists():
+        return Response({'message': 'No hay diseños disponibles'}, status=status.HTTP_404_NOT_FOUND)
+
     serializer = CustomDesignSerializer(designs, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -182,7 +190,6 @@ def update_design_status(request, design_id):
 @api_view(['GET'])
 @csrf_exempt
 def loguedUser(request):
-    print(request.user)
     if request.method == 'GET':
         if request.user.is_authenticated:
             user = request.user
@@ -190,5 +197,4 @@ def loguedUser(request):
             print(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            print("no logueado")
             return Response({"message": "No hay usuario logueado"}, status=status.HTTP_200_OK)

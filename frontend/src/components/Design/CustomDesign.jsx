@@ -14,7 +14,7 @@ const CustomDesign = (props) => {
                 <p className='quantity'>Cantidad: {quantity}</p>
                 <p className='dimensions'>{dimensionsText}</p>
                 <p className='quuality'>Calidad: {quality}</p>
-                <p className='weight'>Peso: {weight} kg</p>
+                <p className='weight'>Peso: {weight} g</p>
                 <p className='price'>{price}€</p>
             </div>
         </div>
