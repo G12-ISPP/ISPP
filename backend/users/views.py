@@ -21,11 +21,25 @@ from django.utils.translation import gettext_lazy as _
 from functools import wraps
 from django.utils.translation import activate
 from django.conf import settings
+from django.db.models import Q
 
 
 class UsersView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = CustomUser.objects.all()
+
+    def get_queryset(self):
+        search_query = self.request.query_params.get('search')
+
+        queryset = CustomUser.objects.all()
+        if search_query:
+            queryset = queryset.filter(
+                Q(username__icontains=search_query) | 
+                Q(first_name__icontains=search_query) |
+                Q(last_name__icontains=search_query)
+            )
+
+        return queryset
 
   # New function
     @action(detail=True, methods=['get'])
@@ -69,6 +83,7 @@ class LoginView(APIView):
             raise APIException('Invalid username or password')
         refresh = RefreshToken.for_user(user)
         return Response({
+            'refresh': str(refresh),
             'token': str(refresh.access_token),
             'userId': user.id,  # Aquí devolvemos el userID
             'message': 'Login successful'

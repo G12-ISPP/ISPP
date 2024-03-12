@@ -3,7 +3,7 @@ import './Product.css'
 import defaultImage from '../../assets/default_product_image.png'
 
 const Product = (props) => {
-
+    const images_path = import.meta.env.VITE_IMAGES_PATH;
     const { name, price, pathImage, pathDetails, isImageRoute } = props
 
     const onButtonClick = () => {
@@ -20,7 +20,7 @@ const Product = (props) => {
         if (!isImageRoute) {
             imagePath = pathImage;
         } else {
-            imagePath = 'images/' + pathImage;
+            imagePath = '/images/' + pathImage;
         }
 
         return imagePath;
