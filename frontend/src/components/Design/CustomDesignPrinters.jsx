@@ -11,11 +11,28 @@ const CustomDesignPrinters = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${backend}/designs/details-to-printer/${id}`);
-                const datos = await response.json();
-                setData(datos);
+                const response = await fetch(`${backend}/designs/details-to-printer/${id}`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    },
+                });
+                console.log(response.status);
+                if (response.ok) {
+                    const datos = await response.json();
+                    setData(datos);
+                } else if (response.status === 403) {
+                    alert('No tienes permiso para acceder a esta página. Solo los impresores pueden ver los detalles.');
+                    window.location.href = '/';
+                } else if (response.status === 401) {
+                    alert('No estás logueado. Por favor, inicia sesión.');
+                    window.location.href = '/login';
+                } else {
+                    alert('Error al cargar los detalles del diseño.');
+                    window.location.href = '/';
+                }
             } catch (error) {
                 console.log(error);
+                alert('Error al cargar los detalles del diseño.');
             }
         };
 

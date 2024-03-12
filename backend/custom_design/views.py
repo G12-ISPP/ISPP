@@ -151,9 +151,16 @@ def details(request, id):
 
 @api_view(['GET'])
 def details_to_printer(request, id):
-    custom_design = get_object_or_404(CustomDesign, custom_design_id=id)
-    serializer = CustomDesignSerializer(custom_design)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    design = get_object_or_404(CustomDesign, custom_design_id=id)
+    if not request.user.is_authenticated:
+        return Response({'message': 'No estás logueado. Por favor, inicia sesión.'}, status=status.HTTP_401_UNAUTHORIZED)
+    elif not request.user.is_printer:
+        return Response({'message': 'No tienes permiso para acceder a esta página. Solo los impresores pueden ver los diseños.'}, status=status.HTTP_403_FORBIDDEN)
+    elif design.printer is not None:
+        return Response({'message': 'Este diseño ya tiene asignado un comprador.'}, status=status.HTTP_403_FORBIDDEN)
+    else:
+        serializer = CustomDesignSerializer(design)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @csrf_exempt
