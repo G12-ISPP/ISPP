@@ -107,7 +107,7 @@ const ArtistsGrid = (consts) => {
             ) : (
                 artists.map(artist => (
                     <div key={artist.id}>
-                        <Artist username={artist.username} pathImage='' pathDetails={artist.id} />
+                        <Artist username={artist.username} pathImage={artist.image_url ? artist.image_url : ''} pathDetails={artist.id} />
                     </div>
                 ))
             )}

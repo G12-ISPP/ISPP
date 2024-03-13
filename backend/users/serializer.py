@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import CustomUser
 
 class UserSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
     class Meta:
         model = CustomUser
         fields = '__all__'
@@ -15,6 +16,13 @@ class UserSerializer(serializers.ModelSerializer):
         if groups_data:
             user.groups.set(groups_data)
         return user
+    
+    def get_image_url(self, obj):
+        request = self.context.get('request')
+        if obj.profile_picture and hasattr(obj.profile_picture, 'url'):
+            return request.build_absolute_uri(obj.profile_picture.url)
+        else:
+            return None
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:

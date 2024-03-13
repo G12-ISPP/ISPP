@@ -88,7 +88,7 @@ const UserDetail = () => {
 
       <div className="main">
         <div className="user-img-container">
-          <img className='img' src='/images/avatar.svg' alt={user.username} />
+          <img className='img' src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
         </div>
 
         <div className="profile-summary">
