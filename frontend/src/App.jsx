@@ -10,6 +10,7 @@ import AddProduct from "./components/AddProduct.jsx";
 import Header from "./components/Header/Header.jsx";
 import Navbar from "./components/Navbar/Navbar.jsx";
 import CustomDesignDetails from "./components/CustomDesignDetails.jsx";
+import CustomDesignPrinters from "./components/Design/CustomDesignPrinters.jsx";
 import SearchResults from "./components/SearchResults.jsx";
 import CustonDesignCancelled from "./components/CustomDesignCancelled.jsx";
 import UserDetail from "./components/User";
@@ -24,6 +25,7 @@ import ConfirmPlan from "./components/BuyPlan/ConfirmPlan.jsx";
 
 import OrderDetails from "./components/OrderDetails.jsx";
 import OrderCancelled from "./components/OrderCancelled.jsx";
+import { SearchingPrinterDesignsPage } from './pages/PrinterDesigns.jsx';
 import {AuthProvider} from "./context/AuthContext.jsx";
 import ConvertToSTL from "./components/ConvertToSTL/ConvertToSTL.jsx";
 import MyOrders from './components/myOrders/myOrders.jsx';
@@ -59,6 +61,7 @@ function App() {
                     <Route path="/designs" element={<DesignsPage/>}/>
                     <Route path="/designs/my-design" element={<CustomDesign/>}/>
                     <Route path="/designs/details/:id" element={<CustomDesignDetails/>}/>
+                    <Route path="/designs/details-to-printer/:id" element={<CustomDesignPrinters />} />
                     <Route path="/designs/cancelled" element={<CustonDesignCancelled/>}/>
                     <Route path="/pieces" element={<PiecesPage/>}/>
                     <Route path="/printers" element={<PrintersPage/>}/>
@@ -72,6 +75,7 @@ function App() {
                     <Route path="/cart" element={<Cart cart={cart} setCart={setCart}/>}/>
                     <Route path="/order/details/:id" element={<OrderDetails/>}/>
                     <Route path="/order/cancelled" element={<OrderCancelled/>}/>
+                    <Route path="/designs/searching_printer" element={<SearchingPrinterDesignsPage />} />
                     <Route path="/convert-to-stl" element={<ConvertToSTL/>}/>
                     <Route path="/myOrders" element={<MyOrders/>}/>
                     <Route path="/search-results" element={<SearchResults/>}/>
