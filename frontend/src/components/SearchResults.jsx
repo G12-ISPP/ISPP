@@ -57,7 +57,7 @@ const SearchResultsPage = () => {
                                 <Artist
                                     key={user.id}
                                     username={user.username}
-                                    pathImage={''}
+                                    pathImage={user.image_url ? user.image_url : ''}
                                     pathDetails={user.id}
                                 />
                             ))} />
