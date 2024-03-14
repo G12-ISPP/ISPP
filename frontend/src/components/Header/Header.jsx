@@ -265,7 +265,6 @@ const Header = ({ cart,setCart }) => {
                             </div>
                         </>
                         )}
-                        <Button type={BUTTON_TYPES.HEADER} text='Pedidos' path='/myOrders' />
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login' />}
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />}
                         {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Cerrar sesión' onClick={handleLogout} />}

@@ -22,6 +22,12 @@ const Footer = () => {
                 </div>
             </div>
             <div className='footer-section'>
+                <p className='footer-section-title'>Información relevante</p>
+                <p className='footer-section-element'>
+                    <a href='/myOrders'>Seguimiento de pedidos</a>
+                </p>
+            </div>
+            <div className='footer-section'>
                 <p className='footer-section-title'>El equipo de SHAR3D</p>
                 <p className='footer-section-element'>
                     <a href='https://landing-page-shar3d.vercel.app/'>Sobre nosotros</a>

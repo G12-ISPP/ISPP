@@ -3,6 +3,7 @@ import '../Cart/Cart.css';
 import myOrder from '../../assets/myOrder.png';
 import './myOrders.css'
 import searchIcon from '../../assets/bx-search.svg';
+import Button, { BUTTON_TYPES } from "../Button/Button";
 
 
 
@@ -68,6 +69,12 @@ const MyOrders = () => {
         }
       }
 
+      const handleKeyPress = async (event) => {
+        if (event.key === 'Enter') {
+          handleSearchClick()
+        }
+      };
+
       let estadoSearch = null
       if (searchResult) {
         switch (searchResult.status) {
@@ -96,17 +103,21 @@ const MyOrders = () => {
 
     return (
         <div className="wrapper">
-                <h1>Mis Pedidos</h1>
+                {localStorage.getItem('token') ? <h1>Mis Pedidos</h1> : <h1>Buscar pedidos</h1>}
                 <div className="project">
                     <div className="shop">
                     {!localStorage.getItem('token') && 
                     <>
                     <div className="search-container">
-                        <div className='search-box-order'>
-                                <img src={searchIcon} className='search-icon' onClick={handleSearchClick}/>
-                                <input type='text' placeholder={'Introduzca el id de su pedido'} className='input-text' 
-                                value={searchId}
-                                onChange={handleSearchChange}/>
+                        <div className="search-box-container">
+                            <div className='search-box-order'>
+                                    <img src={searchIcon} className='search-icon'/>
+                                    <input type='text' placeholder={'Introduzca el id de su pedido'} className='input-text' 
+                                    value={searchId}
+                                    onChange={handleSearchChange}
+                                    onKeyDown={handleKeyPress}/>
+                            </div>
+                            <Button type={BUTTON_TYPES.LARGE} text='Buscar pedido' onClick={handleSearchClick} />
                         </div>
                         {error && <p className="error-message">{error}</p>}
                     </div>

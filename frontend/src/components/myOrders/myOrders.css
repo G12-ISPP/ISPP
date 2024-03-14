@@ -44,3 +44,17 @@
     position: relative;
     bottom: -1.5em;
 }
+
+.search-box-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 1em 1em;
+    border-radius: 0.6em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    max-height: 2.2em;
+}
