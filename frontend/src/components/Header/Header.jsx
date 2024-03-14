@@ -8,9 +8,9 @@ import exitIcon from '../../assets/bx-x.svg';
 import Button, { BUTTON_TYPES } from '../Button/Button';
 import { CgProfile } from "react-icons/cg";
 
-const Header = ({ cart,setCart }) => {
+const Header = ({ cart, setCart }) => {
 
-	const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'));
+    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'));
     const [menuVisible, setMenuVisible] = useState(false);
     const [isHeaderFullScreen, setIsHeaderFullScreen] = useState(false);
     const [searchText, setSearchText] = useState('');
@@ -31,35 +31,37 @@ const Header = ({ cart,setCart }) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-	const handleLogout = () => {
-		localStorage.removeItem('token');
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
         setCart([]);
-		setIsLoggedIn(null);
-		alert('Deslogueo exitoso!!');
-		window.location.href = '/';
-	};
+        setIsLoggedIn(null);
+        alert('Deslogueo exitoso!!');
+        window.location.href = '/';
+    };
 
     const [active, setActive] = useState(false);
+    const [activeProfile, setActiveProfile] = useState(false);
 
-	const deleteProduct = product => {
-		const results = cart.filter(
-			item => item.id !== product.id
-		);
+    const deleteProduct = product => {
+        const results = cart.filter(
+            item => item.id !== product.id
+        );
 
-		setCart(results);
-	};
+        setCart(results);
+    };
 
-	const onButtonClick = (path) => {
-		window.location.href = path;
-	};
+    const onButtonClick = (path) => {
+        window.location.href = path;
+    };
 
-	const totalPrice = () => {
-		return cart.reduce((total, product) => total + (parseFloat(product.price) * parseFloat(product.quantity)), 0);
-	}
+    const totalPrice = () => {
+        return cart.reduce((total, product) => total + (parseFloat(product.price) * parseFloat(product.quantity)), 0);
+    }
 
-	const cartTotal = () => {
-		return cart.reduce((total, product) => total + parseInt(product.quantity), 0);
-	}
+    const cartTotal = () => {
+        return cart.reduce((total, product) => total + parseInt(product.quantity), 0);
+    }
 
     const onToggleMenu = () => {
         setMenuVisible(!menuVisible);
@@ -72,7 +74,7 @@ const Header = ({ cart,setCart }) => {
             fetch(`${backend}/products/api/v1/products/?search=${searchText}`).then(response => response.json()),
             fetch(`${backend}/users/api/v1/users/?search=${searchText}`).then(response => response.json())
         ]);
-    
+
         combinedPromise
             .then(([productsData, usersData]) => {
                 const searchResults = {
@@ -87,7 +89,7 @@ const Header = ({ cart,setCart }) => {
                 console.error('Error al realizar la búsqueda:', error);
             });
     };
-    
+
 
     const handleSearchChange = (event) => {
         const searchTerm = event.target.value;
@@ -118,58 +120,58 @@ const Header = ({ cart,setCart }) => {
                 <img src={logo} className='logo' onClick={() => onButtonClick('/')} />
                 <img src={menuVisible ? exitIcon : menuIcon} onClick={onToggleMenu} className='mobile-menu-icon' />
             </div>
-                
+
             {menuVisible && (
                 <>
-                <div className='search-box'>
-                    <img src={searchIcon} className='search-icon' onClick={handleSearchClick}/>
-                    <input type='text' placeholder={isHeaderFullScreen ? 'Busca diseños, impresoras y más...' : 'Busca diseños, impresoras, materiales y más...'} className='input-text' 
-                    value={searchText}
-                    onChange={handleSearchChange}/>
+                    <div className='search-box'>
+                        <img src={searchIcon} className='search-icon' onClick={handleSearchClick} />
+                        <input type='text' placeholder={isHeaderFullScreen ? 'Busca diseños, impresoras y más...' : 'Busca diseños, impresoras, materiales y más...'} className='input-text'
+                            value={searchText}
+                            onChange={handleSearchChange} />
 
-{searchText && ( 
-                                    <div className="container-search">
-                                        <div className='row-product'>
-                                            {searchResults.productsData.map(product => (
-                                                
-                                                <div className='cart-product' key={product.id} onClick={() => window.location.href = `/product-details/${product.id}`}>
-                                                    <div className="info-cart-product">
-                                                        <img className="cart-img" src={product.image_url ? product.image_url : '/images/' + product.imageRoute} alt={product.name} />
-                                                    </div>
-                                                    <div className="info-cart-product">
-                                                        <div className="titulo-producto-carrito">{product.name}</div>
-                                                    </div>
-                                                    <div className="info-cart-product">
-                                                        <div className="cantidad-producto-carrito">
-                                                            <div>Cantidad:</div>
-                                                            <div>{product.stock_quantity}</div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="info-cart-product">
-                                                        <div className="precio-producto-carrito">
-                                                            {product.price} €
-                                                        </div>
-                                                    </div>
+                        {searchText && (
+                            <div className="container-search">
+                                <div className='row-product'>
+                                    {searchResults.productsData.map(product => (
+
+                                        <div className='cart-product' key={product.id} onClick={() => window.location.href = `/product-details/${product.id}`}>
+                                            <div className="info-cart-product">
+                                                <img className="cart-img" src={product.image_url ? product.image_url : '/images/' + product.imageRoute} alt={product.name} />
+                                            </div>
+                                            <div className="info-cart-product">
+                                                <div className="titulo-producto-carrito">{product.name}</div>
+                                            </div>
+                                            <div className="info-cart-product">
+                                                <div className="cantidad-producto-carrito">
+                                                    <div>Cantidad:</div>
+                                                    <div>{product.stock_quantity}</div>
                                                 </div>
-                                                
-                                            ))}
-                                            {searchResults.usersData.map(user => (
-                                                <div className='cart-product' key={user.id} onClick={() => window.location.href = `/user-details/${user.id}`}>
-                                                    <div className="info-cart-product">
-                                                        <img className="cart-img" src='/images/avatar.svg' alt={user.username} />
-                                                    </div>
-                                                    <div className="info-cart-product">
-                                                        <span>{user.username}</span>
-                                                    </div>
-                                                    <div className="info-cart-product">
-                                                        <span>{user.first_name} {user.last_name}</span>
-                                                    </div>
+                                            </div>
+                                            <div className="info-cart-product">
+                                                <div className="precio-producto-carrito">
+                                                    {product.price} €
                                                 </div>
-                                            ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
-                </div>
+
+                                    ))}
+                                    {searchResults.usersData.map(user => (
+                                        <div className='cart-product' key={user.id} onClick={() => window.location.href = `/user-details/${user.id}`}>
+                                            <div className="info-cart-product">
+                                                <img className="cart-img" src='/images/avatar.svg' alt={user.username} />
+                                            </div>
+                                            <div className="info-cart-product">
+                                                <span>{user.username}</span>
+                                            </div>
+                                            <div className="info-cart-product">
+                                                <span>{user.first_name} {user.last_name}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
                     <div className="button-wrapper">
                         {isHeaderFullScreen && (
                             <img src={cartIcon} className='cart-icon' onClick={() => onButtonClick('/cart')} />
@@ -177,109 +179,115 @@ const Header = ({ cart,setCart }) => {
                         {!isHeaderFullScreen && (
                             <>
                                 <div className='container-icon'>
-                                <div
-                                    className='container-cart-icon'
-                                    onClick={() => onButtonClick('/cart')}
-                                    onMouseEnter={() => setActive(true)}
-                                >
-                                    <svg
-                                        xmlns='http://www.w3.org/2000/svg'
-                                        fill='none'
-                                        viewBox='0 0 24 24'
-                                        strokeWidth='1.5'
-                                        stroke='red'
-                                        color='red'
-                                        className='icon-cart'
+                                    <div
+                                        className='container-cart-icon'
+                                        onClick={() => onButtonClick('/cart')}
+                                        onMouseEnter={() => setActive(true)}
                                     >
-                                        <path
-                                            strokeLinecap='round'
-                                            strokeLinejoin='round'
-                                            d='M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z'
-                                        />
-                                    </svg>
-                                    <div className='count-products'>
-                                        <span id='contador-productos'>{cartTotal()}</span>
+                                        <svg
+                                            xmlns='http://www.w3.org/2000/svg'
+                                            fill='none'
+                                            viewBox='0 0 24 24'
+                                            strokeWidth='1.5'
+                                            stroke='red'
+                                            color='red'
+                                            className='icon-cart'
+                                        >
+                                            <path
+                                                strokeLinecap='round'
+                                                strokeLinejoin='round'
+                                                d='M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z'
+                                            />
+                                        </svg>
+                                        <div className='count-products'>
+                                            <span id='contador-productos'>{cartTotal()}</span>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        onMouseEnter={() => setActive(true)}
+                                        onMouseLeave={() => setActive(false)}
+                                        className={`container-cart-products ${active ? '' : 'hidden-cart'
+                                            }`}
+                                    >
+                                        {cart.length ? (
+                                            <>
+                                                <div className='row-product'>
+                                                    {cart.map(product => (
+                                                        <div className='cart-product' key={product.id}>
+                                                            <div className="info-cart-product">
+                                                                <img className="cart-img" src={product.image_url ? product.image_url : '/images/' + product.imageRoute} alt={product.name} />
+                                                            </div>
+                                                            <div className="info-cart-product">
+                                                                <div className="titulo-producto-carrito">{product.name}</div>
+                                                            </div>
+                                                            <div className="info-cart-product">
+                                                                <div className="cantidad-producto-carrito">
+                                                                    <div>Cantidad:</div>
+                                                                    <div>{product.quantity}</div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="info-cart-product">
+                                                                <div className="precio-producto-carrito">
+                                                                    {product.price} €
+                                                                </div>
+                                                            </div>
+                                                            <svg
+                                                                xmlns='http://www.w3.org/2000/svg'
+                                                                fill='none'
+                                                                viewBox='0 0 24 24'
+                                                                strokeWidth='1.5'
+                                                                stroke='currentColor'
+                                                                className='icon-close'
+                                                                onClick={() => deleteProduct(product)}
+                                                            >
+                                                                <path
+                                                                    strokeLinecap='round'
+                                                                    strokeLinejoin='round'
+                                                                    d='M6 18L18 6M6 6l12 12'
+                                                                />
+                                                            </svg>
+
+                                                        </div>
+                                                    ))}
+                                                </div>
+
+                                                <div className='cart-total'>
+                                                    <h3>Total:</h3>
+                                                    <span className='total-pagar'>{totalPrice()} €</span>
+                                                </div>
+
+                                                <div className='buy'>
+                                                    <div className="button-container">
+                                                        <Button type={BUTTON_TYPES.LARGE} text='Ver detalles' onClick={() => onButtonClick('/cart')} />
+                                                    </div>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <p className='cart-empty'>El carrito está vacío</p>
+                                        )}
                                     </div>
                                 </div>
-
-                                <div
-                                    onMouseEnter={() => setActive(true)}
-                                    onMouseLeave={() => setActive(false)}
-                                    className={`container-cart-products ${active ? '' : 'hidden-cart'
-                                        }`}
-                                >
-                                    {cart.length ? (
-                                        <>
-                                            <div className='row-product'>
-                                                {cart.map(product => (
-                                                    <div className='cart-product' key={product.id}>
-                                                        <div className="info-cart-product">
-                                                            <img className="cart-img" src={product.image_url ? product.image_url : '/images/' + product.imageRoute} alt={product.name} />
-                                                        </div>
-                                                        <div className="info-cart-product">
-                                                            <div className="titulo-producto-carrito">{product.name}</div>
-                                                        </div>
-                                                        <div className="info-cart-product">
-                                                            <div className="cantidad-producto-carrito">
-                                                                <div>Cantidad:</div>
-                                                                <div>{product.quantity}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="info-cart-product">
-                                                            <div className="precio-producto-carrito">
-                                                                {product.price} €
-                                                            </div>
-                                                        </div>
-                                                        <svg
-                                                            xmlns='http://www.w3.org/2000/svg'
-                                                            fill='none'
-                                                            viewBox='0 0 24 24'
-                                                            strokeWidth='1.5'
-                                                            stroke='currentColor'
-                                                            className='icon-close'
-                                                            onClick={() => deleteProduct(product)}
-                                                        >
-                                                            <path
-                                                                strokeLinecap='round'
-                                                                strokeLinejoin='round'
-                                                                d='M6 18L18 6M6 6l12 12'
-                                                            />
-                                                        </svg>
-
-                                                    </div>
-                                                ))}
-                                            </div>
-
-                                            <div className='cart-total'>
-                                                <h3>Total:</h3>
-                                                <span className='total-pagar'>{totalPrice()} €</span>
-                                            </div>
-
-                                            <div className='buy'>
-                                                <div className="button-container">
-                                                    <Button type={BUTTON_TYPES.LARGE} text='Ver detalles' onClick={() => onButtonClick('/cart')} />
-                                                </div>
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <p className='cart-empty'>El carrito está vacío</p>
-                                    )}
-                                </div>
-                            </div>
-                        </>
+                            </>
                         )}
-                        {isLoggedIn && <a href={`/user-details/${currentUserID}`}>
-                            <CgProfile className="icon-cart"/>
-                        </a>}
+                        {isLoggedIn && <div className="menu-perfil">
+                                <CgProfile className="icon-cart" onClick={() => setActiveProfile(!activeProfile)} onMouseEnter={() => setActiveProfile(true)} />
+                                {activeProfile && (
+                                    <div onMouseLeave={() => setActiveProfile(false)} className="menu-contenedor">
+                                        <div onClick={() => window.location.href=`/user-details/${currentUserID}`} className="menu-opcion">Ver Perfil</div>
+                                        <hr />
+                                        <div onClick={handleLogout} className="menu-opcion menu-cerrar-sesion">Cerrar Sesión</div>
+                                    </div>
+                                )}
+                        </div>}
                         {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Pedidos' path='/myOrders' />}
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login' />}
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />}
-                        {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Cerrar sesión' onClick={handleLogout} />}
                         {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Vender' path='/products/add-product' />}
                     </div>
                 </>
             )}
-            
+
         </div>
     );
 
