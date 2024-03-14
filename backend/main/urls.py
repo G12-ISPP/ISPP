@@ -18,7 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from users.views import buy_plan, obtain_plan
 from order.views import create_order, confirm_order, cancel_order, order_details, my_orders
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,10 +29,15 @@ urlpatterns = [
     path('designs/', include('custom_design.urls')),
     path('users/', include('users.urls')),
     path('products/', include('products.urls')),
+    path('opinion/', include('opinion.urls')),
     path('chat/', include('chat.urls')),
     path('newOrder', create_order, name='create_order'),
     path('order/confirm/<str:order_id>', confirm_order, name='confirm_order'),
     path('order/cancel/<str:order_id>', cancel_order, name='cancel_order'),
     path('order/details/<uuid:order_id>', order_details, name='order_details'),
-    path('order/myorders', my_orders, name='my_orders')
+    path('buyPlan/',buy_plan, name='buy_plan'),
+    path('obtainPlan/<str:plan_seller>/<str:plan_buyer>/<str:plan_designer>/<str:user_id>',obtain_plan, name='obtain_plan'),
+    path('conversion/', include('conversion_to_stl.urls')),
+    path('order/myorders', my_orders, name='my_orders'),
+    path('', include('tokens.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

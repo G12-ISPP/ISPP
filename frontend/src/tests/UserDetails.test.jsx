@@ -1,9 +1,10 @@
 import React from 'react';
-import { render, waitFor, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { expect } from 'chai';
-import { vi } from 'vitest';
+import {render, screen, waitFor} from '@testing-library/react';
+import {MemoryRouter} from 'react-router-dom';
+import {expect} from 'chai';
+import {vi} from 'vitest';
 import UserDetail from '../components/User';
+import {AuthProvider} from "../context/AuthContext.jsx";
 
 describe("OK User Details", () => {
     test("Normal", async () => {
@@ -22,7 +23,7 @@ describe("OK User Details", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
+        const { container } = render(<MemoryRouter><AuthProvider><UserDetail /></AuthProvider></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -46,7 +47,7 @@ describe("OK User Details", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
+        const { container } = render(<MemoryRouter><AuthProvider><UserDetail /></AuthProvider></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -70,7 +71,7 @@ describe("OK User Details", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
+        const { container } = render(<MemoryRouter><AuthProvider><UserDetail /></AuthProvider></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -97,7 +98,7 @@ describe("Injection User Details", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
+        const { container } = render(<MemoryRouter><AuthProvider><UserDetail /></AuthProvider></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -121,7 +122,7 @@ describe("Injection User Details", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
+        const { container } = render(<MemoryRouter><AuthProvider><UserDetail /></AuthProvider></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -145,7 +146,7 @@ describe("Injection User Details", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
+        const { container } = render(<MemoryRouter><AuthProvider><UserDetail /></AuthProvider></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -170,7 +171,7 @@ describe("User roles", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
+        const { container } = render(<MemoryRouter><AuthProvider><UserDetail /></AuthProvider></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 
@@ -193,7 +194,7 @@ describe("User roles", () => {
         mockFetch(user);
 
         /* ACT */
-        const { container } = render(<MemoryRouter><UserDetail /></MemoryRouter>);
+        const { container } = render(<MemoryRouter><AuthProvider><UserDetail /></AuthProvider></MemoryRouter>);
 
         await waitFor(() => {expect(screen.getByText("Detalles de usuario")).to.exist;});
 

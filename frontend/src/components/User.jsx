@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './User.css';
 import Button, { BUTTON_TYPES } from './Button/Button';
 import Text, { TEXT_TYPES } from "./Text/Text";
+import Opinion from './AddOpinion';
 import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsGrid/ProductsGrid'
 
 const id = window.location.href.split('/')[4];
@@ -126,7 +127,6 @@ const UserDetail = () => {
 
             <h3 className="title-detalle">Contacto:</h3>
             <p>{user.email}</p>
-
           </div>
           {ownUser ? (
             <div className="chat">
@@ -147,7 +147,11 @@ const UserDetail = () => {
       <div className="section-title-container">
         <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
       </div>
-      <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?seller=' + id} />
+      <div className="opinions">
+          <Opinion target_user={user.id}/>
+
+      </div>
+      <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?seller='+id} />
     </>
   );
 };

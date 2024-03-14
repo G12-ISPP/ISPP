@@ -1,0 +1,100 @@
+.title-op {
+  margin-bottom: 50px;
+  font-size: 35px;
+  align-items: center;
+}
+
+.error-op {
+  color: red;
+}
+
+.form-op {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  width: 100%;
+}
+
+.add-opinion-button {
+  display: block;
+  width: auto;
+  background-color: #004040;
+  color: white;
+  border: 2px solid #004040;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-group-op {
+  width: 100%;
+}
+
+.add-opinion-button:hover {
+  background: #E0EEC6;
+  color: #004040;
+  border: 2px solid #004040;
+}
+
+.error-message-op {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: red;
+  font-size: 14px;
+  bottom: -30px;
+  padding: 10px 20px;
+  background-color: transparent;
+  border: 2px solid red;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+@media screen and (max-width: 768px) {
+  .title-op {
+    font-size: 24px;
+  }
+}
+
+.main-op {
+  position: relative;
+  width: 100%;
+
+}
+
+.login-button-op {
+  text-align: center;
+  display: block;
+  width: auto;
+  padding: 10px 20px;
+  margin: 50px auto;
+  background-color: #004040;
+  color: white;
+  border: 2px solid #004040;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button-op:hover {
+  background: #E0EEC6;
+  color: #004040;
+  border: 2px solid #004040;
+}
+
+.textarea-op {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-group-op {
+  margin-bottom: 20px;
+}
+
+.button-container-op {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
