@@ -116,7 +116,6 @@ const ProductsGrid = (consts) => {
 
     return (
         <div className={getGridClass()}>
-            {products.length === 0 ? ( <p>No hay productos disponibles</p>) : (
             {gridType === GRID_TYPES.UNLIMITED ? (
                 <div className='products-container'>
                     <Text type={TEXT_TYPES.TITLE_BOLD} text={transformTypeName(elementType)} />
