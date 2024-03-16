@@ -284,7 +284,7 @@
     "pk": "12",
     "fields": {
       "id": "12",
-      "password": "test1Frontend",
+      "password": "pbkdf2_sha256$720000$c61Yn1jB3no6NPf8idGc1V$pxajGQ/GOV8UniyyD76zw0t7DXpObSMDMPZa8qjYnGs=",
       "last_login": null,
       "username": "test1Frontend",
       "first_name": "test1_frontend",
@@ -312,7 +312,7 @@
     "pk": "13",
     "fields": {
       "id": "13",
-      "password": "test2_frontend",
+      "password": "pbkdf2_sha256$720000$EzomAr1JcqLhEb7aACYgDA$Zo2ac7sVLVWSQlMMepZlgRUpay3pvYghdbJ/DHjUAPc=",
       "last_login": null,
       "username": "test2Frontend",
       "first_name": "test2Frontend",
