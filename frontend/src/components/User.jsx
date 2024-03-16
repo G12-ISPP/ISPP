@@ -95,18 +95,15 @@ const UserDetail = () => {
           <div>
             <h2 className="title-detalle">{user.first_name} {user.last_name}</h2>
 
-            <h3 className="title-detalle">Localización:</h3>
-            <p>{user.address}</p>
-            <p>{user.city}</p>
-            <p>{user.postal_code}</p>
-
 
             <h3 className="title-detalle">Contacto:</h3>
                   <p>{user.email}</p>
               </div>
               <div className="chat">
                 <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
+                
               </div>  
+              {!localStorage.getItem('token') && <div className='error'>Debes iniciar sesión para poder acceder al chat con un usuario</div>}
               <div className="chat">
                 <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
               </div>
@@ -116,11 +113,12 @@ const UserDetail = () => {
       <div className="section-title-container">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
       </div>
+      
+      <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?seller='+id} />
       <div className="opinions">
           <Opinion target_user={user.id}/>
 
       </div>
-      <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?seller='+id} />
     </>
   );
 };
