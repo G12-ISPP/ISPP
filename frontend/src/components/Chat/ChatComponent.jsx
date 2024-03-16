@@ -3,6 +3,7 @@ import './ChatComponent.css'
 import 'react-chat-elements/dist/main.css';
 import { MessageBox } from 'react-chat-elements'
 import { useNavigate } from 'react-router-dom';
+import {getUser} from "../../api/users.api.jsx";
 
 
 
@@ -24,7 +25,7 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
  
   // Función para cargar los mensajes de la sala de chat
   const fetchMessages = () => {
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
     return fetch(`${backend}/chat/${roomId}/messages/`, {
       method: 'GET',
       headers: {
@@ -62,9 +63,7 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
       setNewMessage('');
-      console.log("FETCHING");
       setTimeout(fetchMessages, 200); 
       setTimeout(() => {
         scrollToBottom();
@@ -80,17 +79,8 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
   useEffect(() => {
     // Asumiendo que tienes una variable o prop `username` disponible
     // y una función para obtener el token si es necesario
-    const token = localStorage.getItem('token'); // o tu función para obtener el token
-    const url = `${backend}/users/get-user-id/${roomMate}/`; // Ajusta la URL basada en cómo configuraste tus rutas en Django
 
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`, // Asegúrate de incluir el token si tu endpoint lo requiere
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(response => {
+    getUser(roomMate).then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -124,7 +114,7 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
         </div>
       <h2 className='title'>{roomName}</h2>
       <div className='window'>
-        <div className='messages-container' ref={messagesContainerRef}>
+        <div id='messages-container' className='messages-container' ref={messagesContainerRef}>
           {
             messages.map((message, index) => (
               <MessageBox
