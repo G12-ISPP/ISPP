@@ -53,31 +53,44 @@ export default class CustomModelDetails extends React.Component{
         const { data } = this.state;
         return (           
             <div className="wrapper">
-                <h1>Detalles del pedido</h1>
-                <p>Estimado cliente, su pedido ha sido realizado correctamente.</p>
-                <div className="project">
-                    <div className="shop">
-                        {data && <>{data.products.map((p, index) => (
-                            <OrderProductResume key={index} name={data.products[index].name} price={data.products[index].price} 
-                            image_url={data.products[index].image_url} imageRoute={data.products[index].imageRoute}
-                            id={data.products[index].id} quantity={data.products[index].quantity} />
-                        ))}</>}
-
-                        {data && <h5>Gastos de envío: 5€</h5>}
-                        {data && <h2>Precio total: {data.price}€</h2>}
-
-                        <div className='right-bar'>
-                            <h2>Detalles de entrega</h2>
-                            <hr />
-                            {data && <p><span>Correo electrónico:</span> <span>{data.buyer ? data.buyer : data.buyer_mail}</span></p>}
-                            {data && <p><span>Ciudad:</span> <span>{data.city}</span></p>}
-                            {data && <p><span>Código Postal:</span> <span>{data.postal_code.toString().padStart(5, "0")}</span></p>}
-                            {data && <p><span>Dirección:</span> <span>{data.address}</span></p>}
+                {data?.payed && (
+                    <>
+                    <h1>Detalles del pedido</h1>
+                    <p>Estimado cliente, su pedido ha sido realizado correctamente.</p>
+                    <div className="project">
+                        <div className="shop">
+                            {data && <>{data.products.map((p, index) => (
+                                <OrderProductResume key={index} name={data.products[index].name} price={data.products[index].price} 
+                                image_url={data.products[index].image_url} imageRoute={data.products[index].imageRoute}
+                                id={data.products[index].id} quantity={data.products[index].quantity} />
+                            ))}</>}
+    
+                            {data && <h5>Gastos de envío: 5€</h5>}
+                            {data && <h2>Precio total: {data.price}€</h2>}
+    
+                            <div className='right-bar'>
+                                <h2>Detalles de entrega</h2>
+                                <hr />
+                                {data && <p><span>Correo electrónico:</span> <span>{data.buyer ? data.buyer : data.buyer_mail}</span></p>}
+                                {data && <p><span>Ciudad:</span> <span>{data.city}</span></p>}
+                                {data && <p><span>Código Postal:</span> <span>{data.postal_code.toString().padStart(5, "0")}</span></p>}
+                                {data && <p><span>Dirección:</span> <span>{data.address}</span></p>}
+                            </div>
+                            
+                            
                         </div>
-                        
-                        
                     </div>
-                </div>
+                    </>
+                )}
+                {/* {data && !data?.payed && (
+                    <>
+                        <h1>Error 404. Not Found</h1>
+                        <p>
+                            <a href='/'>Volver a la página principal.</a>
+                        </p>
+                    </> 
+                )} */}
+                
             </div>
         );
     }
