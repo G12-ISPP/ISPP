@@ -1,4 +1,4 @@
-import { test } from 'vitest'
+import { expect, test } from 'vitest'
 import { render, screen } from "@testing-library/react";
 import Footer from '../components/Footer/Footer';
 import '@testing-library/jest-dom'
@@ -11,13 +11,14 @@ test('contains expected texts', () => {
   render(<Footer />)
 
   const links = screen.getAllByRole('link')
-  expect(links.length).toBe(5)
+  expect(links.length).toBe(6)
 
-  expect(links[0].textContent).toBe('Sobre nosotros')
-  expect(links[1].textContent).toBe('Contacto')
-  expect(links[2].textContent).toBe('Política de privacidad')
-  expect(links[3].textContent).toBe('Términos y condiciones')
-  expect(links[4].textContent).toBe('Política de cookies')
+  expect(links[0].textContent).toBe('Seguimiento de pedidos')
+  expect(links[1].textContent).toBe('Sobre nosotros')
+  expect(links[2].textContent).toBe('Contacto')
+  expect(links[3].textContent).toBe('Política de privacidad')
+  expect(links[4].textContent).toBe('Términos y condiciones')
+  expect(links[5].textContent).toBe('Política de cookies')
 
   const images = screen.getAllByRole('img')
   expect(images.length).toBe(4)
