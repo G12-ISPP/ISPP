@@ -10,9 +10,10 @@ const id = window.location.href.split('/')[4];
 const UserDetail = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const backend = import.meta.env.VITE_APP_BACKEND; // Asegúrate de ajustar esto según tu configuración
 
   useEffect(() => {
-    const backend = import.meta.env.VITE_APP_BACKEND; // Asegúrate de ajustar esto según tu configuración
+    
     // const id = window.location.href.split('/')[4];
     const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
 

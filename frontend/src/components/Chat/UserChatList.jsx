@@ -35,6 +35,7 @@ function UserChatList() {
         throw new Error('Failed to create or get chatroom');
       }
       const data = await response.json();
+      console.log(data)
       navigate(`/chat/${data.chatroomID}`);
     } catch (error) {
       console.error('Error:', error);

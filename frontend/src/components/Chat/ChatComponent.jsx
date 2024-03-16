@@ -124,7 +124,7 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
     <div className='chat-page'>
       <div className="sidebar">
         <div className="back-button-container">
-          <button onClick={() => navigate(`/user-details/${mateId}`)} className="back-button">
+        <button onClick={() => mateId != -1 ? window.location.href=`/user-details/${mateId}` : window.location.href=`/` } className="back-button">
             <i className="left-arrow">←</i> Volver
           </button>
         </div>

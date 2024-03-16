@@ -1,12 +1,10 @@
 import './LoginForm.css';
 import { useState, useEffect } from 'react';
-import Text, { TEXT_TYPES } from '../Text/Text';
 import Button, { BUTTON_TYPES } from '../Button/Button';
 import logo from '../../assets/logo.png';
 import arrow from '../../assets/bx-left-arrow-alt.svg';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
-const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
