@@ -20,9 +20,17 @@ def convert_to_stl(request):
         if not image:
             return JsonResponse({'error': 'La foto es obligatoria'}, status=400)
 
+        if image.size > 10 * 1024 * 1024:  # 10 MB en bytes
+            return JsonResponse({'error': 'El tamaño del archivo debe ser menor a 10 MB'}, status=400)
+
+        # # Generar un nombre de archivo único con un UUID
+        # unique_filename = str(uuid.uuid4())
+        # file_name = f'{unique_filename}.jpg'  # Utiliza la extensión de archivo adecuada
+
         # Generar un nombre de archivo único con un UUID
         unique_filename = str(uuid.uuid4())
-        file_name = f'{unique_filename}.jpg'  # Utiliza la extensión de archivo adecuada
+        extension = image.name.split('.')[-1]
+        file_name = f'{unique_filename}.{extension}'
 
         # Rutas de archivos temporales y de salida
         temp_dir = 'media/tmp/'
