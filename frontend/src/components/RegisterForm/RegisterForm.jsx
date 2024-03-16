@@ -2,8 +2,10 @@ import React from 'react';
 import './RegisterForm.css';
 import Text, { TEXT_TYPES } from '../Text/Text';
 import Button, { BUTTON_TYPES } from '../Button/Button';
+import Modal from '../Modal/Modal';
 import logo from '../../assets/logo.png';
 import arrow from '../../assets/bx-left-arrow-alt.svg';
+import PropTypes from 'prop-types';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -12,6 +14,9 @@ class RegisterForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      avatar: '/images/avatar.svg',
+      preview: null,
+      modal: false,
       username: '',
       email: '',
       password: '',
@@ -37,25 +42,49 @@ class RegisterForm extends React.Component {
     });
   }
 
+  setImage = (preview) => {
+    this.setState({ preview });
+  }
+
+  onClick = () => {
+    this.setState({ modal: true });
+  }
+
   handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const id = window.location.href.split('/')[4]
+      const base64Response = await fetch(this.state.preview);
+      const blob = await base64Response.blob();
+
+      const formData = new FormData();
+      formData.append('username', this.state.username);
+      formData.append('email', this.state.email);
+      formData.append('password', this.state.password);
+      formData.append('first_name', this.state.first_name);
+      formData.append('last_name', this.state.last_name);
+      formData.append('address', this.state.address);
+      formData.append('postal_code', this.state.postal_code);
+      formData.append('city', this.state.city);
+      formData.append('is_designer', this.state.is_designer);
+      formData.append('is_printer', this.state.is_printer);
+      formData.append('is_active', true);
+      if(this.state.preview !== null){
+        formData.append('profile_picture', blob, `profile_picture_${this.state.username}.png`);
+      }
+  
+      const id = window.location.href.split('/')[4];
       let petition = backend + '/users/register/';
-      petition = petition.replace(/"/g, '')
+      petition = petition.replace(/"/g, '');
+  
       const response = await fetch(petition, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.state)
+        body: formData
       });
-
+  
       if (response.ok) {
         alert('Registro exitoso');
-        window.location.href = "/"; 
-
+        window.location.href = "/";
       } else {
         const data = await response.json();
         if (data.error) {
@@ -69,7 +98,6 @@ class RegisterForm extends React.Component {
       this.setState({ errorMessage: 'Error de conexión con el servidor' });
     }
   }
-
 
   render() {
     const { errors } = this.state;
@@ -93,6 +121,11 @@ class RegisterForm extends React.Component {
             <p className="register-form-title">Crear una cuenta</p>
             <p className="register-form-subtitle">¿Ya tienes una cuenta? <span className="login-link" onClick={() => this.onButtonClick('/login')}>Inicia sesión</span></p>
             <form className='register-form' onSubmit={this.handleSubmit}>
+              <div className='register-group'>
+                <img className='avatar' src={this.state.preview !== null ? this.state.preview : this.state.avatar} onClick={this.onClick} />
+                <img className='edit-icon' src='/images/edit.svg' onClick={this.onClick} />
+                {this.state.modal && (<Modal modal={this.state.modal} toggle={() => this.setState({modal: false})} setImage={this.setImage}/>)}
+              </div>
               <div className='register-form-group'>
                 <input type='text' id='username' name='username' className='form-input' placeholder='Nombre de usuario' value={this.state.username} onChange={this.handleChange} required />
               </div>
@@ -147,3 +180,9 @@ class RegisterForm extends React.Component {
 }
 
 export default RegisterForm;
+
+RegisterForm.propTypes = {
+  modal: PropTypes.bool,
+  toggle: PropTypes.func,
+};
+

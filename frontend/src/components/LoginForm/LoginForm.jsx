@@ -1,8 +1,10 @@
 import './LoginForm.css';
-import { useState, useEffect } from 'react';
+
+import {useState, useEffect, useContext} from 'react';
 import Button, { BUTTON_TYPES } from '../Button/Button';
 import logo from '../../assets/logo.png';
 import arrow from '../../assets/bx-left-arrow-alt.svg';
+import AuthContext from "../../context/AuthContext.jsx";
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 
@@ -13,6 +15,7 @@ const LoginForm = () => {
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const { loginUser } = useContext(AuthContext)
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -51,9 +54,13 @@ const LoginForm = () => {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token); // Almacena el token en el localStorage
+        console.log(data.access);
+        console.log(data.refresh);
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('refresh', data.refresh);
         localStorage.setItem('username', formData.username);
         localStorage.setItem('userId', data.userId);
+        loginUser(data.token, data.refresh);
         window.location.href = "/";
       } else {
         const data = await response.json();

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './Header.css';
 import logo from '../../assets/logo.png';
 import searchIcon from '../../assets/bx-search.svg';
@@ -7,12 +7,14 @@ import messageIcon from '../../assets/mensajero.png';
 import menuIcon from '../../assets/bx-menu.svg';
 import exitIcon from '../../assets/bx-x.svg';
 import Button, { BUTTON_TYPES } from '../Button/Button';
+import AuthContext from "../../context/AuthContext.jsx";
 
 const Header = ({ cart,setCart }) => {
 
 	const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'));
     const [menuVisible, setMenuVisible] = useState(false);
     const [isHeaderFullScreen, setIsHeaderFullScreen] = useState(false);
+    const { logoutUser } = useContext(AuthContext);
     const [searchText, setSearchText] = useState('');
     const [searchResults, setSearchResults] = useState({ productsData: [], usersData: [] });
     useEffect(() => {
@@ -35,6 +37,7 @@ const Header = ({ cart,setCart }) => {
 		localStorage.removeItem('token');
         setCart([]);
 		setIsLoggedIn(null);
+        logoutUser();
 		alert('Deslogueo exitoso!!');
 		window.location.href = '/';
 	};

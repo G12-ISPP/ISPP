@@ -4,6 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class CustomUser(AbstractUser):
 
+    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
     address = models.CharField(max_length=255)
     postal_code = models.IntegerField(
         validators=[    
