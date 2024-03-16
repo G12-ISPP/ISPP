@@ -278,5 +278,61 @@
       "designer_plan": "0",
       "designer_plan_date": null
     }
+  },
+   {
+    "model": "users.CustomUser",
+    "pk": "12",
+    "fields": {
+      "id": "12",
+      "password": "test1Frontend",
+      "last_login": null,
+      "username": "test1Frontend",
+      "first_name": "test1_frontend",
+      "last_name": "test1_frontend",
+      "email": "test1_frontend@gmail.com",
+      "date_joined": "2024-02-22 20:21:13",
+      "address": "Calle Uria, 26",
+      "postal_code": "33003",
+      "city": "Asturias",
+      "is_staff": "0",
+      "is_superuser": "0",
+      "is_active": "1",
+      "is_designer": "0",
+      "is_printer": "0",
+      "buyer_plan": "1",
+      "buyer_plan_date": "2024-02-13",
+      "seller_plan": "0",
+      "seller_plan_date": null,
+      "designer_plan": "0",
+      "designer_plan_date": null
+    }
+  },
+  {
+    "model": "users.CustomUser",
+    "pk": "13",
+    "fields": {
+      "id": "13",
+      "password": "test2_frontend",
+      "last_login": null,
+      "username": "test2Frontend",
+      "first_name": "test2Frontend",
+      "last_name": "test2_frontend",
+      "email": "test2_frontend@gmail.com",
+      "date_joined": "2024-02-22 20:21:13",
+      "address": "Calle Uria, 26",
+      "postal_code": "33003",
+      "city": "Asturias",
+      "is_staff": "0",
+      "is_superuser": "0",
+      "is_active": "1",
+      "is_designer": "0",
+      "is_printer": "0",
+      "buyer_plan": "1",
+      "buyer_plan_date": "2024-02-13",
+      "seller_plan": "0",
+      "seller_plan_date": null,
+      "designer_plan": "0",
+      "designer_plan_date": null
+    }
   }
 ]
