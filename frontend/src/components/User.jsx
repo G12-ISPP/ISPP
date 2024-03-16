@@ -39,6 +39,11 @@ const UserDetail = () => {
     const petition = `${backend}/chat/chatroom/`;
     const token = localStorage.getItem('token');
 
+    if(!token){
+      alert("Debes estar logueado para acceder a los chats.");
+      return window.location.href=`/login`;
+    }
+
     try {
       const response = await fetch(petition, {
         method: 'POST',
