@@ -10,3 +10,14 @@ export const createChatRoom = (token, currentUserID, otherUserID) => {
         body: JSON.stringify({ currentUserID, otherUserID })
     });
 }
+
+export const getMessages = (token, roomID) => {
+    return fetch(backend + '/chat/' + roomID + '/messages/', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+}
