@@ -3,21 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import './User.css';
 import Button, { BUTTON_TYPES } from './Button/Button';
 import Text, { TEXT_TYPES } from "./Text/Text";
-import Opinion from './AddOpinion';
-import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsGrid/ProductsGrid'
+import AddOpinion from './AddOpinion';
+import Opinion from './Opinion';
+import ProductsGrid, { GRID_TYPES } from '../components/ProductsGrid/ProductsGrid'
 
 const id = window.location.href.split('/')[4];
-const ownUser = false;
 
 const UserDetail = () => {
   const [user, setUser] = useState(null);
   const currentUserID = localStorage.getItem('userId');
   const [ownUser, setOwnUser] = useState(false);
+  const [opinions, setOpinions] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const backend = import.meta.env.VITE_APP_BACKEND; // Asegúrate de ajustar esto según tu configuración
-    // const id = window.location.href.split('/')[4];
+    const backend = import.meta.env.VITE_APP_BACKEND;
     const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
 
     const fetchUserData = async () => {
@@ -27,20 +27,42 @@ const UserDetail = () => {
           throw new Error('Failed to fetch user data');
         }
         const userData = await response.json();
+        setUser(userData);
         if (currentUserID === userData.id.toString()) {
           setOwnUser(true);
         }
-        setUser(userData);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
 
+    const fetchOpinions = async () => {
+      try {
+        let petition = backend + '/opinion/api/v1/opinion/?target_user=' + id;
+        petition = petition.replace(/"/g, '');
+        const response = await fetch(petition, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setOpinions(data);
+        } else {
+          console.error('Error al obtener las opiniones');
+        }
+      } catch (error) {
+        console.error('Error al comunicarse con el backend:', error);
+      }
+    };
+
     fetchUserData();
-  }, []);
+    fetchOpinions();
+  }, [id, currentUserID]);
 
   const handleChatClick = async () => {
-    const currentUserID = localStorage.getItem('userId');
     const otherUserID = user?.id;
     const petition = `${import.meta.env.VITE_APP_BACKEND}/chat/chatroom/`;
     const token = localStorage.getItem('token');
@@ -67,7 +89,7 @@ const UserDetail = () => {
 
   const handleProductListClick = async () => {
     try {
-      navigate(`/user-details/` + id + `/products`);
+      navigate(`/user-details/${id}/products`);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -81,30 +103,17 @@ const UserDetail = () => {
     }
   };
 
-
   if (!user) {
     return <div>Loading...</div>;
   }
 
-
-
   return (
     <>
-
-      {ownUser ? (
-        <div className="section-title-container">
-          <Text type={TEXT_TYPES.TITLE_BOLD} text='Mi perfil' />
-        </div>
-      ) : (
-        <div className="section-title-container">
-          <Text type={TEXT_TYPES.TITLE_BOLD} text='Detalles de usuario' />
-        </div>
-      )}
-
-
+      <div className="section-title-container">
+        <Text type={TEXT_TYPES.TITLE_BOLD} text={ownUser ? 'Mi perfil' : 'Detalles de usuario'} />
+      </div>
 
       <div className="main">
-
         <div className="profile-summary">
           <div>
             <h2 className="title-detalle">{user.first_name} {user.last_name}</h2>
@@ -142,16 +151,18 @@ const UserDetail = () => {
             <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
           </div>
         </div>
+      </div>
 
+      <div className="opinions">
+        <AddOpinion target_user={user.id}/>
+        {opinions.map(opinion => (
+          <Opinion key={opinion.id} opinion={opinion} />
+        ))}
       </div>
       <div className="section-title-container">
         <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
       </div>
-      <div className="opinions">
-          <Opinion target_user={user.id}/>
-
-      </div>
-      <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?seller='+id} />
+      <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={`?seller=${id}`} />
     </>
   );
 };
