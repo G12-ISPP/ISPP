@@ -44,17 +44,24 @@ class ProductDetail extends React.Component {
       let existingProduct = cartCopy.find(cartProduct => cartProduct.id == product.id);
 
       if (existingProduct) {
-        if ((product.stock_quantity - existingProduct.quantity) < 1) return
+        if ((product.stock_quantity - existingProduct.quantity) < 1){
+          alert('No hay suficiente stock disponible')
+          return
+        } 
         existingProduct.quantity += 1
       } else {
-        cartCopy.push({
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          imageRoute: product.imageRoute,
-          stock_quantity: product.stock_quantity,
-          quantity: 1
-        })
+        if(product.stock_quantity>0){
+          cartCopy.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            imageRoute: product.imageRoute,
+            stock_quantity: product.stock_quantity,
+            quantity: 1
+          })
+        }else{
+          alert('No hay stock disponible')
+        }
       }
 
       setCart(cartCopy)

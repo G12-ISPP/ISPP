@@ -90,7 +90,6 @@ const UserDetail = () => {
 
   return (
     <>
-
       {ownUser ? (
         <div className="section-title-container">
           <Text type={TEXT_TYPES.TITLE_BOLD} text='Mi perfil' />
@@ -100,11 +99,7 @@ const UserDetail = () => {
           <Text type={TEXT_TYPES.TITLE_BOLD} text='Detalles de usuario' />
         </div>
       )}
-
-
-
       <div className="main">
-
         <div className="profile-summary">
           <div>
             <h2 className="title-detalle">{user.first_name} {user.last_name}</h2>
@@ -116,44 +111,38 @@ const UserDetail = () => {
                 </div>
               </div>
             ) : null}
-
             <div className="user-img-container">
               <img className='img' src='/images/avatar.svg' alt={user.username} />
             </div>
-
-            <h3 className="title-detalle">Localización:</h3>
-            <p>{user.address}</p>
-            <p>{user.city}, {user.postal_code}</p>
-
             <h3 className="title-detalle">Contacto:</h3>
-            <p>{user.email}</p>
-          </div>
-          {ownUser ? (
-            <div className="chat">
-              <Button type={BUTTON_TYPES.TRANSPARENT} text='Editar Perfil' onClick={handleEditClick} />
-            </div>
-          ) : (
-            <div className="chat">
-              <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
-            </div>
-          )}
-
+              <p>{user.email}</p>
+              {ownUser ? (
+              <div className="chat">
+                <Button type={BUTTON_TYPES.TRANSPARENT} text='Editar Perfil' onClick={handleEditClick} />
+              </div>
+              ) : (
+                <div className="chat">
+                  <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
+                  {!localStorage.getItem('token') && <div className='error'>Debes iniciar sesión para poder acceder al chat con un usuario</div>}
+                </div>
+              )}
           <div className="chat">
             <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
           </div>
         </div>
-
+        <div className="section-title-container">
+          <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
+        </div>
+        
+        <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?seller='+id} />
+        <div className="opinions">
+            <Opinion target_user={user.id}/>
+        </div>
       </div>
-      <div className="section-title-container">
-        <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
-      </div>
-      <div className="opinions">
-          <Opinion target_user={user.id}/>
-
-      </div>
-      <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?seller='+id} />
+      
+    </div>
     </>
   );
-};
+}
 
 export default UserDetail;

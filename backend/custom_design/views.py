@@ -29,7 +29,7 @@ def list_searching_printer_designs(request):
     elif not request.user.is_printer:
         return Response({'message': 'No tienes permiso para acceder a esta página. Solo los impresores pueden ver los diseños.'}, status=status.HTTP_403_FORBIDDEN)
 
-    designs = CustomDesign.objects.filter(status='searching')
+    designs = CustomDesign.objects.filter(status='searching',payed=True)
     if not designs.exists():
         return Response({'message': 'No hay diseños disponibles'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -57,6 +57,7 @@ def create_custom_design(request):
             address = data.get('address')
             city = data.get('city')
             buyer_mail = data.get('buyer_mail')
+            color = data.get('color')
 
             custom_design = CustomDesign.objects.create(
                 name=name,
@@ -74,6 +75,7 @@ def create_custom_design(request):
                 buyer_mail=buyer_mail,
                 payed=False,
                 status='searching',
+                color=color,
             )
 
             if request.user.is_authenticated:
@@ -173,7 +175,7 @@ def update_design_status(request, design_id):
             design.save()
 
             body = f"""
-            Ha sido seleccionado para imprimir la pieza que se adjunta en este correo. Por favor, una vez finalizada la impresión, acuda a Correos y envíala a la ciudad {design.city}, a la dirección {design.address}.
+            Ha sido seleccionado para imprimir la pieza que se adjunta en este correo. Por favor, imprimala en color{design.color} y una vez finalizada la impresión, acuda a Correos y envíala a la ciudad {design.city}, a la dirección {design.address}.
             Recibirás el coste de impresión de {design.price - design.quantity * (3+3+2)} €, más 3 euros por el servicio, y los gastos de envío.
             """
 

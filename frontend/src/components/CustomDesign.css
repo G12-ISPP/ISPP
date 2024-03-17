@@ -85,6 +85,15 @@
     font-size: 20px;
   }
 
+  input.selected{
+    background-color: #004040;
+    color: #E0EEC6;
+    border: 0.1em #004040 solid;
+    width: 8em;
+    height: 3em;
+    font-weight: bold;
+}
+
   @media (max-width: 1040px) {
     .main {
       flex-direction: column;

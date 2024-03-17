@@ -69,6 +69,7 @@ const CustomDesignPrinters = () => {
                 <p>Dimensiones: {data && `${data.dimensions.width} x ${data.dimensions.height} x ${data.dimensions.depth} cm`}</p>
                 <p>Peso: {data && data.weight} kg</p>
                 <p>Calidad: {data && data.quality}</p>
+                <p>Color: {data && data.color}</p>
                 <p>Cantidad: {data && data.quantity}</p>
                 <p>Precio: {data && data.price}€</p>
                 <button onClick={handlePrint}>Imprimir</button>

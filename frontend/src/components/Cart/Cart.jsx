@@ -85,8 +85,8 @@ const Cart = ({
         newErrors.address = 'La dirección debe tener menos de 255 caracteres.';
     }
 
-    if (postalCode < 1000 || postalCode > 52999) {
-        newErrors.postalCode = 'El código postal debe estar entre 1000 y 52999.';
+    if(typeof postalCode === 'undefined'||postalCode < 1000 || postalCode > 52999 || postalCode.toString().includes('.')|| postalCode.toString().includes(',')){
+      newErrors.postalCode = 'El código postal debe ser un número entero entre 1000 y 52999';
     }
 
     if (cart.length === 0) {

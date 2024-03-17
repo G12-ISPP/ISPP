@@ -8,6 +8,12 @@ class CustomDesign(models.Model):
             ('printed', 'Impreso'),
         ]
 
+    COLOR_CHOICES = [
+        ('red', 'Rojo'),
+        ('green', 'Verde'),
+        ('blue', 'Azul'),
+    ]
+
     custom_design_id = models.AutoField(primary_key=True)
     design_file = models.FileField(upload_to='designs/')
     name = models.CharField(max_length=255)
@@ -39,6 +45,8 @@ class CustomDesign(models.Model):
     )
 
     printer = models.ForeignKey('users.CustomUser', on_delete=models.SET_NULL, null=True, blank=True, related_name='printed_designs', help_text='Impresor asignado al diseño')
+
+    color = models.CharField(max_length=20, choices=COLOR_CHOICES, default='red', help_text='Color del diseño')
 
     def __str__(self):
         return self.name
