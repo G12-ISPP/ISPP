@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './ConvertToSTL.css';
+import PageTitle from '../PageTitle/PageTitle';
 
 const ConvertToSTL = () => {
     const [file, setFile] = useState(null);
@@ -77,6 +78,7 @@ const ConvertToSTL = () => {
 
     return (
         <>
+            <PageTitle title="Convertir a STL" />
             <h1 className='title'>Convertir a STL</h1>
             <div className='main'>
                 <form className='form' onSubmit={handleSubmit}>

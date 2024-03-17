@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import './Cart/Cart.css';
 import Product from './Product/Product';
 import OrderProductResume from './OrderProductResume.jsx/OrderProductResume';
+import PageTitle from './PageTitle/PageTitle';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -52,6 +53,8 @@ export default class CustomModelDetails extends React.Component{
     render() {
         const { data } = this.state;
         return (           
+            <>
+            <PageTitle title="Detalles del pedido" />
             <div className="wrapper">
                 {data?.payed && (
                     <>
@@ -83,6 +86,7 @@ export default class CustomModelDetails extends React.Component{
                     </>
                 )}
             </div>
+            </>
         );
     }
 }

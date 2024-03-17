@@ -4,6 +4,7 @@ import myOrder from '../../assets/myOrder.png';
 import './myOrders.css'
 import searchIcon from '../../assets/bx-search.svg';
 import Button, { BUTTON_TYPES } from "../Button/Button";
+import PageTitle from "../PageTitle/PageTitle";
 
 
 
@@ -102,7 +103,9 @@ const MyOrders = () => {
     
 
     return (
-        <div className="wrapper">
+        <>
+            <PageTitle title="Mis pedidos" />
+            <div className="wrapper">
                 {localStorage.getItem('token') ? <h1>Mis Pedidos</h1> : <h1>Buscar pedidos</h1>}
                 <div className="project">
                     <div className="shop">
@@ -180,6 +183,7 @@ const MyOrders = () => {
                     </div>
                 </div>
             </div>
+        </>
     );
 }
 

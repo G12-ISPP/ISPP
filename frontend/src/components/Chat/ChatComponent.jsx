@@ -3,6 +3,8 @@ import './ChatComponent.css'
 import 'react-chat-elements/dist/main.css';
 import { MessageBox } from 'react-chat-elements'
 import { useNavigate } from 'react-router-dom';
+import UserChatList from "./UserChatList";
+
 
 
 
@@ -12,7 +14,6 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
   const [mateId, setMateId] = useState(-1);
   const backend = import.meta.env.VITE_APP_BACKEND;
   let navigate = useNavigate();
-  const endOfMessagesRef = useRef(null);
   const messagesContainerRef = useRef(null);
 
 
@@ -42,7 +43,8 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
       setMessages(data);
     })
     .catch(error => console.error('Error fetching messages:', error));
-};
+  };
+  
 
   // Función para enviar un nuevo mensaje
   const sendMessage = (e) => {
@@ -78,33 +80,6 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
   }
 
   useEffect(() => {
-    // Asumiendo que tienes una variable o prop `username` disponible
-    // y una función para obtener el token si es necesario
-    const token = localStorage.getItem('token'); // o tu función para obtener el token
-    const url = `${backend}/users/get-user-id/${roomMate}/`; // Ajusta la URL basada en cómo configuraste tus rutas en Django
-
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`, // Asegúrate de incluir el token si tu endpoint lo requiere
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      setMateId(data.user_id); // Asume que tu endpoint devuelve un objeto con una propiedad `user_id`
-    })
-    .catch(error => {
-      console.error('Hubo un problema con la petición fetch:', error);
-    });
-  }, [roomMate]); 
-
-  useEffect(() => {
     fetchMessages().then(() => {
       setTimeout(() => {
         scrollToBottom();
@@ -115,30 +90,66 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
     return () => clearInterval(intervalId);
   }, [roomId]); 
   
+
+
+  // Obtenemos el ID de un usuario a partir de su username
+  useEffect(() => {
+    
+    const token = localStorage.getItem('token'); 
+    console.log(roomMate)
+    const url = `${backend}/users/get-user-id/${roomMate}/`; 
+
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`, 
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      setMateId(data.user_id); 
+    })
+    .catch(error => {
+      console.error('Hubo un problema con la petición fetch:', error);
+    });
+  }, [roomMate]); 
+  
   return (
-    <div>
+    <div className='chat-page'>
+      <div className="sidebar">
         <div className="back-button-container">
-          <button onClick={() => navigate(`/user-details/${mateId}`)} className="back-button">
+        <button onClick={() => mateId != -1 ? window.location.href=`/user-details/${mateId}` : window.location.href=`/` } className="back-button">
             <i className="left-arrow">←</i> Volver
           </button>
         </div>
-      <h2 className='title'>{roomName}</h2>
-      <div className='window'>
-        <div className='messages-container' ref={messagesContainerRef}>
-          {
-            messages.map((message, index) => (
-              <MessageBox
-                key={index}
-                position={message.author__username === localStorage.getItem('username') ? 'right' : 'left'} // Ajusta la posición basada en si el mensaje fue enviado o recibido
-                type="text"
-                text={message.content}
-                title={message.author__username}
-                // Para más personalización, puedes añadir aquí otras props como `date`, `avatar`, etc.
-              />
-            ))
-          }
-        </div>
-        <div>
+        <UserChatList/>
+      </div>
+      
+      {roomId != 0 ? <div className='chat' >
+        <h2 className='title'>{roomName}</h2>
+        <div className='window'> 
+          <div className='messages-container' ref={messagesContainerRef}>
+            {
+              messages.map((message, index) => (
+                <MessageBox
+                  key={index}
+                  position={message.author__username === localStorage.getItem('username') ? 'right' : 'left'} // Ajusta la posición basada en si el mensaje fue enviado o recibido
+                  type="text"
+                  text={message.content}
+                  title={message.author__username}
+                  date={message.timestamp}
+                  // Para más personalización, puedes añadir aquí otras props como `date`, `avatar`, etc.
+                />
+              ))
+            }
+          </div>
+        
           <form className='f' onSubmit={sendMessage}>
             <input
               className='fi'
@@ -150,8 +161,7 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
             <button className='fb' type="submit">Enviar</button>
           </form>
         </div>
-        
-      </div>
+      </div> : <div className="contenedor-centrado"> <h2 className='mis-chats'>Elige un usuario con el que comenzar a chatear.</h2> </div>}
     </div>
   );
 };

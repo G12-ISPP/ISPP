@@ -25,6 +25,7 @@ from django.utils.translation import activate
 from django.conf import settings
 from datetime import datetime
 from django.http import HttpResponseRedirect
+import re
 
 from django.db.models import Q
 
@@ -68,6 +69,18 @@ class UserCreateAPIView(generics.CreateAPIView):
 
     @translate
     def post(self, request, *args, **kwargs):
+        errors = {}
+        if len(request.data.get('password')) < 4 or not re.search(r'\d', request.data.get('password')) or not re.search(r'[a-zA-Z]', request.data.get('password')):
+            errors['password'] = ['La contraseña debe tener al menos 4 caracteres de los cuales al menos uno debe ser un dígito y otro una letra']
+        postal_code = request.data.get('postal_code')
+        try:
+            postal_code = int(postal_code)
+            if postal_code < 1000 or postal_code > 52999:
+                errors['postal_code'] = ['El código postal debe ser un número entero entre 1000 y 52999']
+        except ValueError:
+            errors['postal_code'] = ['El código postal debe ser un número entero válido']
+        if errors:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         try:
             return super().post(request, *args, **kwargs)
         except ValidationError as e:
