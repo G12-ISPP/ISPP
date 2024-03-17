@@ -1,10 +1,11 @@
 import React from 'react';
 import './RegisterForm.css';
-import Text, { TEXT_TYPES } from '../Text/Text';
 import Button, { BUTTON_TYPES } from '../Button/Button';
 import Modal from '../Modal/Modal';
 import logo from '../../assets/logo.png';
 import arrow from '../../assets/bx-left-arrow-alt.svg';
+import avatar from '../../assets/avatar.svg';
+import editIcon from '../../assets/bxs-edit.svg';
 import PropTypes from 'prop-types';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
@@ -14,7 +15,7 @@ class RegisterForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      avatar: '/images/avatar.svg',
+      avatar: avatar,
       preview: null,
       modal: false,
       username: '',
@@ -123,7 +124,7 @@ class RegisterForm extends React.Component {
             <form className='register-form' onSubmit={this.handleSubmit}>
               <div className='register-group'>
                 <img className='avatar' src={this.state.preview !== null ? this.state.preview : this.state.avatar} onClick={this.onClick} />
-                <img className='edit-icon' src='/images/edit.svg' onClick={this.onClick} />
+                <img className='edit-icon' src={editIcon} onClick={this.onClick} />
                 {this.state.modal && (<Modal modal={this.state.modal} toggle={() => this.setState({modal: false})} setImage={this.setImage}/>)}
               </div>
               <div className='register-form-group'>
@@ -135,27 +136,31 @@ class RegisterForm extends React.Component {
               <div className='register-form-group'>
                 <input type='password' id='password' name='password' className='form-input' placeholder='Contraseña' value={this.state.password} onChange={this.handleChange} required />
               </div>
-              <div className='register-form-group'>
-                <input type='text' id='first_name' name='first_name' className='form-input' placeholder='Nombre' value={this.state.first_name} onChange={this.handleChange} required />
-              </div>
-              <div className='register-form-group'>
-                <input type='text' id='last_name' name='last_name' className='form-input' placeholder='Apellidos' value={this.state.last_name} onChange={this.handleChange} required />
+              <div className='register-form-row'>
+                <div className='register-form-group left'>
+                  <input type='text' id='first_name' name='first_name' className='form-input' placeholder='Nombre' value={this.state.first_name} onChange={this.handleChange} required />
+                </div>
+                <div className='register-form-group right'>
+                  <input type='text' id='last_name' name='last_name' className='form-input' placeholder='Apellidos' value={this.state.last_name} onChange={this.handleChange} required />
+                </div>
               </div>
               <div className='register-form-group'>
                 <input type='text' id='address' name='address' className='form-input' placeholder='Dirección' value={this.state.address} onChange={this.handleChange} required />
               </div>
-              <div className='register-form-group'>
-                <input type='text' id='postal_code' name='postal_code' className='form-input' placeholder='Código postal' value={this.state.postal_code} onChange={this.handleChange} required />
-              </div>
-              <div className='register-form-group'>
-                <input type='text' id='city' name='city' className='form-input' placeholder='Ciudad' value={this.state.city} onChange={this.handleChange} required />
+              <div className='register-form-row'>
+                <div className='register-form-group left'>
+                  <input type='text' id='postal_code' name='postal_code' className='form-input' placeholder='Código postal' value={this.state.postal_code} onChange={this.handleChange} required />
+                </div>
+                <div className='register-form-group right'>
+                  <input type='text' id='city' name='city' className='form-input' placeholder='Ciudad' value={this.state.city} onChange={this.handleChange} required />
+                </div>
               </div>
               <div className="role-selector">
-                <label htmlFor='is_designer' className='checkbox-label'>
+                <label htmlFor='is_designer' className='register-checkbox-label'>
                   <input type='checkbox' id='is_designer' name='is_designer' checked={this.state.is_designer} onChange={this.handleChange} />
                   ¿Eres diseñador?
                 </label>
-                <label htmlFor='is_printer' className='checkbox-label'>
+                <label htmlFor='is_printer' className='register-checkbox-label'>
                   <input type='checkbox' id='is_printer' name='is_printer' checked={this.state.is_printer} onChange={this.handleChange} />
                   ¿Eres impresor?
                 </label>

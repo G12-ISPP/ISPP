@@ -3,6 +3,7 @@ import './Header.css';
 import logo from '../../assets/logo.png';
 import searchIcon from '../../assets/bx-search.svg';
 import cartIcon from '../../assets/bx-cart.svg';
+import messageIcon from '../../assets/mensajero.png';
 import menuIcon from '../../assets/bx-menu.svg';
 import exitIcon from '../../assets/bx-x.svg';
 import Button, { BUTTON_TYPES } from '../Button/Button';
@@ -176,6 +177,17 @@ const Header = ({ cart, setCart }) => {
                         )}
                     </div>
                     <div className="button-wrapper">
+                        {isLoggedIn && <img
+                            src={messageIcon}// Asegúrate de reemplazar esto con la ruta real de tu imagen
+                            alt="Mis chats"
+                            width={35}
+                            height={35}
+                            onClick={() => onButtonClick('/chat/')}
+                            onKeyDown={() => onButtonClick('/chat/')}
+                            tabIndex="0" // Hace que la imagen sea enfocable y responda a eventos del teclado, similar a un botón
+                            role="button" // Ayuda con la accesibilidad, indicando que la imagen actúa como un botón
+                            style={{ cursor: 'pointer' }} // Cambia el cursor a un puntero para indicar que es clickable
+                        />}
                         {isHeaderFullScreen && (
                             <img src={cartIcon} className='cart-icon' onClick={() => onButtonClick('/cart')} />
                         )}
@@ -206,6 +218,7 @@ const Header = ({ cart, setCart }) => {
                                             <span id='contador-productos'>{cartTotal()}</span>
                                         </div>
                                     </div>
+
 
                                     <div
                                         onMouseEnter={() => setActive(true)}
