@@ -82,15 +82,6 @@ export default class CustomModelDetails extends React.Component{
                     </div>
                     </>
                 )}
-                {/* {data && !data?.payed && (
-                    <>
-                        <h1>Error 404. Not Found</h1>
-                        <p>
-                            <a href='/'>Volver a la página principal.</a>
-                        </p>
-                    </> 
-                )} */}
-                
             </div>
         );
     }

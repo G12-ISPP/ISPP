@@ -127,12 +127,10 @@ def cancel_order(request, order_id):
 @api_view(['GET'])
 def order_details(request, order_id):
     try:
-        #if request.user.is_authenticated:
         order = Order.objects.get(id=order_id)
         if order.payed == False:
             return JsonResponse({'error': 'El pedido no existe'}, status=403)
-        # user = CustomUser.objects.get(username=request.user)
-        # if user.id == order.buyer.id:
+        
         order_products = list(OrderProduct.objects.filter(order_id=order_id))
         products = []
         for p in order_products:
