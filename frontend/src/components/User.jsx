@@ -127,7 +127,7 @@ const UserDetail = () => {
                   </div>
               ) : null}
               <div className="user-img-container">
-                <img className='img' src='/images/avatar.svg' alt={user.username} />
+                <img className='img' src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
               </div>
               <h3 className="title-detalle">Contacto:</h3>
               <p>{user.email}</p>
@@ -166,4 +166,3 @@ const UserDetail = () => {
 }
 
 export default UserDetail;
-
