@@ -1,4 +1,5 @@
 import './LoginForm.css';
+
 import {useState, useEffect, useContext} from 'react';
 import Button, { BUTTON_TYPES } from '../Button/Button';
 import logo from '../../assets/logo.png';
@@ -6,7 +7,6 @@ import arrow from '../../assets/bx-left-arrow-alt.svg';
 import AuthContext from "../../context/AuthContext.jsx";
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
-const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({

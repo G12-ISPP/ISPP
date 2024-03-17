@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './CustomDesignPrinters.css';
 import { useParams } from 'react-router-dom';
+import PageTitle from '../PageTitle/PageTitle';
 
 const backend = import.meta.env.VITE_APP_BACKEND;
 
@@ -62,6 +63,7 @@ const CustomDesignPrinters = () => {
 
     return (
         <>
+            <PageTitle title="Detalles de la solicitud" />
             <div className="custom-design-printers">
                 <h2>{data && data.name}</h2>
                 <p>Volumen: {data && data.volume} cm³</p>
@@ -69,6 +71,7 @@ const CustomDesignPrinters = () => {
                 <p>Dimensiones: {data && `${data.dimensions.width} x ${data.dimensions.height} x ${data.dimensions.depth} cm`}</p>
                 <p>Peso: {data && data.weight} kg</p>
                 <p>Calidad: {data && data.quality}</p>
+                <p>Color: {data && data.color}</p>
                 <p>Cantidad: {data && data.quantity}</p>
                 <p>Precio: {data && data.price}€</p>
                 <button onClick={handlePrint}>Imprimir</button>

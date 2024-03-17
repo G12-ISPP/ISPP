@@ -5,6 +5,7 @@ import { Stage, PresentationControls, Html, useProgress } from '@react-three/dre
 import { MeshStandardMaterial, Color, Vector3 } from 'three';
 import './CustomDesign.css';
 import Button, { BUTTON_TYPES } from './Button/Button';
+import PageTitle from './PageTitle/PageTitle';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -104,6 +105,7 @@ export default class CustomModel extends React.Component {
       city: '',
       address: '',
       buyer_mail: '',
+      color: 'Rojo',
       errors:{}
     };
   }
@@ -188,6 +190,10 @@ export default class CustomModel extends React.Component {
     this.setState({ quality: value }, this.updatePriceBasedOnQuantity);
   }
 
+  handleColor = (value) => {
+    this.setState({ color: value });
+  }
+
   handleQuantity = (event) => {
     const quantity = Math.max(1, Number(event.target.value));
     this.setState({ quantity: quantity }, this.updatePriceBasedOnQuantity);
@@ -215,7 +221,7 @@ export default class CustomModel extends React.Component {
   }
 
   handlePayment = async () => {
-    const { file, name, volume, area, dimensions, weight, quality, quantity, price, postal_code, city, address, buyer_mail } = this.state;
+    const { file, name, volume, area, dimensions, weight, quality, quantity, price, postal_code, city, address, buyer_mail,color } = this.state;
     this.state.errors = {};
     if (!file) {
       this.state.errors.file = 'Debes subir un archivo';
@@ -227,7 +233,7 @@ export default class CustomModel extends React.Component {
       this.state.errors.quantity = 'La cantidad debe ser un número entre 1 y 100';
     }
 
-    if(typeof postal_code === 'undefined'||postal_code < 1000 || postal_code > 52999 || postal_code===Math.round(postal_code)){
+    if(typeof postal_code === 'undefined'||postal_code < 1000 || postal_code > 52999 || postal_code.toString().includes('.')|| postal_code.toString().includes(',')){
       this.state.errors.postal_code = 'El código postal debe ser un número entero entre 1000 y 52999';
     }
 
@@ -268,7 +274,8 @@ export default class CustomModel extends React.Component {
       postal_code,
       city,
       address,
-      buyer_mail
+      buyer_mail,
+      color
     }));
 
     try {
@@ -297,6 +304,7 @@ export default class CustomModel extends React.Component {
   render() {
     return (
       <>
+        <PageTitle title="Mi diseño" />
         <h1 className='title'>Mi diseño</h1>
         <div className='main'>
           <div className='canvas-container'>
@@ -333,9 +341,15 @@ export default class CustomModel extends React.Component {
             </div>
             <div className='form-group'>
               <label className='quality'>Calidad:</label>
-              <input type='button' id='low' name='quality'  className='fat-btn' value='Bajo' onClick={() => this.handleQuality('Bajo')} />
-              <input type='button' id='medium' name='quality' className='fat-btn' value='Medio' onClick={() => this.handleQuality('Medio')} />
-              <input type='button' id='high' name='quality' className='fat-btn' value='Alto' onClick={() => this.handleQuality('Alto')} />
+              <input type='button' id='low' name='quality'  className={`${this.state.quality === 'Bajo' ? 'selected' : 'fat-btn'}`} value='Bajo' onClick={() => this.handleQuality('Bajo')} />
+              <input type='button' id='medium' name='quality' className={`${this.state.quality === 'Medio' ? 'selected' : 'fat-btn'}`} value='Medio' onClick={() => this.handleQuality('Medio')} />
+              <input type='button' id='high' name='quality' className={`${this.state.quality === 'Alto' ? 'selected' : 'fat-btn'}`} value='Alto' onClick={() => this.handleQuality('Alto')} />
+            </div>
+            <div className='form-group'>
+              <label className='color'>Color:</label>
+              <input type='button' id='Rojo' name='color'  className={`${this.state.color === 'Rojo' ? 'selected' : 'fat-btn'}`} value='Rojo' onClick={() => this.handleColor('Rojo')} />
+              <input type='button' id='Azul' name='color' className={`${this.state.color === 'Azul' ? 'selected' : 'fat-btn'}`} value='Azul' onClick={() => this.handleColor('Azul')} />
+              <input type='button' id='Verde' name='color' className={`${this.state.color === 'Verde' ? 'selected' : 'fat-btn'}`} value='Verde' onClick={() => this.handleColor('Verde')} />
             </div>
             <div className='form-group'>
               <label className='postal_code'>Código Postal:</label>

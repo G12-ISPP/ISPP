@@ -148,7 +148,7 @@ def order_details(request, order_id):
             'products': products
         }
         return JsonResponse(order_details)
-    except Order.DoesNotExist:
+    except Exception:
         return JsonResponse({'error': 'El pedido no existe'}, status=404)
 
 @api_view(['GET'])

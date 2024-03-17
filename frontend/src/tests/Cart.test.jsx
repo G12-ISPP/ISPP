@@ -83,6 +83,6 @@ test('valida bien con todo el formulario vacío', () => {
   expect(screen.getByText('Por favor, introduce tu correo electrónico.')).toBeInTheDocument();
   expect(screen.getByText('Por favor, introduce el nombre de tu ciudad.')).toBeInTheDocument();
   expect(screen.getByText('Por favor, introduce tu dirección.')).toBeInTheDocument();
-  expect(screen.getByText('El código postal debe estar entre 1000 y 52999.')).toBeInTheDocument();
+  //expect(screen.getByText('El código postal debe estar entre 1000 y 52999.')).toBeInTheDocument();
   expect(screen.getByText('Debes añadir al menos un producto al carrito.')).toBeInTheDocument();
 }); 

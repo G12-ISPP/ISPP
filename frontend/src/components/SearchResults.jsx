@@ -3,6 +3,7 @@ import Product from './Product/Product';
 import Artist from './Artist/Artist';
 import Text, { TEXT_TYPES } from '../components/Text/Text';
 import ItemsList from './ItemsList/ItemsList';
+import PageTitle from './PageTitle/PageTitle';
 
 const SearchResultsPage = () => {
     const [searchResults, setSearchResults] = useState(null);
@@ -31,6 +32,7 @@ const SearchResultsPage = () => {
             )}
             {searchResults && (
                 <>
+                    <PageTitle title='Resultados de búsqueda' />
                     {searchResults.productsData && searchResults.productsData.length > 0 && (
                         <div>
                             <div className='slogan'>
