@@ -134,34 +134,41 @@ const UserDetail = () => {
               <img className='img' src='/images/avatar.svg' alt={user.username} />
             </div>
             <h3 className="title-detalle">Contacto:</h3>
-              <p>{user.email}</p>
-              {ownUser ? (
-              <div className="chat">
+            <p>{user.email}</p>
+            {ownUser ? (
+              <div className="user-button">
                 <Button type={BUTTON_TYPES.TRANSPARENT} text='Editar Perfil' onClick={handleEditClick} />
               </div>
-              ) : (
-                <div className="chat">
-                  <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
-                  {!localStorage.getItem('token') && <div className='error'>Debes iniciar sesión para poder acceder al chat con un usuario</div>}
-                </div>
-              )}
-          <div className="chat">
-            <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
+            ) : (
+              <div className="user-button">
+                <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
+                {!localStorage.getItem('token') && <div className='error'>Debes iniciar sesión para poder acceder al chat con un usuario</div>}
+              </div>
+            )}
+            <div className="user-button">
+              <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
+            </div>
+
+            <AddOpinion target_user={user.id} />
+            {opinions.length > 0 ? (
+              <>
+                {opinions.map(opinion => (
+                  <Opinion key={opinion.id} opinion={opinion} />
+                ))}
+              </>
+            ) : (
+              <div>Aún no hay opiniones para este usuario.</div>
+            )}
+
+            <div className="section-title-container">
+              <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
+            </div>
+            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={`?seller=${id}`} />
           </div>
         </div>
       </div>
 
-      <div className="opinions">
-        <AddOpinion target_user={user.id}/>
-        {opinions.map(opinion => (
-          <Opinion key={opinion.id} opinion={opinion} />
-        ))}
-      </div>
-      <div className="section-title-container">
-        <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
-      </div>
-      <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={`?seller=${id}`} />      
-    </div>
+
     </>
   );
 }
