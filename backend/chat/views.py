@@ -141,22 +141,3 @@ class GetOrCreateChatRoom(APIView):
             chatroom.members.add(user1, user2)
 
         return Response({'chatroomID': chatroom.id}, status=status.HTTP_200_OK)
-    
-class ChatRoomUsersAPIView(APIView):
-
-    def get(self, request, *args, **kwargs):
-        # Obtener todos los chatrooms del usuario actual
-        user_chatrooms = request.user.chatrooms.all()
-
-        # Obtener todos los usuarios únicos de esos chatrooms, excluyendo el usuario actual
-        users_ids = set()
-        for room in user_chatrooms:
-            users_ids.update(room.members.exclude(id=request.user.id).values_list('id', flat=True))
-
-        # Obtener los objetos de usuario correspondientes
-        users = CustomUser.objects.filter(id__in=users_ids)
-
-        # Serializar los datos de los usuarios
-        serializer = CustomUserSerializer(users, many=True)
-
-        return Response(serializer.data)
