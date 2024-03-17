@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsGrid/ProductsGrid';
 import ItemsList from './ItemsList/ItemsList';
 import Product from './Product/Product';
+import PageTitle from './PageTitle/PageTitle';
 import Text, { TEXT_TYPES } from "./Text/Text";
 
 const ProductList = () => {
@@ -78,13 +79,16 @@ const ProductList = () => {
 
   return (
     <>
+
         {ownUser ? (
           <div className="section-title-container">
             <Text type={TEXT_TYPES.TITLE_BOLD} text='Mis productos' />
+            <PageTitle title={'Mis productos'} />
           </div>
         ) : (
           <div className="section-title-container">
             <Text type={TEXT_TYPES.TITLE_BOLD} text={`Productos de: ${sellerName}`} />
+            <PageTitle title={'Productos de ' + sellerName} />
           </div>
         )}
       <ItemsList
