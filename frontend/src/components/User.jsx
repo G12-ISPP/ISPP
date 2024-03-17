@@ -5,7 +5,8 @@ import Button, { BUTTON_TYPES } from './Button/Button';
 import Text, { TEXT_TYPES } from "./Text/Text";
 import AddOpinion from './AddOpinion';
 import Opinion from './Opinion';
-import ProductsGrid, { GRID_TYPES } from '../components/ProductsGrid/ProductsGrid'
+import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsGrid/ProductsGrid'
+import PageTitle from './PageTitle/PageTitle';
 
 const id = window.location.href.split('/')[4];
 
@@ -114,10 +115,21 @@ const UserDetail = () => {
 
   return (
     <>
-      <div className="section-title-container">
-        <Text type={TEXT_TYPES.TITLE_BOLD} text={ownUser ? 'Mi perfil' : 'Detalles de usuario'} />
-      </div>
-
+      {ownUser ? (
+        <>
+          <PageTitle title="Mi perfil" />
+          <div className="section-title-container">
+            <Text type={TEXT_TYPES.TITLE_BOLD} text='Mi perfil' />
+          </div>
+        </>
+      ) : (
+        <>
+          <PageTitle title={user.username} />
+          <div className="section-title-container">
+            <Text type={TEXT_TYPES.TITLE_BOLD} text='Detalles de usuario' />
+          </div>
+        </>
+      )}
       <div className="main">
         <div className="profile-summary">
           <div>
