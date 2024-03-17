@@ -7,6 +7,7 @@ import Text, { TEXT_TYPES } from "./Text/Text";
 import Opinion from './AddOpinion';
 import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsGrid/ProductsGrid';
 import FollowButton from "./Follow/FollowBotton.jsx";
+import PageTitle from './PageTitle/PageTitle';
 
 const id = window.location.href.split('/')[4];
 const ownUser = false;
@@ -97,14 +98,36 @@ const UserDetail = () => {
 
 
   return (
-      <>
-        {ownUser ? (
-            <div className="section-title-container">
-              <Text type={TEXT_TYPES.TITLE_BOLD} text='Mi perfil' />
-            </div>
-        ) : (
-            <div className="section-title-container">
-              <Text type={TEXT_TYPES.TITLE_BOLD} text='Detalles de usuario' />
+    <>
+      {ownUser ? (
+        <>
+          <PageTitle title="Mi perfil" />
+          <div className="section-title-container">
+            <Text type={TEXT_TYPES.TITLE_BOLD} text='Mi perfil' />
+          </div>
+        </>
+      ) : (
+        <>
+          <PageTitle title={user.username} />
+          <div className="section-title-container">
+            <Text type={TEXT_TYPES.TITLE_BOLD} text='Detalles de usuario' />
+          </div>
+        </>
+      )}
+      <div className="main">
+        <div className="profile-summary">
+          <div>
+            <h2 className="title-detalle">{user.first_name} {user.last_name}</h2>
+            {user.is_designer || user.is_printer ? (
+              <div className="main-info-container">
+                <div className="user-role-container">
+                  <h3 className="user-role">{user.is_designer === true ? 'Diseñador ' : null}
+                    {user.is_printer === true ? ' Impresor' : null}</h3>
+                </div>
+              </div>
+            ) : null}
+            <div className="user-img-container">
+              <img className='img' src='/images/avatar.svg' alt={user.username} />
             </div>
         )}
         <div className="main">
