@@ -44,6 +44,7 @@ function App() {
         localStorage.setItem("cart", JSON.stringify(cart))
     }, [cart])
 
+
     return (
         <BrowserRouter>
             <AuthProvider>
@@ -57,6 +58,7 @@ function App() {
                     <Route path="/tasks" element={<TaskPage/>}/>
                     <Route path="/tasks-create" element={<TaskFormPage/>}/>
                     <Route path="/chat/:roomId" element={<ChatPage/>}/>
+                    <Route path="/chat/" element={<ChatPage />} />
                     <Route path="/product-details/:id" element={<ProductDetail cart={cart} setCart={setCart}/>}/>
                     <Route path="/designs" element={<DesignsPage/>}/>
                     <Route path="/designs/my-design" element={<CustomDesign/>}/>
@@ -87,6 +89,7 @@ function App() {
             </AuthProvider>
         </BrowserRouter>
     );
+
 }
 
 export default App;

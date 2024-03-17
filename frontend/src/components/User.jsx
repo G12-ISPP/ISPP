@@ -14,9 +14,10 @@ const UserDetail = () => {
   const currentUserID = localStorage.getItem('userId');
   const [ownUser, setOwnUser] = useState(false);
   const navigate = useNavigate();
+  const backend = import.meta.env.VITE_APP_BACKEND; // Asegúrate de ajustar esto según tu configuración
 
   useEffect(() => {
-    const backend = import.meta.env.VITE_APP_BACKEND; // Asegúrate de ajustar esto según tu configuración
+    
     // const id = window.location.href.split('/')[4];
     const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
 
@@ -42,8 +43,13 @@ const UserDetail = () => {
   const handleChatClick = async () => {
     const currentUserID = localStorage.getItem('userId');
     const otherUserID = user?.id;
-    const petition = `${import.meta.env.VITE_APP_BACKEND}/chat/chatroom/`;
+    const petition = `${backend}/chat/chatroom/`;
     const token = localStorage.getItem('token');
+
+    if(!token){
+      alert("Debes estar logueado para acceder a los chats.");
+      return window.location.href=`/login`;
+    }
 
     try {
       const response = await fetch(petition, {

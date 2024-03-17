@@ -48,6 +48,7 @@ const Navbar = () => {
                 <li onClick={() => onButtonClick('/materials')}>Materiales</li>
                 <li onClick={() => onButtonClick('/artists')}>Artistas</li>
                 <li onClick={() => onButtonClick('/')}>Comunidad</li>
+
                 {isLoggedIn && isPrinter && (
                     <li onClick={() => onButtonClick('/designs/searching_printer/')}>Modelos a imprimir</li>
                 )}

@@ -10,7 +10,7 @@
     border-radius: 15px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     margin-top: 10px;
-    margin-bottom: 10px;
+    
   }
 
 
@@ -77,13 +77,16 @@
 
 
   .back-button-container {
-    position: absolute; /* Fija el contenedor en la pantalla */
+    justify-content: center;
+    position: relative; /* Fija el contenedor en la pantalla */
     top: 100; /* Alinea el contenedor en la parte superior */
     left: 0; /* Alinea el contenedor a la izquierda */
     z-index: 1000; /* Asegura que el botón esté sobre otros elementos */
+    
   }
   
   .back-button {
+    justify-content: center;
     background-color: #004040; /* Color de fondo */
     color: #ffffff; /* Color del texto */
     border: none;
@@ -93,6 +96,7 @@
     display: flex;
     align-items: center;
     margin: 10px; /* Agrega un poco de espacio alrededor del botón */
+    width: 50%;
   }
   
   .left-arrow {
@@ -129,4 +133,53 @@
 
 .title{
   align-items: center;
+}
+
+.chat-page {
+  display: flex;
+  flex-direction: row; 
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+
+.sidebar {
+  border-right: 1px solid #ccc; /* Separa visualmente la sidebar del chat */
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+
+.user-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px; /* Ajusta según sea necesario */
+  overflow-y: auto; /* Permite scroll si hay muchos usuarios */
+}
+
+.user-list li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee; /* Separa visualmente los usuarios */
+}
+
+.user-list li:hover {
+  background-color: #f0f0f0; /* Feedback visual al pasar el mouse */
+}
+.chat{
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 25%;
+}
+
+.contenedor-padre {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  height: 100vh; /* O el alto que desees */
+}
+
+.mis-chats {
+  position: absolute;
+  text-align: center;
 }

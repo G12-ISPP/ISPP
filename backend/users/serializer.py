@@ -15,8 +15,8 @@ class UserSerializer(serializers.ModelSerializer):
         if groups_data:
             user.groups.set(groups_data)
         return user
-
+    
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['username']
+        fields = ['id', 'username', 'email']  # Ajusta esto según los datos que quieras enviar al frontend
