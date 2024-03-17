@@ -114,22 +114,6 @@ const UserDetail = () => {
           </div>
         </>
       )}
-      <div className="main">
-        <div className="profile-summary">
-          <div>
-            <h2 className="title-detalle">{user.first_name} {user.last_name}</h2>
-            {user.is_designer || user.is_printer ? (
-              <div className="main-info-container">
-                <div className="user-role-container">
-                  <h3 className="user-role">{user.is_designer === true ? 'Diseñador ' : null}
-                    {user.is_printer === true ? ' Impresor' : null}</h3>
-                </div>
-              </div>
-            ) : null}
-            <div className="user-img-container">
-              <img className='img' src='/images/avatar.svg' alt={user.username} />
-            </div>
-        )}
         <div className="main">
           <div className="profile-summary">
             <div>
