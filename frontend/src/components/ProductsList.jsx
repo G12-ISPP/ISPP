@@ -3,12 +3,16 @@ import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsG
 import ItemsList from './ItemsList/ItemsList';
 import Product from './Product/Product';
 import PageTitle from './PageTitle/PageTitle';
+import Text, { TEXT_TYPES } from "./Text/Text";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [sellerName, setSellerName] = useState('');
   const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
   const id = window.location.href.split('/')[4];
+  const currentUserID = localStorage.getItem('userId');
+  const [ownUser, setOwnUser] = useState(false);
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -34,6 +38,9 @@ const ProductList = () => {
           const userData = await response.json();
           console.log(userData)
           setSellerName(`${userData.first_name} ${userData.last_name}`);
+          if (currentUserID === userData.id.toString()) {
+            setOwnUser(true);
+          }
         } else {
           console.error('Error al obtener el vendedor');
         }
@@ -41,6 +48,8 @@ const ProductList = () => {
         console.error('Error al comunicarse con el backend:', error);
       }
     };
+
+    
 
     fetchProducts();
     fetchSeller();
@@ -70,8 +79,18 @@ const ProductList = () => {
 
   return (
     <>
-      <PageTitle title={'Productos de ' + sellerName} />
-      <h1 className='title'>Productos de : {sellerName}</h1>
+
+        {ownUser ? (
+          <div className="section-title-container">
+            <Text type={TEXT_TYPES.TITLE_BOLD} text='Mis productos' />
+            <PageTitle title={'Mis productos'} />
+          </div>
+        ) : (
+          <div className="section-title-container">
+            <Text type={TEXT_TYPES.TITLE_BOLD} text={`Productos de: ${sellerName}`} />
+            <PageTitle title={'Productos de ' + sellerName} />
+          </div>
+        )}
       <ItemsList
         items={products.map(product => (
           <Product

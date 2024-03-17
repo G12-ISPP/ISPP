@@ -7,6 +7,7 @@ import {LoginFormPage} from "./pages/LoginFormPage.jsx";
 import ProductDetail from "./components/Product";
 import CustomDesign from "./components/CustomDesign.jsx";
 import AddProduct from "./components/AddProduct.jsx";
+import EditProduct from "./components/EditProduct";
 import Header from "./components/Header/Header.jsx";
 import Navbar from "./components/Navbar/Navbar.jsx";
 import CustomDesignDetails from "./components/CustomDesignDetails.jsx";
@@ -60,6 +61,7 @@ function App() {
                     <Route path="/chat/:roomId" element={<ChatPage/>}/>
                     <Route path="/chat/" element={<ChatPage />} />
                     <Route path="/product-details/:id" element={<ProductDetail cart={cart} setCart={setCart}/>}/>
+                    <Route path="/products/:id/edit" element={<EditProduct />} />
                     <Route path="/designs" element={<DesignsPage/>}/>
                     <Route path="/designs/my-design" element={<CustomDesign/>}/>
                     <Route path="/designs/details/:id" element={<CustomDesignDetails/>}/>
