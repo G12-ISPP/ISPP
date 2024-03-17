@@ -1,0 +1,74 @@
+.edit-profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ajustado a min-height para ocupar al menos toda la altura de la pantalla */
+  }
+  
+  .edit-profile-form-container {
+    width: 80%; /* Ajusta según tus necesidades */
+    max-width: 600px; /* Ajusta según tus necesidades */
+  }
+  
+  .edit-profile-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .edit-profile-group {
+    position: relative;
+    margin-bottom: 1em;
+  }
+  
+  .avatar {
+    width: 120px; /* Ajusta el tamaño de la imagen según tus necesidades */
+    height: 120px; /* Ajusta el tamaño de la imagen según tus necesidades */
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  
+  .edit-icon {
+    position: absolute;
+    bottom: 5px; /* Ajusta la posición del icono de edición según tus necesidades */
+    right: 5px; /* Ajusta la posición del icono de edición según tus necesidades */
+    width: 20px; /* Ajusta el tamaño del icono de edición según tus necesidades */
+    height: 20px; /* Ajusta el tamaño del icono de edición según tus necesidades */
+    cursor: pointer;
+  }
+  
+  .error-messages-container {
+    margin-top: 1em;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .edit-profile-form-title {
+    font-size: 2em; /* Ajusta el tamaño del texto según tus necesidades */
+    text-align: center; /* Centra el texto */
+    margin: 0; /* Elimina el margen para evitar espacios extra */
+  }
+  
+  .edit-profile-error-message {
+    color: red;
+    margin: 0;
+    font-size: 0.9em;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .edit-profile-form-container {
+      width: 90%; /* Ajusta según tus necesidades */
+    }
+  
+    .avatar {
+      width: 80px; /* Ajusta el tamaño de la imagen en dispositivos móviles */
+      height: 80px; /* Ajusta el tamaño de la imagen en dispositivos móviles */
+    }
+  
+    .edit-icon {
+      width: 15px; /* Ajusta el tamaño del icono de edición en dispositivos móviles */
+      height: 15px; /* Ajusta el tamaño del icono de edición en dispositivos móviles */
+    }
+  }
+  

@@ -18,7 +18,7 @@ from django.views.decorators.csrf import csrf_exempt
 from paypalrestsdk import Payment
 
 from rest_framework.decorators import action
-from users.serializer import UserSerializer
+from users.serializer import ProfileUpdateSerializer, UserSerializer
 from django.utils.translation import gettext_lazy as _
 from functools import wraps
 from django.utils.translation import activate
@@ -54,6 +54,15 @@ class UsersView(viewsets.ModelViewSet):
         user = self.get_object()
         serializer = self.get_serializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @action(detail=True, methods=['patch'])
+    def update_profile(self, request, pk=None):
+        user = self.get_object()
+        serializer = ProfileUpdateSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 def translate(view_func):
     @wraps(view_func)

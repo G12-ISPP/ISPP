@@ -81,7 +81,7 @@ const UserDetail = () => {
 
   const handleEditClick = async () => {
     try {
-      navigate(`/`);
+      navigate(`/update-profile/` + id);
     } catch (error) {
       console.error('Error:', error);
     }

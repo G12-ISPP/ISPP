@@ -20,3 +20,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username', 'email']  # Ajusta esto según los datos que quieras enviar al frontend
+
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['email', 'city', 'postal_code', 'profile_picture']
