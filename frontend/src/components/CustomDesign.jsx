@@ -5,6 +5,7 @@ import { Stage, PresentationControls, Html, useProgress } from '@react-three/dre
 import { MeshStandardMaterial, Color, Vector3 } from 'three';
 import './CustomDesign.css';
 import Button, { BUTTON_TYPES } from './Button/Button';
+import PageTitle from './PageTitle/PageTitle';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -303,6 +304,7 @@ export default class CustomModel extends React.Component {
   render() {
     return (
       <>
+        <PageTitle title="Mi diseño" />
         <h1 className='title'>Mi diseño</h1>
         <div className='main'>
           <div className='canvas-container'>

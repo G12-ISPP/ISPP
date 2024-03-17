@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsGrid/ProductsGrid';
 import ItemsList from './ItemsList/ItemsList';
 import Product from './Product/Product';
+import PageTitle from './PageTitle/PageTitle';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -69,6 +70,7 @@ const ProductList = () => {
 
   return (
     <>
+      <PageTitle title={'Productos de ' + sellerName} />
       <h1 className='title'>Productos de : {sellerName}</h1>
       <ItemsList
         items={products.map(product => (

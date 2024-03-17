@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import DesignDetails from '../components/Design/CustomDesign';
+import PageTitle from '../components/PageTitle/PageTitle';
 
 export const SearchingPrinterDesignsPage = () => {
     const [designs, setDesigns] = useState([]);
@@ -44,30 +45,36 @@ export const SearchingPrinterDesignsPage = () => {
 
     if (designs.length === 0) {
         return (
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-                fontSize: '24px',
-            }}>
-                Actualmente no hay piezas para imprimir.
-            </div>
+            <>
+                <PageTitle title="Modelos para imprimir" />
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100vh',
+                    fontSize: '24px',
+                }}>
+                    Actualmente no hay piezas para imprimir.
+                </div>
+            </>
         );
     }
 
     return (
-        <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-around',
-            alignItems: 'flex-start',
-        }}>
-            {designs.map((design) => (
-                <Link key={design.custom_design_id} to={`/designs/details-to-printer/${design.custom_design_id}`}>
-                    <DesignDetails design={design} />
-                </Link>
-            ))}
-        </div>
+        <>
+            <PageTitle title="Modelos para imprimir" />
+            <div style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'space-around',
+                alignItems: 'flex-start',
+            }}>
+                {designs.map((design) => (
+                    <Link key={design.custom_design_id} to={`/designs/details-to-printer/${design.custom_design_id}`}>
+                        <DesignDetails design={design} />
+                    </Link>
+                ))}
+            </div>
+        </>
     );
 };
