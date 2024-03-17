@@ -158,19 +158,18 @@ const Header = ({ cart, setCart }) => {
                                             </div>
                                         </div>
 
-                                    
-                                            ))}
-                                            {searchResults.usersData.map(user => (
-                                                <div className='cart-product' key={user.id} onClick={() => window.location.href = `/user-details/${user.id}`}>
-                                                    <div className="info-cart-product">
-                                                        <img className="cart-img" src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
-                                                    </div>
-                                                    <div className="info-cart-product">
-                                                        <span>{user.username}</span>
-                                                    </div>
-                                                    <div className="info-cart-product">
-                                                        <span>{user.first_name} {user.last_name}</span>
-                                                    </div>
+                                    ))}
+                                    {searchResults.usersData.map(user => (
+                                        <div className='cart-product' key={user.id} onClick={() => window.location.href = `/user-details/${user.id}`}>
+                                            <div className="info-cart-product">
+                                                <img className="cart-img" src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
+                                            </div>
+                                            <div className="info-cart-product">
+                                                <span>{user.username}</span>
+                                            </div>
+                                            <div className="info-cart-product">
+                                                <span>{user.first_name} {user.last_name}</span>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>

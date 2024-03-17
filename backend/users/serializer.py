@@ -23,7 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(obj.profile_picture.url)
         else:
             return None
-
+    
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
