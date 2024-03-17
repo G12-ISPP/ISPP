@@ -34,7 +34,7 @@ urlpatterns = [
     path('newOrder', create_order, name='create_order'),
     path('order/confirm/<str:order_id>', confirm_order, name='confirm_order'),
     path('order/cancel/<str:order_id>', cancel_order, name='cancel_order'),
-    path('order/details/<uuid:order_id>', order_details, name='order_details'),
+    path('order/details/<str:order_id>', order_details, name='order_details'),
     path('buyPlan/',buy_plan, name='buy_plan'),
     path('obtainPlan/<str:plan_seller>/<str:plan_buyer>/<str:plan_designer>/<str:user_id>',obtain_plan, name='obtain_plan'),
     path('conversion/', include('conversion_to_stl.urls')),

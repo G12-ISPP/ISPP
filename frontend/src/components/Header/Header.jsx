@@ -273,6 +273,7 @@ const Header = ({ cart, setCart }) => {
                                 </div>
                             </>
                         )}
+
                         {isLoggedIn && <div className="menu-perfil">
                                 <CgProfile className="icon-cart" onClick={() => setActiveProfile(!activeProfile)} onMouseEnter={() => setActiveProfile(true)} />
                                 {activeProfile && (
@@ -284,6 +285,7 @@ const Header = ({ cart, setCart }) => {
                                 )}
                         </div>}
                         {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Pedidos' path='/myOrders' />}
+
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login' />}
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />}
                         {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Vender' path='/products/add-product' />}
