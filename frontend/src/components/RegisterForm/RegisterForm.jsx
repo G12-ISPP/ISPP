@@ -128,31 +128,31 @@ class RegisterForm extends React.Component {
                 {this.state.modal && (<Modal modal={this.state.modal} toggle={() => this.setState({modal: false})} setImage={this.setImage}/>)}
               </div>
               <div className='register-form-group'>
-                <input type='text' id='username' name='username' className='form-input' placeholder='Nombre de usuario' value={this.state.username} onChange={this.handleChange} required />
+                <input type='text' id='username' name='username' className='form-input' placeholder='Nombre de usuario*' value={this.state.username} onChange={this.handleChange} required />
               </div>
               <div className='register-form-group'>
-                <input type='email' id='email' name='email' className='form-input' placeholder='Correo electrónico' value={this.state.email} onChange={this.handleChange} required />
+                <input type='email' id='email' name='email' className='form-input' placeholder='Correo electrónico*' value={this.state.email} onChange={this.handleChange} required />
               </div>
               <div className='register-form-group'>
-                <input type='password' id='password' name='password' className='form-input' placeholder='Contraseña' value={this.state.password} onChange={this.handleChange} required />
+                <input type='password' id='password' name='password' className='form-input' placeholder='Contraseña*' value={this.state.password} onChange={this.handleChange} required />
               </div>
               <div className='register-form-row'>
                 <div className='register-form-group left'>
-                  <input type='text' id='first_name' name='first_name' className='form-input' placeholder='Nombre' value={this.state.first_name} onChange={this.handleChange} required />
+                  <input type='text' id='first_name' name='first_name' className='form-input' placeholder='Nombre*' value={this.state.first_name} onChange={this.handleChange} required />
                 </div>
                 <div className='register-form-group right'>
-                  <input type='text' id='last_name' name='last_name' className='form-input' placeholder='Apellidos' value={this.state.last_name} onChange={this.handleChange} required />
+                  <input type='text' id='last_name' name='last_name' className='form-input' placeholder='Apellidos*' value={this.state.last_name} onChange={this.handleChange} required />
                 </div>
               </div>
               <div className='register-form-group'>
-                <input type='text' id='address' name='address' className='form-input' placeholder='Dirección' value={this.state.address} onChange={this.handleChange} required />
+                <input type='text' id='address' name='address' className='form-input' placeholder='Dirección*' value={this.state.address} onChange={this.handleChange} required />
               </div>
               <div className='register-form-row'>
                 <div className='register-form-group left'>
-                  <input type='text' id='postal_code' name='postal_code' className='form-input' placeholder='Código postal' value={this.state.postal_code} onChange={this.handleChange} required />
+                  <input type='text' id='postal_code' name='postal_code' className='form-input' placeholder='Código postal*' value={this.state.postal_code} onChange={this.handleChange} required />
                 </div>
                 <div className='register-form-group right'>
-                  <input type='text' id='city' name='city' className='form-input' placeholder='Ciudad' value={this.state.city} onChange={this.handleChange} required />
+                  <input type='text' id='city' name='city' className='form-input' placeholder='Ciudad*' value={this.state.city} onChange={this.handleChange} required />
                 </div>
               </div>
               <div className="role-selector">
