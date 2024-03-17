@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework.documentation import include_docs_urls
-from users.views import UsersView  
+from users.views import UsersView, follow_toggle, follow_status
 from .views import UserCreateAPIView, LoginView, get_user_id_by_username
 
 router = routers.DefaultRouter()
@@ -13,5 +13,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('get-user-id/<str:username>/', get_user_id_by_username, name='get_user_id_by_username'),
     path('update-profile/<int:pk>/', UsersView.as_view({'patch': 'update_profile'}), name='update_profile'),
+    path('api/v1/follow/<int:user_id>/toggle/', follow_toggle, name='follow_toggle'),
+    path('api/v1/follow/<int:user_id>/status/', follow_status, name='follow_status'),
 
 ]
