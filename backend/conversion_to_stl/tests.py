@@ -25,16 +25,10 @@ class BaseTestCase(TestCase):
         self.assertEqual(str(error.exception), 'Unsupported file format: txt')
     
     def test_conversion_big_file(self):
-        current_directory = os.path.dirname(os.path.abspath(__file__))
 
-        file_path = os.path.join(current_directory, 'files', 'bugatti.obj')
+        large_file = ContentFile(b'a' * (30 * 1024 * 1024 + 1), name='large_file.obj')
 
-        with open(file_path, 'rb') as file:
-            file_content = file.read()
-
-        valid_file = SimpleUploadedFile('bugatti.obj', file_content)
-
-        response = self.client.post('/conversion/api/v1/convert_to_stl', {'file': valid_file}, format='multipart')
+        response = self.client.post('/conversion/api/v1/convert_to_stl', {'file': large_file}, format='multipart')
         self.assertEqual(response.status_code, 400)
     
     def test_conversion_file_correct(self):

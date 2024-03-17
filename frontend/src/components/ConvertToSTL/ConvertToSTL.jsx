@@ -38,8 +38,8 @@ const ConvertToSTL = () => {
             errors.file = 'El archivo es obligatorio';
         }
 
-        if(file.size > 10 * 1024 * 1024) {
-            errors.file = 'Por favor, seleccione un archivo con un tamaño menor a 10 mb' 
+        if(file.size > 30 * 1024 * 1024) {
+            errors.file = 'Por favor, seleccione un archivo con un tamaño menor a 30 mb' 
         }
 
         setErrors(errors);
