@@ -26,6 +26,7 @@ class RegisterForm extends React.Component {
       address: '',
       postal_code: '',
       city: '',
+      description: '',
       is_designer: false,
       is_printer: false,
       errors: {}
@@ -39,7 +40,7 @@ class RegisterForm extends React.Component {
   handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     this.setState({
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     });
   }
 
@@ -67,6 +68,7 @@ class RegisterForm extends React.Component {
       formData.append('address', this.state.address);
       formData.append('postal_code', this.state.postal_code);
       formData.append('city', this.state.city);
+      formData.append('description', this.state.description);
       formData.append('is_designer', this.state.is_designer);
       formData.append('is_printer', this.state.is_printer);
       formData.append('is_active', true);
@@ -155,6 +157,11 @@ class RegisterForm extends React.Component {
                   <input type='text' id='city' name='city' className='form-input' placeholder='Ciudad*' value={this.state.city} onChange={this.handleChange} required />
                 </div>
               </div>
+              {this.state.is_designer &&
+              <div className='form-textarea-group'>
+                <textarea id='description' name='description' className='form-textarea' placeholder='Descripción' maxLength={500} value={this.state.description} onChange={this.handleChange}></textarea>
+              </div>
+              }
               <div className="role-selector">
                 <label htmlFor='is_designer' className='register-checkbox-label'>
                   <input type='checkbox' id='is_designer' name='is_designer' checked={this.state.is_designer} onChange={this.handleChange} />
