@@ -137,10 +137,11 @@ const UserDetail = () => {
               <div className="chat">
                 <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
               </div>
-              {/* Añade el botón FollowButton aquí */}
+              {ownUser || localStorage.getItem('token') === null ? null : (
               <div className="follow-button">
                 <FollowButton userId={id} />
               </div>
+                )}
             </div>
             <div className="section-title-container">
               <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
