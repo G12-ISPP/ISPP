@@ -120,8 +120,8 @@ const UserDetail = () => {
             <div className="user-img-container">
               <img className='img' src='/images/avatar.svg' alt={user.username} />
             </div>
-            <div>
-            <p style={{ whiteSpace: 'pre-wrap' }}>{user.description}</p>
+            <div className='description-container'>
+            <p className='description'>{user.description}</p>
             </div>
             <h3 className="title-detalle">Contacto:</h3>
               <p>{user.email}</p>
