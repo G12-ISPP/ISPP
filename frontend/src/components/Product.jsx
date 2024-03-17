@@ -27,10 +27,30 @@ class ProductDetail extends React.Component {
     const user = await response_user.json();
     this.setState({ product, user });
 
+    let petition3 = backend + '/designs/loguedUser';
+    petition3 = petition3.replace(/"/g, '');
+    const response_currentUser = await fetch(petition3, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (response_currentUser.ok) {
+      const currentUserData = await response_currentUser.json();
+      this.setState({ currentUserId: currentUserData.id });
+    }
+
   }
 
+  handleEditProduct = () => {
+    const { product } = this.state;
+    if (product) {
+       const editUrl = `/products/${product.id}/edit/`;
+       window.location.href = editUrl;
+    }
+   };
+   
   render() {
-    const { product, user } = this.state;
+    const { product, user, currentUserId } = this.state;
     if (!product || !user) {
       return <div>Loading...</div>;
     }
@@ -61,6 +81,8 @@ class ProductDetail extends React.Component {
       localStorage.setItem('cart', JSON.stringify(cart));
     };
 
+    const showEditButton = product.seller === currentUserId;
+
     return (
       <>
         <div className="section-title-container">
@@ -81,6 +103,9 @@ class ProductDetail extends React.Component {
             <div className="buy-container">
               <h3>Cantidad de stock: {product.stock_quantity}</h3>
               <Button type={BUTTON_TYPES.LARGE} text='Añadir al carrito' onClick={() => addProduct(product)} />
+              {showEditButton && (
+              <Button type={BUTTON_TYPES.LARGE} text='Editar producto' onClick={this.handleEditProduct} />
+            )}
             </div>
           </div>
         </div>
