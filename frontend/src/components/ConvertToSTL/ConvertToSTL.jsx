@@ -17,6 +17,12 @@ const ConvertToSTL = () => {
 
         const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
 
+        if(selectedFile.size > 10 * 1024 * 1024) {
+            setFile(null);
+            setErrors({ file: 'Por favor, seleccione un archivo con un tamaño menor a 10 mb' });
+            return;
+        }
+
         if (!allowedExtensions.includes(fileExtension)) {
             setFile(null);
             setErrors({ file: 'Por favor, seleccione un archivo con una extensión permitida (.ply, .step, .obj, .vtk, .xml, .bmp, .dae)' });
@@ -31,6 +37,10 @@ const ConvertToSTL = () => {
 
         if (!file) {
             errors.file = 'El archivo es obligatorio';
+        }
+
+        if(file.size > 30 * 1024 * 1024) {
+            errors.file = 'Por favor, seleccione un archivo con un tamaño menor a 30 mb' 
         }
 
         setErrors(errors);
