@@ -98,7 +98,7 @@ const ArtistsGrid = (consts) => {
                     {artists.map((group, groupIndex) => (
                         <div key={groupIndex} className={`artists-row ${group.length < 5 ? 'last' : ''}`}>
                             {group.map((artist, artistIndex) => (
-                                <Artist username={artist.username} pathImage='' pathDetails={artist.id} key={`artist-${groupIndex}-${artistIndex}`} />
+                                <Artist username={artist.username} pathImage={artist.image_url ? artist.image_url: ''} pathDetails={artist.id} key={`artist-${groupIndex}-${artistIndex}`} />
                             ))}
                         </div>
                     ))}

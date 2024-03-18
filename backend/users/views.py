@@ -65,6 +65,14 @@ class UsersView(viewsets.ModelViewSet):
     def update_profile(self, request, pk=None):
         user = self.get_object()
         serializer = ProfileUpdateSerializer(user, data=request.data, partial=True)
+        postal_code = request.data.get('postal_code')
+        try:
+            postal_code = int(postal_code)
+            if postal_code < 1000 or postal_code > 52999:
+                raise ValidationError({'postal_code': ['El código postal debe ser un número entero entre 1000 y 52999']})
+        except ValueError:
+            raise ValidationError({'postal_code': ['El código postal debe ser un número entero válido']})
+        
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

@@ -25,7 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
     
     def get_image_url(self, obj):
         request = self.context.get('request')
-        if obj.profile_picture and hasattr(obj.profile_picture, 'url'):
+        if request and obj.profile_picture and hasattr(obj.profile_picture, 'url'):
             return request.build_absolute_uri(obj.profile_picture.url)
         else:
             return None
@@ -38,4 +38,4 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class ProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['email', 'city', 'postal_code', 'profile_picture']
+        fields = ['email', 'city', 'postal_code', 'address', 'profile_picture']
