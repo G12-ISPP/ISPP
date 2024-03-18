@@ -63,7 +63,8 @@ INSTALLED_APPS = [
     'custom_design',
     'chat',
     'tokens',
-    "conversion_to_stl"
+    "conversion_to_stl",
+    "community",
 ]
 
 MIDDLEWARE = [
