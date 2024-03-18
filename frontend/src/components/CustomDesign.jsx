@@ -106,6 +106,7 @@ export default class CustomModel extends React.Component {
       address: '',
       buyer_mail: '',
       color: 'Rojo',
+      customerAgreementChecked: false,
       errors:{}
     };
   }
@@ -220,6 +221,12 @@ export default class CustomModel extends React.Component {
       event.preventDefault();
   }
 
+  handleCheckboxChange = () => {
+    this.setState(prevState => ({
+      customerAgreementChecked: !prevState.customerAgreementChecked
+    }));
+  }
+
   handlePayment = async () => {
     const { file, name, volume, area, dimensions, weight, quality, quantity, price, postal_code, city, address, buyer_mail,color } = this.state;
     this.state.errors = {};
@@ -254,8 +261,10 @@ export default class CustomModel extends React.Component {
       this.state.errors.buyer_mail = 'Debes introducir un correo válido';
     }
 
+    if (!this.state.customerAgreementChecked) {
+      this.state.errors.customerAgreement = 'Debes aceptar el acuerdo del cliente para continuar.';
+    }
     
-
     if (Object.keys(this.state.errors).length > 0) {
       return;
     }
@@ -371,6 +380,13 @@ export default class CustomModel extends React.Component {
               <input type='text' id='buyer_mail' name='buyer_mail' className='form-input' value={this.state.buyer_mail} onChange={this.handleBuyerMail} />
               {this.state.errors.buyer_mail && <div className="error">{this.state.errors.buyer_mail}</div>}
             </div>
+            <div className='form-group'>
+          <label className='customer-agreement'>
+            <input type='checkbox' id='customerAgreement' name='customerAgreement' checked={this.state.customerAgreementChecked} onChange={this.handleCheckboxChange}/>
+            Acepto los términos y condiciones descritos <a href="/terminos">aquí</a>
+          </label>
+          {this.state.errors.customerAgreement && <div className="error">{this.state.errors.customerAgreement}</div>}
+        </div>
           </form>
         </div>
         <div className='summary'>

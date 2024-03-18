@@ -17,6 +17,7 @@ const Cart = ({
   const [city, setCity] = useState('');
   const [postalCode, setPostalCode] = useState(0);
   const [errors, setErrors] = useState({});
+  const [customerAgreementChecked, setCustomerAgreementChecked] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -92,6 +93,10 @@ const Cart = ({
 
     if (cart.length === 0) {
         newErrors.cart = 'Debes añadir al menos un producto al carrito.';
+    }
+
+    if (!customerAgreementChecked) {
+      newErrors.customerAgreement = 'Debes aceptar el acuerdo del cliente para continuar.';
     }
 
     // Actualizar el estado de los errores si hay nuevos errores
@@ -202,6 +207,11 @@ const Cart = ({
                       <label className='postal_code'>Código Postal:</label>
                       <input type='number' id='postal_code' name='postal_code' min={1000} max={52999} value={postalCode} className='form-input' onChange={e => setPostalCode(e.target.value)}/>
                       {errors.postalCode && <div className='error'>{errors.postalCode}</div>}
+                    </div>
+                    <div className="form-group">
+                      <input type='checkbox' id='customerAgreement' name='customerAgreement' checked={customerAgreementChecked} onChange={e => setCustomerAgreementChecked(e.target.checked)} />
+                      <label className='customer-agreement'>Acepto los términos y condiciones descritos <a href="/terminos">aquí</a></label>
+                      {errors.customerAgreement && <div className='error'>{errors.customerAgreement}</div>}
                     </div>
                     <Button type={BUTTON_TYPES.LARGE} text='Finalizar compra' onClick={handleCheckout} />
                   </form>
