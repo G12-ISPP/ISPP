@@ -1,4 +1,3 @@
-// Importa el componente FollowButton
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './User.css';
@@ -134,58 +133,60 @@ const UserDetail = () => {
           </div>
         </>
       )}
-        <div className="main">
-          <div className="profile-summary">
-            <div>
-              <h2 className="title-detalle">{user.first_name} {user.last_name}</h2>
-              {user.is_designer || user.is_printer ? (
-                  <div className="main-info-container">
-                    <div className="user-role-container">
-                      <h3 className="user-role">{user.is_designer === true ? 'Diseñador ' : null}
-                        {user.is_printer === true ? ' Impresor' : null}</h3>
-                    </div>
-                  </div>
-              ) : null}
+      <div className="main">
+        <div className="profile-summary">
+          <div>
+            <h2 className="title-detalle">{user.first_name} {user.last_name}</h2>
+            {user.is_designer || user.is_printer ? (
+              <div className="main-info-container">
+                <div className="user-role-container">
+                  <h3 className="user-role">{user.is_designer === true ? 'Diseñador ' : null}
+                    {user.is_printer === true ? ' Impresor' : null}</h3>
+                </div>
+              </div>
+            ) : null}
               <div className="user-img-container">
                 <img className='img' src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
               </div>
-              <h3 className="title-detalle">Contacto:</h3>
-              <p>{user.email}</p>
-              {ownUser ? (
-                  <div className="chat">
-                    <Button type={BUTTON_TYPES.TRANSPARENT} text='Editar Perfil' onClick={handleEditClick} />
-                  </div>
-              ) : (
-                  <div className="chat">
-                    <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
-                    {!localStorage.getItem('token') && <div className='error'>Debes iniciar sesión para poder acceder al chat con un usuario</div>}
-                  </div>
-              )}
-              <div className="chat">
-                <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
+            <h3 className="title-detalle">Contacto:</h3>
+            <p>{user.email}</p>
+            {ownUser ? (
+              <div className="user-button">
+                <Button type={BUTTON_TYPES.TRANSPARENT} text='Editar Perfil' onClick={handleEditClick} />
               </div>
-              {ownUser || localStorage.getItem('token') === null ? null : (
-              <div className="follow-button">
+            ) : (
+              <div className="user-button">
+                <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
+                {!localStorage.getItem('token') && <div className='error'>Debes iniciar sesión para poder acceder al chat con un usuario</div>}
+              </div>
+            )}
+            <div className="user-button">
+              <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
+            </div>
+            {ownUser || localStorage.getItem('token') === null ? null : (
+              <div className="user-button">
                 <FollowButton userId={id} />
               </div>
                 )}
+            <AddOpinion target_user={user.id} />
+            {opinions.length > 0 ? (
+              <>
+                {opinions.map(opinion => (
+                  <Opinion key={opinion.id} opinion={opinion} />
+                ))}
+              </>
+            ) : (
+              <div>Aún no hay opiniones para este usuario.</div>
+            )}
+
+            <div className="section-title-container">
+              <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
             </div>
-            <div className="opinions">
-        <AddOpinion target_user={user.id}/>
-        {opinions.map(opinion => (
-          <Opinion key={opinion.id} opinion={opinion} />
-        ))}
-      </div>
-      <div className="section-title-container">
-        <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
-      </div>
-      <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={`?seller=${id}`} /> 
+            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={`?seller=${id}`} />
           </div>
-
         </div>
+      </div>
 
-
-     
 
     </>
 
