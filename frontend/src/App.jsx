@@ -36,6 +36,7 @@ import PiecesPage from "./pages/PiecesPage.jsx";
 import PrintersPage from "./pages/PrintersPage.jsx";
 import MaterialsPage from "./pages/MaterialsPage.jsx";
 import ArtistsPage from "./pages/ArtistsPage.jsx";
+import ComunityPage from "./pages/ComunityPage.jsx";
 
 function App() {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
@@ -86,6 +87,7 @@ function App() {
                     <Route path="/buy-plan" element={<BuyPlan/>} />
                     <Route path="/cancel-plan" element={<CancelPlan/>} />
                     <Route path="/confirm-plan" element={<ConfirmPlan/>} />
+                    <Route path="/comunity" element={<ComunityPage />} />
                 </Routes>
                 <Footer/>
             </AuthProvider>
