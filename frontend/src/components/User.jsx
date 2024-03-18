@@ -1,3 +1,4 @@
+// Importa el componente FollowButton
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './User.css';
@@ -5,7 +6,9 @@ import Button, { BUTTON_TYPES } from './Button/Button';
 import Text, { TEXT_TYPES } from "./Text/Text";
 import AddOpinion from './AddOpinion';
 import Opinion from './Opinion';
-import ProductsGrid, { GRID_TYPES } from '../components/ProductsGrid/ProductsGrid'
+import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsGrid/ProductsGrid';
+import FollowButton from "./Follow/FollowBotton.jsx";
+import PageTitle from './PageTitle/PageTitle';
 
 const id = window.location.href.split('/')[4];
 
@@ -18,6 +21,8 @@ const UserDetail = () => {
   const backend = import.meta.env.VITE_APP_BACKEND;
 
   useEffect(() => {
+
+    const id = window.location.href.split('/')[4];
     const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
 
     const fetchUserData = async () => {
@@ -114,44 +119,58 @@ const UserDetail = () => {
 
   return (
     <>
-      <div className="section-title-container">
-        <Text type={TEXT_TYPES.TITLE_BOLD} text={ownUser ? 'Mi perfil' : 'Detalles de usuario'} />
-      </div>
-
-      <div className="main">
-        <div className="profile-summary">
-          <div>
-            <h2 className="title-detalle">{user.first_name} {user.last_name}</h2>
-            {user.is_designer || user.is_printer ? (
-              <div className="main-info-container">
-                <div className="user-role-container">
-                  <h3 className="user-role">{user.is_designer === true ? 'Diseñador ' : null}
-                    {user.is_printer === true ? ' Impresor' : null}</h3>
-                </div>
+      {ownUser ? (
+        <>
+          <PageTitle title="Mi perfil" />
+          <div className="section-title-container">
+            <Text type={TEXT_TYPES.TITLE_BOLD} text='Mi perfil' />
+          </div>
+        </>
+      ) : (
+        <>
+          <PageTitle title={user.username} />
+          <div className="section-title-container">
+            <Text type={TEXT_TYPES.TITLE_BOLD} text='Detalles de usuario' />
+          </div>
+        </>
+      )}
+        <div className="main">
+          <div className="profile-summary">
+            <div>
+              <h2 className="title-detalle">{user.first_name} {user.last_name}</h2>
+              {user.is_designer || user.is_printer ? (
+                  <div className="main-info-container">
+                    <div className="user-role-container">
+                      <h3 className="user-role">{user.is_designer === true ? 'Diseñador ' : null}
+                        {user.is_printer === true ? ' Impresor' : null}</h3>
+                    </div>
+                  </div>
+              ) : null}
+              <div className="user-img-container">
+                <img className='img' src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
               </div>
-            ) : null}
-            <div className="user-img-container">
-              <img className='img' src='/images/avatar.svg' alt={user.username} />
-            </div>
-            <h3 className="title-detalle">Contacto:</h3>
+              <h3 className="title-detalle">Contacto:</h3>
               <p>{user.email}</p>
               {ownUser ? (
-              <div className="chat">
-                <Button type={BUTTON_TYPES.TRANSPARENT} text='Editar Perfil' onClick={handleEditClick} />
-              </div>
+                  <div className="chat">
+                    <Button type={BUTTON_TYPES.TRANSPARENT} text='Editar Perfil' onClick={handleEditClick} />
+                  </div>
               ) : (
-                <div className="chat">
-                  <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
-                  {!localStorage.getItem('token') && <div className='error'>Debes iniciar sesión para poder acceder al chat con un usuario</div>}
-                </div>
+                  <div className="chat">
+                    <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
+                    {!localStorage.getItem('token') && <div className='error'>Debes iniciar sesión para poder acceder al chat con un usuario</div>}
+                  </div>
               )}
-          <div className="chat">
-            <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
-          </div>
-        </div>
-      </div>
-
-      <div className="opinions">
+              <div className="chat">
+                <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
+              </div>
+              {ownUser || localStorage.getItem('token') === null ? null : (
+              <div className="follow-button">
+                <FollowButton userId={id} />
+              </div>
+                )}
+            </div>
+            <div className="opinions">
         <AddOpinion target_user={user.id}/>
         {opinions.map(opinion => (
           <Opinion key={opinion.id} opinion={opinion} />
@@ -160,9 +179,16 @@ const UserDetail = () => {
       <div className="section-title-container">
         <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
       </div>
-      <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={`?seller=${id}`} />      
-    </div>
+      <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={`?seller=${id}`} /> 
+          </div>
+
+        </div>
+
+
+     
+
     </>
+
   );
 }
 
