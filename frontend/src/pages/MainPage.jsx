@@ -16,7 +16,6 @@ const MainPage = () => {
 
     return (
         <>
-            {localStorage.removeItem('firstTime')}
             <ModalChildren isOpen={isOpen} onClose={onCloseModal}>
                 <div>
                     <Text type={TEXT_TYPES.TITLE_BOLD} text='¡Bienvenido a SHAR3D!' />
