@@ -25,7 +25,7 @@ export function TermsPage() {
       </style>
       <div className="section-title-container">
         <Text type={TEXT_TYPES.TITLE_BOLD} text='Términos y condiciones' />
-        <PageTitle title="Customer Agremment" />
+        <PageTitle title="Términos y condiciones" />
       </div>
       <div className='text-container'>
         <h3>¡Bienvenido a Shar3d!</h3>
