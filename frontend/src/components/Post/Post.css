@@ -92,6 +92,15 @@
     margin: auto;
   }
   
-  .titulo-pagina {
-    margin-left: 150px;
-  }
+.titulo-pagina {
+  margin-left: 150px;
+}
+
+.introduccion {
+  display: flex;
+  align-items: center;
+}
+
+.boton-derecha {
+  margin-left: auto;
+}

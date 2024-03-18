@@ -12,6 +12,10 @@ from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from django.db.models import Q
+from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 def get_user_from_token(token):
@@ -35,7 +39,7 @@ class GetUserFromTokenView(APIView):
 
         return JsonResponse({'id': current_user.id, 'username': current_user.username, 'email': current_user.email, 'following': aux})
 
-class PostViewClass(viewsets.ModelViewSet):
+class PostViewClass(APIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -108,7 +112,39 @@ class PostViewClass(viewsets.ModelViewSet):
         serializer = PostSerializer(queryset, many=True)
         return Response(serializer.data)
     
-    def get_post_by_userids(self, userid):
+    def get_post_by_userids(request, userid):
         queryset = Post.objects.filter(users=userid)
-        serializer = PostSerializer(queryset, many=True)
+        serializer = PostSerializer(queryset, many=True, context={'request': request})
         return JsonResponse(serializer.data, safe=False)
+    
+
+
+
+
+@api_view(['POST'])
+@csrf_exempt
+@login_required
+def add_post(request):
+    if request.method == 'POST':
+        name = request.data.get('name')
+        description = request.data.get('description')
+        users = get_user_from_token(request.headers.get('Authorization', '').split(' ')[1])
+        image = request.FILES.get('file')
+
+        # Verificar que todos los campos requeridos estén presentes
+        if not all([name, description, image]):
+            return JsonResponse({'error': 'Todos los campos son obligatorios'}, status=400)
+
+        # Guardar el psot en la base de datos
+        if request.user.is_authenticated:
+            post = Post(
+                name=name,
+                description=description,
+                users=users,
+                image=image 
+            )
+            post.save()
+
+            return JsonResponse({'message': 'Post añadido correctamente'}, status=201)
+
+    return JsonResponse({'error': 'Método no permitido'}, status=405)

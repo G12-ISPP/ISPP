@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Post.css";
+import Button, { BUTTON_TYPES } from '../Button/Button';
 
 const backend = import.meta.env.VITE_APP_BACKEND;
 
@@ -7,14 +8,31 @@ const Post = () => {
   const [followedUsers, setFollowedUsers] = useState([]);
   const [posts, setPosts] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('');
 
-  const handleClick = (imageRoute) => {
-    setSelectedImage(imageRoute);
+
+  const handleClick = (imageUrl) => {
+    setSelectedImage(imageUrl, '_blank');
   };
 
+
+
+
   useEffect(() => {
-    // Aquí realizar la petición para obtener el usuario mediante el token
     const token = localStorage.getItem("token");
+    if (!token) {
+      // Si no hay token, el usuario no está autenticado
+      setIsLoggedIn(false);
+      alert('Debes iniciar sesión para acceder a la comunidad');
+      window.location.href = "/login"; // Redirigir al usuario a la página de inicio de sesión
+      return; // Detener el flujo de ejecución
+    }
+
+    // Si hay un token, se supone que el usuario está autenticado
+    setIsLoggedIn(true);
+
+    // Aquí realizar la petición para obtener el usuario mediante el token
     fetch(`${backend}/posts/get_user_from_token`, {
       method: "POST",
       headers: {
@@ -41,28 +59,58 @@ const Post = () => {
             })
               .then((response) => response.json())
               .then((userPosts) => {
-                // Añadir los posts del usuario a un estado de React
-                setPosts((posts) => [...posts, ...userPosts]);
+
+                fetch(`${backend}/users/api/v1/users/${user}`, {
+                  method: "GET",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                })
+                  .then((response) => response.json())
+                  .then((user) => {
+                    setUsername(user.username);
+                    const userPostsWithName = userPosts.map(post => ({
+                      ...post,
+                      users: user.username,  // Reemplazar post.users con el nombre de usuario
+                    }));
+
+                    // Añadir userPostsWithName al estado de posts
+                    setPosts((posts) => [...posts, ...userPostsWithName]);
+
+                  });
               });
           });
+
         }
       });
-  }, []);
+
+  }
+
+    , []);
+
+  if (!isLoggedIn) {
+    // Si el usuario no está autenticado, no se renderizará ningún contenido
+    return null;
+  }
 
   return (
     <>
-      <h1 className="titulo-pagina">Comunidad</h1>
-      <div className="post-container">
+      <div className="introduccion">
+        <h1 className="titulo-pagina">Comunidad</h1>
+        <Button type={BUTTON_TYPES.LARGE} text='Añadir Post' path='/posts/add-post' />
+      </div>      <div className="post-container">
         {posts.map((post, index) => {
           return (
             <div key={index} className="post-item">
-              <div className="post-image-container" onClick={() => handleClick(post.imageRoute)}>
-                <img src={`/public/images/${post.imageRoute}`} alt="post" className="post-image" />
+              <div className="post-image-container" onClick={() => handleClick(post.image_url)}>
+                <img src={post.image_url} alt="post" className="post-image" />
               </div>
               <div className="post-details">
                 <h3 className="post-title">{post.name}</h3>
                 <p className="post-description">{post.description}</p>
-                <p className="post-users">{post.users}</p>
+                <p className="post-users">Publicado por: {post.users}
+                </p>
               </div>
             </div>
           );
@@ -73,7 +121,7 @@ const Post = () => {
               <span className="close" onClick={() => setSelectedImage(null)}>
                 &times;
               </span>
-              <img src={`/public/images/${selectedImage}`} alt="post" className="modal-image" />
+              <img src={selectedImage} alt="post" className="modal-image" />
             </div>
           </div>
         )}

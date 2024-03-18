@@ -37,6 +37,8 @@ import PrintersPage from "./pages/PrintersPage.jsx";
 import MaterialsPage from "./pages/MaterialsPage.jsx";
 import ArtistsPage from "./pages/ArtistsPage.jsx";
 import ComunityPage from "./pages/ComunityPage.jsx";
+import AddPost from "./components/Post/AddPost.jsx";
+
 
 function App() {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
@@ -88,6 +90,7 @@ function App() {
                     <Route path="/cancel-plan" element={<CancelPlan/>} />
                     <Route path="/confirm-plan" element={<ConfirmPlan/>} />
                     <Route path="/comunity" element={<ComunityPage />} />
+                    <Route path="/posts/add-post" element={<AddPost/>}/>
                 </Routes>
                 <Footer/>
             </AuthProvider>
