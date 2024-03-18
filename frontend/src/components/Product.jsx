@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import './Product.css'
 import Button, { BUTTON_TYPES } from './Button/Button';
 import Text, { TEXT_TYPES } from "./Text/Text";
+import PageTitle from "./PageTitle/PageTitle";
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -92,6 +93,7 @@ class ProductDetail extends React.Component {
 
     return (
       <>
+        <PageTitle title={product.name} />
         <div className="section-title-container">
           <Text type={TEXT_TYPES.TITLE_BOLD} text='Detalles del producto' />
         </div>

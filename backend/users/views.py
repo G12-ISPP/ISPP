@@ -1,33 +1,31 @@
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-from rest_framework import generics, status, viewsets
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-from rest_framework.exceptions import ErrorDetail, APIException
-from rest_framework.decorators import api_view, parser_classes
-from rest_framework import status
-from rest_framework.views import APIView
+import re
+from datetime import datetime
+from functools import wraps
+
+from django.conf import settings
 from django.contrib.auth import authenticate
-from .models import CustomUser
-from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework import viewsets, status
-from rest_framework.exceptions import ValidationError
-from .models import CustomUser
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.http import HttpResponseRedirect
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.utils.translation import activate
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from paypalrestsdk import Payment
-
+from rest_framework import generics
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from users.serializer import UserSerializer
-from django.utils.translation import gettext_lazy as _
-from functools import wraps
-from django.utils.translation import activate
-from django.conf import settings
-from datetime import datetime
-from django.http import HttpResponseRedirect
-import re
+from rest_framework.decorators import api_view
+from rest_framework.exceptions import APIException
+from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
-from django.db.models import Q
+from users.serializer import UserSerializer
+from .models import CustomUser
 
 ruta_frontend = settings.RUTA_FRONTEND
 
@@ -192,5 +190,40 @@ def obtain_plan(request, plan_seller, plan_buyer, plan_designer,user_id):
 
     user.save()
     return HttpResponseRedirect(ruta_frontend + '/confirm-plan')
+
+# Following Functions
+@api_view(['GET'])
+@csrf_exempt
+@login_required
+def follow_toggle(request, user_id):
+    user = CustomUser.objects.get(id=user_id)
+    if request.user in user.followers.all():
+        user.followers.remove(request.user)
+        user.save()
+        request.user.followings.remove(user)
+        request.user.save()
+        print(user.followers.all())
+        print(request.user.followings.all())
+        return JsonResponse({'success': 'Ya no sigues a ' + user.username}, status=201)
+    else:
+        user.followers.add(request.user)
+        user.save()
+        request.user.followings.add(user)
+        request.user.save()
+        print(user.followers.all())
+        print(request.user.followings.all())
+        return JsonResponse({'success': 'Ahora sigues a ' + user.username}, status=201)
+
+
+@api_view(['GET'])
+@csrf_exempt
+@login_required
+def follow_status(request, user_id):
+    user = CustomUser.objects.get(id=user_id)
+
+    if request.user in user.followers.all():
+        return JsonResponse({'follows': True}, status=201)
+    else:
+        return JsonResponse({'follows': False}, status=201)
 
 
