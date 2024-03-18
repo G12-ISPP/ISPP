@@ -16,20 +16,16 @@ from django.db.models import Q
 # Create your views here.
 def get_user_from_token(token):
     try:
-        # Intenta decodificar el token y obtener el usuario
         decoded_token = AccessToken(token)
         user_id = decoded_token['user_id']
         User = get_user_model()
         user = CustomUser.objects.get(id=user_id)
         return user
     except (TokenError, InvalidToken, CustomUser.DoesNotExist) as e:
-        # Maneja los errores si el token es inválido o el usuario no existe
-        print(e)
         return None
     
 class GetUserFromTokenView(APIView):
     def post(self, request, format=None):
-        print("HAS")
         token = request.headers.get('Authorization', '').split(' ')[1]
         current_user = get_user_from_token(token)
         aux = []

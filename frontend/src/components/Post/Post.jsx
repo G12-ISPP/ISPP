@@ -5,8 +5,13 @@ const backend = import.meta.env.VITE_APP_BACKEND;
 
 const Post = () => {
   const [followedUsers, setFollowedUsers] = useState([]);
-  const [posts, setPosts] = useState([]); // Añade esta línea
-  console.log(backend);
+  const [posts, setPosts] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleClick = (imageRoute) => {
+    setSelectedImage(imageRoute);
+  };
+
   useEffect(() => {
     // Aquí realizar la petición para obtener el usuario mediante el token
     const token = localStorage.getItem("token");
@@ -42,22 +47,38 @@ const Post = () => {
           });
         }
       });
-    // Remove the closing parenthesis here
-  }, []); // No need to add closing parenthesis here, it's already correct
+  }, []);
 
-  // Ahora puedes utilizar `followedUsers` en tu renderizado para mostrar la lista de usuarios que sigues
   return (
-    <div>
-      {posts.map((post) => {
-        return (
-          <div>
-            <h3>{post.name}</h3>
-            <p>{post.description}</p>
-            <p>{post.users}</p>
+    <>
+      <h1 className="titulo-pagina">Comunidad</h1>
+      <div className="post-container">
+        {posts.map((post, index) => {
+          return (
+            <div key={index} className="post-item">
+              <div className="post-image-container" onClick={() => handleClick(post.imageRoute)}>
+                <img src={`/public/images/${post.imageRoute}`} alt="post" className="post-image" />
+              </div>
+              <div className="post-details">
+                <h3 className="post-title">{post.name}</h3>
+                <p className="post-description">{post.description}</p>
+                <p className="post-users">{post.users}</p>
+              </div>
+            </div>
+          );
+        })}
+        {selectedImage && (
+          <div className="modal">
+            <div className="modal-content">
+              <span className="close" onClick={() => setSelectedImage(null)}>
+                &times;
+              </span>
+              <img src={`/public/images/${selectedImage}`} alt="post" className="modal-image" />
+            </div>
           </div>
-        ); // Add a closing parenthesis here
-      })}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 
