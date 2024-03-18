@@ -311,6 +311,7 @@ export default class CustomModel extends React.Component {
   };
 
   render() {
+    const token = localStorage.getItem('token');
     return (
       <>
         <PageTitle title="Mi diseño" />
@@ -380,13 +381,15 @@ export default class CustomModel extends React.Component {
               <input type='text' id='buyer_mail' name='buyer_mail' className='form-input' value={this.state.buyer_mail} onChange={this.handleBuyerMail} />
               {this.state.errors.buyer_mail && <div className="error">{this.state.errors.buyer_mail}</div>}
             </div>
-            <div className='form-group'>
-          <label className='customer-agreement'>
-            <input type='checkbox' id='customerAgreement' name='customerAgreement' checked={this.state.customerAgreementChecked} onChange={this.handleCheckboxChange}/>
-            Acepto los términos y condiciones descritos <a href="/terminos">aquí</a>
-          </label>
-          {this.state.errors.customerAgreement && <div className="error">{this.state.errors.customerAgreement}</div>}
-        </div>
+            { !token && (
+          <div className='form-group'>
+            <label className='customer-agreement'>
+              <input type='checkbox' id='customerAgreement' name='customerAgreement' checked={this.state.customerAgreementChecked} onChange={this.handleCheckboxChange}/>
+              Acepto los términos y condiciones descritos <a href="/terminos">aquí</a>
+            </label>
+            {this.state.errors.customerAgreement && <div className="error">{this.state.errors.customerAgreement}</div>}
+          </div>
+        )}
           </form>
         </div>
         <div className='summary'>
