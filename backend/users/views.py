@@ -79,6 +79,24 @@ class UserCreateAPIView(generics.CreateAPIView):
                 errors['postal_code'] = ['El código postal debe ser un número entero entre 1000 y 52999']
         except ValueError:
             errors['postal_code'] = ['El código postal debe ser un número entero válido']
+        address = request.data.get('address')
+        if len(address) < 5:
+            errors['address'] = ['La dirección debe tener al menos 5 caracteres']
+        elif len(address) > 255:
+            errors['address'] = ['La dirección no puede tener más de 255 caracteres']
+        city = request.data.get('city')
+        if len(city) < 3:
+            errors['city'] = ['La ciudad debe tener al menos 3 caracteres']
+        elif len(city) > 50:
+            errors['city'] = ['La ciudad no puede tener más de 50 caracteres']
+        username = request.data.get('username')
+        if len(username) < 4:
+            errors['username'] = ['El nombre de usuario debe tener al menos 4 caracteres']
+        elif len(username) > 30:
+            errors['username'] = ['El nombre de usuario no puede tener más de 30 caracteres']
+        email = request.data.get('email')
+        if len(email) > 50:
+            errors['email'] = ['El email no puede tener más de 50 caracteres']
         if errors:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         try:
