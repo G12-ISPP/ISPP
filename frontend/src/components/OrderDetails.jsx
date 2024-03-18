@@ -54,8 +54,10 @@ export default class CustomModelDetails extends React.Component{
         const { data } = this.state;
         return (           
             <>
-                <PageTitle title="Detalles del pedido" />
-                <div className="wrapper">
+            <PageTitle title="Detalles del pedido" />
+            <div className="wrapper">
+                {data?.payed && (
+                    <>
                     <h1>Detalles del pedido</h1>
                     <p>Estimado cliente, su pedido ha sido realizado correctamente.</p>
                     <div className="project">
@@ -65,10 +67,10 @@ export default class CustomModelDetails extends React.Component{
                                 image_url={data.products[index].image_url} imageRoute={data.products[index].imageRoute}
                                 id={data.products[index].id} quantity={data.products[index].quantity} />
                             ))}</>}
-
+    
                             {data && <h5>Gastos de envío: 5€</h5>}
                             {data && <h2>Precio total: {data.price}€</h2>}
-
+    
                             <div className='right-bar'>
                                 <h2>Detalles de entrega</h2>
                                 <hr />
@@ -81,7 +83,9 @@ export default class CustomModelDetails extends React.Component{
                             
                         </div>
                     </div>
-                </div>
+                    </>
+                )}
+            </div>
             </>
         );
     }

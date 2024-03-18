@@ -39,7 +39,7 @@ class BaseTestCase(APITestCase):
             postal_code='12345',
             payment='C',
             date=timezone.now(),
-            payed=False
+            payed=True
         )
 
         OrderProduct.objects.create(

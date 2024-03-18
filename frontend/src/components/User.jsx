@@ -5,7 +5,8 @@ import Button, { BUTTON_TYPES } from './Button/Button';
 import Text, { TEXT_TYPES } from "./Text/Text";
 import AddOpinion from './AddOpinion';
 import Opinion from './Opinion';
-import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsGrid/ProductsGrid'
+import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsGrid/ProductsGrid';
+import FollowButton from "./Follow/FollowBotton.jsx";
 import PageTitle from './PageTitle/PageTitle';
 
 const id = window.location.href.split('/')[4];
@@ -19,6 +20,8 @@ const UserDetail = () => {
   const backend = import.meta.env.VITE_APP_BACKEND;
 
   useEffect(() => {
+
+    const id = window.location.href.split('/')[4];
     const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
 
     const fetchUserData = async () => {
@@ -142,9 +145,9 @@ const UserDetail = () => {
                 </div>
               </div>
             ) : null}
-            <div className="user-img-container">
-              <img className='img' src='/images/avatar.svg' alt={user.username} />
-            </div>
+              <div className="user-img-container">
+                <img className='img' src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
+              </div>
             <h3 className="title-detalle">Contacto:</h3>
             <p>{user.email}</p>
             {ownUser ? (
@@ -160,7 +163,11 @@ const UserDetail = () => {
             <div className="user-button">
               <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
             </div>
-
+            {ownUser || localStorage.getItem('token') === null ? null : (
+              <div className="user-button">
+                <FollowButton userId={id} />
+              </div>
+                )}
             <AddOpinion target_user={user.id} />
             {opinions.length > 0 ? (
               <>
@@ -182,6 +189,7 @@ const UserDetail = () => {
 
 
     </>
+
   );
 }
 
