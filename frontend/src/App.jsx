@@ -27,6 +27,7 @@ import ConfirmPlan from "./components/BuyPlan/ConfirmPlan.jsx";
 import OrderDetails from "./components/OrderDetails.jsx";
 import OrderCancelled from "./components/OrderCancelled.jsx";
 import { SearchingPrinterDesignsPage } from './pages/PrinterDesigns.jsx';
+import {EditProfilePage} from "./pages/EditProfilePage";
 import {AuthProvider} from "./context/AuthContext.jsx";
 import ConvertToSTL from "./components/ConvertToSTL/ConvertToSTL.jsx";
 import MyOrders from './components/myOrders/myOrders.jsx';
@@ -36,6 +37,8 @@ import PiecesPage from "./pages/PiecesPage.jsx";
 import PrintersPage from "./pages/PrintersPage.jsx";
 import MaterialsPage from "./pages/MaterialsPage.jsx";
 import ArtistsPage from "./pages/ArtistsPage.jsx";
+import Privacity from "./pages/PrivacityPage.jsx";
+import Terms from "./pages/TermsPage.jsx";
 
 function App() {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
@@ -74,6 +77,7 @@ function App() {
                     <Route path="/register" element={<RegisterFormPage/>}/>
                     <Route path="/login" element={<LoginFormPage/>}/>
                     <Route path="/user-details/:id" element={<UserDetail/>}/>
+                    <Route path="/update-profile/:id" element={<EditProfilePage/>}/>
                     <Route path="/user-details/:id/products" element={<ProductsList/>}/>
                     <Route path="/products/add-product" element={<AddProduct/>}/>
                     <Route path="/cart" element={<Cart cart={cart} setCart={setCart}/>}/>
@@ -86,6 +90,8 @@ function App() {
                     <Route path="/buy-plan" element={<BuyPlan/>} />
                     <Route path="/cancel-plan" element={<CancelPlan/>} />
                     <Route path="/confirm-plan" element={<ConfirmPlan/>} />
+                    <Route path="/privacidad" element={<Privacity/>} />
+                    <Route path="/terminos" element={<Terms/>} />
                 </Routes>
                 <Footer/>
             </AuthProvider>

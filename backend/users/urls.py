@@ -12,6 +12,7 @@ urlpatterns = [
     path('register/', UserCreateAPIView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
     path('get-user-id/<str:username>/', get_user_id_by_username, name='get_user_id_by_username'),
+    path('update-profile/<int:pk>/', UsersView.as_view({'patch': 'update_profile'}), name='update_profile'),
     path('api/v1/follow/<int:user_id>/toggle/', follow_toggle, name='follow_toggle'),
     path('api/v1/follow/<int:user_id>/status/', follow_status, name='follow_status'),
 

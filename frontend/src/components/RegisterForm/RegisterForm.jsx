@@ -28,6 +28,7 @@ class RegisterForm extends React.Component {
       city: '',
       is_designer: false,
       is_printer: false,
+      customerAgreementChecked: false,
       errors: {}
     };
   }
@@ -39,7 +40,8 @@ class RegisterForm extends React.Component {
   handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     this.setState({
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
+      customerAgreementChecked: name === 'customerAgreementChecked' ? checked : this.state.customerAgreementChecked
     });
   }
 
@@ -53,6 +55,14 @@ class RegisterForm extends React.Component {
 
   handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Verificar si el checkbox de acuerdo del cliente está marcado
+    if (!this.state.customerAgreementChecked) {
+      this.setState({
+        errors: { customerAgreement: 'Debe aceptar el acuerdo del cliente' }
+      });
+      return; // Detener el envío del formulario si el checkbox no está marcado
+    }
 
     try {
       const base64Response = await fetch(this.state.preview);
@@ -165,6 +175,10 @@ class RegisterForm extends React.Component {
                   ¿Eres impresor?
                 </label>
               </div>
+                <label htmlFor='customerAgreement' className='register-checkbox-label'>
+                  <input type='checkbox' id='customerAgreement' name='customerAgreementChecked' checked={this.state.customerAgreementChecked} onChange={this.handleChange} />
+                  Acepto los términos y condiciones descritos <a href="/terminos">aquí</a>
+                </label>
               <div className="error-messages-container">
                 {errors.username && <p className="register-error-message">{'Nombre de usuario: ' + errors.username[0]}</p>}
                 {errors.email && <p className="register-error-message">{'Email: ' + errors.email[0]}</p>}
@@ -174,6 +188,7 @@ class RegisterForm extends React.Component {
                 {errors.address && <p className="register-error-message">{'Dirección: ' + errors.address[0]}</p>}
                 {errors.postal_code && <p className="register-error-message">{'Código postal: ' + errors.postal_code[0]}</p>}
                 {errors.city && <p className="register-error-message">{'Ciudad: ' + errors.city[0]}</p>}
+                {errors.customerAgreement && <p className="register-error-message">{errors.customerAgreement}</p>}
               </div>
               <Button type={BUTTON_TYPES.AUTHENTICATION} text='Registrarse' action='submit' />
             </form>

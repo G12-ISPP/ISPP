@@ -1,0 +1,37 @@
+.opinion {
+    background-color: #e7e6e6;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
+  .opinion-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    background-color: #004040;
+    color: #e7e6e6;
+    padding: 5px;
+  }
+  
+  .opinion-score {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .opinion-author {
+    flex-grow: 1;
+    margin-right: 10px;
+    text-align: left;
+  }
+  
+  .opinion-date {
+    color: #004040;
+    text-align: right;
+  }
+
+  .opinion-desc{
+    text-align: left;
+  }
+  

@@ -39,8 +39,8 @@ function FollowButton({ userId }) {
     };
 
     return (
-        <button onClick={handleFollowToggle}>
-            {following ? 'Unfollow' : 'Follow'}
+        <button className='transparent-btn button' onClick={handleFollowToggle}>
+            {following ? 'Dejar de seguir' : 'Seguir'}
         </button>
     );
 }
