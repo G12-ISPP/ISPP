@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import './Product.css'
 import Button, { BUTTON_TYPES } from './Button/Button';
 import Text, { TEXT_TYPES } from "./Text/Text";
@@ -37,6 +37,8 @@ class ProductDetail extends React.Component {
 
     const cart = this.props.cart;
     const setCart = this.props.setCart;
+    const { agregado } = this.state;
+    
 
     const addProduct = product => {
       let cartCopy = [...cart];
@@ -45,25 +47,27 @@ class ProductDetail extends React.Component {
 
       if (existingProduct) {
         if ((product.stock_quantity - existingProduct.quantity) < 1) return
-        existingProduct.quantity += 1
+                existingProduct.quantity += 1
       } else {
-        cartCopy.push({
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          imageRoute: product.imageRoute,
-          stock_quantity: product.stock_quantity,
-          quantity: 1
-        })
-      }
+                  cartCopy.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            imageRoute: product.imageRoute,
+            stock_quantity: product.stock_quantity,
+            product_type: product.product_type,
+            quantity: 1
+          })
+              }
 
       setCart(cartCopy)
       localStorage.setItem('cart', JSON.stringify(cart));
     };
 
+    
     return (
       <>
-        <div className="section-title-container">
+                <div className="section-title-container">
           <Text type={TEXT_TYPES.TITLE_BOLD} text='Detalles del producto' />
         </div>
         <div className='product-container'>
@@ -80,7 +84,7 @@ class ProductDetail extends React.Component {
             </div>
             <div className="buy-container">
               <h3>Cantidad de stock: {product.stock_quantity}</h3>
-              <Button type={BUTTON_TYPES.LARGE} text='Añadir al carrito' onClick={() => addProduct(product)} />
+              <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => {addProduct(product); this.setState({ agregado :true })}} />
             </div>
           </div>
         </div>
