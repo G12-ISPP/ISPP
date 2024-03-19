@@ -6,6 +6,7 @@ class Post(models.Model):
     description = models.TextField(max_length=200)
     image = models.ImageField(upload_to='posts/')    
     users = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE)
+    fecha = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
