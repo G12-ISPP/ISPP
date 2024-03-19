@@ -22,13 +22,15 @@ const SearchResultsPage = () => {
 
     return (
         <>
-            <h1 className='title'>Resultado de la búsqueda:</h1>
+          <div className="section-title-container">
+            <Text type={TEXT_TYPES.TITLE_BOLD} text={`Resultados de la búsqueda: `} />
+          </div>
             {searchText && (
-                <h2 className='title'>"{searchText}"</h2>
+                <h3 className='title'>"{searchText}"</h3>
             )}
 
             {!searchText && (
-                <h2 className='title'>¡Realice una búsqueda!</h2>
+                <h3 className='title'>¡Realice una búsqueda!</h3>
             )}
             {searchResults && (
                 <>
