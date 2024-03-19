@@ -7,7 +7,7 @@ import './CustomDesign.css';
 import Button, { BUTTON_TYPES } from './Button/Button';
 import {ModalChildren} from "./ModalChildren/ModalChildren.jsx";
 import {FaInfoCircle, FaMinus, FaPlus} from 'react-icons/fa';
-import PageTitle from './PageTitle/PageTitle':
+import PageTitle from './PageTitle/PageTitle';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
