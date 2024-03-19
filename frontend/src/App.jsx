@@ -27,6 +27,7 @@ import ConfirmPlan from "./components/BuyPlan/ConfirmPlan.jsx";
 import OrderDetails from "./components/OrderDetails.jsx";
 import OrderCancelled from "./components/OrderCancelled.jsx";
 import { SearchingPrinterDesignsPage } from './pages/PrinterDesigns.jsx';
+import {EditProfilePage} from "./pages/EditProfilePage";
 import {AuthProvider} from "./context/AuthContext.jsx";
 import ConvertToSTL from "./components/ConvertToSTL/ConvertToSTL.jsx";
 import MyOrders from './components/myOrders/myOrders.jsx';
@@ -76,6 +77,7 @@ function App() {
                     <Route path="/register" element={<RegisterFormPage/>}/>
                     <Route path="/login" element={<LoginFormPage/>}/>
                     <Route path="/user-details/:id" element={<UserDetail/>}/>
+                    <Route path="/update-profile/:id" element={<EditProfilePage/>}/>
                     <Route path="/user-details/:id/products" element={<ProductsList/>}/>
                     <Route path="/products/add-product" element={<AddProduct/>}/>
                     <Route path="/cart" element={<Cart cart={cart} setCart={setCart}/>}/>
