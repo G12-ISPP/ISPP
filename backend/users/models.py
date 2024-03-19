@@ -13,6 +13,8 @@ class CustomUser(AbstractUser):
         ]
     )
     city = models.CharField(max_length=50)
+    email_verified = models.BooleanField(default=False)
+
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -25,8 +27,10 @@ class CustomUser(AbstractUser):
     seller_plan_date = models.DateField(null=True, blank=True)
     designer_plan = models.BooleanField(default=False)
     designer_plan_date = models.DateField(null=True, blank=True)
+
     followings = models.ManyToManyField('self', related_name='follower_users', symmetrical=False, blank=True, default=[])
     followers = models.ManyToManyField('self', related_name='following_users', symmetrical=False, blank=True, default=[])
+
 
     USERNAME_FIELD = 'username'
     
