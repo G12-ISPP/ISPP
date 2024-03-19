@@ -132,3 +132,15 @@
       max-width: 300px;
     }
   }
+
+/* Para los botones debajo del diseño */
+.button-container {
+  display: flex;
+  align-items: center;
+}
+
+.info-button,
+.plus-button,
+.minus-button {
+  margin-right: 10px;
+}
