@@ -124,7 +124,7 @@ checkUserPermission = async () => {
      formData.append('postal_code', this.state.postal_code);
      formData.append('city', this.state.city);
  
-     if(this.state.preview !== null){
+     if(this.state.preview !== avatar){
       formData.append('profile_picture', blob, `profile_picture_${this.state.username}.png`);
       }
  
