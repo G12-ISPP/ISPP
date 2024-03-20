@@ -8,6 +8,8 @@ import Opinion from './Opinion';
 import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsGrid/ProductsGrid';
 import FollowButton from "./Follow/FollowBotton.jsx";
 import PageTitle from './PageTitle/PageTitle';
+import filledStar from '../assets/bxs-star.svg';
+import emptyStar from '../assets/bx-star.svg';
 
 const id = window.location.href.split('/')[4];
 
@@ -16,6 +18,7 @@ const UserDetail = () => {
   const currentUserID = localStorage.getItem('userId');
   const [ownUser, setOwnUser] = useState(false);
   const [opinions, setOpinions] = useState([]);
+  const [avgScore, setAvgScore] = useState(0);
   const navigate = useNavigate();
   const backend = import.meta.env.VITE_APP_BACKEND;
 
@@ -54,6 +57,10 @@ const UserDetail = () => {
         if (response.ok) {
           const data = await response.json();
           setOpinions(data);
+
+          const totalScore = data.reduce((acc, opinion) => acc + opinion.score, 0);
+          const avgScore = data.length > 0 ? totalScore / data.length : 0;
+          setAvgScore(avgScore);
         } else {
           console.error('Error al obtener las opiniones');
         }
@@ -116,6 +123,18 @@ const UserDetail = () => {
     return <div>Loading...</div>;
   }
 
+  function roundScore(score) {
+    const roundedValue = Math.round(score);
+
+    if (roundedValue < 0) {
+      return 0;
+    } else if (roundedValue > 5) {
+      return 5;
+    } else {
+      return roundedValue;
+    }
+  }
+
   return (
     <>
       {ownUser ? (
@@ -133,8 +152,43 @@ const UserDetail = () => {
           </div>
         </>
       )}
-      <div className="main">
-        <div className="profile-summary">
+      <div className="user-container">
+        <div className="left-user-container">
+          <div className="user-img-container">
+            <img className='user-image' src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
+          </div>
+        </div>
+        <div className="right-user-container">
+          <div className="user-info-container">
+            <h2 className="user-name">{user.first_name} {user.last_name}</h2>
+            {opinions.length > 0 ? (
+              <div className="user-review">
+                <div className="user-review-stars">
+                  {Array.from({ length: roundScore(avgScore) }, (_, index) => (
+                    <img src={filledStar} alt="filled star" />
+                  ))}
+                  {Array.from({ length: 5 - roundScore(avgScore) }, (_, index) => (
+                    <img src={emptyStar} alt="empty star" />
+                  ))}
+                </div>
+                <div className="user-review-text">{roundScore(avgScore)} ({opinions.length} {opinions.length === 1 ? 'Opinión' : 'Opiniones'})</div>
+              </div>
+            ) : (
+              <p className='user-review-text'>Sin valoraciones</p>
+            )}
+            <div className="user-role-container">
+              {user.is_designer === true ? (
+                <div className="user-role">Diseñador</div>
+              ) : null}
+              {user.is_printer === true ? (
+                <div className="user-role">Impresor</div>
+              ) : null}
+            </div>
+            {/* CONTINUAR CON EL MARCADO HTML */}
+          </div>
+        </div>
+      </div>
+      <div className="profile-summary">
           <div>
             <h2 className="title-detalle">{user.first_name} {user.last_name}</h2>
             {user.is_designer || user.is_printer ? (
@@ -185,7 +239,6 @@ const UserDetail = () => {
             <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={`?seller=${id}`} />
           </div>
         </div>
-      </div>
 
 
     </>
