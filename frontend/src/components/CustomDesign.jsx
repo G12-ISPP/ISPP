@@ -1,10 +1,12 @@
-import React, { Suspense } from 'react';
+import React, {Suspense, useState} from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 import { Stage, PresentationControls, Html, useProgress } from '@react-three/drei';
 import { MeshStandardMaterial, Color, Vector3 } from 'three';
 import './CustomDesign.css';
 import Button, { BUTTON_TYPES } from './Button/Button';
+import {ModalChildren} from "./ModalChildren/ModalChildren.jsx";
+import {FaInfoCircle, FaMinus, FaPlus} from 'react-icons/fa';
 import PageTitle from './PageTitle/PageTitle';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
@@ -20,6 +22,7 @@ const calculateAreaVolumeAndDimensions = (bufferGeometry) => {
   const vertexNext1 = new Vector3();
   const vertexNext2 = new Vector3();
   const crossProduct = new Vector3();
+
 
   for (let i = 0; i < positionAttribute.count; i += 3) {
     vertex.fromBufferAttribute(positionAttribute, i);
@@ -88,6 +91,8 @@ const PRICE_PER_CM3 = {
 }
 
 export default class CustomModel extends React.Component {
+
+
   constructor(props) {
     super(props);
     this.state = {
@@ -106,6 +111,8 @@ export default class CustomModel extends React.Component {
       address: '',
       buyer_mail: '',
       color: 'Rojo',
+      isOpen: false,
+      zoom: 1.5,
       customerAgreementChecked: false,
       errors:{}
     };
@@ -310,6 +317,12 @@ export default class CustomModel extends React.Component {
     }
   };
 
+
+
+
+
+
+
   render() {
     const token = localStorage.getItem('token');
     return (
@@ -318,29 +331,76 @@ export default class CustomModel extends React.Component {
         <h1 className='title'>Mi diseño</h1>
         <div className='main'>
           <div className='canvas-container'>
-            <Canvas dpr={[1, 2]} className='canvas' shadows camera={{ fov: 45 }} style={{ display: "flex", width: "500px", height: "300px", marginBottom: "50px", borderRadius: "15px", touchAction: "none" }}>
-              <Suspense fallback={<Loader />}>
-                <color attach="background" args={["#101010"]} />
-                <ambientLight intensity={0.5} />
-                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-                <PresentationControls speed={1.5} global zoom={1.5} polar={[-0.1, Math.PI / 4]}>
-                  <Stage environment={"sunset"} adjustCamera={true} key={this.state.modelUrl} scale={0.01}>
-                    <Model url={this.state.modelUrl} volumeAndArea={this.handleAreaAndVolume} />
+            <Canvas dpr={[1, 2]} className='canvas' shadows camera={{fov: 45}} style={{
+              display: "flex",
+              width: "500px",
+              height: "300px",
+              marginBottom: "50px",
+              borderRadius: "15px",
+              touchAction: "none"
+            }}>
+              <Suspense fallback={<Loader/>}>
+                <color attach="background" args={["#101010"]}/>
+                <ambientLight intensity={0.5}/>
+                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1}/>
+                <PresentationControls speed={1.5} global zoom={this.state.zoom} polar={[-0.1, Math.PI / 4]}>
+                  <Stage environment={"sunset"} adjustCamera={false} key={this.state.modelUrl} scale={0.01}>
+                    <Model url={this.state.modelUrl} volumeAndArea={this.handleAreaAndVolume}/>
                   </Stage>
                 </PresentationControls>
               </Suspense>
             </Canvas>
+
+            <ModalChildren isOpen={this.state.isOpen} onClose={() => this.setState({isOpen: false})}>
+              <div>
+                <h1>Información sobre el diseño</h1>
+                <p>Bienvenido al visualizador de diseños 3D. Para comenzar, sube tu diseño en formato STL. Una vez
+                  cargado, podrás personalizar varios aspectos de tu diseño:</p>
+
+                  <p><strong>- Nombre:</strong> Asigna un nombre único a tu diseño para identificarlo fácilmente.</p>
+                  <p><strong>- Cantidad:</strong> Especifica cuántas copias de tu diseño deseas imprimir.</p>
+                  <p><strong>- Calidad:</strong> Selecciona entre las opciones de calidad: Bajo, Medio y Alto.</p>
+                  <p><strong>- Color:</strong> Elige el color que deseas para tu diseño entre una variedad de opciones
+                    disponibles.
+                  </p>
+                  <p><strong>- Información adicional:</strong> Completa los detalles adicionales sobre tu diseño, como
+                    dimensiones específicas o instrucciones de impresión.
+                  </p>
+                
+                <p>Además, utiliza los botones de zoom para acercar o alejar la vista de tu diseño y examinarlo con más
+                  detalle.</p>
+              </div>
+
+            </ModalChildren>
+
+            <div className="button-container">
+              <button className="info-button" onClick={() => this.setState({isOpen: true})}>
+                <FaInfoCircle className="info-icon"/>
+              </button>
+              <button className="plus-button"
+                      onClick={() => this.setState({zoom: Number((this.state.zoom + 0.1).toFixed(1))})}>
+                <FaPlus className="plus-icon"/>
+              </button>
+              <p>Zoom {this.state.zoom}</p>
+              <button className="minus-button"
+                      onClick={() => this.setState({zoom: Number((this.state.zoom - 0.1).toFixed(1))})}>
+                <FaMinus className="minus-icon"/>
+              </button>
+            </div>
+
+
           </div>
           <form className='form'>
             <div className='form-group'>
               <label htmlFor="file" className='upload'> Sube tu diseño:</label>
               <div className='file-select'>
-                <input type='file' id='file' name='file' className='form-input' accept='.stl' onChange={this.handleFileChange} />
+                <input type='file' id='file' name='file' className='form-input' accept='.stl'
+                       onChange={this.handleFileChange}/>
                 {this.state.errors.file && <div className="error">{this.state.errors.file}</div>}
               </div>
             </div>
             <div className='form-group'>
-              <label className='name'>Nombre:</label>
+            <label className='name'>Nombre:</label>
               <input type='text' id='name' name='name' className='form-input' onChange={this.handleName} />
               {this.state.errors.name && <div className="error">{this.state.errors.name}</div>}
             </div>

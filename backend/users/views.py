@@ -16,6 +16,14 @@ from paypalrestsdk import Payment
 from rest_framework import generics
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from users.serializer import ProfileUpdateSerializer, UserSerializer
+from django.utils.translation import gettext_lazy as _
+from functools import wraps
+from django.utils.translation import activate
+from django.conf import settings
+from datetime import datetime
+from django.http import HttpResponseRedirect
+import re
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import APIException
 from rest_framework.exceptions import ValidationError
@@ -53,6 +61,23 @@ class UsersView(viewsets.ModelViewSet):
         serializer = self.get_serializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+    @action(detail=True, methods=['patch'])
+    def update_profile(self, request, pk=None):
+        user = self.get_object()
+        serializer = ProfileUpdateSerializer(user, data=request.data, partial=True)
+        postal_code = request.data.get('postal_code')
+        try:
+            postal_code = int(postal_code)
+            if postal_code < 1000 or postal_code > 52999:
+                raise ValidationError({'postal_code': ['El código postal debe ser un número entero entre 1000 y 52999']})
+        except ValueError:
+            raise ValidationError({'postal_code': ['El código postal debe ser un número entero válido']})
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 def translate(view_func):
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
@@ -77,6 +102,24 @@ class UserCreateAPIView(generics.CreateAPIView):
                 errors['postal_code'] = ['El código postal debe ser un número entero entre 1000 y 52999']
         except ValueError:
             errors['postal_code'] = ['El código postal debe ser un número entero válido']
+        address = request.data.get('address')
+        if len(address) < 5:
+            errors['address'] = ['La dirección debe tener al menos 5 caracteres']
+        elif len(address) > 255:
+            errors['address'] = ['La dirección no puede tener más de 255 caracteres']
+        city = request.data.get('city')
+        if len(city) < 3:
+            errors['city'] = ['La ciudad debe tener al menos 3 caracteres']
+        elif len(city) > 50:
+            errors['city'] = ['La ciudad no puede tener más de 50 caracteres']
+        username = request.data.get('username')
+        if len(username) < 4:
+            errors['username'] = ['El nombre de usuario debe tener al menos 4 caracteres']
+        elif len(username) > 30:
+            errors['username'] = ['El nombre de usuario no puede tener más de 30 caracteres']
+        email = request.data.get('email')
+        if len(email) > 50:
+            errors['email'] = ['El email no puede tener más de 50 caracteres']
         if errors:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         try:
