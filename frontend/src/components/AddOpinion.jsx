@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './AddOpinion.css';
+import Button, { BUTTON_TYPES } from './Button/Button';
 
 const backend = import.meta.env.VITE_APP_BACKEND;
 
@@ -89,35 +90,19 @@ class Opinion extends Component {
         const { errors, isAuthenticated, showForm } = this.state;
 
         return (
-            <div className='opiniones'>
-                <h1 className='title-op'>Opiniones</h1>
-                <div className='button-container-op'>
-                    <button className='add-opinion-button' onClick={this.toggleForm}>
-                        {showForm ? 'Ocultar formulario' : 'Añadir mi opinión'}
-                    </button>
-                </div>
+            <div className='new-opinion-container'>
+                <Button type={BUTTON_TYPES.LARGE} text={showForm ? 'Ocultar formulario' : 'Añadir opinión'} onClick={this.toggleForm} />
                 {errors.login && (
-                    <p className='error-op'>
-                        {errors.login} <a className='login-button-op' href="/login">Iniciar sesión</a>
-                    </p>
+                    <div className="opinion-login-error">
+                        <p className='opinion-error-text'>{errors.login}</p>
+                        <Button type={BUTTON_TYPES.LARGE} text='Iniciar sesión' path='/login' />
+                    </div>
                 )}
                 {showForm && isAuthenticated && (
-                    <div className='main-op'>
-                        <form className='form-op' onSubmit={this.handleSubmit}>
-                            <div className='form-group-op'>
-                                <label htmlFor='description'>Descripción</label>
-                                <textarea
-                                    type='text'
-                                    id='description'
-                                    name='description'
-                                    value={this.state.description}
-                                    onChange={(e) => this.setState({ description: e.target.value })}
-                                    rows={5}
-                                />
-                                {errors.description && <span className='error-op'>{errors.description}</span>}
-                            </div>
-                            <div className='form-group-op'>
-                                <label htmlFor='score'>Puntuación</label>
+                    <div className='opinion-form-container'>
+                        <form className='opinion-form' onSubmit={this.handleSubmit}>
+                            <div className='opinion-form-group'>
+                                <label htmlFor='score' className='opinion-form-group-title'>Puntuación</label>
                                 <input
                                     type='number'
                                     min={1}
@@ -126,19 +111,22 @@ class Opinion extends Component {
                                     name='score'
                                     value={this.state.score}
                                     onChange={(e) => this.setState({ score: e.target.value })}
+                                    className='opinion-form-group-score'
                                 />
-                                {errors.score && <span className='error-op'>{errors.score}</span>}
                             </div>
-                            <div className='button-container-op'>
-                                <button className='add-opinion-button' type='submit' onClick={this.handleSubmit}>
-                                    Publicar Opinión
-                                </button>
+                            <div className='opinion-form-group'>
+                                <label htmlFor='description' className='opinion-form-group-title'>Descripción</label>
+                                <textarea type='text' id='desccription' name='description' value={this.state.description}
+                                    onChange={(e) => this.setState({ description: e.target.value })}
+                                    rows={5}
+                                    className='opinion-form-group-description'
+                                />
                             </div>
+                            {errors.score && <span className='opinion-error-text'>{errors.score}</span>}
+                            {errors.description && <span className='opinion-error-text'>{errors.description}</span>}
+                            <Button type={BUTTON_TYPES.LARGE} text='Publicar Opinión' onClick={this.handleSubmit} />
                         </form>
-
-
                     </div>
-
                 )}
             </div>
         );

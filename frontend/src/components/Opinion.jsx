@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './Opinion.css';
-import filledStar from '../assets/bxs-star.svg'
-import emptyStar from '../assets/bx-star.svg'
+import filledStar from '../assets/bxs-star.svg';
+import emptyStar from '../assets/bx-star.svg';
+import defaultProfileImage from '../assets/avatar.svg';
+import ProfileIcon from './ProfileIcon/ProfileIcon';
 
-const Opinion = ({ opinion }) => {
+const Opinion = (props) => {
+
+  const { opinion } = props;
+
   const [user, setUser] = useState(null);
   const filledStars = Math.round(opinion.score);
   const emptyStars = 5 - filledStars;
@@ -37,15 +42,13 @@ const Opinion = ({ opinion }) => {
 
   return (
     <div className="opinion">
-      <div className="opinion-header">
-        <span className="opinion-author">{user && user.username}</span>
-        <div className="opinion-stars">
-          {filledStarsArray}
-          {emptyStarsArray}
-        </div>
+      <ProfileIcon image={user && user.profile_picture ? user.profile_picture : defaultProfileImage} name={user && user.username} onClick={user && user.id} />
+      <div className="opinion-stars">
+        {filledStarsArray}
+        {emptyStarsArray}
       </div>
-      <p className='opinion-desc'>{opinion.description}</p>
       <p className="opinion-date">{opinion.date}</p>
+      <p className='opinion-desc'>{opinion.description}</p>
     </div>
   );
 };

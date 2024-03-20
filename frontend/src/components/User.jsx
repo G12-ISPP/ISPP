@@ -152,53 +152,70 @@ const UserDetail = () => {
           </div>
         </>
       )}
-      <div className="user-container">
-        <div className="left-user-container">
-          <div className="user-img-container">
-            <img className='user-image' src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
+      <>
+        <div className="user-container">
+          <div className="left-user-container">
+            <div className="user-img-container">
+              <img className='user-image' src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
+            </div>
           </div>
-        </div>
-        <div className="right-user-container">
-          <div className="user-info-container">
-            <h2 className="user-name">{user.first_name} {user.last_name}</h2>
-            {opinions.length > 0 ? (
-              <div className="user-review">
-                <div className="user-review-stars">
-                  {Array.from({ length: roundScore(avgScore) }, (_, index) => (
-                    <img src={filledStar} alt="filled star" />
-                  ))}
-                  {Array.from({ length: 5 - roundScore(avgScore) }, (_, index) => (
-                    <img src={emptyStar} alt="empty star" />
-                  ))}
+          <div className="right-user-container">
+            <div className="user-info-container">
+              <h2 className="user-name">{user.first_name} {user.last_name}</h2>
+              {opinions.length > 0 ? (
+                <div className="user-review">
+                  <div className="user-review-stars">
+                    {Array.from({ length: roundScore(avgScore) }, (_, index) => (
+                      <img key={index} src={filledStar} alt="filled star" />
+                    ))}
+                    {Array.from({ length: 5 - roundScore(avgScore) }, (_, index) => (
+                      <img key={index} src={emptyStar} alt="empty star" />
+                    ))}
+                  </div>
+                  <div className="user-review-text">{roundScore(avgScore)} ({opinions.length} {opinions.length === 1 ? 'Opinión' : 'Opiniones'})</div>
                 </div>
-                <div className="user-review-text">{roundScore(avgScore)} ({opinions.length} {opinions.length === 1 ? 'Opinión' : 'Opiniones'})</div>
-              </div>
-            ) : (
-              <p className='user-review-text'>Sin valoraciones</p>
-            )}
-            <div className="user-role-container">
-              {user.is_designer === true ? (
-                <div className="user-role">Diseñador</div>
-              ) : null}
-              {user.is_printer === true ? (
-                <div className="user-role">Impresor</div>
-              ) : null}
-            </div>
-            <div className="user-contact-container">
-              <p className="user-contact"><strong>Contacto:</strong> {user.email}</p>
-            </div>
-            <div className="user-button-wrapper">
-              <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
-              {ownUser || localStorage.getItem('token') === null ? null : (
-                <div className="user-button">
-                  <FollowButton userId={id} />
-                </div>
+              ) : (
+                <p className='user-review-text'>Sin valoraciones</p>
               )}
+              <div className="user-role-container">
+                {user.is_designer === true ? (
+                  <div className="user-role">Diseñador</div>
+                ) : null}
+                {user.is_printer === true ? (
+                  <div className="user-role">Impresor</div>
+                ) : null}
+              </div>
+              <div className="user-contact-container">
+                <p className="user-contact"><strong>Contacto: </strong> {user.email}</p>
+              </div>
+              <div className="user-button-wrapper">
+                <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
+                {ownUser || localStorage.getItem('token') === null ? null : (
+                  <div className="user-button">
+                    <FollowButton userId={id} />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-        {/* TODO: OPINIONES Y PRODUCTOS. PAGINACIÓN PARA AMBOS CASOS */}
-      </div>
+        <div className="reviews-section">
+          <Text type={TEXT_TYPES.TITLE_BOLD} text='Opiniones' />
+          <AddOpinion target_user={user.id} />
+          {opinions.length > 0 ? (
+            <div className="user-reviews">
+              {opinions.map(opinion => (
+                <Opinion key={opinion.id} opinion={opinion} />
+              ))}
+            </div>
+          ) : (
+            <div>Aún no hay opiniones para este usuario.</div>
+          )}
+        </div>
+        <div className="user-products-section">
+          <Text type={TEXT_TYPES.TITLE_BOLD} text={'Los productos de ' + user.first_name + ' ' + user.last_name} />
+          <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={`?seller=${id}`} />
+        </div>
       <div className="profile-summary">
           <div>
             <h2 className="title-detalle">{user.first_name} {user.last_name}</h2>
@@ -250,6 +267,8 @@ const UserDetail = () => {
             <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={`?seller=${id}`} />
           </div>
         </div>
+      </>
+      
 
 
     </>

@@ -40,6 +40,10 @@
 .user-name {
   margin: 0;
   font-size: 2.2em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .user-review {
@@ -74,9 +78,37 @@
   margin-bottom: 2.5em;
 }
 
+.user-contact {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .user-button-wrapper {
   display: flex;
   gap: 1em;
+}
+
+.reviews-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin: 5em 10em;
+}
+
+.user-reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  margin-top: 2em;
+}
+
+.user-products-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  margin: 0 10em;
 }
 
 .title {
