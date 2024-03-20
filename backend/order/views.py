@@ -130,6 +130,9 @@ def cancel_order(request, order_id):
 def order_details(request, order_id):
     try:
         order = Order.objects.get(id=order_id)
+        if order.payed == False:
+            return JsonResponse({'error': 'El pedido no existe'}, status=403)
+        
         order_products = list(OrderProduct.objects.filter(order_id=order_id))
         products = []
         for p in order_products:
@@ -159,7 +162,7 @@ def my_orders(request):
         if request.user.is_authenticated:
             username = request.user
             user = CustomUser.objects.get(username=username)
-            orders = Order.objects.filter(buyer=user.id)
+            orders = Order.objects.filter(buyer=user.id, payed=True)
             
             orders_serialized = serialize('json', orders)
             orders_list = [item['fields'] for item in json.loads(orders_serialized)]

@@ -1,10 +1,13 @@
-import React, { Suspense } from 'react';
+import React, {Suspense, useState} from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 import { Stage, PresentationControls, Html, useProgress } from '@react-three/drei';
 import { MeshStandardMaterial, Color, Vector3 } from 'three';
 import './CustomDesign.css';
 import Button, { BUTTON_TYPES } from './Button/Button';
+import {ModalChildren} from "./ModalChildren/ModalChildren.jsx";
+import {FaInfoCircle, FaMinus, FaPlus} from 'react-icons/fa';
+import PageTitle from './PageTitle/PageTitle';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -19,6 +22,7 @@ const calculateAreaVolumeAndDimensions = (bufferGeometry) => {
   const vertexNext1 = new Vector3();
   const vertexNext2 = new Vector3();
   const crossProduct = new Vector3();
+
 
   for (let i = 0; i < positionAttribute.count; i += 3) {
     vertex.fromBufferAttribute(positionAttribute, i);
@@ -87,6 +91,8 @@ const PRICE_PER_CM3 = {
 }
 
 export default class CustomModel extends React.Component {
+
+
   constructor(props) {
     super(props);
     this.state = {
@@ -104,6 +110,10 @@ export default class CustomModel extends React.Component {
       city: '',
       address: '',
       buyer_mail: '',
+      color: 'Rojo',
+      isOpen: false,
+      zoom: 1.5,
+      customerAgreementChecked: false,
       errors:{}
     };
   }
@@ -188,6 +198,10 @@ export default class CustomModel extends React.Component {
     this.setState({ quality: value }, this.updatePriceBasedOnQuantity);
   }
 
+  handleColor = (value) => {
+    this.setState({ color: value });
+  }
+
   handleQuantity = (event) => {
     const quantity = Math.max(1, Number(event.target.value));
     this.setState({ quantity: quantity }, this.updatePriceBasedOnQuantity);
@@ -214,8 +228,14 @@ export default class CustomModel extends React.Component {
       event.preventDefault();
   }
 
+  handleCheckboxChange = () => {
+    this.setState(prevState => ({
+      customerAgreementChecked: !prevState.customerAgreementChecked
+    }));
+  }
+
   handlePayment = async () => {
-    const { file, name, volume, area, dimensions, weight, quality, quantity, price, postal_code, city, address, buyer_mail } = this.state;
+    const { file, name, volume, area, dimensions, weight, quality, quantity, price, postal_code, city, address, buyer_mail,color } = this.state;
     this.state.errors = {};
     if (!file) {
       this.state.errors.file = 'Debes subir un archivo';
@@ -227,7 +247,7 @@ export default class CustomModel extends React.Component {
       this.state.errors.quantity = 'La cantidad debe ser un número entre 1 y 100';
     }
 
-    if(typeof postal_code === 'undefined'||postal_code < 1000 || postal_code > 52999 || postal_code===Math.round(postal_code)){
+    if(typeof postal_code === 'undefined'||postal_code < 1000 || postal_code > 52999 || postal_code.toString().includes('.')|| postal_code.toString().includes(',')){
       this.state.errors.postal_code = 'El código postal debe ser un número entero entre 1000 y 52999';
     }
 
@@ -248,8 +268,10 @@ export default class CustomModel extends React.Component {
       this.state.errors.buyer_mail = 'Debes introducir un correo válido';
     }
 
+    if (!this.state.customerAgreementChecked) {
+      this.state.errors.customerAgreement = 'Debes aceptar el acuerdo del cliente para continuar.';
+    }
     
-
     if (Object.keys(this.state.errors).length > 0) {
       return;
     }
@@ -268,7 +290,8 @@ export default class CustomModel extends React.Component {
       postal_code,
       city,
       address,
-      buyer_mail
+      buyer_mail,
+      color
     }));
 
     try {
@@ -294,35 +317,90 @@ export default class CustomModel extends React.Component {
     }
   };
 
+
+
+
+
+
+
   render() {
+    const token = localStorage.getItem('token');
     return (
       <>
+        <PageTitle title="Mi diseño" />
         <h1 className='title'>Mi diseño</h1>
         <div className='main'>
           <div className='canvas-container'>
-            <Canvas dpr={[1, 2]} className='canvas' shadows camera={{ fov: 45 }} style={{ display: "flex", width: "500px", height: "300px", marginBottom: "50px", borderRadius: "15px", touchAction: "none" }}>
-              <Suspense fallback={<Loader />}>
-                <color attach="background" args={["#101010"]} />
-                <ambientLight intensity={0.5} />
-                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-                <PresentationControls speed={1.5} global zoom={1.5} polar={[-0.1, Math.PI / 4]}>
-                  <Stage environment={"sunset"} adjustCamera={true} key={this.state.modelUrl} scale={0.01}>
-                    <Model url={this.state.modelUrl} volumeAndArea={this.handleAreaAndVolume} />
+            <Canvas dpr={[1, 2]} className='canvas' shadows camera={{fov: 45}} style={{
+              display: "flex",
+              width: "500px",
+              height: "300px",
+              marginBottom: "50px",
+              borderRadius: "15px",
+              touchAction: "none"
+            }}>
+              <Suspense fallback={<Loader/>}>
+                <color attach="background" args={["#101010"]}/>
+                <ambientLight intensity={0.5}/>
+                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1}/>
+                <PresentationControls speed={1.5} global zoom={this.state.zoom} polar={[-0.1, Math.PI / 4]}>
+                  <Stage environment={"sunset"} adjustCamera={false} key={this.state.modelUrl} scale={0.01}>
+                    <Model url={this.state.modelUrl} volumeAndArea={this.handleAreaAndVolume}/>
                   </Stage>
                 </PresentationControls>
               </Suspense>
             </Canvas>
+
+            <ModalChildren isOpen={this.state.isOpen} onClose={() => this.setState({isOpen: false})}>
+              <div>
+                <h1>Información sobre el diseño</h1>
+                <p>Bienvenido al visualizador de diseños 3D. Para comenzar, sube tu diseño en formato STL. Una vez
+                  cargado, podrás personalizar varios aspectos de tu diseño:</p>
+
+                  <p><strong>- Nombre:</strong> Asigna un nombre único a tu diseño para identificarlo fácilmente.</p>
+                  <p><strong>- Cantidad:</strong> Especifica cuántas copias de tu diseño deseas imprimir.</p>
+                  <p><strong>- Calidad:</strong> Selecciona entre las opciones de calidad: Bajo, Medio y Alto.</p>
+                  <p><strong>- Color:</strong> Elige el color que deseas para tu diseño entre una variedad de opciones
+                    disponibles.
+                  </p>
+                  <p><strong>- Información adicional:</strong> Completa los detalles adicionales sobre tu diseño, como
+                    dimensiones específicas o instrucciones de impresión.
+                  </p>
+                
+                <p>Además, utiliza los botones de zoom para acercar o alejar la vista de tu diseño y examinarlo con más
+                  detalle.</p>
+              </div>
+
+            </ModalChildren>
+
+            <div className="button-container">
+              <button className="info-button" onClick={() => this.setState({isOpen: true})}>
+                <FaInfoCircle className="info-icon"/>
+              </button>
+              <button className="plus-button"
+                      onClick={() => this.setState({zoom: Number((this.state.zoom + 0.1).toFixed(1))})}>
+                <FaPlus className="plus-icon"/>
+              </button>
+              <p>Zoom {this.state.zoom}</p>
+              <button className="minus-button"
+                      onClick={() => this.setState({zoom: Number((this.state.zoom - 0.1).toFixed(1))})}>
+                <FaMinus className="minus-icon"/>
+              </button>
+            </div>
+
+
           </div>
           <form className='form'>
             <div className='form-group'>
               <label htmlFor="file" className='upload'> Sube tu diseño:</label>
               <div className='file-select'>
-                <input type='file' id='file' name='file' className='form-input' accept='.stl' onChange={this.handleFileChange} />
+                <input type='file' id='file' name='file' className='form-input' accept='.stl'
+                       onChange={this.handleFileChange}/>
                 {this.state.errors.file && <div className="error">{this.state.errors.file}</div>}
               </div>
             </div>
             <div className='form-group'>
-              <label className='name'>Nombre:</label>
+            <label className='name'>Nombre:</label>
               <input type='text' id='name' name='name' className='form-input' onChange={this.handleName} />
               {this.state.errors.name && <div className="error">{this.state.errors.name}</div>}
             </div>
@@ -333,9 +411,15 @@ export default class CustomModel extends React.Component {
             </div>
             <div className='form-group'>
               <label className='quality'>Calidad:</label>
-              <input type='button' id='low' name='quality'  className='fat-btn' value='Bajo' onClick={() => this.handleQuality('Bajo')} />
-              <input type='button' id='medium' name='quality' className='fat-btn' value='Medio' onClick={() => this.handleQuality('Medio')} />
-              <input type='button' id='high' name='quality' className='fat-btn' value='Alto' onClick={() => this.handleQuality('Alto')} />
+              <input type='button' id='low' name='quality'  className={`${this.state.quality === 'Bajo' ? 'selected' : 'fat-btn'}`} value='Bajo' onClick={() => this.handleQuality('Bajo')} />
+              <input type='button' id='medium' name='quality' className={`${this.state.quality === 'Medio' ? 'selected' : 'fat-btn'}`} value='Medio' onClick={() => this.handleQuality('Medio')} />
+              <input type='button' id='high' name='quality' className={`${this.state.quality === 'Alto' ? 'selected' : 'fat-btn'}`} value='Alto' onClick={() => this.handleQuality('Alto')} />
+            </div>
+            <div className='form-group'>
+              <label className='color'>Color:</label>
+              <input type='button' id='Rojo' name='color'  className={`${this.state.color === 'Rojo' ? 'selected' : 'fat-btn'}`} value='Rojo' onClick={() => this.handleColor('Rojo')} />
+              <input type='button' id='Azul' name='color' className={`${this.state.color === 'Azul' ? 'selected' : 'fat-btn'}`} value='Azul' onClick={() => this.handleColor('Azul')} />
+              <input type='button' id='Verde' name='color' className={`${this.state.color === 'Verde' ? 'selected' : 'fat-btn'}`} value='Verde' onClick={() => this.handleColor('Verde')} />
             </div>
             <div className='form-group'>
               <label className='postal_code'>Código Postal:</label>
@@ -357,6 +441,15 @@ export default class CustomModel extends React.Component {
               <input type='text' id='buyer_mail' name='buyer_mail' className='form-input' value={this.state.buyer_mail} onChange={this.handleBuyerMail} />
               {this.state.errors.buyer_mail && <div className="error">{this.state.errors.buyer_mail}</div>}
             </div>
+            { !token && (
+          <div className='form-group'>
+            <label className='customer-agreement'>
+              <input type='checkbox' id='customerAgreement' name='customerAgreement' checked={this.state.customerAgreementChecked} onChange={this.handleCheckboxChange}/>
+              Acepto los términos y condiciones descritos <a href="/terminos">aquí</a>
+            </label>
+            {this.state.errors.customerAgreement && <div className="error">{this.state.errors.customerAgreement}</div>}
+          </div>
+        )}
           </form>
         </div>
         <div className='summary'>

@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import './Header.css';
 import logo from '../../assets/logo.png';
 import searchIcon from '../../assets/bx-search.svg';
+import messageIcon from '../../assets/mensajero.png'; 
 import menuIcon from '../../assets/bx-menu.svg';
 import exitIcon from '../../assets/bx-x.svg';
 import Button, { BUTTON_TYPES } from '../Button/Button';
@@ -34,7 +35,8 @@ const Header = ({ cart, setCart }) => {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-                setCart([]);
+            setCart([]);
+            localStorage.removeItem('userId');
 		    setIsLoggedIn(null);
         logoutUser();
 		    alert('Deslogueo exitoso!!');
@@ -42,6 +44,7 @@ const Header = ({ cart, setCart }) => {
 	};
 
     const [active, setActive] = useState(false);
+    const [activeProfile, setActiveProfile] = useState(false);
     
     const deleteProduct = product => {
         const results = cart.filter(
@@ -112,6 +115,8 @@ const Header = ({ cart, setCart }) => {
             });
     };
 
+    const currentUserID = localStorage.getItem('userId');
+
     return (
         <div className={isHeaderFullScreen ? 'header-fullscreen' : 'header'}>
             <div className={isHeaderFullScreen ? 'logo-container-fullscreen' : 'logo-container'}>
@@ -122,11 +127,10 @@ const Header = ({ cart, setCart }) => {
             {menuVisible && (
                 <>
                     <div className='search-box'>
-                        <img src={searchIcon} className='search-icon' onClick={handleSearchClick}/>
+                        <img src={searchIcon} className='search-icon' onClick={handleSearchClick} />
                         <input type='text' placeholder={isHeaderFullScreen ? 'Busca diseños, impresoras y más...' : 'Busca diseños, impresoras, materiales y más...'} className='input-text'
                             value={searchText}
-                            onChange={handleSearchChange}/>
-
+                            onChange={handleSearchChange} />
                         {searchText && (
                             <div className="container-search">
                                 <div className='row-product'>
@@ -156,7 +160,7 @@ const Header = ({ cart, setCart }) => {
                                     {searchResults.usersData.map(user => (
                                         <div className='cart-product' key={user.id} onClick={() => window.location.href = `/user-details/${user.id}`}>
                                             <div className="info-cart-product">
-                                                <img className="cart-img" src='/images/avatar.svg' alt={user.username} />
+                                                <img className="cart-img" src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
                                             </div>
                                             <div className="info-cart-product">
                                                 <span>{user.username}</span>
@@ -171,7 +175,18 @@ const Header = ({ cart, setCart }) => {
                         )}
                     </div>
                     <div className="button-wrapper">
-                                                {isHeaderFullScreen && (
+                        {isLoggedIn && <img
+                            src={messageIcon}// Asegúrate de reemplazar esto con la ruta real de tu imagen
+                            alt="Mis chats"
+                            width={35}
+                            height={35}
+                            onClick={() => onButtonClick('/chat/')}
+                            onKeyDown={() => onButtonClick('/chat/')}
+                            tabIndex="0" // Hace que la imagen sea enfocable y responda a eventos del teclado, similar a un botón
+                            role="button" // Ayuda con la accesibilidad, indicando que la imagen actúa como un botón
+                            style={{ cursor: 'pointer' }} // Cambia el cursor a un puntero para indicar que es clickable
+                        />}
+                        {isHeaderFullScreen && (
                             <>
                                 <div className='container-icon'>
                                     <div
@@ -294,10 +309,21 @@ const Header = ({ cart, setCart }) => {
                                 </div>
                             </>
                         )}
+
+                        {isLoggedIn && <div className="menu-perfil">
+                                <CgProfile className="icon-cart" onClick={() => setActiveProfile(!activeProfile)} onMouseEnter={() => setActiveProfile(true)} />
+                                {activeProfile && (
+                                    <div onMouseLeave={() => setActiveProfile(false)} className="menu-contenedor">
+                                        <div onClick={() => window.location.href=`/user-details/${currentUserID}`} className="menu-opcion">Ver Perfil</div>
+                                        <hr />
+                                        <div onClick={handleLogout} className="menu-opcion menu-cerrar-sesion">Cerrar Sesión</div>
+                                    </div>
+                                )}
+                        </div>}
                         {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Pedidos' path='/myOrders' />}
+
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login' />}
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />}
-{isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Cerrar sesión' onClick={handleLogout} />}
                         {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Vender' path='/products/add-product' />}
                     </div>
                 </>

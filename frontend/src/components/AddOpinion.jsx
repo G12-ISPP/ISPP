@@ -90,21 +90,21 @@ class Opinion extends Component {
 
         return (
             <div className='opiniones'>
-                <h1 className='title'>Opiniones</h1>
-                <div className='button-container'>
+                <h1 className='title-op'>Opiniones</h1>
+                <div className='button-container-op'>
                     <button className='add-opinion-button' onClick={this.toggleForm}>
                         {showForm ? 'Ocultar formulario' : 'Añadir mi opinión'}
                     </button>
                 </div>
                 {errors.login && (
-                    <p className='error'>
-                        {errors.login} <a className='login-button' href="/login">Iniciar sesión</a>
+                    <p className='error-op'>
+                        {errors.login} <a className='login-button-op' href="/login">Iniciar sesión</a>
                     </p>
                 )}
                 {showForm && isAuthenticated && (
-                    <div className='main'>
-                        <form className='form' onSubmit={this.handleSubmit}>
-                            <div className='form-group'>
+                    <div className='main-op'>
+                        <form className='form-op' onSubmit={this.handleSubmit}>
+                            <div className='form-group-op'>
                                 <label htmlFor='description'>Descripción</label>
                                 <textarea
                                     type='text'
@@ -114,9 +114,9 @@ class Opinion extends Component {
                                     onChange={(e) => this.setState({ description: e.target.value })}
                                     rows={5}
                                 />
-                                {errors.description && <span className='error'>{errors.description}</span>}
+                                {errors.description && <span className='error-op'>{errors.description}</span>}
                             </div>
-                            <div className='form-group'>
+                            <div className='form-group-op'>
                                 <label htmlFor='score'>Puntuación</label>
                                 <input
                                     type='number'
@@ -127,9 +127,9 @@ class Opinion extends Component {
                                     value={this.state.score}
                                     onChange={(e) => this.setState({ score: e.target.value })}
                                 />
-                                {errors.score && <span className='error'>{errors.score}</span>}
+                                {errors.score && <span className='error-op'>{errors.score}</span>}
                             </div>
-                            <div className='button-container'>
+                            <div className='button-container-op'>
                                 <button className='add-opinion-button' type='submit' onClick={this.handleSubmit}>
                                     Publicar Opinión
                                 </button>

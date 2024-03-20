@@ -73,30 +73,75 @@ def add_product(request):
 
 # Create your views here.
 class ProductsView(viewsets.ModelViewSet):
-  serializer_class = ProductSerializer
+    serializer_class = ProductSerializer
 
-  def get_queryset(self):
-    queryset = Product.objects.all()
-    type_filter = self.request.query_params.get('product_type')
-    search_query = self.request.query_params.get('search')
-    seller_filter = self.request.query_params.get('seller')  
-    
-    if type_filter:
-      queryset = queryset.filter(product_type=type_filter)
-    if seller_filter: 
-        queryset = queryset.filter(seller_id=seller_filter)
-    if search_query:
-        queryset = queryset.filter(Q(name__icontains=search_query) | Q(description__icontains=search_query))
-            
-    return queryset
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        type_filter = self.request.query_params.get('product_type')
+        search_query = self.request.query_params.get('search')
+        seller_filter = self.request.query_params.get('seller')  
+        
+        if type_filter:
+            queryset = queryset.filter(product_type=type_filter)
+        if seller_filter: 
+            queryset = queryset.filter(seller_id=seller_filter)
+        if search_query:
+            queryset = queryset.filter(Q(name__icontains=search_query) | Q(description__icontains=search_query))
+                
+        return queryset
   
-  def get_serializer_context(self):
+    def get_serializer_context(self):
         """Asegura que la request esté disponible en el contexto del serializador."""
         return {'request': self.request}
 
 
-  @action(detail=True, methods=['get'])
-  def get_product_data(self, request, pk=None):
-      product = self.get_object()
-      serializer = self.get_serializer(product)
-      return Response(serializer.data, status=status.HTTP_200_OK)
+    @action(detail=True, methods=['get'])
+    def get_product_data(self, request, pk=None):
+        product = self.get_object()
+        serializer = self.get_serializer(product)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+  
+    @action(detail=True, methods=['put'])
+    def edit_product(self, request, pk=None):
+        product = self.get_object()
+        if request.user != product.seller:
+            return Response({'error': 'No tienes permiso para editar este producto'}, status=status.HTTP_403_FORBIDDEN)
+
+        price = request.data.get('price')
+        name = request.data.get('name')
+        description = request.data.get('description')
+        stock_quantity = request.data.get('stock_quantity')
+        image = request.FILES.get('file') if 'file' in request.FILES else None
+
+        if not all([price, name, description]):
+            return Response({'error': 'Todos los campos son obligatorios'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            price = float(price)
+            if not (0 < price < 1000000):
+                return Response({'error': 'El precio debe estar entre 0 y 1,000,000'}, status=status.HTTP_400_BAD_REQUEST)
+        except ValueError:
+            return Response({'error': 'El precio debe ser un número válido'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if product.product_type == 'D':
+            stock_quantity = 1
+        else:
+            try:
+                stock_quantity = int(stock_quantity)
+                if not (0 < stock_quantity <= 100):
+                    return Response({'error': 'La cantidad debe estar entre 1 y 100'}, status=status.HTTP_400_BAD_REQUEST)
+            except ValueError:
+                return Response({'error': 'La cantidad de stock debe ser un número entero válido'}, status=status.HTTP_400_BAD_REQUEST)
+
+        product.price = price
+        product.name = name
+        product.description = description
+        product.stock_quantity = stock_quantity
+        if image:
+            if product.image:
+                product.image.delete(save=False)
+            product.image = image
+
+        product.save()
+        return Response({'message': 'Producto actualizado correctamente'}, status=status.HTTP_200_OK)
+

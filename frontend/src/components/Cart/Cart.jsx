@@ -3,6 +3,7 @@ import './Cart.css';
 import { FaTrash } from "react-icons/fa";
 import Text, { TEXT_TYPES } from '../Text/Text';
 import Button, { BUTTON_TYPES } from '../Button/Button';
+import PageTitle from '../PageTitle/PageTitle';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -16,6 +17,7 @@ const Cart = ({
   const [city, setCity] = useState('');
   const [postalCode, setPostalCode] = useState(0);
   const [errors, setErrors] = useState({});
+  const [customerAgreementChecked, setCustomerAgreementChecked] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,12 +87,16 @@ const Cart = ({
       newErrors.address = 'La dirección debe tener menos de 255 caracteres.';
     }
 
-    if (postalCode < 1000 || postalCode > 52999) {
-      newErrors.postalCode = 'El código postal debe estar entre 1000 y 52999.';
+    if (typeof postalCode === 'undefined' || postalCode < 1000 || postalCode > 52999 || postalCode.toString().includes('.') || postalCode.toString().includes(',')) {
+      newErrors.postalCode = 'El código postal debe ser un número entero entre 1000 y 52999';
     }
 
     if (cart.length === 0) {
       newErrors.cart = 'Debes añadir al menos un producto al carrito.';
+    }
+
+    if (!customerAgreementChecked) {
+      newErrors.customerAgreement = 'Debes aceptar el acuerdo del cliente para continuar.';
     }
 
     // Actualizar el estado de los errores si hay nuevos errores
@@ -98,6 +104,8 @@ const Cart = ({
       setErrors(newErrors);
       return;
     }
+
+    console.log("PRUEBA")
 
     try {
       const formData = new FormData();
@@ -149,78 +157,89 @@ const Cart = ({
   const totalPrice = () => {
     return cart.reduce((total, product) => total + (parseFloat(product.price) * parseFloat(product.quantity)), 0);
   };
-
+  const token = localStorage.getItem('token');
   return (
-    <div className='wrapper'>
-      <h1>Mi carrito</h1>
-      <div className="project">
-        <div className="shop">
-          {cart.map(product => (
-            <div className='box' key={product.id}>
-              <div className='img-container'>
-                <img src={product.image_url ? product.image_url : '/images/' + product.imageRoute} alt={product.name} />
-              </div>
-              <div className="content">
-                <div>
-                  <h3>Nombre: {product.name}</h3>
-                  <h3>Precio: {product.price}€</h3>
+    <>
+      <PageTitle title="Carrito" />
+      <div className='wrapper'>
+        <h1>Mi carrito</h1>
+        <div className="project">
+          <div className="shop">
+            {cart.map(product => (
+              <div className='box' key={product.id}>
+                <div className='img-container'>
+                  <img src={product.image_url ? product.image_url : '/images/' + product.imageRoute} alt={product.name} />
                 </div>
-                <div className='cart-right'>
-                  <div className='button-container'>
-                    <button className="cart-qty-plus" type="button" onClick={() => editProduct(product, -1)} value="-">-</button>
-                    <input type="text" name="qty" min="0" className="qty form-control" value={product.quantity} readOnly />
-                    <button className="cart-qty-minus" type="button" onClick={() => editProduct(product, 1)} value="+">+</button>
+                <div className="content">
+                  <div>
+                    <h3>Nombre: {product.name}</h3>
+                    <h3>Precio: {product.price}€</h3>
                   </div>
-                  <div className='trash-container'>
-                    <a className='trash' href='/cart' onClick={() => deleteProduct(product)}>
-                      <FaTrash />
-                    </a>
+                  <div className='cart-right'>
+                    <div className='button-container'>
+                      <button className="cart-qty-plus" type="button" onClick={() => editProduct(product, -1)} value="-">-</button>
+                      <input type="text" name="qty" min="0" className="qty form-control" value={product.quantity} readOnly />
+                      <button className="cart-qty-minus" type="button" onClick={() => editProduct(product, 1)} value="+">+</button>
+                    </div>
+                    <div className='trash-container'>
+                      <a className='trash' href='/cart' onClick={() => deleteProduct(product)}>
+                        <FaTrash />
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-          <div className="right-bar">
-            <p><span>Subtotal</span> <span>{totalPrice()} €</span></p>
-            <hr />
-            <p><span>Envío</span> <span>{shipCost()} €</span></p>
-            <hr />
-            <p><span>Total</span> <span>{totalPrice() + shipCost()} €</span></p>
-            {errors.cart && <div className='error'>{errors.cart}</div>}
-            <div className='checkout-form'>
-              <h2>Datos del comprador</h2>
-              <div className='form'>
-                <form>
-                  <div className='form-group'>
-                    <label className='buyer_mail'>Correo electrónico:</label>
-                    <input type='text' id='buyer_mail' name='buyer_mail' value={buyerEmail} className='form-input' onChange={e => setBuyerEmail(e.target.value)} />
-                    {errors.buyerEmail && <div className='error'>{errors.buyerEmail}</div>}
-                  </div>
-                  <div className="form-group">
-                    <label className='address'>Dirección:</label>
-                    <input type='text' id='address' name='address' value={address} className='form-input' onChange={e => setAddress(e.target.value)} />
-                    {errors.address && <div className='error'>{errors.address}</div>}
-                  </div>
-                  <div className="form-group">
-                    <label className='city'>Ciudad:</label>
-                    <input type='text' id='city' name='city' value={city} className='form-input' onChange={e => setCity(e.target.value)} />
-                    {errors.city && <div className='error'>{errors.city}</div>}
-                  </div>
-                  <div className="form-group">
-                    <label className='postal_code'>Código Postal:</label>
-                    <input type='number' id='postal_code' name='postal_code' min={1000} max={52999} value={postalCode} className='form-input' onChange={e => setPostalCode(e.target.value)} />
-                    {errors.postalCode && <div className='error'>{errors.postalCode}</div>}
-                  </div>
-                  <div className='fbutton'>
-                    <Button type={BUTTON_TYPES.LARGE} text='Finalizar compra' onClick={handleCheckout} />
-                  </div>
-                </form>
+            ))}
+            <div className="right-bar">
+              <p><span>Subtotal</span> <span>{totalPrice()} €</span></p>
+              <hr />
+              <p><span>Envío</span> <span>{shipCost()} €</span></p>
+              <hr />
+              <p><span>Total</span> <span>{totalPrice() + shipCost()} €</span></p>
+              {errors.cart && <div className='error'>{errors.cart}</div>}
+              <div className='checkout-form'>
+                <h2>Datos del comprador</h2>
+                <div className='form'>
+                  <form>
+                    <div className='form-group'>
+                      <label className='buyer_mail'>Correo electrónico:</label>
+                      <input type='text' id='buyer_mail' name='buyer_mail' value={buyerEmail} className='form-input' onChange={e => setBuyerEmail(e.target.value)} />
+                      {errors.buyerEmail && <div className='error'>{errors.buyerEmail}</div>}
+                    </div>
+                    <div className="form-group">
+                      <label className='address'>Dirección:</label>
+                      <input type='text' id='address' name='address' value={address} className='form-input' onChange={e => setAddress(e.target.value)} />
+                      {errors.address && <div className='error'>{errors.address}</div>}
+                    </div>
+                    <div className="form-group">
+                      <label className='city'>Ciudad:</label>
+                      <input type='text' id='city' name='city' value={city} className='form-input' onChange={e => setCity(e.target.value)} />
+                      {errors.city && <div className='error'>{errors.city}</div>}
+                    </div>
+                    <div className="form-group">
+                      <label className='postal_code'>Código Postal:</label>
+                      <input type='number' id='postal_code' name='postal_code' min={1000} max={52999} value={postalCode} className='form-input' onChange={e => setPostalCode(e.target.value)} />
+                      {errors.postalCode && <div className='error'>{errors.postalCode}</div>}
+                    </div>
+                    {!token && (
+                      <div className="form-group">
+                        <input type='checkbox' id='customerAgreement' name='customerAgreement' checked={customerAgreementChecked} onChange={e => setCustomerAgreementChecked(e.target.checked)} />
+                        <label className='customer-agreement'>Acepto los términos y condiciones descritos <a href="/terminos">aquí</a></label>
+                        {errors.customerAgreement && <div className='error'>{errors.customerAgreement}</div>}
+                      </div>
+                    )}
+                    <div className='fbutton'>
+                      <Button type={BUTTON_TYPES.LARGE} text='Finalizar compra' onClick={handleCheckout} />
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
+
   );
 };
 
