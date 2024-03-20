@@ -1,24 +1,22 @@
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-from rest_framework import generics, status, viewsets
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-from rest_framework.exceptions import ErrorDetail, APIException
-from rest_framework.decorators import api_view, parser_classes
-from rest_framework import status
-from rest_framework.views import APIView
+import re
+from datetime import datetime
+from functools import wraps
+
+from django.conf import settings
 from django.contrib.auth import authenticate
-from .models import CustomUser
-from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework import viewsets, status
-from rest_framework.exceptions import ValidationError
-from .models import CustomUser
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.http import HttpResponseRedirect
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.utils.translation import activate
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from paypalrestsdk import Payment
-
+from rest_framework import generics
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from users.serializer import UserSerializer
+from users.serializer import ProfileUpdateSerializer, UserSerializer
 from django.utils.translation import gettext_lazy as _
 from functools import wraps
 from django.utils.translation import activate
@@ -26,8 +24,16 @@ from django.conf import settings
 from datetime import datetime
 from django.http import HttpResponseRedirect
 import re
+from rest_framework.decorators import api_view
+from rest_framework.exceptions import APIException
+from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
-from django.db.models import Q
+from users.serializer import UserSerializer
+from .models import CustomUser
 
 ruta_frontend = settings.RUTA_FRONTEND
 
@@ -55,6 +61,23 @@ class UsersView(viewsets.ModelViewSet):
         serializer = self.get_serializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+    @action(detail=True, methods=['patch'])
+    def update_profile(self, request, pk=None):
+        user = self.get_object()
+        serializer = ProfileUpdateSerializer(user, data=request.data, partial=True)
+        postal_code = request.data.get('postal_code')
+        try:
+            postal_code = int(postal_code)
+            if postal_code < 1000 or postal_code > 52999:
+                raise ValidationError({'postal_code': ['El código postal debe ser un número entero entre 1000 y 52999']})
+        except ValueError:
+            raise ValidationError({'postal_code': ['El código postal debe ser un número entero válido']})
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 def translate(view_func):
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
@@ -79,6 +102,24 @@ class UserCreateAPIView(generics.CreateAPIView):
                 errors['postal_code'] = ['El código postal debe ser un número entero entre 1000 y 52999']
         except ValueError:
             errors['postal_code'] = ['El código postal debe ser un número entero válido']
+        address = request.data.get('address')
+        if len(address) < 5:
+            errors['address'] = ['La dirección debe tener al menos 5 caracteres']
+        elif len(address) > 255:
+            errors['address'] = ['La dirección no puede tener más de 255 caracteres']
+        city = request.data.get('city')
+        if len(city) < 3:
+            errors['city'] = ['La ciudad debe tener al menos 3 caracteres']
+        elif len(city) > 50:
+            errors['city'] = ['La ciudad no puede tener más de 50 caracteres']
+        username = request.data.get('username')
+        if len(username) < 4:
+            errors['username'] = ['El nombre de usuario debe tener al menos 4 caracteres']
+        elif len(username) > 30:
+            errors['username'] = ['El nombre de usuario no puede tener más de 30 caracteres']
+        email = request.data.get('email')
+        if len(email) > 50:
+            errors['email'] = ['El email no puede tener más de 50 caracteres']
         if errors:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         try:
@@ -174,5 +215,40 @@ def obtain_plan(request, plan_seller, plan_buyer, plan_designer,user_id):
 
     user.save()
     return HttpResponseRedirect(ruta_frontend + '/confirm-plan')
+
+# Following Functions
+@api_view(['GET'])
+@csrf_exempt
+@login_required
+def follow_toggle(request, user_id):
+    user = CustomUser.objects.get(id=user_id)
+    if request.user in user.followers.all():
+        user.followers.remove(request.user)
+        user.save()
+        request.user.followings.remove(user)
+        request.user.save()
+        print(user.followers.all())
+        print(request.user.followings.all())
+        return JsonResponse({'success': 'Ya no sigues a ' + user.username}, status=201)
+    else:
+        user.followers.add(request.user)
+        user.save()
+        request.user.followings.add(user)
+        request.user.save()
+        print(user.followers.all())
+        print(request.user.followings.all())
+        return JsonResponse({'success': 'Ahora sigues a ' + user.username}, status=201)
+
+
+@api_view(['GET'])
+@csrf_exempt
+@login_required
+def follow_status(request, user_id):
+    user = CustomUser.objects.get(id=user_id)
+
+    if request.user in user.followers.all():
+        return JsonResponse({'follows': True}, status=201)
+    else:
+        return JsonResponse({'follows': False}, status=201)
 
 

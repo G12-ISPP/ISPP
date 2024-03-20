@@ -3,6 +3,7 @@ import Product from './Product/Product';
 import Artist from './Artist/Artist';
 import Text, { TEXT_TYPES } from '../components/Text/Text';
 import ItemsList from './ItemsList/ItemsList';
+import PageTitle from './PageTitle/PageTitle';
 
 const SearchResultsPage = () => {
     const [searchResults, setSearchResults] = useState(null);
@@ -21,16 +22,19 @@ const SearchResultsPage = () => {
 
     return (
         <>
-            <h1 className='title'>Resultado de la búsqueda:</h1>
+          <div className="section-title-container">
+            <Text type={TEXT_TYPES.TITLE_BOLD} text={`Resultados de la búsqueda: `} />
+          </div>
             {searchText && (
-                <h2 className='title'>"{searchText}"</h2>
+                <h3 className='title'>"{searchText}"</h3>
             )}
 
             {!searchText && (
-                <h2 className='title'>¡Realice una búsqueda!</h2>
+                <h3 className='title'>¡Realice una búsqueda!</h3>
             )}
             {searchResults && (
                 <>
+                    <PageTitle title='Resultados de búsqueda' />
                     {searchResults.productsData && searchResults.productsData.length > 0 && (
                         <div>
                             <div className='slogan'>
@@ -57,7 +61,7 @@ const SearchResultsPage = () => {
                                 <Artist
                                     key={user.id}
                                     username={user.username}
-                                    pathImage={''}
+                                    pathImage={user.image_url ? user.image_url : ''}
                                     pathDetails={user.id}
                                 />
                             ))} />

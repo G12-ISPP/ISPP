@@ -9,6 +9,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from opinion.models import Opinion
 from opinion.serializer import OpinionSerializer
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
 
 class OpinionView(viewsets.ModelViewSet):
     serializer_class = OpinionSerializer
@@ -53,3 +56,23 @@ class OpinionView(viewsets.ModelViewSet):
                 return JsonResponse({'message': 'Opinión añadida correctamente'}, status=201)
 
         return JsonResponse({'error': 'Método no permitido'}, status=405)
+    
+    def get_queryset(self):
+        queryset = Opinion.objects.all()
+        user_filter = self.request.query_params.get('target_user')
+        
+        if user_filter:
+            queryset = queryset.filter(target_user=user_filter)
+                
+        return queryset
+    
+    def get_serializer_context(self):
+            """Asegura que la request esté disponible en el contexto del serializador."""
+            return {'request': self.request}
+
+
+    @action(detail=True, methods=['get'])
+    def get_opinion_data(self, request, pk=None):
+        opinion = self.get_object()
+        serializer = self.get_serializer(opinion)
+        return Response(serializer.data, status=status.HTTP_200_OK)

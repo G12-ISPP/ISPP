@@ -63,7 +63,8 @@ INSTALLED_APPS = [
     'custom_design',
     'chat',
     'tokens',
-    "conversion_to_stl"
+    "conversion_to_stl",
+    "community",
 ]
 
 MIDDLEWARE = [
@@ -166,7 +167,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -220,12 +221,8 @@ paypalrestsdk.configure({
 })
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.office365.com'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'shar3d@outlook.es'
-EMAIL_HOST_PASSWORD = 'ispp.correos.confirmacion'
-
-
-
-
+EMAIL_HOST_USER = 'shar3d.confirmaciones@gmail.com'
+EMAIL_HOST_PASSWORD = 'nedb brel ifnu aime'

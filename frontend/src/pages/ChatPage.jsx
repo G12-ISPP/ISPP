@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ChatComponent from '../components/Chat/ChatComponent';
+import PageTitle from '../components/PageTitle/PageTitle';
 
 export const ChatPage = () => {
   const { roomId } = useParams(); // Obtiene roomId de la URL
@@ -52,5 +53,7 @@ export const ChatPage = () => {
   }, [roomId, token]); // Dependencias del efecto: roomId y token
 
   // Pasa roomId y roomName obtenidos al ChatComponent
+
   return token? <ChatComponent roomId={roomId || 0} roomName={roomName} roomMate={roomMate}  /> : null;
+
 };
