@@ -129,11 +129,17 @@ const ProductsGrid = (consts) => {
                     <Paginator page={page} setPage={setPage} numPages={numPages} />
                 </div>
             ) : (
-                products.map(product => (
-                    <div key={product.id}>
-                        <Product name={product.name} price={product.price} pathImage={product.image_url ? product.image_url : product.imageRoute} pathDetails={product.id} isImageRoute={!product.image_url} />
-                    </div>
-                ))
+                <>
+                    {products.length === 0 ? (
+                        <p className='empty-grid-text'>Actualmente, no hay productos para mostrar.</p>
+                    ) : (
+                        products.map(product => (
+                            <div key={product.id}>
+                                <Product name={product.name} price={product.price} pathImage={product.image_url ? product.image_url : product.imageRoute} pathDetails={product.id} isImageRoute={!product.image_url} />
+                            </div>
+                        ))
+                    )}
+                </>
             )}
         </div>
     )
