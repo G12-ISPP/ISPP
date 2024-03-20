@@ -95,7 +95,7 @@ const Cart = ({
         newErrors.cart = 'Debes añadir al menos un producto al carrito.';
     }
 
-    if (!customerAgreementChecked) {
+    if (!customerAgreementChecked && !localStorage.getItem('token')) {
       newErrors.customerAgreement = 'Debes aceptar el acuerdo del cliente para continuar.';
     }
 

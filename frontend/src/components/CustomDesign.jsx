@@ -268,7 +268,7 @@ export default class CustomModel extends React.Component {
       this.state.errors.buyer_mail = 'Debes introducir un correo válido';
     }
 
-    if (!this.state.customerAgreementChecked) {
+    if (!this.state.customerAgreementChecked && !localStorage.getItem('token')) {
       this.state.errors.customerAgreement = 'Debes aceptar el acuerdo del cliente para continuar.';
     }
     
