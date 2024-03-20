@@ -268,7 +268,7 @@ export default class CustomModel extends React.Component {
       this.state.errors.buyer_mail = 'Debes introducir un correo válido';
     }
 
-    if (!this.state.customerAgreementChecked) {
+    if (!this.state.customerAgreementChecked && !localStorage.getItem('token')) {
       this.state.errors.customerAgreement = 'Debes aceptar el acuerdo del cliente para continuar.';
     }
     
@@ -330,26 +330,50 @@ export default class CustomModel extends React.Component {
         <PageTitle title="Mi diseño" />
         <h1 className='title'>Mi diseño</h1>
         <div className='main'>
+          
           <div className='canvas-container'>
-            <Canvas dpr={[1, 2]} className='canvas' shadows camera={{fov: 45}} style={{
-              display: "flex",
-              width: "500px",
-              height: "300px",
-              marginBottom: "50px",
-              borderRadius: "15px",
-              touchAction: "none"
-            }}>
-              <Suspense fallback={<Loader/>}>
-                <color attach="background" args={["#101010"]}/>
-                <ambientLight intensity={0.5}/>
-                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1}/>
-                <PresentationControls speed={1.5} global zoom={this.state.zoom} polar={[-0.1, Math.PI / 4]}>
-                  <Stage environment={"sunset"} adjustCamera={false} key={this.state.modelUrl} scale={0.01}>
-                    <Model url={this.state.modelUrl} volumeAndArea={this.handleAreaAndVolume}/>
-                  </Stage>
-                </PresentationControls>
-              </Suspense>
-            </Canvas>
+            <div className='cd-pc-view'>
+              <Canvas dpr={[1, 2]} className='canvas' shadows camera={{fov: 45}} style={{
+                display: "flex",
+                width: "500px",
+                height: "300px",
+                marginBottom: "50px",
+                borderRadius: "15px",
+                touchAction: "none"
+              }}>
+                <Suspense fallback={<Loader/>}>
+                  <color attach="background" args={["#101010"]}/>
+                  <ambientLight intensity={0.5}/>
+                  <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1}/>
+                  <PresentationControls speed={1.5} global zoom={this.state.zoom} polar={[-0.1, Math.PI / 4]}>
+                    <Stage environment={"sunset"} adjustCamera={false} key={this.state.modelUrl} scale={0.01}>
+                      <Model url={this.state.modelUrl} volumeAndArea={this.handleAreaAndVolume}/>
+                    </Stage>
+                  </PresentationControls>
+                </Suspense>
+              </Canvas>
+            </div>
+            <div className='cd-mv-view'>
+              <Canvas dpr={[1, 2]} className='canvas' shadows camera={{fov: 45}} style={{
+                display: "flex",
+                width: "350px",
+                height: "300px",
+                marginBottom: "50px",
+                borderRadius: "15px",
+                touchAction: "none"
+              }}>
+                <Suspense fallback={<Loader/>}>
+                  <color attach="background" args={["#101010"]}/>
+                  <ambientLight intensity={0.5}/>
+                  <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1}/>
+                  <PresentationControls speed={1.5} global zoom={this.state.zoom} polar={[-0.1, Math.PI / 4]}>
+                    <Stage environment={"sunset"} adjustCamera={false} key={this.state.modelUrl} scale={0.01}>
+                      <Model url={this.state.modelUrl} volumeAndArea={this.handleAreaAndVolume}/>
+                    </Stage>
+                  </PresentationControls>
+                </Suspense>
+              </Canvas>
+            </div>
 
             <ModalChildren isOpen={this.state.isOpen} onClose={() => this.setState({isOpen: false})}>
               <div>
@@ -377,14 +401,14 @@ export default class CustomModel extends React.Component {
               <button className="info-button" onClick={() => this.setState({isOpen: true})}>
                 <FaInfoCircle className="info-icon"/>
               </button>
-              <button className="plus-button"
-                      onClick={() => this.setState({zoom: Number((this.state.zoom + 0.1).toFixed(1))})}>
-                <FaPlus className="plus-icon"/>
+              <button className="minus-button"
+                      onClick={() => this.setState({zoom: Number((this.state.zoom - 0.5).toFixed(1))})}>
+                <FaMinus className="minus-icon"/>
               </button>
               <p>Zoom {this.state.zoom}</p>
-              <button className="minus-button"
-                      onClick={() => this.setState({zoom: Number((this.state.zoom - 0.1).toFixed(1))})}>
-                <FaMinus className="minus-icon"/>
+              <button className="plus-button"
+                      onClick={() => this.setState({zoom: Number((this.state.zoom + 0.5).toFixed(1))})}>
+                <FaPlus className="plus-icon"/>
               </button>
             </div>
 

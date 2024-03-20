@@ -7,6 +7,8 @@ import arrow from '../../assets/bx-left-arrow-alt.svg';
 import avatar from '../../assets/avatar.svg';
 import editIcon from '../../assets/bxs-edit.svg';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye,faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -29,6 +31,7 @@ class RegisterForm extends React.Component {
       is_designer: false,
       is_printer: false,
       customerAgreementChecked: false,
+      showPassword: false,
       errors: {}
     };
   }
@@ -52,6 +55,12 @@ class RegisterForm extends React.Component {
   onClick = () => {
     this.setState({ modal: true });
   }
+
+  togglePasswordVisibility = () => {
+    this.setState((prevState) => ({
+      showPassword: !prevState.showPassword,
+    }));
+  };
 
   handleSubmit = async (event) => {
     event.preventDefault();
@@ -144,7 +153,19 @@ class RegisterForm extends React.Component {
                 <input type='email' id='email' name='email' className='form-input' placeholder='Correo electrónico' value={this.state.email} onChange={this.handleChange} required />
               </div>
               <div className='register-form-group'>
-                <input type='password' id='password' name='password' className='form-input' placeholder='Contraseña' value={this.state.password} onChange={this.handleChange} required />
+              
+              <input
+                type={this.state.showPassword ? 'text' : 'password'} // Mostrar contraseña si showPassword es true
+                id='password'
+                name='password'
+                className='form-input'
+                placeholder='Contraseña'
+                value={this.state.password}
+                onChange={this.handleChange}
+                required/>
+                <a type="button" onClick={this.togglePasswordVisibility}>
+                  {this.state.showPassword ? <FontAwesomeIcon icon={faEye} />  : <FontAwesomeIcon icon={faEyeSlash} />}
+                </a>
               </div>
               <div className='register-form-row'>
                 <div className='register-form-group left'>
