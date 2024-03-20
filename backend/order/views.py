@@ -114,8 +114,11 @@ def send_order_confirmation_email(order, order_products):
 
         sender_email = settings.EMAIL_HOST_USER
         recipient_email = order.buyer_mail
-
-        send_mail(asunto, '', sender_email, [recipient_email], html_message=mensaje)
+        lista_negra = ["guaje@gmail.com", "Betis@gmail.com", "usuario@gmail.com"]
+        if recipient_email in lista_negra:
+            print("No se manda el correo ya que está en la lista negra")
+        else:
+            send_mail(asunto, '', sender_email, [recipient_email], html_message=mensaje)
     except Exception as e:
         print(f"Error al enviar el correo: {e}")
 
