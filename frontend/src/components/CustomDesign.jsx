@@ -425,7 +425,7 @@ export default class CustomModel extends React.Component {
             </div>
             <div className='form-group'>
             <label className='name'>Nombre:</label>
-              <input type='text' id='name' name='name' className='form-input' onChange={this.handleName} />
+              <input type='text' id='name' name='name' placeholder='Nombre de ejemplo' className='form-input' onChange={this.handleName} />
               {this.state.errors.name && <div className="error">{this.state.errors.name}</div>}
             </div>
             <div className='form-group'>
@@ -447,22 +447,22 @@ export default class CustomModel extends React.Component {
             </div>
             <div className='form-group'>
               <label className='postal_code'>Código Postal:</label>
-              <input type='number' id='postal_code' name='postal_code' className='form-input' min={1000} max={52999} value={this.state.postal_code} onChange={this.handlePostalCode} />
+              <input type='number' id='postal_code' name='postal_code' placeholder='12345' className='form-input' min={1000} max={52999} value={this.state.postal_code} onChange={this.handlePostalCode} />
               {this.state.errors.postal_code && <div className="error">{this.state.errors.postal_code}</div>}
             </div>
             <div className='form-group'>
               <label className='city'>Ciudad:</label>
-              <input type='text' id='city' name='city' className='form-input' value={this.state.city} onChange={this.handleCity} />
+              <input type='text' id='city' name='city' placeholder='Ciudad de ejemplo' className='form-input' value={this.state.city} onChange={this.handleCity} />
               {this.state.errors.city && <div className="error">{this.state.errors.city}</div>}
             </div>
             <div className='form-group'>
               <label className='address'>Dirección:</label>
-              <input type='text' id='address' name='address' className='form-input' value={this.state.address} onChange={this.handleAddress} />
+              <input type='text' id='address' name='address' placeholder='Calle Imaginaria 123' className='form-input' value={this.state.address} onChange={this.handleAddress} />
               {this.state.errors.address && <div className="error">{this.state.errors.address}</div>}
             </div>
             <div className='form-group'>
               <label className='buyer_mail'>Correo electrónico:</label>
-              <input type='text' id='buyer_mail' name='buyer_mail' className='form-input' value={this.state.buyer_mail} onChange={this.handleBuyerMail} />
+              <input type='text' id='buyer_mail' name='buyer_mail' placeholder='ejemplo@ejemplo.com' className='form-input' value={this.state.buyer_mail} onChange={this.handleBuyerMail} />
               {this.state.errors.buyer_mail && <div className="error">{this.state.errors.buyer_mail}</div>}
             </div>
             { !token && (
