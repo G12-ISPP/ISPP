@@ -9,11 +9,11 @@ export const ChatPage = () => {
   const token = localStorage.getItem('token'); // Obtiene el token almacenado en localStorage
   const currentUser = localStorage.getItem('username'); 
   const backend = import.meta.env.VITE_APP_BACKEND;
-  const isLoggedIn = localStorage.getItem('token');
+  
 
 
   useEffect(() => {
-    if(!isLoggedIn){
+    if(!token){
       alert("Debes estar logueado para acceder a los chats.");
       return window.location.href=`/login`;
     }
@@ -52,5 +52,5 @@ export const ChatPage = () => {
   }, [roomId, token]); // Dependencias del efecto: roomId y token
 
   // Pasa roomId y roomName obtenidos al ChatComponent
-  return isLoggedIn? <ChatComponent roomId={roomId || 0} roomName={roomName} roomMate={roomMate}  /> : null;
+  return token? <ChatComponent roomId={roomId || 0} roomName={roomName} roomMate={roomMate}  /> : null;
 };

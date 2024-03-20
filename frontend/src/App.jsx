@@ -19,6 +19,7 @@ import Footer from "./components/Footer/Footer.jsx";
 import Cart from "./components/Cart/Cart.jsx";
 import {ChatPage} from "./pages/ChatPage"
 import 'react-chat-elements/dist/main.css';
+import './App.css'
 import BuyPlan from "./components/BuyPlan/BuyPlan.jsx";
 import CancelPlan from "./components/BuyPlan/CancelPlan.jsx";
 import ConfirmPlan from "./components/BuyPlan/ConfirmPlan.jsx";
@@ -46,6 +47,7 @@ function App() {
 
 
     return (
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <BrowserRouter>
             <AuthProvider>
                 <Header
@@ -53,6 +55,7 @@ function App() {
                     setCart={setCart}
                 />
                 <Navbar/>
+                <div style={{ flex: 1 }}>
                 <Routes>
                     <Route path="/" element={<MainPage/>}/>
                     <Route path="/tasks" element={<TaskPage/>}/>
@@ -85,9 +88,11 @@ function App() {
                     <Route path="/cancel-plan" element={<CancelPlan/>} />
                     <Route path="/confirm-plan" element={<ConfirmPlan/>} />
                 </Routes>
+                </div>
                 <Footer/>
             </AuthProvider>
         </BrowserRouter>
+        </div>
     );
 
 }

@@ -13,8 +13,14 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
   const [newMessage, setNewMessage] = useState('');
   const [mateId, setMateId] = useState(-1);
   const backend = import.meta.env.VITE_APP_BACKEND;
-  let navigate = useNavigate();
   const messagesContainerRef = useRef(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const toggleIcon = isSidebarOpen ? '←' : '→'; // Flecha hacia la izquierda para abrir, hacia la derecha para cerrar
+
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
 
   const scrollToBottom = () => {
@@ -45,6 +51,38 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
     .catch(error => console.error('Error fetching messages:', error));
   };
   
+  const updateTokens = async () => {
+    const petition = `${backend}/api/v1/token/refresh/`.replace(/"/g, "");
+
+    try {
+        const response = await fetch(petition, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                refresh: authTokens?.refresh,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (response.status === 200) {
+            setAuthTokens(data);
+            setUser(jwtDecode(data.access));
+            localStorage.setItem("authTokens", JSON.stringify(data));
+            localStorage.setItem("token", data.access);
+            localStorage.setItem("refresh", data.refresh);
+        } else {
+            logoutUser();
+        }
+        if (loading) {
+            setLoading(false);
+        }
+    } catch (error) {
+        logoutUser();
+    }
+};
 
   // Función para enviar un nuevo mensaje
   const sendMessage = (e) => {
@@ -90,6 +128,18 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
     return () => clearInterval(intervalId);
   }, [roomId]); 
   
+  useEffect(() => {
+    if (isSidebarOpen) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+  
+    // Opcionalmente, limpiar al desmontar el componente
+    return () => {
+      document.body.classList.remove('no-scroll');
+    };
+  }, [isSidebarOpen]);
 
 
   // Obtenemos el ID de un usuario a partir de su username
@@ -122,16 +172,20 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
   
   return (
     <div className='chat-page'>
-      <div className="sidebar">
+      <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <div className="back-button-container">
         <button onClick={() => mateId != -1 ? window.location.href=`/user-details/${mateId}` : window.location.href=`/` } className="back-button">
             <i className="left-arrow">←</i> Volver
           </button>
         </div>
-        <UserChatList/>
+        <UserChatList className="user-list" onUserClick={toggleSidebar}/>
+        <button className="toggle-sidebar" onClick={toggleSidebar}>
+          {toggleIcon}
+        </button>
       </div>
       
-      {roomId != 0 ? <div className='chat' >
+      {roomId != 0 ?
+      <div className='chat' >
         <h2 className='title'>{roomName}</h2>
         <div className='window'> 
           <div className='messages-container' ref={messagesContainerRef}>
@@ -149,19 +203,20 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
               ))
             }
           </div>
-        
-          <form className='f' onSubmit={sendMessage}>
+          
+          <form className='send-message' onSubmit={sendMessage}>
             <input
-              className='fi'
+              className='input-message'
               type="text"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Escribe un mensaje..."
             />
-            <button className='fb' type="submit">Enviar</button>
+            <button className='button-send' type="submit">Enviar</button>
           </form>
         </div>
-      </div> : <div className="contenedor-centrado"> <h2 className='mis-chats'>Elige un usuario con el que comenzar a chatear.</h2> </div>}
+      </div> 
+      : <div className="contenedor-centrado"> <h2 className='mis-chats'>Elige un usuario con el que comenzar a chatear.</h2> </div>}
     </div>
   );
 };
