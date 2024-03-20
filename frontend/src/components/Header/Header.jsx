@@ -2,8 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import './Header.css';
 import logo from '../../assets/logo.png';
 import searchIcon from '../../assets/bx-search.svg';
-import cartIcon from '../../assets/bx-cart.svg';
-import messageIcon from '../../assets/mensajero.png';
+import messageIcon from '../../assets/mensajero.png'; 
 import menuIcon from '../../assets/bx-menu.svg';
 import exitIcon from '../../assets/bx-x.svg';
 import Button, { BUTTON_TYPES } from '../Button/Button';
@@ -36,8 +35,8 @@ const Header = ({ cart, setCart }) => {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        setCart([]);
+            setCart([]);
+            localStorage.removeItem('userId');
 		    setIsLoggedIn(null);
         logoutUser();
 		    alert('Deslogueo exitoso!!');
@@ -46,7 +45,7 @@ const Header = ({ cart, setCart }) => {
 
     const [active, setActive] = useState(false);
     const [activeProfile, setActiveProfile] = useState(false);
-
+    
     const deleteProduct = product => {
         const results = cart.filter(
             item => item.id !== product.id
@@ -132,7 +131,6 @@ const Header = ({ cart, setCart }) => {
                         <input type='text' placeholder={isHeaderFullScreen ? 'Busca diseños, impresoras y más...' : 'Busca diseños, impresoras, materiales y más...'} className='input-text'
                             value={searchText}
                             onChange={handleSearchChange} />
-
                         {searchText && (
                             <div className="container-search">
                                 <div className='row-product'>
@@ -162,7 +160,7 @@ const Header = ({ cart, setCart }) => {
                                     {searchResults.usersData.map(user => (
                                         <div className='cart-product' key={user.id} onClick={() => window.location.href = `/user-details/${user.id}`}>
                                             <div className="info-cart-product">
-                                                <img className="cart-img" src='/images/avatar.svg' alt={user.username} />
+                                                <img className="cart-img" src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
                                             </div>
                                             <div className="info-cart-product">
                                                 <span>{user.username}</span>
@@ -189,7 +187,33 @@ const Header = ({ cart, setCart }) => {
                             style={{ cursor: 'pointer' }} // Cambia el cursor a un puntero para indicar que es clickable
                         />}
                         {isHeaderFullScreen && (
-                            <img src={cartIcon} className='cart-icon' onClick={() => onButtonClick('/cart')} />
+                            <>
+                                <div className='container-icon'>
+                                    <div
+                                        className='container-cart-icon'
+                                        onClick={() => onButtonClick('/cart')}
+                                    >
+                                        <svg
+                                            xmlns='http://www.w3.org/2000/svg'
+                                            fill='none'
+                                            viewBox='0 0 24 24'
+                                            strokeWidth='1.5'
+                                            stroke='red'
+                                            color='red'
+                                            className='icon-cart'
+                                        >
+                                            <path
+                                                strokeLinecap='round'
+                                                strokeLinejoin='round'
+                                                d='M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z'
+                                            />
+                                        </svg>
+                                        <div className='count-products'>
+                                            <span id='contador-productos'>{cartTotal()}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </>
                         )}
                         {!isHeaderFullScreen && (
                             <>
@@ -218,7 +242,6 @@ const Header = ({ cart, setCart }) => {
                                             <span id='contador-productos'>{cartTotal()}</span>
                                         </div>
                                     </div>
-
 
                                     <div
                                         onMouseEnter={() => setActive(true)}

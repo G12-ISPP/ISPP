@@ -1,5 +1,6 @@
 import React from 'react';
 import './BuyPlan.css';
+import PageTitle from '../PageTitle/PageTitle';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -104,6 +105,7 @@ export default class BuyPlan extends React.Component{
     render(){
         return(
             <>
+                <PageTitle title="Comprar Plan" />
                 <div style={{textAlign:'center',}}>
                     <h1>Aqui tienes un pequeño resumen para que puedas decidir que plan comprar</h1>
                     <div className='container'>

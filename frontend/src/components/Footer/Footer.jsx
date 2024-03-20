@@ -39,10 +39,10 @@ const Footer = () => {
             <div className='footer-section'>
                 <p className='footer-section-title'>Nuestras políticas</p>
                 <p className='footer-section-element'>
-                    <a href='/'>Política de privacidad</a>
+                    <a href='/privacidad'>Política de privacidad</a>
                 </p>
                 <p className='footer-section-element'>
-                    <a href='/'>Términos y condiciones</a>
+                    <a href='/terminos'>Términos y condiciones</a>
                 </p>
                 <p className='footer-section-element'>
                     <a href='/'>Política de cookies</a>

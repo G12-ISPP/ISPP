@@ -49,6 +49,7 @@ def create_order(request):
         order.buyer = request.user
     cart = json.loads(request.data['cart'])
     price = 0
+    envio = False
     for item in cart:
         product_id = item['id']
         quantity = item['quantity']
@@ -57,14 +58,15 @@ def create_order(request):
             if product.product_type != 'D':
                 if product.stock_quantity < quantity:
                     return JsonResponse({'error': 'No hay suficiente stock de ' + product.name}, status=400)
-                price += 2*quantity
+                envio = True
             OrderProduct.objects.create(order=order, product=product, quantity=quantity)
             product.save()
         except Product.DoesNotExist:
             return JsonResponse({'error': 'El producto con ID {} no existe'.format(product_id)}, status=400)
         price += product.price * quantity
+    if envio:
+        price += 5
     order.price = price
-    order.price += 5
     order.save()
     paypal_payment = Payment({
                 "intent": "sale",
@@ -114,8 +116,11 @@ def send_order_confirmation_email(order, order_products):
 
         sender_email = settings.EMAIL_HOST_USER
         recipient_email = order.buyer_mail
-
-        send_mail(asunto, '', sender_email, [recipient_email], html_message=mensaje)
+        lista_negra = ["guaje@gmail.com", "Betis@gmail.com", "usuario@gmail.com"]
+        if recipient_email in lista_negra:
+            print("No se manda el correo ya que está en la lista negra")
+        else:
+            send_mail(asunto, '', sender_email, [recipient_email], html_message=mensaje)
     except Exception as e:
         print(f"Error al enviar el correo: {e}")
 
@@ -128,6 +133,9 @@ def cancel_order(request, order_id):
 def order_details(request, order_id):
     try:
         order = Order.objects.get(id=order_id)
+        if order.payed == False:
+            return JsonResponse({'error': 'El pedido no existe'}, status=403)
+        
         order_products = list(OrderProduct.objects.filter(order_id=order_id))
         products = []
         for p in order_products:
@@ -157,7 +165,7 @@ def my_orders(request):
         if request.user.is_authenticated:
             username = request.user
             user = CustomUser.objects.get(username=username)
-            orders = Order.objects.filter(buyer=user.id)
+            orders = Order.objects.filter(buyer=user.id, payed=True)
             
             orders_serialized = serialize('json', orders)
             orders_list = [item['fields'] for item in json.loads(orders_serialized)]
