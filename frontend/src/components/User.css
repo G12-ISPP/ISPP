@@ -58,16 +58,25 @@
 .user-role-container {
   display: flex;
   gap: 0.5em;
-  margin-top: 0.5em;
+  margin-top: 0.6em;
 }
 
 .user-role {
-  background: #E0EEC6;
+  background: #B6FCCE;
   font-size: 1em;
   font-weight: 700;
   padding: 0.2em 0.8em;
   border-radius: 0.7em;
   border: 0.15em #004040 solid;
+}
+
+.user-contact-container {
+  margin-bottom: 2.5em;
+}
+
+.user-button-wrapper {
+  display: flex;
+  gap: 1em;
 }
 
 .title {

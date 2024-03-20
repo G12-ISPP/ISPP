@@ -184,9 +184,20 @@ const UserDetail = () => {
                 <div className="user-role">Impresor</div>
               ) : null}
             </div>
-            {/* CONTINUAR CON EL MARCADO HTML */}
+            <div className="user-contact-container">
+              <p className="user-contact"><strong>Contacto:</strong> {user.email}</p>
+            </div>
+            <div className="user-button-wrapper">
+              <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
+              {ownUser || localStorage.getItem('token') === null ? null : (
+                <div className="user-button">
+                  <FollowButton userId={id} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
+        {/* TODO: OPINIONES Y PRODUCTOS. PAGINACIÓN PARA AMBOS CASOS */}
       </div>
       <div className="profile-summary">
           <div>
