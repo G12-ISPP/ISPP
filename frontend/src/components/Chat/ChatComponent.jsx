@@ -50,39 +50,6 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
     })
     .catch(error => console.error('Error fetching messages:', error));
   };
-  
-  const updateTokens = async () => {
-    const petition = `${backend}/api/v1/token/refresh/`.replace(/"/g, "");
-
-    try {
-        const response = await fetch(petition, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                refresh: authTokens?.refresh,
-            }),
-        });
-
-        const data = await response.json();
-
-        if (response.status === 200) {
-            setAuthTokens(data);
-            setUser(jwtDecode(data.access));
-            localStorage.setItem("authTokens", JSON.stringify(data));
-            localStorage.setItem("token", data.access);
-            localStorage.setItem("refresh", data.refresh);
-        } else {
-            logoutUser();
-        }
-        if (loading) {
-            setLoading(false);
-        }
-    } catch (error) {
-        logoutUser();
-    }
-};
 
   // Función para enviar un nuevo mensaje
   const sendMessage = (e) => {
