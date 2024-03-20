@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Paginator from '../Paginator/Paginator';
 import "./Post.css";
 import Button, { BUTTON_TYPES } from "../Button/Button";
 
@@ -10,6 +11,9 @@ const Post = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const [page, setPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(5);
+
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -79,9 +83,16 @@ const Post = () => {
     // Si el usuario no está autenticado, no se renderizará ningún contenido
     return null;
   }
-  console.log(posts);
-  posts.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-  console.log(posts);
+  posts.sort((a, b) => b.id - a.id)
+
+  const numPages = Math.ceil(posts.length / postsPerPage);
+  const currentPosts = posts.slice((page - 1) * postsPerPage, page * postsPerPage);
+
+  const handleOnClick = (newPage) => {
+    setPage(newPage);
+    window.scrollTo(0, 0);
+  };
+
   return (
     <>
       <div className="introduccion">
@@ -94,7 +105,7 @@ const Post = () => {
         />
       </div>
       <div className="post-container">
-        {posts
+        {currentPosts
           .sort((a, b) => b.id - a.id)
           .map((post, index) => {
             return (
@@ -107,6 +118,7 @@ const Post = () => {
                   <p className="post-description">{post.description}</p>
                   <p className="post-users">Publicado por: {post.users}</p>
                 </div>
+
               </div>
             );
           })}
@@ -117,6 +129,8 @@ const Post = () => {
             </div>
           </div>
         )}
+        <Paginator page={page} setPage={handleOnClick} numPages={numPages} />
+
       </div>
     </>
   );
