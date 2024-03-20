@@ -37,9 +37,9 @@ const Cart = ({
         console.log(error);
       }
     };
-  
+
     fetchData();
-   
+
   }, []);
 
   const deleteProduct = product => {
@@ -63,36 +63,36 @@ const Cart = ({
   };
 
   const handleCheckout = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     setErrors({});
 
     const newErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!buyerEmail || buyerEmail === '') {
-        newErrors.buyerEmail = 'Por favor, introduce tu correo electrónico.';
+      newErrors.buyerEmail = 'Por favor, introduce tu correo electrónico.';
     } else if (buyerEmail.length > 255 || !emailRegex.test(buyerEmail)) {
-        newErrors.buyerEmail = 'Por favor, verifica que el correo electrónico sea válido y tenga menos de 255 caracteres.';
+      newErrors.buyerEmail = 'Por favor, verifica que el correo electrónico sea válido y tenga menos de 255 caracteres.';
     }
 
     if (!city || city === '') {
-        newErrors.city = 'Por favor, introduce el nombre de tu ciudad.';
+      newErrors.city = 'Por favor, introduce el nombre de tu ciudad.';
     } else if (city.length > 50) {
-        newErrors.city = 'La ciudad debe tener menos de 50 caracteres.';
+      newErrors.city = 'La ciudad debe tener menos de 50 caracteres.';
     }
 
     if (!address || address === '') {
-        newErrors.address = 'Por favor, introduce tu dirección.';
-    }   else if (address.length > 255) {
-        newErrors.address = 'La dirección debe tener menos de 255 caracteres.';
+      newErrors.address = 'Por favor, introduce tu dirección.';
+    } else if (address.length > 255) {
+      newErrors.address = 'La dirección debe tener menos de 255 caracteres.';
     }
 
-    if(typeof postalCode === 'undefined'||postalCode < 1000 || postalCode > 52999 || postalCode.toString().includes('.')|| postalCode.toString().includes(',')){
+    if (typeof postalCode === 'undefined' || postalCode < 1000 || postalCode > 52999 || postalCode.toString().includes('.') || postalCode.toString().includes(',')) {
       newErrors.postalCode = 'El código postal debe ser un número entero entre 1000 y 52999';
     }
 
     if (cart.length === 0) {
-        newErrors.cart = 'Debes añadir al menos un producto al carrito.';
+      newErrors.cart = 'Debes añadir al menos un producto al carrito.';
     }
 
     if (!customerAgreementChecked) {
@@ -104,6 +104,8 @@ const Cart = ({
       setErrors(newErrors);
       return;
     }
+
+    console.log("PRUEBA")
 
     try {
       const formData = new FormData();
@@ -121,13 +123,13 @@ const Cart = ({
         headers: headers,
         body: formData
       });
- 
+
       // Verificar si la respuesta es satisfactoria
       if (response.ok) {
         // Obtener el cuerpo de la respuesta como JSON
         const responseData = await response.json();
         // Obtener la URL de pago de PayPal desde los datos de respuesta
-        const paypalPaymentUrl = responseData.paypal_payment_url; 
+        const paypalPaymentUrl = responseData.paypal_payment_url;
         // Redirigir a la URL de pago de PayPal
         setCart([]);
         window.location.href = paypalPaymentUrl;
@@ -135,12 +137,22 @@ const Cart = ({
         // Si la respuesta no es satisfactoria, mostrar un mensaje de error
         alert('Error al realizar la compra');
       }
-    } catch(error) {
+    } catch (error) {
       // Si hay un error, mostrar un mensaje de error
       alert('Error al realizar la compra');
     }
   };
-    
+
+  const shipCost = () => {
+    if (cart.some(product => {
+      return ['P', 'I', 'M'].includes(product.product_type);
+    })) {
+      return 5;
+    } else {
+      return 0;
+    }
+
+  };
 
   const totalPrice = () => {
     return cart.reduce((total, product) => total + (parseFloat(product.price) * parseFloat(product.quantity)), 0);
@@ -155,7 +167,7 @@ const Cart = ({
           <div className="shop">
             {cart.map(product => (
               <div className='box' key={product.id}>
-                <div className='img-container'> 
+                <div className='img-container'>
                   <img src={product.image_url ? product.image_url : '/images/' + product.imageRoute} alt={product.name} />
                 </div>
                 <div className="content">
@@ -164,13 +176,15 @@ const Cart = ({
                     <h3>Precio: {product.price}€</h3>
                   </div>
                   <div className='cart-right'>
-                    <a className='trash' href='/cart' onClick={() => deleteProduct(product)}>
-                      <FaTrash />
-                    </a>
                     <div className='button-container'>
                       <button className="cart-qty-plus" type="button" onClick={() => editProduct(product, -1)} value="-">-</button>
                       <input type="text" name="qty" min="0" className="qty form-control" value={product.quantity} readOnly />
                       <button className="cart-qty-minus" type="button" onClick={() => editProduct(product, 1)} value="+">+</button>
+                    </div>
+                    <div className='trash-container'>
+                      <a className='trash' href='/cart' onClick={() => deleteProduct(product)}>
+                        <FaTrash />
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -179,10 +193,9 @@ const Cart = ({
             <div className="right-bar">
               <p><span>Subtotal</span> <span>{totalPrice()} €</span></p>
               <hr />
-              <p><span>Envío</span> <span>5 €</span></p>
-              <p><span>Total envío</span> <span></span></p>
+              <p><span>Envío</span> <span>{shipCost()} €</span></p>
               <hr />
-              <p><span>Total</span> <span>{totalPrice() + 5} €</span></p>
+              <p><span>Total</span> <span>{totalPrice() + shipCost()} €</span></p>
               {errors.cart && <div className='error'>{errors.cart}</div>}
               <div className='checkout-form'>
                 <h2>Datos del comprador</h2>
@@ -195,27 +208,29 @@ const Cart = ({
                     </div>
                     <div className="form-group">
                       <label className='address'>Dirección:</label>
-                      <input type='text' id='address' name='address' value={address} className='form-input' onChange={e => setAddress(e.target.value)}  />
+                      <input type='text' id='address' name='address' value={address} className='form-input' onChange={e => setAddress(e.target.value)} />
                       {errors.address && <div className='error'>{errors.address}</div>}
                     </div>
                     <div className="form-group">
                       <label className='city'>Ciudad:</label>
-                      <input type='text' id='city' name='city'  value={city} className='form-input' onChange={e => setCity(e.target.value)} />
+                      <input type='text' id='city' name='city' value={city} className='form-input' onChange={e => setCity(e.target.value)} />
                       {errors.city && <div className='error'>{errors.city}</div>}
                     </div>
                     <div className="form-group">
                       <label className='postal_code'>Código Postal:</label>
-                      <input type='number' id='postal_code' name='postal_code' min={1000} max={52999} value={postalCode} className='form-input' onChange={e => setPostalCode(e.target.value)}/>
+                      <input type='number' id='postal_code' name='postal_code' min={1000} max={52999} value={postalCode} className='form-input' onChange={e => setPostalCode(e.target.value)} />
                       {errors.postalCode && <div className='error'>{errors.postalCode}</div>}
                     </div>
-                    { !token && (
-                    <div className="form-group">
-                      <input type='checkbox' id='customerAgreement' name='customerAgreement' checked={customerAgreementChecked} onChange={e => setCustomerAgreementChecked(e.target.checked)} />
-                      <label className='customer-agreement'>Acepto los términos y condiciones descritos <a href="/terminos">aquí</a></label>
-                      {errors.customerAgreement && <div className='error'>{errors.customerAgreement}</div>}
+                    {!token && (
+                      <div className="form-group">
+                        <input type='checkbox' id='customerAgreement' name='customerAgreement' checked={customerAgreementChecked} onChange={e => setCustomerAgreementChecked(e.target.checked)} />
+                        <label className='customer-agreement'>Acepto los términos y condiciones descritos <a href="/terminos">aquí</a></label>
+                        {errors.customerAgreement && <div className='error'>{errors.customerAgreement}</div>}
+                      </div>
+                    )}
+                    <div className='fbutton'>
+                      <Button type={BUTTON_TYPES.LARGE} text='Finalizar compra' onClick={handleCheckout} />
                     </div>
-                  )}
-                    <Button type={BUTTON_TYPES.LARGE} text='Finalizar compra' onClick={handleCheckout} />
                   </form>
                 </div>
               </div>
@@ -224,7 +239,7 @@ const Cart = ({
         </div>
       </div>
     </>
-    
+
   );
 };
 

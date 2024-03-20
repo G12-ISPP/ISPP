@@ -49,6 +49,7 @@ def create_order(request):
         order.buyer = request.user
     cart = json.loads(request.data['cart'])
     price = 0
+    envio = False
     for item in cart:
         product_id = item['id']
         quantity = item['quantity']
@@ -57,14 +58,15 @@ def create_order(request):
             if product.product_type != 'D':
                 if product.stock_quantity < quantity:
                     return JsonResponse({'error': 'No hay suficiente stock de ' + product.name}, status=400)
-                price += 2*quantity
+                envio = True
             OrderProduct.objects.create(order=order, product=product, quantity=quantity)
             product.save()
         except Product.DoesNotExist:
             return JsonResponse({'error': 'El producto con ID {} no existe'.format(product_id)}, status=400)
         price += product.price * quantity
+    if envio:
+        price += 5
     order.price = price
-    order.price += 5
     order.save()
     paypal_payment = Payment({
                 "intent": "sale",

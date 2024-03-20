@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import './Product.css'
 import Button, { BUTTON_TYPES } from './Button/Button';
 import Text, { TEXT_TYPES } from "./Text/Text";
@@ -58,6 +58,8 @@ class ProductDetail extends React.Component {
 
     const cart = this.props.cart;
     const setCart = this.props.setCart;
+    const { agregado } = this.state;
+    
 
     const addProduct = product => {
       let cartCopy = [...cart];
@@ -78,6 +80,7 @@ class ProductDetail extends React.Component {
             price: product.price,
             imageRoute: product.imageRoute,
             stock_quantity: product.stock_quantity,
+            product_type: product.product_type,
             quantity: 1
           })
         }else{
@@ -111,7 +114,7 @@ class ProductDetail extends React.Component {
             </div>
             <div className="buy-container">
               <h3>Cantidad de stock: {product.stock_quantity}</h3>
-              <Button type={BUTTON_TYPES.LARGE} text='Añadir al carrito' onClick={() => addProduct(product)} />
+              <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => {addProduct(product); this.setState({ agregado :true })}} />
               {showEditButton && (
               <Button type={BUTTON_TYPES.LARGE} text='Editar producto' onClick={this.handleEditProduct} />
             )}
