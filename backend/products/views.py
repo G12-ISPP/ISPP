@@ -29,6 +29,7 @@ def add_product(request):
         description = request.data.get('description')
         stock_quantity = request.data.get('stock_quantity')
         image = request.FILES.get('file')
+        design = request.FILES.get('design') if product_type == 'D' else None
 
         # Verificar que todos los campos requeridos estén presentes
         if not all([product_type, price, name, description, image]):
@@ -63,7 +64,8 @@ def add_product(request):
                 description=description,
                 stock_quantity=stock_quantity,
                 seller=request.user,
-                image=image 
+                image=image,
+                design=design,
             )
             product.save()
 
@@ -112,6 +114,7 @@ class ProductsView(viewsets.ModelViewSet):
         description = request.data.get('description')
         stock_quantity = request.data.get('stock_quantity')
         image = request.FILES.get('file') if 'file' in request.FILES else None
+        design = request.FILES.get('design') if product.product_type == 'D' else None
 
         if not all([price, name, description]):
             return Response({'error': 'Todos los campos son obligatorios'}, status=status.HTTP_400_BAD_REQUEST)
@@ -141,6 +144,11 @@ class ProductsView(viewsets.ModelViewSet):
             if product.image:
                 product.image.delete(save=False)
             product.image = image
+
+        if design:
+            if product.design:
+                product.design.delete(save=False)
+            product.design = design
 
         product.save()
         return Response({'message': 'Producto actualizado correctamente'}, status=status.HTTP_200_OK)

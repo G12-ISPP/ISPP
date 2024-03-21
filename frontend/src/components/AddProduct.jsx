@@ -9,6 +9,7 @@ class Product extends Component {
     super(props);
     this.state = {
       file: null,
+      design: null,
       name: '',
       description: '',
       price:  0,
@@ -19,6 +20,7 @@ class Product extends Component {
     };
 
     this.handleFileChange = this.handleFileChange.bind(this);
+    this.handleDesignChange = this.handleDesignChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateForm = this.validateForm.bind(this);
   }
@@ -56,12 +58,32 @@ class Product extends Component {
     }
   }
 
+  handleDesignChange(event) {
+    const design = event.target.files[0];
+    if (!design) {
+      return;
+    }
+    const fileName = design.name;
+    const fileExtension = fileName.split('.').pop().toLowerCase();
+    if (fileExtension !== 'stl') {
+      alert('El archivo no es de formato STL. Por lo tanto lo ignoraremos. Por favor, sube un archivo STL.');
+      event.target.value = ''; 
+      return;
+    }else{
+      this.setState({ design: design });
+    }
+  }
+
   validateForm() {
-    const { name, description, price, stockQuantity, file, productType } = this.state;
+    const { name, description, price, stockQuantity, file, productType, design } = this.state;
     const errors = {};
   
     if (!file) {
       errors.file = 'La foto es obligatoria';
+    }
+
+    if (productType === 'D' && !design) {
+      errors.design = 'El diseño es obligatorio';
     }
   
     if (!name.trim()) {
@@ -101,6 +123,7 @@ class Product extends Component {
     if (this.validateForm()) {
       const formData = new FormData();
       formData.append('file', this.state.file);
+      formData.append('design', this.state.design);
       formData.append('name', this.state.name);
       formData.append('description', this.state.description);
       formData.append('price', this.state.price);
@@ -152,6 +175,16 @@ class Product extends Component {
                 {errors.file && <div className="error">{errors.file}</div>}
               </div>
             </div>
+            {this.state.productType === 'D' && (
+                <div className='form-group'>
+                  <label htmlFor="file2" className='upload'> Sube tu diseño:</label>
+                  <div className='file-select'>
+                    <input type='file' id='file2' name='file2' className='form-input' accept='.stl'
+                         onChange={this.handleDesignChange}/>
+                    {errors.design && <div className="error">{errors.design}</div>}
+                  </div>
+                </div>
+            )}
             <div className='form-group'>
               <label htmlFor='name'>Nombre</label>
               <input type='text' id='name' name='name' className='form-input' value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} placeholder="Cerdito rosa"/>
