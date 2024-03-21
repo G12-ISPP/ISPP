@@ -39,7 +39,7 @@ const Header = ({ cart, setCart }) => {
             localStorage.removeItem('userId');
 		    setIsLoggedIn(null);
         logoutUser();
-		    alert('Deslogueo exitoso!!');
+		    alert('Se ha cerrado sesión con éxito!!');
 		    window.location.href = '/';
 	};
 

@@ -111,6 +111,18 @@
   align-self: center;
 }
 
+.description-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.description {
+  width: 300px;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
 @media screen and (max-width: 768px) {
   .main {
     flex-direction: column;

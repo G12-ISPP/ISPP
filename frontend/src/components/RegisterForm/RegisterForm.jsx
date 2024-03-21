@@ -28,6 +28,7 @@ class RegisterForm extends React.Component {
       address: '',
       postal_code: '',
       city: '',
+      description: '',
       is_designer: false,
       is_printer: false,
       customerAgreementChecked: false,
@@ -86,6 +87,7 @@ class RegisterForm extends React.Component {
       formData.append('address', this.state.address);
       formData.append('postal_code', this.state.postal_code);
       formData.append('city', this.state.city);
+      formData.append('description', this.state.description);
       formData.append('is_designer', this.state.is_designer);
       formData.append('is_printer', this.state.is_printer);
       formData.append('is_active', true);
@@ -147,10 +149,10 @@ class RegisterForm extends React.Component {
                 {this.state.modal && (<Modal modal={this.state.modal} toggle={() => this.setState({modal: false})} setImage={this.setImage}/>)}
               </div>
               <div className='register-form-group'>
-                <input type='text' id='username' name='username' className='form-input' placeholder='Nombre de usuario' value={this.state.username} onChange={this.handleChange} required />
+                <input type='text' id='username' name='username' className='form-input' placeholder='Nombre de usuario*' value={this.state.username} onChange={this.handleChange} required />
               </div>
               <div className='register-form-group'>
-                <input type='email' id='email' name='email' className='form-input' placeholder='Correo electrónico' value={this.state.email} onChange={this.handleChange} required />
+                <input type='email' id='email' name='email' className='form-input' placeholder='Correo electrónico*' value={this.state.email} onChange={this.handleChange} required />
               </div>
               <div className='register-form-group'>
               
@@ -159,7 +161,7 @@ class RegisterForm extends React.Component {
                 id='password'
                 name='password'
                 className='form-input'
-                placeholder='Contraseña'
+                placeholder='Contraseña*'
                 value={this.state.password}
                 onChange={this.handleChange}
                 required/>
@@ -169,23 +171,28 @@ class RegisterForm extends React.Component {
               </div>
               <div className='register-form-row'>
                 <div className='register-form-group left'>
-                  <input type='text' id='first_name' name='first_name' className='form-input' placeholder='Nombre' value={this.state.first_name} onChange={this.handleChange} required />
+                  <input type='text' id='first_name' name='first_name' className='form-input' placeholder='Nombre*' value={this.state.first_name} onChange={this.handleChange} required />
                 </div>
                 <div className='register-form-group right'>
-                  <input type='text' id='last_name' name='last_name' className='form-input' placeholder='Apellidos' value={this.state.last_name} onChange={this.handleChange} required />
+                  <input type='text' id='last_name' name='last_name' className='form-input' placeholder='Apellidos*' value={this.state.last_name} onChange={this.handleChange} required />
                 </div>
               </div>
               <div className='register-form-group'>
-                <input type='text' id='address' name='address' className='form-input' placeholder='Dirección' value={this.state.address} onChange={this.handleChange} required />
+                <input type='text' id='address' name='address' className='form-input' placeholder='Dirección*' value={this.state.address} onChange={this.handleChange} required />
               </div>
               <div className='register-form-row'>
                 <div className='register-form-group left'>
-                  <input type='text' id='postal_code' name='postal_code' className='form-input' placeholder='Código postal' value={this.state.postal_code} onChange={this.handleChange} required />
+                  <input type='text' id='postal_code' name='postal_code' className='form-input' placeholder='Código postal*' value={this.state.postal_code} onChange={this.handleChange} required />
                 </div>
                 <div className='register-form-group right'>
-                  <input type='text' id='city' name='city' className='form-input' placeholder='Ciudad' value={this.state.city} onChange={this.handleChange} required />
+                  <input type='text' id='city' name='city' className='form-input' placeholder='Ciudad*' value={this.state.city} onChange={this.handleChange} required />
                 </div>
               </div>
+              {this.state.is_designer &&
+              <div className='form-textarea-group'>
+                <textarea id='description' name='description' className='form-textarea' placeholder='Descripción' maxLength={500} value={this.state.description} onChange={this.handleChange}></textarea>
+              </div>
+              }
               <div className="role-selector">
                 <label htmlFor='is_designer' className='register-checkbox-label'>
                   <input type='checkbox' id='is_designer' name='is_designer' checked={this.state.is_designer} onChange={this.handleChange} />
@@ -198,7 +205,7 @@ class RegisterForm extends React.Component {
               </div>
                 <label htmlFor='customerAgreement' className='register-checkbox-label'>
                   <input type='checkbox' id='customerAgreement' name='customerAgreementChecked' checked={this.state.customerAgreementChecked} onChange={this.handleChange} />
-                  Acepto los términos y condiciones descritos <a href="/terminos">aquí</a>
+                  Acepto los términos y condiciones descritos <a href="/terminos">aquí*</a>
                 </label>
               <div className="error-messages-container">
                 {errors.username && <p className="register-error-message">{'Nombre de usuario: ' + errors.username[0]}</p>}

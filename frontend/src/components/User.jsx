@@ -148,6 +148,9 @@ const UserDetail = () => {
               <div className="user-img-container">
                 <img className='img' src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
               </div>
+              <div className='description-container'>
+                <p className='description'>{user.description}</p>
+              </div>
             <h3 className="title-detalle">Contacto:</h3>
             <p>{user.email}</p>
             {ownUser ? (

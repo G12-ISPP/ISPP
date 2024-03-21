@@ -416,7 +416,7 @@ export default class CustomModel extends React.Component {
           </div>
           <form className='form'>
             <div className='form-group'>
-              <label htmlFor="file" className='upload'> Sube tu diseño:</label>
+              <label htmlFor="file" className='upload'> Sube tu diseño*:</label>
               <div className='file-select'>
                 <input type='file' id='file' name='file' className='form-input' accept='.stl'
                        onChange={this.handleFileChange}/>
@@ -424,44 +424,44 @@ export default class CustomModel extends React.Component {
               </div>
             </div>
             <div className='form-group'>
-            <label className='name'>Nombre:</label>
+            <label className='name'>Nombre*:</label>
               <input type='text' id='name' name='name' placeholder='Nombre de ejemplo' className='form-input' onChange={this.handleName} />
               {this.state.errors.name && <div className="error">{this.state.errors.name}</div>}
             </div>
             <div className='form-group'>
-              <label className='quantity'>Cantidad:</label>
+              <label className='quantity'>Cantidad*:</label>
               <input type='number' id='quantity' name='quantity' className='form-input' min={1} max={100} onChange={this.handleQuantity} value={this.state.quantity} onKeyDown={this.handleKeyDown} />
               {this.state.errors.quantity && <div className="error">{this.state.errors.quantity}</div>}
             </div>
             <div className='form-group'>
-              <label className='quality'>Calidad:</label>
+              <label className='quality'>Calidad*:</label>
               <input type='button' id='low' name='quality'  className={`${this.state.quality === 'Bajo' ? 'selected' : 'fat-btn'}`} value='Bajo' onClick={() => this.handleQuality('Bajo')} />
               <input type='button' id='medium' name='quality' className={`${this.state.quality === 'Medio' ? 'selected' : 'fat-btn'}`} value='Medio' onClick={() => this.handleQuality('Medio')} />
               <input type='button' id='high' name='quality' className={`${this.state.quality === 'Alto' ? 'selected' : 'fat-btn'}`} value='Alto' onClick={() => this.handleQuality('Alto')} />
             </div>
             <div className='form-group'>
-              <label className='color'>Color:</label>
+              <label className='color'>Color*:</label>
               <input type='button' id='Rojo' name='color'  className={`${this.state.color === 'Rojo' ? 'selected' : 'fat-btn'}`} value='Rojo' onClick={() => this.handleColor('Rojo')} />
               <input type='button' id='Azul' name='color' className={`${this.state.color === 'Azul' ? 'selected' : 'fat-btn'}`} value='Azul' onClick={() => this.handleColor('Azul')} />
               <input type='button' id='Verde' name='color' className={`${this.state.color === 'Verde' ? 'selected' : 'fat-btn'}`} value='Verde' onClick={() => this.handleColor('Verde')} />
             </div>
             <div className='form-group'>
-              <label className='postal_code'>Código Postal:</label>
+              <label className='postal_code'>Código Postal*:</label>
               <input type='number' id='postal_code' name='postal_code' placeholder='12345' className='form-input' min={1000} max={52999} value={this.state.postal_code} onChange={this.handlePostalCode} />
               {this.state.errors.postal_code && <div className="error">{this.state.errors.postal_code}</div>}
             </div>
             <div className='form-group'>
-              <label className='city'>Ciudad:</label>
+              <label className='city'>Ciudad*:</label>
               <input type='text' id='city' name='city' placeholder='Ciudad de ejemplo' className='form-input' value={this.state.city} onChange={this.handleCity} />
               {this.state.errors.city && <div className="error">{this.state.errors.city}</div>}
             </div>
             <div className='form-group'>
-              <label className='address'>Dirección:</label>
+              <label className='address'>Dirección*:</label>
               <input type='text' id='address' name='address' placeholder='Calle Imaginaria 123' className='form-input' value={this.state.address} onChange={this.handleAddress} />
               {this.state.errors.address && <div className="error">{this.state.errors.address}</div>}
             </div>
             <div className='form-group'>
-              <label className='buyer_mail'>Correo electrónico:</label>
+              <label className='buyer_mail'>Correo electrónico*:</label>
               <input type='text' id='buyer_mail' name='buyer_mail' placeholder='ejemplo@ejemplo.com' className='form-input' value={this.state.buyer_mail} onChange={this.handleBuyerMail} />
               {this.state.errors.buyer_mail && <div className="error">{this.state.errors.buyer_mail}</div>}
             </div>
@@ -469,7 +469,7 @@ export default class CustomModel extends React.Component {
           <div className='form-group'>
             <label className='customer-agreement'>
               <input type='checkbox' id='customerAgreement' name='customerAgreement' checked={this.state.customerAgreementChecked} onChange={this.handleCheckboxChange}/>
-              Acepto los términos y condiciones descritos <a href="/terminos">aquí</a>
+              Acepto los términos y condiciones descritos <a href="/terminos">aquí*</a>
             </label>
             {this.state.errors.customerAgreement && <div className="error">{this.state.errors.customerAgreement}</div>}
           </div>
