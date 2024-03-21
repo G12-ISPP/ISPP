@@ -20,7 +20,7 @@
   margin: 0;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 767px) {
 
   .opinion-date {
     font-size: 0.9em;

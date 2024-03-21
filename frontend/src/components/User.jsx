@@ -231,7 +231,7 @@ const UserDetail = () => {
 
         <div className="user-products-section">
           <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
-          <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={`?seller=${id}`} />
+          <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE}  />
         </div>
 
         <div className="reviews-section">

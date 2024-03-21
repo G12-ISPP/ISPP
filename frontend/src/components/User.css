@@ -120,7 +120,13 @@
   margin: 5em 10em;
 }
 
-@media (max-width: 1024px) {
+.user-products-section .grid {
+  padding: 0;
+  width: 100%;
+  margin: 0;
+}
+
+@media (max-width: 767px) {
 
   .artist-title-container, .profile-title-container {
     margin: 1.5em 1.5em;
@@ -148,6 +154,10 @@
 
   .user-name {
     font-size: 1.25em;
+  }
+
+  .user-button-wrapper {
+    gap: 0.5em;
   }
 
   .user-review-text {
@@ -192,6 +202,34 @@
 
   .user-reviews .paginator .page-counter .actual-page {
     font-size: 0.9em;
+  }
+
+}
+
+@media (max-width: 320px) {
+
+  .user-button-wrapper {
+    gap: 0.3em;
+  }
+
+}
+
+@media (min-width: 767px) and (max-width: 1024px) {
+
+  .artist-title-container, .profile-title-container {
+    margin: 1.5em 6.5em;
+  }
+
+  .user-products-section {
+    margin: 1.5em 6.5em;
+  }
+
+  .user-products-section .grid {
+    padding: 0;
+  }
+
+  .reviews-section {
+    margin: 0 6.5em 2.5em;
   }
 
 }
