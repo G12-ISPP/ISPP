@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import './Product.css'
 import Button, { BUTTON_TYPES } from './Button/Button';
 import Text, { TEXT_TYPES } from "./Text/Text";
 import PageTitle from "./PageTitle/PageTitle";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import {Link} from 'react-router-dom';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -58,6 +61,8 @@ class ProductDetail extends React.Component {
 
     const cart = this.props.cart;
     const setCart = this.props.setCart;
+    const { agregado } = this.state;
+    
 
     const addProduct = product => {
       let cartCopy = [...cart];
@@ -78,6 +83,7 @@ class ProductDetail extends React.Component {
             price: product.price,
             imageRoute: product.imageRoute,
             stock_quantity: product.stock_quantity,
+            product_type: product.product_type,
             quantity: 1
           })
         }else{
@@ -104,14 +110,16 @@ class ProductDetail extends React.Component {
           <div className="product-summary">
             <div>
               <h2 className="product-detail-label">{product.name}</h2>
-              <h3>{user.first_name} {user.last_name}</h3>
+              <Link to={`/user-details/${user.id}`} style={{textDecoration:'none',color:'inherit'}}>
+                <h3><FontAwesomeIcon icon={faUser} /> {user.first_name} {user.last_name}</h3>
+              </Link>
               <h3 className="product-detail-label">Detalles:</h3>
               <p>{product.description}</p>
               <h3 className="product-detail-label">Precio: {product.price} €</h3>
             </div>
             <div className="buy-container">
               <h3>Cantidad de stock: {product.stock_quantity}</h3>
-              <Button type={BUTTON_TYPES.LARGE} text='Añadir al carrito' onClick={() => addProduct(product)} />
+              <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => {addProduct(product); this.setState({ agregado :true })}} />
               {showEditButton && (
               <Button type={BUTTON_TYPES.LARGE} text='Editar producto' onClick={this.handleEditProduct} />
             )}
