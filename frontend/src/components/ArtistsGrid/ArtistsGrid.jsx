@@ -42,7 +42,12 @@ const ArtistsGrid = (consts) => {
         try {
 
             const groupsOfArtists = artists.reduce((acc, artist, index) => {
-                const groupIndex = Math.floor(index / 5);
+                let groupIndex = Math.floor(index / 5);
+                if (window.innerWidth > 767 && window.innerWidth < 1024) {
+                    groupIndex = Math.floor(index / 3);
+                } else if (window.innerWidth < 768) {
+                    groupIndex = Math.floor(index / 2);
+                }
                 if (!acc[groupIndex]) {
                     acc[groupIndex] = [];
                 }
