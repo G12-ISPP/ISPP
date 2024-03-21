@@ -17,14 +17,16 @@ class ProductsViewTestClase(TestCase):
             password='test',
             address='test',
             postal_code=1234,
-            city='test'
+            city='test',
+            email_verified=True
         )
         self.user2 = CustomUser.objects.create(
             username='user2',
             password='test',
             address='test',
             postal_code=1234,
-            city='test'
+            city='test',
+            email_verified=True
         )
 
         # Creamos algunos productos

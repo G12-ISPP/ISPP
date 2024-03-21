@@ -16,7 +16,8 @@ class BaseTestCase(APITestCase):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
             email='test@example.com',
-            postal_code='12345'
+            postal_code='12345',
+            email_verified=True
         )
         self.client.force_authenticate(user=self.custom_user)
 
