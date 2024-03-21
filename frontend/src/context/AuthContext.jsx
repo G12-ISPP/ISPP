@@ -38,6 +38,8 @@ export const AuthProvider = ({children}) => {
         localStorage.removeItem("authTokens");
         localStorage.removeItem("token");
         localStorage.removeItem("access");
+        localStorage.removeItem("username");
+        localStorage.removeItem("userId");
     };
 
     const updateTokens = async () => {

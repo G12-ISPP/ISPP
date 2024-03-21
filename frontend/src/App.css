@@ -1,0 +1,9 @@
+.AppContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Esto asegura que el contenedor principal ocupe al menos la altura de la ventana */
+}
+
+.Content {
+    flex: 1; /* Esto hace que el contenido crezca para ocupar el espacio disponible, empujando el footer hacia abajo */
+}
