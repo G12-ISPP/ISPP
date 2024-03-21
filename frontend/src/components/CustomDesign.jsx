@@ -67,11 +67,11 @@ function Loader() {
   return <Html center>{progress} % loaded</Html>
 }
 
-function Model({ url, volumeAndArea }) {
+function Model({ url, volumeAndArea, color }) {
   const geometry = useLoader(STLLoader, url);
   const data = calculateAreaVolumeAndDimensions(geometry);
   volumeAndArea(data);
-  const material = new MeshStandardMaterial({ color: new Color("skyblue"), metalness: 0.8, roughness: 0.8 });
+  const material = new MeshStandardMaterial({ color: new Color(color), metalness: 0.8, roughness: 0.8 });
 
   const maxDimension = Math.max(data.dimensions.width, data.dimensions.height, data.dimensions.depth);
   const maxAllowedDimension = 40;
@@ -110,7 +110,7 @@ export default class CustomModel extends React.Component {
       city: '',
       address: '',
       buyer_mail: '',
-      color: 'Rojo',
+      color: 'skyblue',
       isOpen: false,
       zoom: 1.5,
       customerAgreementChecked: false,
@@ -347,7 +347,7 @@ export default class CustomModel extends React.Component {
                   <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1}/>
                   <PresentationControls speed={1.5} global zoom={this.state.zoom} polar={[-0.1, Math.PI / 4]}>
                     <Stage environment={"sunset"} adjustCamera={false} key={this.state.modelUrl} scale={0.01}>
-                      <Model url={this.state.modelUrl} volumeAndArea={this.handleAreaAndVolume}/>
+                      <Model url={this.state.modelUrl} volumeAndArea={this.handleAreaAndVolume} color={this.state.color}/>
                     </Stage>
                   </PresentationControls>
                 </Suspense>
@@ -441,9 +441,9 @@ export default class CustomModel extends React.Component {
             </div>
             <div className='form-group'>
               <label className='color'>Color*:</label>
-              <input type='button' id='Rojo' name='color'  className={`${this.state.color === 'Rojo' ? 'selected' : 'fat-btn'}`} value='Rojo' onClick={() => this.handleColor('Rojo')} />
-              <input type='button' id='Azul' name='color' className={`${this.state.color === 'Azul' ? 'selected' : 'fat-btn'}`} value='Azul' onClick={() => this.handleColor('Azul')} />
-              <input type='button' id='Verde' name='color' className={`${this.state.color === 'Verde' ? 'selected' : 'fat-btn'}`} value='Verde' onClick={() => this.handleColor('Verde')} />
+              <input type='button' id='Rojo' name='color'  className={`${this.state.color === 'Rojo' ? 'selected' : 'fat-btn'}`} value='Rojo' onClick={() => this.handleColor('red')} />
+              <input type='button' id='Azul' name='color' className={`${this.state.color === 'Azul' ? 'selected' : 'fat-btn'}`} value='Azul' onClick={() => this.handleColor('skyblue')} />
+              <input type='button' id='Verde' name='color' className={`${this.state.color === 'Verde' ? 'selected' : 'fat-btn'}`} value='Verde' onClick={() => this.handleColor('green')} />
             </div>
             <div className='form-group'>
               <label className='postal_code'>Código Postal*:</label>

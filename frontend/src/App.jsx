@@ -42,6 +42,7 @@ import ComunityPage from "./pages/ComunityPage.jsx";
 import AddPost from "./components/Post/AddPost.jsx";
 import Privacity from "./pages/PrivacityPage.jsx";
 import Terms from "./pages/TermsPage.jsx";
+import VerifyEmail from "./components/VerifyEmail/VerifyEmail.jsx";
 
 function App() {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
@@ -97,6 +98,7 @@ function App() {
                     <Route path="/posts/add-post" element={<AddPost/>}/>
                     <Route path="/privacidad" element={<Privacity/>} />
                     <Route path="/terminos" element={<Terms/>} />
+                    <Route path="/verify-email/:uuid/:token" element={<VerifyEmail />} />
                 </Routes>
                 <Footer/>
             </AuthProvider>

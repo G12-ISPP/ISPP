@@ -16,7 +16,8 @@ class BaseTestCase(APITestCase):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
             email='test@example.com',
-            postal_code='12345'
+            postal_code='12345',
+            email_verified=True
         )
         self.client.force_authenticate(user=self.custom_user)
 
@@ -129,7 +130,7 @@ class CancelOrderTestCase(BaseTestCase):
 
 class OrderDetailsTestCase(BaseTestCase):
     def test_order_details(self):
-        User.objects.create_user(username='testuser1', email='test@example.com', password='test', is_staff=True, postal_code='12345')
+        User.objects.create_user(username='testuser1', email='test@example.com', password='test', is_staff=True, postal_code='12345', email_verified=True)
         response = self.client.post(reverse('login'), {'username': 'testuser1', 'password': 'test'})
         token = response.json()["token"]
 
