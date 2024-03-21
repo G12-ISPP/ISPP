@@ -4,6 +4,7 @@ import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 import { Stage, PresentationControls, Html, useProgress } from '@react-three/drei';
 import { MeshStandardMaterial, Color, Vector3 } from 'three';
 import './CustomDesign.css';
+import PageTitle from './PageTitle/PageTitle';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -36,7 +37,8 @@ export default class CustomModelDetails extends React.Component{
     render() {
         const { data } = this.state;
         return (
-            <>            
+            <>        
+            <PageTitle title="Detalles de la solicitud" />    
             <div className="custom-design-details">
                 <h1>Detalles de tu solicitud de impresión</h1>
                 {data && <p>Nombre: {data.name}</p>}

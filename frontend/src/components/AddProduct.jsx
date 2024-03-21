@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './AddProduct.css';
+import PageTitle from './PageTitle/PageTitle';
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
 
@@ -135,6 +136,7 @@ class Product extends Component {
     const { errors } = this.state;
     return (
       <>
+        <PageTitle title="Subir producto" />
         <h1 className='title'>Mi Producto</h1>
         <div className='main'>
             {this.state.imagePreview && (

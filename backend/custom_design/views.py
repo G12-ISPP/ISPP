@@ -195,15 +195,18 @@ def update_design_status(request, design_id):
         return JsonResponse({'status': 'error', 'message': 'Método no permitido.'})
 
 
-
 @api_view(['GET'])
 @csrf_exempt
 def loguedUser(request):
+    if request is None:
+        return Response({"message": "La solicitud es nula"}, status=status.HTTP_400_BAD_REQUEST)
+    
     if request.method == 'GET':
         if request.user.is_authenticated:
             user = request.user
             serializer = UserSerializer(user)
-            print(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response({"message": "No hay usuario logueado"}, status=status.HTTP_200_OK)
+    else:
+        return Response({"message": "Método de solicitud no permitido"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
