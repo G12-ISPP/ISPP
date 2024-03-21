@@ -32,23 +32,26 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
   // Función para cargar los mensajes de la sala de chat
   const fetchMessages = () => {
     const token = localStorage.getItem('token'); 
-    return fetch(`${backend}/chat/${roomId}/messages/`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-      credentials: 'include'
-    })
-    .then(response => {
-      if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      setMessages(data);
-    })
-    .catch(error => console.error('Error fetching messages:', error));
+      return fetch(`${backend}/chat/${roomId}/messages/`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        credentials: 'include'
+      })
+      .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setMessages(data);
+      })
+      .catch(error => roomId > 0  ? console.error('Error fetching messages:', error) : console.log("No hay mensajes que traer"));
+     
+    
+   
   };
 
   // Función para enviar un nuevo mensaje
@@ -58,6 +61,7 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
     if (!newMessage.trim()) return;
   
     const content = newMessage;
+
     fetch(`${backend}/chat/${roomId}/post_message/`, {
       method: 'POST',
       headers: {
@@ -85,14 +89,19 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
   }
 
   useEffect(() => {
-    fetchMessages().then(() => {
-      setTimeout(() => {
-        scrollToBottom();
-      }, 250); // Ajusta este tiempo si es necesario
-    });
+    document.body.style.overflow = 'hidden';
+    if(roomId>0){
+      fetchMessages().then(() => {
+        setTimeout(() => {
+          scrollToBottom();
+        }, 250); // Ajusta este tiempo si es necesario
+      });
+      const intervalId = setInterval(fetchMessages, 5000);
+      return () => clearInterval(intervalId);
+    }
+   
     // Establece un intervalo para actualizar mensajes, si es necesario, pero sin hacer scroll
-    const intervalId = setInterval(fetchMessages, 5000);
-    return () => clearInterval(intervalId);
+    
   }, [roomId]); 
   
   useEffect(() => {
@@ -111,30 +120,31 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
 
   // Obtenemos el ID de un usuario a partir de su username
   useEffect(() => {
+    if(roomMate){
+      const token = localStorage.getItem('token'); 
+      const url = `${backend}/users/get-user-id/${roomMate}/`; 
+  
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`, 
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setMateId(data.user_id); 
+      })
+      .catch(error => {
+        console.error('Hubo un problema con la petición fetch:', error);
+      });
+    }
     
-    const token = localStorage.getItem('token'); 
-    console.log(roomMate)
-    const url = `${backend}/users/get-user-id/${roomMate}/`; 
-
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`, 
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      setMateId(data.user_id); 
-    })
-    .catch(error => {
-      console.error('Hubo un problema con la petición fetch:', error);
-    });
   }, [roomMate]); 
   
   return (

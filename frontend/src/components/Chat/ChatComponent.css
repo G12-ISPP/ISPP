@@ -151,10 +151,6 @@
   height: 100vh; /* O el alto que desees */
 }
 
-body{
-  overflow: hidden;
-}
-
 .mis-chats {
   position: absolute;
   text-align: center;
@@ -162,12 +158,9 @@ body{
 
 /* Estilos para dispositivos móviles */
 @media (max-width: 1300px) {
-  
-  body{
-    overflow: hidden;
-  }
 
   .chat-page {
+    overflow: hidden;
     display: flex;
     flex-direction: row; 
     border-bottom: 1px solid #ccc;
