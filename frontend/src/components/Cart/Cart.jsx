@@ -144,7 +144,9 @@ const Cart = ({
   };
 
   const shipCost = () => {
-    if (cart.some(product => {
+    if (buyerPlan) {
+      return 0;
+    } else if (cart.some(product => {
       return ['P', 'I', 'M'].includes(product.product_type);
     })) {
       return 5;
@@ -158,6 +160,38 @@ const Cart = ({
     return cart.reduce((total, product) => total + (parseFloat(product.price) * parseFloat(product.quantity)), 0);
   };
   const token = localStorage.getItem('token');
+
+  const [buyerPlan, setBuyerPlan] = useState(false);
+  const [sellerPlan, setSellerPlan] = useState(false);
+  const [designerPlan, setDesignerPlan] = useState(false);
+  const fetchData = async () => {
+    try {
+      let petition = backend + '/designs/loguedUser';
+      petition = petition.replace(/"/g, '');
+      const response = await fetch(petition, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        setBuyerPlan(userData.buyer_plan);
+        setSellerPlan(userData.seller_plan);
+        setDesignerPlan(userData.designer_plan);
+      } 
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+    console.log('buyerPlan', buyerPlan);
+    console.log('sellerPlan', sellerPlan);
+    console.log('designerPlan', designerPlan);
+  };
+
+  if (localStorage.getItem('token')) {
+    fetchData();
+  }
+
   return (
     <>
       <PageTitle title="Carrito" />
