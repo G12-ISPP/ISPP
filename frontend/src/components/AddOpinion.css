@@ -49,3 +49,33 @@
   padding: 1em;
   font-size: 1em;
 }
+
+@media (max-width: 1024px) {
+
+  .new-opinion-container {
+    align-items: center;
+  }
+
+  .new-opinion-container .button {
+    height: 2.5em;
+    width: 12em;
+    font-size: 0.8em;
+    align-self: center;
+  }
+
+  .opinion-form-container {
+    width: 100%;
+  }
+
+  .opinion-form-group-score {
+    width: 20%;
+    height: 2em;
+    text-align: center;
+  }
+
+  .opinion-form-group-description {
+    height: 6em;
+    padding: 0.5em 1em;
+  }
+
+}

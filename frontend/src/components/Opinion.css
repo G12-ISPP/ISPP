@@ -19,4 +19,26 @@
 .opinion-desc{
   margin: 0;
 }
+
+@media (max-width: 1024px) {
+
+  .opinion-date {
+    font-size: 0.9em;
+  }
+
+  .opinion-desc {
+    font-size: 0.9em;
+  }
+
+  .opinion .profile-icon-container .profile-icon-image {
+    width: 1.6em;
+    height: 1.6em;
+  }
+
+  .opinion .profile-icon-container .profile-icon-name {
+    font-size: 1em;
+  }
+
+}
+
   
