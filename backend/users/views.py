@@ -5,25 +5,24 @@ from functools import wraps
 from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import EmailMultiAlternatives
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
+from django.template.loader import get_template
+from django.urls import reverse
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import activate
 from django.utils.translation import gettext_lazy as _
+from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from paypalrestsdk import Payment
 from rest_framework import generics
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from users.serializer import ProfileUpdateSerializer, UserSerializer
-from django.utils.translation import gettext_lazy as _
-from functools import wraps
-from django.utils.translation import activate
-from django.conf import settings
-from datetime import datetime
-from django.http import HttpResponseRedirect
-import re
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import APIException
 from rest_framework.exceptions import ValidationError
@@ -32,8 +31,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from users.serializer import ProfileUpdateSerializer
 from users.serializer import UserSerializer
 from .models import CustomUser
+from .utils import validate_email, get_user
 
 ruta_frontend = settings.RUTA_FRONTEND
 
@@ -120,19 +121,58 @@ class UserCreateAPIView(generics.CreateAPIView):
         email = request.data.get('email')
         if len(email) > 50:
             errors['email'] = ['El email no puede tener más de 50 caracteres']
+        if not validate_email(email):
+            errors['email'] = ['El email no es válido']
         if errors:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         try:
-            return super().post(request, *args, **kwargs)
+            user_json = super().post(request, *args, **kwargs)
+            user = CustomUser.objects.get(username=request.data.get('username'))
+
+
+            # Generar el token único
+            token = default_token_generator.make_token(user)
+
+            # Generar la URL de verificación por correo electrónico
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+
+            # Enviar el correo electrónico de verificación
+            template = get_template('verification_email.html')
+            content = template.render(
+                {'verify_url': ruta_frontend + "/verify-email/" + uid + "/" + token + "/", 'username': user.username})
+            message = EmailMultiAlternatives(
+                'Verificación de correo electrónico',
+                content,
+                settings.EMAIL_HOST_USER,
+                [user.email]
+            )
+
+            message.attach_alternative(content, 'text/html')
+            message.send()
+
+            return user_json
         except ValidationError as e:
             error_detail = dict(e.detail)
             translated_errors = {key: [_(value[0])] for key, value in error_detail.items()}
-            print(translated_errors)
             return Response(translated_errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             error_message = str(e)
             print(error_message)
             return Response({'error': _('An error occurred.')}, status=status.HTTP_400_BAD_REQUEST)
+
+class VerifyEmailView(APIView):
+
+    def get(self, request, uidb64, token):
+        user = get_user(uidb64)
+        print(user)
+        if user is not None and default_token_generator.check_token(user, token):
+            if user.email_verified:
+                return Response({'message': 'Usuario ya verificado.'}, status=200)
+            user.email_verified = True
+            user.save()
+            return Response({'message': '¡Correo verificado! Gracias por confirmar tu dirección de correo electrónico.'}, status=200)
+        else:
+            return Response({'message': 'Token inválido'}, status=400)
 
 class LoginView(APIView):
     def post(self, request):
@@ -141,6 +181,8 @@ class LoginView(APIView):
         user = authenticate(username=username, password=password)
         if user is None:
             raise APIException('Invalid username or password')
+        if not user.email_verified:
+            raise APIException('Email not verified')
         refresh = RefreshToken.for_user(user)
         return Response({
             'refresh': str(refresh),

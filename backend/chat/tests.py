@@ -17,7 +17,8 @@ class ChatViewTestClase(TestCase):
             password='test',
             address='test',
             postal_code=1234,
-            city='test'
+            city='test',
+            email_verified=True
         )
         CustomUser.objects.create_user(
             id=2,
@@ -25,7 +26,8 @@ class ChatViewTestClase(TestCase):
             password='test2',
             address='test2',
             postal_code=12345,
-            city='test2'
+            city='test2',
+            email_verified=True
         )
         CustomUser.objects.create_user(
             id=3,
@@ -33,7 +35,8 @@ class ChatViewTestClase(TestCase):
             password='test3',
             address='test3',
             postal_code=12345,
-            city='test3'
+            city='test3',
+            email_verified=True
         )
         chat = ChatRoom.objects.create(
             id=1,
@@ -105,6 +108,7 @@ class ChatViewTestClase(TestCase):
     def test_get_messages_fail_user_not_member(self):
         data = {'username': 'test', 'password': 'test'}
         response_login = self.client.post('/users/login/', data, format='json')
+        print(response_login.data)
         token = response_login.data['token']
         headers = {'Authorization': 'Bearer ' + token}
         response = self.client.get('/chat/1/messages/', headers=headers)

@@ -14,36 +14,7 @@
   }
 
 
-  .message-author {
-  font-size: 0.8em; /* Hace el texto del autor más pequeño */
-  text-align: left; /* Alinea el texto a la izquierda */
-  color: #555; /* Color suave para el nombre del autor */
-}
-
-
-  .message-text {
-    color: black; /* Asegura que el texto del mensaje sea negro */
-    text-align: left; /* Asegura que el texto del mensaje esté alineado a la izquierda */
-  }
-
-  .my-message, .other-message {
-    width: 90%; /* Hace que el li sea menos ancho, ajusta según necesites */
-    margin-top: 2px; /* Espaciado superior para separar los mensajes */
-  }
-
-  .my-message {
-    margin-left: auto;
-    background-color: #dcf8c6; /* Un color de fondo para diferenciar tus mensajes */
-  }
-
-  .other-message {
-    margin-right: auto;
-    background-color: #f0f0f0; /* Un color de fondo para los mensajes de otros usuarios */
-  }
-
-
-
-  .f {
+  .send-message {
     bottom: 0;
     position: sticky;
     display: flex;
@@ -52,7 +23,7 @@
     border-top: 1px solid #ccc; /* Separador entre el chat y el formulario */
   }
 
-  .fi[type="text"] {
+  .input-message[type="text"] {
     flex-grow: 1; /* Hace que el input ocupe la mayor parte del espacio */
     margin-right: 10px; /* Espacio entre el input y el botón */
     padding: 8px 10px;
@@ -61,7 +32,7 @@
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra interna sutil */
   }
 
-  .fb {
+  .button-send {
     padding: 8px 15px;
     background-color: #004040; /* Un color de fondo vibrante para el botón */
     color: white; /* Texto blanco para el botón */
@@ -71,7 +42,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra externa para darle profundidad */
   }
 
-  .fb:hover {
+  .button-send:hover {
     background-color: #002D2D; /* Color más oscuro al pasar el mouse para feedback */
   }
 
@@ -165,6 +136,7 @@
 .user-list li:hover {
   background-color: #f0f0f0; /* Feedback visual al pasar el mouse */
 }
+
 .chat{
   padding-bottom: 20px;
   display: flex;
@@ -182,4 +154,112 @@
 .mis-chats {
   position: absolute;
   text-align: center;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 1300px) {
+
+  .chat-page {
+    overflow: hidden;
+    display: flex;
+    flex-direction: row; 
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+  }
+
+  .footer {
+    display: none; /* Esconde el footer en dispositivos móviles */
+  }
+
+  .title{
+    display: none;
+  }
+
+  .messages-container, .user-list {
+    overflow-y: auto; /* Habilita el desplazamiento vertical */
+     /* Ajusta esto según el diseño de tu contenedor */
+  }
+
+  .sidebar {
+    background-color: #F1F7ED;
+    z-index: 2000;
+    width: 100%;
+    position: fixed;
+    height: 100vh;
+    left: -100%; /* Escondido inicialmente */
+    transition: left 0.3s;
+  }
+
+  .sidebar.open {
+    left: 0; /* Muestra el sidebar cuando tenga la clase .open */
+    overflow: hidden;
+    height: calc(100vh - 115px);
+  }
+
+  .window{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: calc(100vh - 115px);
+    
+  }
+
+  .chat {
+    flex: 1;
+    height: 100vh;
+    width: 100vw; /* Ajusta el ancho al 100% del viewport */ /* Ajusta la altura al 100% del viewport menos la altura de cualquier cabecera o pie de página */
+    margin: 0; /* Elimina cualquier margen externo */
+    border: none; /* Si deseas eliminar el borde en móviles */
+    margin-left: 0; /* Elimina el margen izquierdo si es que hay alguno debido al sidebar en modo escritorio */
+    overflow: hidden;
+    
+  }
+
+  /* Si tienes un header o un form al pie, quizás también quieras ajustar su posicionamiento */
+  .send-message {
+    bottom: 0;
+    left: 0;
+    height: 40px;
+    margin-bottom: 10px;
+    right: 10px;
+  }
+
+
+  .input-message[type="text"] {
+    flex-grow: 1; /* Hace que el input ocupe la mayor parte del espacio */
+    right: 10px; /* Espacio entre el input y el botón */
+    padding: 8px 10px;
+    border-radius: 20px; /* Bordes redondeados para el input */
+    border: 1px solid #ccc; /* Borde sutil para el input */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra interna sutil */
+  }
+  
+}
+
+.sidebar.open .toggle-sidebar {
+  right: 0; /* Ajusta para alinear con el borde del sidebar abierto */
+
+}
+
+.toggle-sidebar {
+  z-index: 2000;
+  position: absolute;
+  top: 20px; /* Ajusta según necesites */
+  right: -40px; /* Ajusta para que se sitúe en el borde del sidebar */
+  cursor: pointer;
+  background-color: #999999; /* Ajusta según el estilo de tu aplicación */
+  border: none;
+  border-radius: 10%;
+  width: 30px; /* Ajusta según el tamaño deseado */
+  height: 30px; /* Ajusta según el tamaño deseado */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-scroll {
+  overflow: hidden;
+  height: 100vh; /* Bloquea el desplazamiento vertical */
+  width: 100vw; /* Bloquea el desplazamiento horizontal, si es necesario */
+  position: fixed; /* Evita que el contenido se mueva */
 }

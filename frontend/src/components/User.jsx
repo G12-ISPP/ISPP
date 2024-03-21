@@ -8,6 +8,9 @@ import Opinion from './Opinion';
 import ProductsGrid, { ELEMENT_TYPES, GRID_TYPES } from '../components/ProductsGrid/ProductsGrid';
 import FollowButton from "./Follow/FollowBotton.jsx";
 import PageTitle from './PageTitle/PageTitle';
+import filledStar from '../assets/bxs-star.svg';
+import emptyStar from '../assets/bx-star.svg';
+import Paginator from './Paginator/Paginator.jsx';
 
 const id = window.location.href.split('/')[4];
 
@@ -16,8 +19,14 @@ const UserDetail = () => {
   const currentUserID = localStorage.getItem('userId');
   const [ownUser, setOwnUser] = useState(false);
   const [opinions, setOpinions] = useState([]);
+  const [totalOpinions, setTotalOpinions] = useState(0);
+  const [avgScore, setAvgScore] = useState(0);
   const navigate = useNavigate();
   const backend = import.meta.env.VITE_APP_BACKEND;
+
+  const [page, setPage] = useState(1);
+  const reviewsPerPage = 10;
+  const [numPages, setNumPages] = useState(0);
 
   useEffect(() => {
 
@@ -53,7 +62,19 @@ const UserDetail = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setOpinions(data);
+          
+          const totalOpinions = data.length;
+          setTotalOpinions(totalOpinions);
+
+          const numPages = Math.ceil(data.length / reviewsPerPage);
+          setNumPages(numPages);
+          const allReviews = data.slice((page - 1) * reviewsPerPage, page * reviewsPerPage);
+          setOpinions(allReviews);
+
+          const totalScore = data.reduce((acc, opinion) => acc + opinion.score, 0);
+          const avgScore = data.length > 0 ? totalScore / data.length : 0;
+          setAvgScore(avgScore);
+
         } else {
           console.error('Error al obtener las opiniones');
         }
@@ -64,7 +85,7 @@ const UserDetail = () => {
 
     fetchUserData();
     fetchOpinions();
-  }, [id, currentUserID]);
+  }, [id, currentUserID, page, reviewsPerPage]);
 
   const handleChatClick = async () => {
     const otherUserID = user?.id;
@@ -116,80 +137,119 @@ const UserDetail = () => {
     return <div>Loading...</div>;
   }
 
+  function roundScore(score) {
+    const roundedValue = Math.round(score);
+
+    if (roundedValue < 0) {
+      return 0;
+    } else if (roundedValue > 5) {
+      return 5;
+    } else {
+      return roundedValue;
+    }
+  }
+
   return (
     <>
       {ownUser ? (
         <>
           <PageTitle title="Mi perfil" />
-          <div className="section-title-container">
+          <div className="profile-title-container">
             <Text type={TEXT_TYPES.TITLE_BOLD} text='Mi perfil' />
           </div>
         </>
       ) : (
         <>
           <PageTitle title={user.username} />
-          <div className="section-title-container">
+          <div className="artist-title-container">
             <Text type={TEXT_TYPES.TITLE_BOLD} text='Detalles de usuario' />
           </div>
         </>
       )}
-      <div className="main">
-        <div className="profile-summary">
-          <div>
-            <h2 className="title-detalle">{user.first_name} {user.last_name}</h2>
-            {user.is_designer || user.is_printer ? (
-              <div className="main-info-container">
-                <div className="user-role-container">
-                  <h3 className="user-role">{user.is_designer === true ? 'Diseñador ' : null}
-                    {user.is_printer === true ? ' Impresor' : null}</h3>
-                </div>
-              </div>
-            ) : null}
-              <div className="user-img-container">
-                <img className='img' src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
-              </div>
-              <div className='description-container'>
-                <p className='description'>{user.description}</p>
-              </div>
-            <h3 className="title-detalle">Contacto:</h3>
-            <p>{user.email}</p>
-            {ownUser ? (
-              <div className="user-button">
-                <Button type={BUTTON_TYPES.TRANSPARENT} text='Editar Perfil' onClick={handleEditClick} />
-              </div>
-            ) : (
-              <div className="user-button">
-                <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
-                {!localStorage.getItem('token') && <div className='error'>Debes iniciar sesión para poder acceder al chat con un usuario</div>}
-              </div>
-            )}
-            <div className="user-button">
-              <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
-            </div>
-            {ownUser || localStorage.getItem('token') === null ? null : (
-              <div className="user-button">
-                <FollowButton userId={id} />
-              </div>
-                )}
-            <AddOpinion target_user={user.id} />
-            {opinions.length > 0 ? (
-              <>
-                {opinions.map(opinion => (
-                  <Opinion key={opinion.id} opinion={opinion} />
-                ))}
-              </>
-            ) : (
-              <div>Aún no hay opiniones para este usuario.</div>
-            )}
 
-            <div className="section-title-container">
-              <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
+      <>
+        <div className="user-container">
+
+          <div className="left-user-container">
+            <div className="user-img-container">
+              <img className='user-image' src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
             </div>
-            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={`?seller=${id}`} />
           </div>
-        </div>
-      </div>
 
+          <div className="right-user-container">
+            <div className="user-info-container">
+
+              <h2 className="user-name">{user.first_name} {user.last_name}</h2>
+
+              {opinions.length > 0 ? (
+                <div className="user-review">
+                  <div className="user-review-stars">
+                    {Array.from({ length: roundScore(avgScore) }, (_, index) => (
+                      <img key={index} src={filledStar} alt="filled star" />
+                    ))}
+                    {Array.from({ length: 5 - roundScore(avgScore) }, (_, index) => (
+                      <img key={index} src={emptyStar} alt="empty star" />
+                    ))}
+                  </div>
+                  <div className="user-review-text">{roundScore(avgScore)} ({totalOpinions} {totalOpinions === 1 ? 'Opinión' : 'Opiniones'})</div>
+                </div>
+              ) : (
+                <p className='user-review-text'>Sin valoraciones</p>
+              )}
+
+              <div className="user-role-container">
+                {user.is_designer === true ? (
+                  <div className="user-role">Diseñador</div>
+                ) : null}
+                {user.is_printer === true ? (
+                  <div className="user-role">Impresor</div>
+                ) : null}
+              </div>
+
+              <div className="user-contact-container">
+                <p className="user-contact"><strong>Contacto: </strong> {user.email}</p>
+              </div>
+
+              <div className="user-button-wrapper">
+                {ownUser ? (
+                  <Button type={BUTTON_TYPES.TRANSPARENT} text='Editar Perfil' onClick={handleEditClick} />
+                ) : (
+                  <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
+                )}
+                <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
+                {ownUser || localStorage.getItem('token') === null ? null : (
+                  <div className="user-button">
+                    <FollowButton userId={id} />
+                  </div>
+                )}
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div className="user-products-section">
+          <Text type={TEXT_TYPES.TITLE_BOLD} text='Productos destacados' />
+          <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={`?seller=${id}`} />
+        </div>
+
+        <div className="reviews-section">
+          <Text type={TEXT_TYPES.TITLE_BOLD} text='Opiniones' />
+          <AddOpinion target_user={user.id} />
+          {opinions.length > 0 ? (
+            <div className="user-reviews">
+              {opinions.map(opinion => (
+                <Opinion key={opinion.id} opinion={opinion} />
+              ))}
+              <Paginator page={page} setPage={setPage} numPages={numPages} />
+            </div>       
+          ) : (
+            <div>Aún no hay opiniones para este usuario.</div>
+          )}
+        </div>
+        
+      </>
 
     </>
 

@@ -20,6 +20,7 @@ import Footer from "./components/Footer/Footer.jsx";
 import Cart from "./components/Cart/Cart.jsx";
 import {ChatPage} from "./pages/ChatPage"
 import 'react-chat-elements/dist/main.css';
+import './App.css'
 import BuyPlan from "./components/BuyPlan/BuyPlan.jsx";
 import CancelPlan from "./components/BuyPlan/CancelPlan.jsx";
 import ConfirmPlan from "./components/BuyPlan/ConfirmPlan.jsx";
@@ -42,6 +43,7 @@ import ComunityPage from "./pages/ComunityPage.jsx";
 import AddPost from "./components/Post/AddPost.jsx";
 import Privacity from "./pages/PrivacityPage.jsx";
 import Terms from "./pages/TermsPage.jsx";
+import VerifyEmail from "./components/VerifyEmail/VerifyEmail.jsx";
 
 function App() {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
@@ -53,6 +55,7 @@ function App() {
 
 
     return (
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <BrowserRouter>
             <AuthProvider>
                 <Header
@@ -60,6 +63,7 @@ function App() {
                     setCart={setCart}
                 />
                 <Navbar/>
+                <div style={{ flex: 1 }}>
                 <Routes>
                     <Route path="/" element={<MainPage/>}/>
                     <Route path="/tasks" element={<TaskPage/>}/>
@@ -97,10 +101,13 @@ function App() {
                     <Route path="/posts/add-post" element={<AddPost/>}/>
                     <Route path="/privacidad" element={<Privacity/>} />
                     <Route path="/terminos" element={<Terms/>} />
+                    <Route path="/verify-email/:uuid/:token" element={<VerifyEmail />} />
                 </Routes>
+                </div>
                 <Footer/>
             </AuthProvider>
         </BrowserRouter>
+        </div>
     );
 
 }

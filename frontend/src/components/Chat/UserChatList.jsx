@@ -5,7 +5,7 @@ import 'react-chat-elements/dist/main.css'; // Importar estilos de react-chat-el
 import { useNavigate } from 'react-router-dom';
 
 
-function UserChatList() {
+function UserChatList({ onUserClick }) {
   const [users, setUsers] = useState([]);
   const backend = import.meta.env.VITE_APP_BACKEND;
 
@@ -39,6 +39,9 @@ function UserChatList() {
       navigate(`/chat/${data.chatroomID}`);
     } catch (error) {
       console.error('Error:', error);
+    }
+    if(onUserClick) {
+      onUserClick();
     }
   };
 
