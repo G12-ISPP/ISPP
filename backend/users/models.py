@@ -6,6 +6,7 @@ class CustomUser(AbstractUser):
 
     profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
     address = models.CharField(max_length=255)
+    description = models.CharField(max_length=500, null=True)
     postal_code = models.IntegerField(
         validators=[    
             MaxValueValidator(52999),

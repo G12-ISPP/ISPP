@@ -171,20 +171,20 @@ checkUserPermission = async () => {
               </div>
                <div className='edit-profile-form-group'>
                  <label htmlFor='email'>Correo electrónico</label>
-                 <input type='email' id='email' name='email' className='form-input' placeholder='Correo electrónico' value={this.state.email} onChange={this.handleChange} required />
+                 <input type='email' id='email' name='email' className='form-input' placeholder='ejemplo@ejemplo.com' value={this.state.email} onChange={this.handleChange} required />
                </div>
                <div className='edit-profile-form-group'>
                  <label htmlFor='address'>Dirección</label>
-                 <input type='text' id='address' name='address' className='form-input' placeholder='Dirección' value={this.state.address} onChange={this.handleChange} required />
+                 <input type='text' id='address' name='address' className='form-input' placeholder='Calle Ejemplo 123' value={this.state.address} onChange={this.handleChange} required />
                </div>
                <div className='edit-profile-form-row'>
                  <div className='edit-profile-form-group left'>
                    <label htmlFor='postal_code'>Código postal</label>
-                   <input type='text' id='postal_code' name='postal_code' className='form-input' placeholder='Código postal' value={this.state.postal_code} onChange={this.handleChange} required />
+                   <input type='text' id='postal_code' name='postal_code' className='form-input' placeholder='12345' value={this.state.postal_code} onChange={this.handleChange} required />
                  </div>
                  <div className='edit-profile-form-group right'>
                    <label htmlFor='city'>Ciudad</label>
-                   <input type='text' id='city' name='city' className='form-input' placeholder='Ciudad' value={this.state.city} onChange={this.handleChange} required />
+                   <input type='text' id='city' name='city' className='form-input' placeholder='Ciudad Ejemplo' value={this.state.city} onChange={this.handleChange} required />
                  </div>
                </div>
                <div className="error-messages-container">
