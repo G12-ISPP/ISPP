@@ -129,6 +129,7 @@ class UserCreateAPIView(generics.CreateAPIView):
             user_json = super().post(request, *args, **kwargs)
             user = CustomUser.objects.get(username=request.data.get('username'))
 
+
             # Generar el token único
             token = default_token_generator.make_token(user)
 
@@ -138,13 +139,14 @@ class UserCreateAPIView(generics.CreateAPIView):
             # Enviar el correo electrónico de verificación
             template = get_template('verification_email.html')
             content = template.render(
-                {'verify_url': ruta_frontend + "/verify/" + uid + "/" + token + "/", 'username': user.username})
+                {'verify_url': ruta_frontend + "/verify-email/" + uid + "/" + token + "/", 'username': user.username})
             message = EmailMultiAlternatives(
                 'Verificación de correo electrónico',
                 content,
                 settings.EMAIL_HOST_USER,
                 [user.email]
             )
+
             message.attach_alternative(content, 'text/html')
             message.send()
 
@@ -158,15 +160,19 @@ class UserCreateAPIView(generics.CreateAPIView):
             print(error_message)
             return Response({'error': _('An error occurred.')}, status=status.HTTP_400_BAD_REQUEST)
 
-class VerifyEmailView(View):
+class VerifyEmailView(APIView):
 
     def get(self, request, uidb64, token):
         user = get_user(uidb64)
+        print(user)
         if user is not None and default_token_generator.check_token(user, token):
+            if user.email_verified:
+                return Response({'message': 'Usuario ya verificado.'}, status=200)
             user.email_verified = True
             user.save()
+            return Response({'message': '¡Correo verificado! Gracias por confirmar tu dirección de correo electrónico.'}, status=200)
         else:
-            return JsonResponse({'error': 'Invalid link'}, status=400)
+            return Response({'message': 'Token inválido'}, status=400)
 
 class LoginView(APIView):
     def post(self, request):
