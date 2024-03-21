@@ -1,37 +1,44 @@
 .opinion {
-    background-color: #e7e6e6;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    width: 100%;
-  }
-  
-  .opinion-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    background-color: #004040;
-    color: #e7e6e6;
-    padding: 5px;
-  }
-  
-  .opinion-score {
-    font-weight: bold;
-    margin-right: 10px;
-  }
-  
-  .opinion-author {
-    flex-grow: 1;
-    margin-right: 10px;
-    text-align: left;
-  }
-  
+  display: flex;
+  gap: 0.25em;
+  flex-direction: column;
+  width: 100%;
+}
+
+.opinion-score {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.opinion-date {
+  margin: 0;
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+.opinion-desc{
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+
   .opinion-date {
-    color: #004040;
-    text-align: right;
+    font-size: 0.9em;
   }
 
-  .opinion-desc{
-    text-align: left;
+  .opinion-desc {
+    font-size: 0.9em;
   }
+
+  .opinion .profile-icon-container .profile-icon-image {
+    width: 1.6em;
+    height: 1.6em;
+  }
+
+  .opinion .profile-icon-container .profile-icon-name {
+    font-size: 1em;
+  }
+
+}
+
   

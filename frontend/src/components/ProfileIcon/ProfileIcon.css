@@ -1,0 +1,28 @@
+.profile-icon-container {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    height: 2em;
+}
+
+.profile-icon-image {
+    cursor: pointer;
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+    object-fit: cover;
+    transition: 0.3s;
+}
+.profile-icon-image:hover {
+    scale: 1.1;
+}
+
+.profile-icon-name {
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.2em;
+    transition: 0.3s;
+}
+.profile-icon-name:hover {
+    text-decoration: underline;
+}
