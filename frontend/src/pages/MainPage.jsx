@@ -42,12 +42,12 @@ const MainPage = () => {
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Diseños destacados' />
             </div>
-            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=D'} />
+            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=D'} main={true} />
 
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Piezas destacadas' />
             </div>
-            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=I'} />
+            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=I'} main={true} />
 
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Mejores artistas' />
@@ -57,12 +57,12 @@ const MainPage = () => {
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Impresoras a la venta' />
             </div>
-            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=P'} />
+            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=P'} main={true} />
 
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Materiales a la venta' />
             </div>
-            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=M'} />
+            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=M'} main={true} />
 
             <div className='blank-space' />
 

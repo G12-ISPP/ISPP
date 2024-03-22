@@ -28,7 +28,7 @@ const ArtistsGrid = (consts) => {
 
             if (response.ok) {
                 const data = await response.json();
-                const designers = data.filter(artist => artist.is_designer === true);
+                const designers = data.filter(artist => artist.is_designer === true && artist.designer_plan === true);
                 return designers;
             } else {
                 console.error('Error al obtener los artistas');
