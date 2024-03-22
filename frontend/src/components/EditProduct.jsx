@@ -162,7 +162,11 @@ const EditProduct = () => {
       errors.description = 'La descripción es obligatoria';
     }
 
-    if(show && designer_plan && countShow >= 3){
+    if(show && seller_plan && designer_plan && countShow >= 8){
+      errors.show = 'No puedes más destacar más de 8 productos';
+    } else if(show && seller_plan && countShow >= 5){
+      errors.show = 'Para destacar más de 5 productos necesitas un plan de diseñador';
+    } else if(show && designer_plan && countShow >= 3){
       errors.show = 'Para destacar más de 3 productos necesitas un plan de vendedor';
     }
 
