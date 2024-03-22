@@ -21,7 +21,7 @@ from django.http import JsonResponse
 import uuid
 from .serializer import OrderSerializer
 from datetime import datetime
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from users.models import CustomUser
 from django.core.serializers import serialize
@@ -121,7 +121,14 @@ def send_order_confirmation_email(order, order_products):
         if recipient_email in lista_negra:
             print("No se manda el correo ya que está en la lista negra")
         else:
-            send_mail(asunto, '', sender_email, [recipient_email], html_message=mensaje)
+            email = EmailMessage(asunto, mensaje, sender_email, [recipient_email],)
+            email.content_subtype = "html"
+            for order_product in order_products:
+                design = order_product.product.design
+                if design:
+                    email.attach(design.name, design.file.read())
+            email.send()
+                    
     except Exception as e:
         print(f"Error al enviar el correo: {e}")
 

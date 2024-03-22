@@ -82,6 +82,7 @@ class ProductDetail extends React.Component {
             name: product.name,
             price: product.price,
             imageRoute: product.imageRoute,
+            image_url: product.image_url,
             stock_quantity: product.stock_quantity,
             product_type: product.product_type,
             quantity: 1

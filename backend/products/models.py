@@ -17,3 +17,4 @@ class Product(models.Model):
     seller = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE)
     imageRoute = models.CharField(max_length=100, default='')
     image = models.ImageField(upload_to='products/')
+    design = models.FileField(upload_to='designs/', null=True, blank=True)

@@ -10,6 +10,7 @@ const EditProduct = () => {
   const [state, setState] = useState({
     productId: id,
     file: null,
+    design: null,
     name: '',
     description: '',
     show: false,
@@ -43,6 +44,7 @@ const EditProduct = () => {
           stockQuantity: productData.stock_quantity,
           imagePreview: productData.image_url,
           productType: productData.product_type,
+          design: productData.design,
         }));
         console.log('Detalles del producto cargados correctamente:', productData);
 
@@ -60,7 +62,7 @@ const EditProduct = () => {
             alert("No tienes permiso para editar este producto.");
             window.location.href = '/';
           }
-          
+
           setState(prevState => ({
             ...prevState,
             currentUserId: currentUserData.id,
@@ -128,10 +130,29 @@ const EditProduct = () => {
     }
   };
 
-  const validateForm = () => {
-    const { name, description, price, stockQuantity, productType, seller_plan,designer_plan , countShow, show } = state;
+  const handleDesignChange = (event) => {
+    const design = event.target.files[0];
+    if (!design) {
+      return;
+    }
+    const fileName = design.name;
+    const fileExtension = fileName.split('.').pop().toLowerCase();
+    if (fileExtension !== 'stl') {
+      alert('El archivo no es de formato STL. Por lo tanto lo ignoraremos. Por favor, sube un archivo STL.');
+      event.target.value = ''; 
+      return;
+    }else{
+      setState(prevState => ({ ...prevState,  design: design }));
+    }
+  }
 
+  const validateForm = () => {
+    const { name, description, price, stockQuantity, productType, seller_plan, designer_plan, countShow, show, design } = state;
     const errors = {};
+
+    if (productType === 'D' && !design) {
+      errors.file = 'Por favor, seleccione un archivo de diseño';
+    }
 
     if (!name.trim()) {
       errors.name = 'El nombre es obligatorio';
@@ -179,6 +200,9 @@ const EditProduct = () => {
       const formData = new FormData();
       if (state.file) {
         formData.append('file', state.file);
+      }
+      if (state.design) {
+        formData.append('design', state.design);
       }
       formData.append('name', state.name);
       formData.append('description', state.description);
@@ -230,6 +254,16 @@ const EditProduct = () => {
               {state.errors.file && <div className="error">{state.errors.file}</div>}
             </div>
           </div>
+          {state.productType === 'D' && (
+            <div className='form-group'>
+              <label htmlFor="file2" className='upload'> Sube tu diseño:</label>
+              <div className='file-select'>
+                <input type='file' id='file2' name='file2' className='form-input' accept='.stl'
+                  onChange={handleDesignChange} />
+                {state.errors.design && <div className="error">{state.errors.design}</div>}
+              </div>
+            </div>
+          )}
           <div className='form-group'>
             <label htmlFor='name'>Nombre</label>
             <input type='text' id='name' name='name' className='form-input' value={state.name} onChange={(e) => setState(prevState => ({ ...prevState, name: e.target.value }))} placeholder="Cerdito rosa" />
