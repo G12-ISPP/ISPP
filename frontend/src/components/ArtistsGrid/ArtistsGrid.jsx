@@ -28,7 +28,7 @@ const ArtistsGrid = (consts) => {
 
             if (response.ok) {
                 const data = await response.json();
-                const designers = data.filter(artist => artist.is_designer === true);
+                const designers = data.filter(artist => artist.is_designer === true && artist.designer_plan === true);
                 return designers;
             } else {
                 console.error('Error al obtener los artistas');
@@ -42,7 +42,12 @@ const ArtistsGrid = (consts) => {
         try {
 
             const groupsOfArtists = artists.reduce((acc, artist, index) => {
-                const groupIndex = Math.floor(index / 5);
+                let groupIndex = Math.floor(index / 5);
+                if (window.innerWidth > 767 && window.innerWidth < 1024) {
+                    groupIndex = Math.floor(index / 3);
+                } else if (window.innerWidth < 768) {
+                    groupIndex = Math.floor(index / 2);
+                }
                 if (!acc[groupIndex]) {
                     acc[groupIndex] = [];
                 }

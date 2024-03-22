@@ -105,8 +105,6 @@ const Cart = ({
       return;
     }
 
-    console.log("PRUEBA")
-
     try {
       const formData = new FormData();
       formData.append('cart', JSON.stringify(cart));
@@ -183,9 +181,6 @@ const Cart = ({
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
-    console.log('buyerPlan', buyerPlan);
-    console.log('sellerPlan', sellerPlan);
-    console.log('designerPlan', designerPlan);
   };
 
   if (localStorage.getItem('token')) {

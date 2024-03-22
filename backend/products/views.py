@@ -28,11 +28,12 @@ def add_product(request):
         name = request.data.get('name')
         description = request.data.get('description')
         stock_quantity = request.data.get('stock_quantity')
+        show = request.data.get('show')
         image = request.FILES.get('file')
         design = request.FILES.get('design') if product_type == 'D' else None
 
         # Verificar que todos los campos requeridos estén presentes
-        if not all([product_type, price, name, description, image]):
+        if not all([product_type, price, name, description, image, stock_quantity, show]):
             return JsonResponse({'error': 'Todos los campos son obligatorios'}, status=400)
 
         # Verificar el tipo de producto
@@ -54,6 +55,11 @@ def add_product(request):
                 return JsonResponse({'error': 'La cantidad debe estar entre 1 y 100'}, status=400)
         except ValueError:
             return JsonResponse({'error': 'La cantidad de stock debe ser un número entero válido'}, status=400)
+        
+        if show == 'true':
+            show = True
+        else:
+            show = False
 
         # Guardar el producto en la base de datos
         if request.user.is_authenticated:
@@ -66,6 +72,7 @@ def add_product(request):
                 seller=request.user,
                 image=image,
                 design=design,
+                show=show 
             )
             product.save()
 
@@ -113,12 +120,18 @@ class ProductsView(viewsets.ModelViewSet):
         name = request.data.get('name')
         description = request.data.get('description')
         stock_quantity = request.data.get('stock_quantity')
+        show = request.data.get('show')
         image = request.FILES.get('file') if 'file' in request.FILES else None
         design = request.FILES.get('design') if product.product_type == 'D' else None
 
-        if not all([price, name, description]):
+        if not all([price, name, description, show, stock_quantity]):
             return Response({'error': 'Todos los campos son obligatorios'}, status=status.HTTP_400_BAD_REQUEST)
 
+        if show == 'true':
+            show = True
+        else:
+            show = False
+            
         try:
             price = float(price)
             if not (0 < price < 1000000):
@@ -139,6 +152,7 @@ class ProductsView(viewsets.ModelViewSet):
         product.price = price
         product.name = name
         product.description = description
+        product.show = show
         product.stock_quantity = stock_quantity
         if image:
             if product.image:

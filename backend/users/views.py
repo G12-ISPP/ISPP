@@ -253,6 +253,7 @@ def obtain_plan(request, plan_seller, plan_buyer, plan_designer,user_id):
         user.seller_plan_date = datetime.now()
     if plan_designer:
         user.designer_plan = True
+        user.is_designer = True
         user.designer_plan_date = datetime.now()
 
     user.save()

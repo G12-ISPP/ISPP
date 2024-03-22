@@ -73,7 +73,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 23em;
+    width: 17em;
 }
 
 .mobile-menu-icon {
@@ -348,31 +348,31 @@
     position: relative;
   }
   
-  .menu-contenedor {
+.menu-contenedor {
     position: absolute;
-    top: 30px; /* Ajusta la posición vertical del menú según tus necesidades */
     right: 0;
-    background-color: white;
-    border: 1px solid black;
-    border-radius: 4px;
-    padding: 5px;
+    background-color: #FFF;
+    border: 1px solid #004040;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    box-sizing: border-box;
     z-index: 999; /* Asegura que el menú esté encima de otros elementos */
-    width: 100px;
+    width: 10em;
     text-align: center;
-  }
-  
-  .menu-opcion {
+}
+
+.menu-opcion {
     color: black;
     padding: 8px;
     cursor: pointer;
-  }
-  
-  .menu-opcion:hover {
+}
+
+.menu-opcion:hover {
     background-color: #eee;
-  }
-  
-  .menu-cerrar-sesion {
+}
+
+.menu-cerrar-sesion {
     color: red;
-  }
+}
 
 

@@ -12,7 +12,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     name = models.CharField(max_length=30)
     description = models.TextField(max_length=200)
-    show = models.BooleanField(default=True)
+    show = models.BooleanField(default=False)
     stock_quantity = models.IntegerField(default=0)
     seller = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE)
     imageRoute = models.CharField(max_length=100, default='')
