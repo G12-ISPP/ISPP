@@ -1,0 +1,39 @@
+h1{
+    font-size: 60px;
+}
+
+h2{
+    font-size: 35px
+}
+
+label{
+    font-size: 20px;
+}
+
+input{
+    margin: 0 2vh;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 20px;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+div.container{
+    margin-left: 5%;
+    margin-right: 5%;
+    font-size: 20px;
+}
+
+

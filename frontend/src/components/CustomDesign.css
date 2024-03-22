@@ -4,6 +4,25 @@
     margin-bottom: 150px;
     font-weight: bold;
   }
+
+.cd-pc-view{
+  display: flex;
+}
+
+.cd-mv-view{
+  display: none;
+}
+
+@media (max-width:550px){
+ 
+  .cd-pc-view{
+    display: none;
+  }
+  
+  .cd-mv-view{
+    display: flex;
+  }
+}
   
   .main {
     display: flex;
@@ -85,6 +104,15 @@
     font-size: 20px;
   }
 
+  input.selected{
+    background-color: #004040;
+    color: #E0EEC6;
+    border: 0.1em #004040 solid;
+    width: 8em;
+    height: 3em;
+    font-weight: bold;
+}
+
   @media (max-width: 1040px) {
     .main {
       flex-direction: column;
@@ -123,3 +151,15 @@
       max-width: 300px;
     }
   }
+
+/* Para los botones debajo del diseño */
+.button-container {
+  display: flex;
+  align-items: center;
+}
+
+.info-button,
+.plus-button,
+.minus-button {
+  margin-right: 10px;
+}

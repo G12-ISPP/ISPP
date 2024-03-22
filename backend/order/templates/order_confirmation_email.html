@@ -15,10 +15,10 @@
     <p>Información del pedido:</p>
     <ul>
         <li>ID de pedido: {{ order.id }}</li>
-        <li>Precio total: {{ order.price }}</li>
+        <li>Precio total: {{ order.price }}€</li>
         <li>Estado: {{ order.get_status_display }}</li>
         <li>Dirección: {{ order.address }}</li>
-        <li>CP: {{ order.postal_code }}</li>
+        <li>Código postal: {{ order.postal_code }}</li>
         <li>Ciudad: {{ order.city }}</li>
         <li>Fecha de compra: {{ order.date }}</li>
     </ul>

@@ -16,13 +16,25 @@ from django.http import JsonResponse
 from users.serializer import UserSerializer
 import base64
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
 
 ruta_backend = settings.RUTA_BACKEND
 ruta_frontend = settings.RUTA_FRONTEND
 
+@api_view(['GET'])
+def list_searching_printer_designs(request):
+    if not request.user.is_authenticated:
+        return Response({'message': 'No estás logueado. Por favor, inicia sesión.'}, status=status.HTTP_401_UNAUTHORIZED)
+    elif not request.user.is_printer:
+        return Response({'message': 'No tienes permiso para acceder a esta página. Solo los impresores pueden ver los diseños.'}, status=status.HTTP_403_FORBIDDEN)
 
+    designs = CustomDesign.objects.filter(status='searching',payed=True)
+    if not designs.exists():
+        return Response({'message': 'No hay diseños disponibles'}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = CustomDesignSerializer(designs, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @csrf_exempt
@@ -45,6 +57,7 @@ def create_custom_design(request):
             address = data.get('address')
             city = data.get('city')
             buyer_mail = data.get('buyer_mail')
+            color = data.get('color')
 
             custom_design = CustomDesign.objects.create(
                 name=name,
@@ -60,7 +73,9 @@ def create_custom_design(request):
                 address=address,
                 city=city,
                 buyer_mail=buyer_mail,
-                payed=False
+                payed=False,
+                status='searching',
+                color=color,
             )
 
             if request.user.is_authenticated:
@@ -137,15 +152,61 @@ def details(request, id):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
+def details_to_printer(request, id):
+    design = get_object_or_404(CustomDesign, custom_design_id=id)
+    if not request.user.is_authenticated:
+        return Response({'message': 'No estás logueado. Por favor, inicia sesión.'}, status=status.HTTP_401_UNAUTHORIZED)
+    elif not request.user.is_printer:
+        return Response({'message': 'No tienes permiso para acceder a esta página. Solo los impresores pueden ver los diseños.'}, status=status.HTTP_403_FORBIDDEN)
+    elif design.printer is not None:
+        return Response({'message': 'Este diseño ya tiene asignado un comprador.'}, status=status.HTTP_403_FORBIDDEN)
+    else:
+        serializer = CustomDesignSerializer(design)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@csrf_exempt
+def update_design_status(request, design_id):
+    if request.method == 'POST':
+        try:
+            design = CustomDesign.objects.get(custom_design_id=design_id)
+            design.status = 'printing'
+            design.printer = request.user
+            design.save()
+
+            body = f"""
+            Ha sido seleccionado para imprimir la pieza que se adjunta en este correo. Por favor, imprimala en color{design.color} y una vez finalizada la impresión, acuda a Correos y envíala a la ciudad {design.city}, a la dirección {design.address}.
+            Recibirás el coste de impresión de {design.price - design.quantity * (3+3+2)} €, más 3 euros por el servicio, y los gastos de envío.
+            """
+
+            subject = 'Puede empezar a imprimir'
+            from_email = settings.EMAIL_HOST_USER
+            to = [design.printer.email]
+
+            email = EmailMessage(subject, body, from_email, to)
+            email.attach_file(design.design_file.path) 
+
+            email.send()
+
+            return JsonResponse({'status': 'success', 'message': 'Diseño actualizado a imprimiendo y correo enviado.'})
+        except CustomDesign.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Diseño no encontrado.'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Método no permitido.'})
+
+
+@api_view(['GET'])
 @csrf_exempt
 def loguedUser(request):
-    print(request.user)
+    if request is None:
+        return Response({"message": "La solicitud es nula"}, status=status.HTTP_400_BAD_REQUEST)
+    
     if request.method == 'GET':
         if request.user.is_authenticated:
             user = request.user
             serializer = UserSerializer(user)
-            print(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            print("no logueado")
             return Response({"message": "No hay usuario logueado"}, status=status.HTTP_200_OK)
+    else:
+        return Response({"message": "Método de solicitud no permitido"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)

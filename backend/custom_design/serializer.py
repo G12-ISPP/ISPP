@@ -5,5 +5,5 @@ class CustomDesignSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomDesign
-        fields = ('custom_design_id', 'design_file', 'name', 'volume', 'area', 'dimensions', 'weight', 'quality', 'quantity', 'price','city','postal_code','address')
+        fields = '__all__'
 

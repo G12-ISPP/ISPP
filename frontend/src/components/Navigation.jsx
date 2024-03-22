@@ -4,7 +4,7 @@ export function Navigation() {
   const isLoggedIn = localStorage.getItem('token');
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.clear();
     window.location.href = "/";
   };
 
