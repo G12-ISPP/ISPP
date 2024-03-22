@@ -315,13 +315,12 @@ const Header = ({ cart, setCart }) => {
                                 {activeProfile && (
                                     <div onMouseLeave={() => setActiveProfile(false)} className="menu-contenedor">
                                         <div onClick={() => window.location.href=`/user-details/${currentUserID}`} className="menu-opcion">Ver Perfil</div>
+                                        <div onClick={() => window.location.href='/myOrders'} className="menu-opcion">Mis pedidos</div>
                                         <hr />
                                         <div onClick={handleLogout} className="menu-opcion menu-cerrar-sesion">Cerrar Sesión</div>
                                     </div>
                                 )}
                         </div>}
-                        {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Pedidos' path='/myOrders' />}
-
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login' />}
                         {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />}
                         {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Vender' path='/products/add-product' />}
