@@ -152,7 +152,6 @@
 }
 
 .mis-chats {
-  position: absolute;
   text-align: center;
 }
 
@@ -165,10 +164,6 @@
     flex-direction: row; 
     border-bottom: 1px solid #ccc;
     border-top: 1px solid #ccc;
-  }
-
-  .footer {
-    display: none; /* Esconde el footer en dispositivos móviles */
   }
 
   .title{
