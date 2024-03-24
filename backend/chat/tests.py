@@ -1,11 +1,10 @@
 import json
+
 from django.test import TestCase
+
 from chat.models import ChatRoom
 from users.models import CustomUser
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.test import override_settings
-from django.conf import settings
+
 
 # Create your tests here.
 class ChatViewTestClase(TestCase):
