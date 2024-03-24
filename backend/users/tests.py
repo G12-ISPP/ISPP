@@ -64,3 +64,21 @@ class UsersTestCase(TestCase):
         self.assertEqual(response.status_code, 400)
         u = CustomUser.objects.filter(username='UserTest123').exists()
         self.assertFalse(u)
+
+class ProfileTestCase(TestCase):
+    
+    def setUp(self):
+        CustomUser.objects.create_user(
+            id=1, username='UserTest', password='UserPass123', address='TestAddress', postal_code=12345, city='Sevilla', email_verified=True)
+
+    def tearDown(self):
+        return super().tearDown()
+
+    def test_get_profile(self):
+        response = self.client.get('/users/api/v1/users/1/')
+        self.assertEqual(response.status_code, 200)
+    
+    def test_get_profile_fail(self):
+        response = self.client.get('/users/api/v1/users/2/')
+        self.assertEqual(response.status_code, 404)
+
