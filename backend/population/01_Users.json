@@ -304,7 +304,8 @@
       "seller_plan": "0",
       "seller_plan_date": null,
       "designer_plan": "0",
-      "designer_plan_date": null
+      "designer_plan_date": null,
+      "email_verified": "True"
     }
   },
   {
@@ -332,7 +333,8 @@
       "seller_plan": "0",
       "seller_plan_date": null,
       "designer_plan": "0",
-      "designer_plan_date": null
+      "designer_plan_date": null,
+      "email_verified": "True"
     }
   }
 ]
