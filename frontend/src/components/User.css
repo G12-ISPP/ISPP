@@ -1,108 +1,235 @@
-.title {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-  font-weight: bold;
+.profile-title-container, .artist-title-container {
+  margin: 2em 10em;
 }
 
-.main {
+.user-container {
   display: flex;
-  flex-direction: row;
   justify-content: space-around;
-  margin-top: 50px;
-  margin-bottom: 100px;
+}
+
+.left-user-container {
+  display: flex;
+  justify-content: center;
+  width: 50%;
+}
+
+.right-user-container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
 }
 
 .user-img-container {
   display: flex;
   flex-direction: column;
-  width: 22%;
-  height: 100px;
-  border-radius: 0.8em;
+  width: 45%;
+  height: auto;
+  border-radius: 50%;
   padding: 0em 1em;
+  overflow: hidden;
 }
 
 .user-img-container img {
-  width: 100%;
   max-width: 100%;
-  height: 25em;
+  max-height: 100%;
   border-radius: 50%;
   object-fit: contain;
-  box-sizing: border-box;
   background: #D9D9D9;
 }
 
-.profile-summary {
-  border: none !important;
-  padding: 0.25em 2em;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 38%;
-  border-radius: 0.8em;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.user-info-container {
+  padding: 0 5em 0 0;
 }
 
-.opinions {
-  border: none !important;
-  padding: 0.25em 2em;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 38%;
-  border-radius: 0.8em;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-left: auto;
-  margin-right: auto;
+.user-name {
+  margin: 0;
+  font-size: 2.2em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
-.title-detalle {
-  justify-content: center;
-  margin-bottom: 10px;
-  font-weight: bold;
+.user-review {
+  display: flex;
+  gap: 0.5em;
+  margin: 0;
+  margin-top: 0.2em;
 }
 
-.main-info-container {
+.user-review-stars {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+}
+
+.user-review-text {
+  font-size: 1em;
+  font-weight: 600;
+  margin: 0;
 }
 
 .user-role-container {
-  width: 25%;
   display: flex;
-  justify-content: center;
-  background: #D9D9D9;
-  padding: 0.5em;
-  border-radius: 0.8em;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  gap: 0.5em;
+  margin-top: 0.6em;
 }
 
 .user-role {
-  font-weight: bold;
+  background: #B6FCCE;
+  font-size: 1em;
+  font-weight: 700;
+  padding: 0.2em 0.8em;
+  border-radius: 0.7em;
+  border: 0.15em #004040 solid;
+}
+
+.user-contact-container {
+  margin-bottom: 2.5em;
+}
+
+.user-contact {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.user-button-wrapper {
+  display: flex;
+  gap: 1em;
+}
+
+.reviews-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin: 0 10em;
+  margin-bottom: 5em;
+}
+
+.user-reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  margin-top: 2em;
+}
+
+.user-products-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  margin: 5em 10em;
+}
+
+.user-products-section .grid {
+  padding: 0;
+  width: 100%;
   margin: 0;
-  margin-block: 0;
-  margin-inline: 0;
-  text-align: center;
 }
 
-.section-title-container {
-  align-self: center;
-}
+@media (max-width: 767px) {
 
-@media screen and (max-width: 768px) {
-  .main {
+  .artist-title-container, .profile-title-container {
+    margin: 1.5em 1.5em;
+    font-size: 0.8em;
+  }
+
+  .user-container {
     flex-direction: column;
-    align-items: center;
-    gap: 5em;
+    justify-content: center;
+    margin: 0 1.5em;
   }
 
-  .img {
-    margin-left: 0;
-    margin-bottom: 5em;
-    height: 10em;
+  .left-user-container {
+    width: 100%;
   }
+
+  .right-user-container {
+    width: 100%;
+  }
+
+  .user-info-container {
+    margin-top: 1em;
+    padding: 0;
+  }
+
+  .user-name {
+    font-size: 1.25em;
+  }
+
+  .user-button-wrapper {
+    gap: 0.5em;
+  }
+
+  .user-review-text {
+    font-size: 0.8em;
+  }
+
+  .user-review-stars img {
+    width: 1.25em;
+  }
+
+  .user-role {
+    font-size: 0.8em;
+  }
+
+  .user-contact {
+    font-size: 0.9em;
+  }
+
+  .user-products-section {
+    margin: 1.5em 1.5em;
+  }
+
+  .user-products-section .text {
+    font-size: 1.5em;
+  }
+
+  .user-products-section .grid {
+    padding: 0;
+  }
+
+  .reviews-section {
+    margin: 0 1.5em 2.5em;
+  }
+
+  .reviews-section .text {
+    font-size: 1.5em;
+  }
+
+  .user-reviews .paginator .page-counter .page-selector {
+    font-size: 0.9em;
+  }
+
+  .user-reviews .paginator .page-counter .actual-page {
+    font-size: 0.9em;
+  }
+
+}
+
+@media (max-width: 320px) {
+
+  .user-button-wrapper {
+    gap: 0.3em;
+  }
+
+}
+
+@media (min-width: 767px) and (max-width: 1024px) {
+
+  .artist-title-container, .profile-title-container {
+    margin: 1.5em 6.5em;
+  }
+
+  .user-products-section {
+    margin: 1.5em 6.5em;
+  }
+
+  .user-products-section .grid {
+    padding: 0;
+  }
+
+  .reviews-section {
+    margin: 0 6.5em 2.5em;
+  }
+
 }

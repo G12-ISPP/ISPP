@@ -1,0 +1,44 @@
+.opinion {
+  display: flex;
+  gap: 0.25em;
+  flex-direction: column;
+  width: 100%;
+}
+
+.opinion-score {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.opinion-date {
+  margin: 0;
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+.opinion-desc{
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+
+  .opinion-date {
+    font-size: 0.9em;
+  }
+
+  .opinion-desc {
+    font-size: 0.9em;
+  }
+
+  .opinion .profile-icon-container .profile-icon-image {
+    width: 1.6em;
+    height: 1.6em;
+  }
+
+  .opinion .profile-icon-container .profile-icon-name {
+    font-size: 1em;
+  }
+
+}
+
+  

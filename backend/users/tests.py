@@ -5,7 +5,7 @@ from .models import CustomUser
 class LoginTestCase(TestCase):
 
     def setUp(self):
-        CustomUser.objects.create_user(username='UserTest123', email='testemail@gmail.com', password='UserPass123', address='TestAddress', postal_code=12345, city='Sevilla')
+        CustomUser.objects.create_user(username='UserTest123', email='testemail@gmail.com', password='UserPass123', address='TestAddress', postal_code=12345, city='Sevilla', email_verified=True)
     
     def tearDown(self):
         super().tearDown()

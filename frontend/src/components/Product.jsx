@@ -1,7 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import './Product.css'
 import Button, { BUTTON_TYPES } from './Button/Button';
 import Text, { TEXT_TYPES } from "./Text/Text";
+import PageTitle from "./PageTitle/PageTitle";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import {Link} from 'react-router-dom';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -27,16 +31,38 @@ class ProductDetail extends React.Component {
     const user = await response_user.json();
     this.setState({ product, user });
 
+    let petition3 = backend + '/designs/loguedUser';
+    petition3 = petition3.replace(/"/g, '');
+    const response_currentUser = await fetch(petition3, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (response_currentUser.ok) {
+      const currentUserData = await response_currentUser.json();
+      this.setState({ currentUserId: currentUserData.id });
+    }
+
   }
 
+  handleEditProduct = () => {
+    const { product } = this.state;
+    if (product) {
+       const editUrl = `/products/${product.id}/edit/`;
+       window.location.href = editUrl;
+    }
+   };
+   
   render() {
-    const { product, user } = this.state;
+    const { product, user, currentUserId } = this.state;
     if (!product || !user) {
       return <div>Loading...</div>;
     }
 
     const cart = this.props.cart;
     const setCart = this.props.setCart;
+    const { agregado } = this.state;
+    
 
     const addProduct = product => {
       let cartCopy = [...cart];
@@ -44,25 +70,37 @@ class ProductDetail extends React.Component {
       let existingProduct = cartCopy.find(cartProduct => cartProduct.id == product.id);
 
       if (existingProduct) {
-        if ((product.stock_quantity - existingProduct.quantity) < 1) return
+        if ((product.stock_quantity - existingProduct.quantity) < 1){
+          alert('No hay suficiente stock disponible')
+          return
+        } 
         existingProduct.quantity += 1
       } else {
-        cartCopy.push({
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          imageRoute: product.imageRoute,
-          stock_quantity: product.stock_quantity,
-          quantity: 1
-        })
+        if(product.stock_quantity>0){
+          cartCopy.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            imageRoute: product.imageRoute,
+            image_url: product.image_url,
+            stock_quantity: product.stock_quantity,
+            product_type: product.product_type,
+            quantity: 1
+          })
+        }else{
+          alert('No hay stock disponible')
+        }
       }
 
       setCart(cartCopy)
       localStorage.setItem('cart', JSON.stringify(cart));
     };
 
+    const showEditButton = product.seller === currentUserId;
+
     return (
       <>
+        <PageTitle title={product.name} />
         <div className="section-title-container">
           <Text type={TEXT_TYPES.TITLE_BOLD} text='Detalles del producto' />
         </div>
@@ -73,14 +111,19 @@ class ProductDetail extends React.Component {
           <div className="product-summary">
             <div>
               <h2 className="product-detail-label">{product.name}</h2>
-              <h3>{user.first_name} {user.last_name}</h3>
+              <Link to={`/user-details/${user.id}`} style={{textDecoration:'none',color:'inherit'}}>
+                <h3><FontAwesomeIcon icon={faUser} /> {user.first_name} {user.last_name}</h3>
+              </Link>
               <h3 className="product-detail-label">Detalles:</h3>
               <p>{product.description}</p>
               <h3 className="product-detail-label">Precio: {product.price} €</h3>
             </div>
             <div className="buy-container">
               <h3>Cantidad de stock: {product.stock_quantity}</h3>
-              <Button type={BUTTON_TYPES.LARGE} text='Añadir al carrito' onClick={() => addProduct(product)} />
+              <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => {addProduct(product); this.setState({ agregado :true })}} />
+              {showEditButton && (
+              <Button type={BUTTON_TYPES.LARGE} text='Editar producto' onClick={this.handleEditProduct} />
+            )}
             </div>
           </div>
         </div>

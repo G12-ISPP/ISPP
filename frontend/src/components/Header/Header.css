@@ -73,7 +73,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 23em;
+    width: 17em;
 }
 
 .mobile-menu-icon {
@@ -180,6 +180,7 @@
 	width: 40px;
 	height: 40px;
 	stroke: #D9D9D9;
+    color: #D9D9D9;
 }
 
 .icon-cart:hover {
@@ -342,6 +343,36 @@
 
 .container-search::-webkit-scrollbar-thumb:hover {
     background-color: #999;
+}
+.menu-perfil {
+    position: relative;
+  }
+  
+.menu-contenedor {
+    position: absolute;
+    right: 0;
+    background-color: #FFF;
+    border: 1px solid #004040;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    box-sizing: border-box;
+    z-index: 999; /* Asegura que el menú esté encima de otros elementos */
+    width: 10em;
+    text-align: center;
+}
+
+.menu-opcion {
+    color: black;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.menu-opcion:hover {
+    background-color: #eee;
+}
+
+.menu-cerrar-sesion {
+    color: red;
 }
 
 

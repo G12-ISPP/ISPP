@@ -80,7 +80,33 @@
 }
 .transparent-btn:hover {
     background-color: #E0EEC6;
+    border-color: #004040;
     scale: 1.05;
+}
+
+.plain-btn {
+    width: 10em;
+    height: 2.5em;
+    padding: 0.8em;
+    border-radius: 0.6em;
+    color: #FAFAFA;
+    font-size: 0.8em;
+    font-weight: 700;
+    transition: 0.3s;
+}
+.plain-btn:hover {
+    scale: 1.05;
+}
+
+.plain-btn.button.green {
+    width: 7em;
+    background: #00992e;
+    border: 0.15em #00992e solid;
+}
+
+.plain-btn.button.red {
+    background: #D90429;
+    border: 0.15em #D90429 solid;
 }
 
 .fat-btn {

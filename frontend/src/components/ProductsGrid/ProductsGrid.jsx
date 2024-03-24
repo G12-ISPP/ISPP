@@ -9,7 +9,7 @@ const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
 
 const ProductsGrid = (consts) => {
 
-    const { gridType, elementType, filter } = consts
+    const { gridType, elementType, filter, main } = consts
 
     const getGridClass = () => {
         return gridType.toLowerCase() + '-gr grid';
@@ -33,6 +33,9 @@ const ProductsGrid = (consts) => {
 
             if (response.ok) {
                 const data = await response.json();
+                if(main){
+                    return data.filter(product => product.show === true);
+                }
                 return data;
             } else {
                 console.error('Error al obtener los productos');
@@ -47,6 +50,7 @@ const ProductsGrid = (consts) => {
 
             const groupsOfProducts = products.reduce((acc, product, index) => {
                 let groupIndex = Math.floor(index / 5);
+                console.log('groupIndex', groupIndex)
                 if (window.innerWidth > 767 && window.innerWidth < 1024) {
                     groupIndex = Math.floor(index / 3);
                 } else if (window.innerWidth < 768) {
@@ -95,7 +99,7 @@ const ProductsGrid = (consts) => {
             if (res && Array.isArray(res)) { // Verificar si res no es undefined y es un array
                 {/*Adaptar código cuando se añada funcionalidad de destacados*/}
                 if (gridType === GRID_TYPES.MAIN_PAGE) {
-                    setProducts(res.slice(0, 5));
+                    setProducts(res.sort(() => Math.random() - 0.5).slice(0, 5));
                 } else {
                     if (window.innerWidth < 768) {
                         setProductsPerPage(12);
@@ -112,7 +116,7 @@ const ProductsGrid = (consts) => {
         }
         loadProducts();
 
-    }, [gridType, elementType, filter, page, productsPerPage]);
+    }, [gridType, elementType, filter, page, productsPerPage, main]);
 
     return (
         <div className={getGridClass()}>
@@ -129,11 +133,17 @@ const ProductsGrid = (consts) => {
                     <Paginator page={page} setPage={setPage} numPages={numPages} />
                 </div>
             ) : (
-                products.map(product => (
-                    <div key={product.id}>
-                        <Product name={product.name} price={product.price} pathImage={product.image_url ? product.image_url : product.imageRoute} pathDetails={product.id} isImageRoute={!product.image_url} />
-                    </div>
-                ))
+                <>
+                    {products.length === 0 ? (
+                        <p className='empty-grid-text'>Actualmente, no hay productos para mostrar.</p>
+                    ) : (
+                        products.map(product => (
+                            <div key={product.id}>
+                                <Product name={product.name} price={product.price} pathImage={product.image_url ? product.image_url : product.imageRoute} pathDetails={product.id} isImageRoute={!product.image_url} />
+                            </div>
+                        ))
+                    )}
+                </>
             )}
         </div>
     )

@@ -47,7 +47,8 @@ const Navbar = () => {
                 <li onClick={() => onButtonClick('/printers')}>Impresoras</li>
                 <li onClick={() => onButtonClick('/materials')}>Materiales</li>
                 <li onClick={() => onButtonClick('/artists')}>Artistas</li>
-                <li onClick={() => onButtonClick('/')}>Comunidad</li>
+                <li onClick={() => onButtonClick('/comunity')}>Comunidad</li>
+
                 {isLoggedIn && isPrinter && (
                     <li onClick={() => onButtonClick('/designs/searching_printer/')}>Modelos a imprimir</li>
                 )}

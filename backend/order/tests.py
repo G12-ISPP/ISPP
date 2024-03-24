@@ -16,7 +16,8 @@ class BaseTestCase(APITestCase):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
             email='test@example.com',
-            postal_code='12345'
+            postal_code='12345',
+            email_verified=True
         )
         self.client.force_authenticate(user=self.custom_user)
 
@@ -39,7 +40,7 @@ class BaseTestCase(APITestCase):
             postal_code='12345',
             payment='C',
             date=timezone.now(),
-            payed=False
+            payed=True
         )
 
         OrderProduct.objects.create(
@@ -101,21 +102,17 @@ class ConfirmOrderTestCase(BaseTestCase):
         self.assertEqual(email.subject, 'Confirmación de tu pedido en Shar3d')
         self.assertEqual(email.to, ['test@example.com'])
         
-        html_content = None
-        for content, content_type in email.alternatives:
-            if content_type == 'text/html':
-                html_content = content
-                break
-
+        html_content = email.body
+        
         self.assertIsNotNone(html_content)  # Verificar que hay contenido HTML
         
         # Verificar si las cadenas está presente en el contenido HTML
         self.assertIn('Buenas testuser,', html_content) 
         self.assertIn('ID de pedido: ' + str(self.order.id), html_content)
-        self.assertIn('Precio total: ' + str(self.order.price), html_content)
+        self.assertIn('Precio total: ' + str(self.order.price) + '€', html_content)
         self.assertIn('Estado: ' + self.order.get_status_display(), html_content)
         self.assertIn('Dirección: ' + self.order.address, html_content)
-        self.assertIn('CP: ' + self.order.postal_code, html_content)
+        self.assertIn('Código postal: ' + self.order.postal_code, html_content)
         self.assertIn('Ciudad: ' + self.order.city, html_content)
         
         mail.outbox.clear()
@@ -129,7 +126,7 @@ class CancelOrderTestCase(BaseTestCase):
 
 class OrderDetailsTestCase(BaseTestCase):
     def test_order_details(self):
-        User.objects.create_user(username='testuser1', email='test@example.com', password='test', is_staff=True, postal_code='12345')
+        User.objects.create_user(username='testuser1', email='test@example.com', password='test', is_staff=True, postal_code='12345', email_verified=True)
         response = self.client.post(reverse('login'), {'username': 'testuser1', 'password': 'test'})
         token = response.json()["token"]
 

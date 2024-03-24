@@ -30,6 +30,10 @@
     gap: 1.25em;
 }
 
+.empty-grid-text {
+    align-self: flex-start;
+}
+
 @media (max-width: 1024px) {
 
     .grid {
