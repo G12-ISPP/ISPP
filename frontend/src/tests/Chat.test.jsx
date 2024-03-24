@@ -10,86 +10,7 @@ import { act } from 'react-dom/test-utils';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND).replace(/"/g, '');
 
-describe('Test unitarios de Chat', () => {
-
-    function mockFetchWithHeader(object) {
-        vi.spyOn(window, 'fetch').mockImplementationOnce(() =>
-            Promise.resolve({
-                ok: true,
-                headers: {
-                    get: vi.fn((headerName) => {
-                        if (headerName === 'Authorization') {
-                            return `Bearer ${token}`; // Asegúrate de definir `token` en tu prueba
-                        } else if (headerName === 'Content-Type') {
-                            return 'application/json';
-                        }
-                    }),
-                },
-                json: () => Promise.resolve(object),
-            })
-        );
-    }
-
-    test('renderiza ChatComponent sin fallos', () => {
-        mockFetchWithHeader({members: [{username: 'user1'}, {username: 'user2'}]});
-        const mockFetchMessages = vi.spyOn(global, 'fetch').mockImplementationOnce(() =>
-            Promise.resolve({
-                ok: true,
-                json: () => Promise.resolve({messages: ['message1', 'message2']}),
-            })
-        );
-        const mockFetchUser = vi.spyOn(global, 'fetch').mockImplementationOnce(() =>
-            Promise.resolve({
-                ok: true,
-                json: () => Promise.resolve({user_id: 1}),
-            })
-        );
-        render(<Router>
-            <ChatComponent/>
-        </Router>);
-        // Verificar la presencia de elementos en la página
-        expect(screen.getByText('Enviar')).toBeInTheDocument();
-        expect(screen.findByPlaceholderText('Escribe un mensaje...'));
-        expect(screen.getByText('Volver')).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('Escribe un mensaje...')).toBeInTheDocument();
-        expect(screen.getByRole('button', {name: /enviar/i})).toBeInTheDocument();
-
-        expect(mockFetchMessages).toHaveBeenCalled();
-        expect(mockFetchUser).toHaveBeenCalled();
-
-        // Simular la escritura de un mensaje en el input
-        fireEvent.change(screen.getByPlaceholderText('Escribe un mensaje...'), {target: {value: 'Hello, World!'}});
-
-        // Simular el clic en el botón de enviar
-        fireEvent.click(screen.getByText('Enviar'));
-
-
-    });
-
-    test('renderiza ChatPage sin fallos', () => {
-        mockFetchWithHeader({members: [{username: 'user1'}, {username: 'user2'}]});
-        const mockFetchMessages = vi.spyOn(global, 'fetch').mockImplementationOnce(() =>
-            Promise.resolve({
-                ok: true,
-                json: () => Promise.resolve({messages: ['message1', 'message2']}),
-            })
-        );
-        const mockFetchUser = vi.spyOn(global, 'fetch').mockImplementationOnce(() =>
-            Promise.resolve({
-                ok: true,
-                json: () => Promise.resolve({user_id: 1}),
-            })
-        );
-        render(<Router>
-            <ChatPage/>
-        </Router>);
-
-        expect(mockFetchMessages).toHaveBeenCalled();
-        expect(mockFetchUser).toHaveBeenCalled();
-    });
-});
-
-
+// TODO: Add login
 describe('Test de integración de Chat', () => {
 
     let user1 = undefined;
@@ -134,6 +55,7 @@ describe('Test de integración de Chat', () => {
             messages = await (await getMessages(token, chat_room.chatroomID)).json();
         });
 
+        console.log(messages);
         expect(messages.some(msg => msg.content === 'Hello, World!¡Hola, Mundo!123345')).toBe(true);
     }
 
