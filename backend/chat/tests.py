@@ -26,11 +26,19 @@ class ChatUsersViewTest(TestCase):
             city='test2',
             email_verified=True
         )
+        self.user3 = CustomUser.objects.create_user(
+            id=3,
+            username='test3',
+            password='test3',
+            address='test3',
+            postal_code=12345,
+            city='test2',
+        )
         self.chatroom = ChatRoom.objects.create(title='Test Chat Room')
         self.chatroom.members.add(self.user1, self.user2)
 
     def test_chat_users_success(self):
-        token = self.get_user_token(self.user1)
+        token = self.get_user_token(self.user1.username, 'test1')
         headers = {'Authorization': 'Bearer ' + token}
         response = self.client.get('/chat/chat-users/', headers=headers)
         self.assertEqual(response.status_code, 200)
@@ -46,13 +54,13 @@ class ChatUsersViewTest(TestCase):
         self.assertEqual(response.status_code, 401)
 
     def test_chat_users_fail_unauthorized(self):
-        token = self.get_user_token(self.user1)
+        token = self.get_user_token(self.user3.username, 'test3')
         headers = {'Authorization': 'Bearer ' + token}
         response = self.client.get('/chat/chat-users/', headers=headers)
         self.assertEqual(response.status_code, 401)
 
-    def get_user_token(self, user):
-        response_login = self.client.post('/users/login/', {'username': user.username, 'password': 'test1'},
+    def get_user_token(self, username, password):
+        response_login = self.client.post('/users/login/', {'username': username, 'password': password},
                                           format='json')
         print(response_login.data)
         return response_login.data.get('token', '')
