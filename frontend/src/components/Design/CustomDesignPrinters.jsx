@@ -42,6 +42,7 @@ const CustomDesignPrinters = () => {
 
     const handlePrint = async () => {
         try {
+            
             const response = await fetch(`${backend}/designs/update-status/${id}/`, {
                 method: 'POST',
                 headers: {

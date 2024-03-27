@@ -97,7 +97,7 @@ class Post extends Component {
         .then(response => {
           if (response.ok) {
             alert('Post añadido correctamente');
-            window.location.href = '/';
+            window.location.href = '/comunity';
           } else {
             throw new Error('Error al subir la imagen');
           }

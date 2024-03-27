@@ -105,7 +105,7 @@ class RegisterForm extends React.Component {
       });
   
       if (response.ok) {
-        alert('Registro exitoso');
+        alert('Registro exitoso, para poder iniciar sesión debes confirmar tu correo electrónico con el mail que te hemos enviado.');
         window.location.href = "/";
       } else {
         const data = await response.json();
