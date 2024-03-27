@@ -18,6 +18,7 @@ import base64
 from django.conf import settings
 from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
+import uuid
 
 ruta_backend = settings.RUTA_BACKEND
 ruta_frontend = settings.RUTA_FRONTEND
@@ -60,6 +61,7 @@ def create_custom_design(request):
             color = data.get('color')
 
             custom_design = CustomDesign.objects.create(
+                custom_design_id=uuid.uuid4(),
                 name=name,
                 quantity=quantity,
                 quality=quality,
