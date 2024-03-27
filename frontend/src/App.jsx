@@ -1,7 +1,5 @@
 import {useEffect, useState} from 'react';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import {TaskPage} from "./pages/TaskPage";
-import {TaskFormPage} from "./pages/TaskFormPage";
 import {RegisterFormPage} from "./pages/RegisterFormPage.jsx";
 import {LoginFormPage} from "./pages/LoginFormPage.jsx";
 import ProductDetail from "./components/Product";
@@ -64,8 +62,6 @@ function App() {
                 <Navbar/>
                 <Routes>
                     <Route path="/" element={<MainPage/>}/>
-                    <Route path="/tasks" element={<TaskPage/>}/>
-                    <Route path="/tasks-create" element={<TaskFormPage/>}/>
                     <Route path="/chat/:roomId" element={<ChatPage/>}/>
                     <Route path="/chat/" element={<ChatPage />} />
                     <Route path="/product-details/:id" element={<ProductDetail cart={cart} setCart={setCart}/>}/>
