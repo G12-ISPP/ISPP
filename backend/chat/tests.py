@@ -108,7 +108,6 @@ class ChatViewTestClase(TestCase):
     def test_get_messages_fail_user_not_member(self):
         data = {'username': 'test', 'password': 'test'}
         response_login = self.client.post('/users/login/', data, format='json')
-        print(response_login.data)
         token = response_login.data['token']
         headers = {'Authorization': 'Bearer ' + token}
         response = self.client.get('/chat/1/messages/', headers=headers)
