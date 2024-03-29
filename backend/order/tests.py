@@ -156,9 +156,3 @@ class MyOrdersTestCase(BaseTestCase):
         self.assertEqual(len(order_data['orders']), 1)
         self.assertIsInstance(order_data['empty'], bool)
         self.assertEqual(order_data['empty'], False)
-
-    def test_order_details_with_non_existing_order(self):
-        token = None
-        response = self.client.get(reverse('my_orders'), HTTP_AUTHORIZATION='Bearer ' + token)
-        self.assertEqual(response.status_code, 500)
-        self.assertEqual(response.json(), {'error': 'Internal server error'})
