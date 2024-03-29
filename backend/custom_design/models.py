@@ -14,7 +14,7 @@ class CustomDesign(models.Model):
         ('blue', 'Azul'),
     ]
 
-    custom_design_id = models.AutoField(primary_key=True)
+    custom_design_id = models.UUIDField(primary_key=True)
     design_file = models.FileField(upload_to='designs/')
     name = models.CharField(max_length=255)
     quantity = models.PositiveIntegerField(default=1)
