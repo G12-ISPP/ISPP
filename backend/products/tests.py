@@ -17,7 +17,6 @@ class ProductsViewTestClase(TestCase):
             Path(__file__).resolve().parent.parent / "media/products/test1.jpg"
         )
         self.factory = APIRequestFactory()
-        # Creamos algunos usuarios y productos para usar en los tests
         self.user1 = CustomUser.objects.create(
             username='user1',
             password='test',
