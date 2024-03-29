@@ -10,6 +10,7 @@ describe("OK User Details", () => {
     test("Normal", async () => {
         /* ARRANGE */
         const user = {
+            id: 10,
             address: "Avenida Reina Mercedes, 16, 4B",
             city: "Sevilla",
             email: "davidhernandez@gmail.com",
@@ -34,6 +35,7 @@ describe("OK User Details", () => {
     test("User with Oriental Characters", async () => {
         /* ARRANGE */
         const user = {
+            id: 10,
             address: "東京都中央区",
             city: "東京東京",
             email: "hanako@example.com",
@@ -58,6 +60,7 @@ describe("OK User Details", () => {
     test("User with Extreme Postal Code", async () => {
         /* ARRANGE */
         const user = {
+            id: 10,
             address: "123 Main Street",
             city: "Cityville",
             email: "john.doe@example.com",
@@ -85,6 +88,7 @@ describe("Injection User Details", () => {
     test("User with JavaScript Injection", async () => {
         /* ARRANGE */
         const user = {
+            id: 10,
             address: "<script>alert('JavaScript Injection');</script>",
             city: "Cityville",
             email: "john.doe@example.com",
@@ -109,6 +113,7 @@ describe("Injection User Details", () => {
     test("User with HTML Injection", async () => {
         /* ARRANGE */
         const user = {
+            id: 10,
             address: "<div style='color:red;'>HTML Injection</div>",
             city: "Cityville",
             email: "john.doe@example.com",
@@ -133,6 +138,7 @@ describe("Injection User Details", () => {
     test("User with SQL Injection", async () => {
         /* ARRANGE */
         const user = {
+            id: 10,
             address: "User with SQL Injection ADDRESS; DROP TABLE Users;",
             city: "Cityville",
             email: "john.doe@example.com",
@@ -158,6 +164,7 @@ describe("User roles", () => {
     test("Designer", async () => {
         /* ARRANGE */
         const user = {
+            id: 10,
             address: "Avenida Reina Mercedes, 16, 4B",
             city: "Sevilla",
             email: "davidhernandez@gmail.com",
@@ -181,6 +188,7 @@ describe("User roles", () => {
   test("Designer", async () => {
         /* ARRANGE */
         const user = {
+            id: 10,
             address: "Avenida Reina Mercedes, 16, 4B",
             city: "Sevilla",
             email: "davidhernandez@gmail.com",
