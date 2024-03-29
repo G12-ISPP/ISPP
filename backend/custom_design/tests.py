@@ -24,6 +24,7 @@ class ListSearchingPrinterDesignsTestCase(APITestCase):
         self.client.force_authenticate(user=self.custom_user)
 
         self.design = CustomDesign.objects.create(
+            custom_design_id = '123e4567-e89b-12d3-a456-426614174000',
             name='Test Design',
             quantity=1,
             quality='High',
@@ -133,6 +134,7 @@ class ConfirmCancelTestCase(APITestCase):
         self.client.force_authenticate(user=self.custom_user)
 
         self.design = CustomDesign.objects.create(
+            custom_design_id = '123e4567-e89b-12d3-a456-426614174000',
             name='Test Design',
             quantity=1,
             quality='High',
@@ -184,6 +186,7 @@ class UpdateDesignStatusTestCase(APITestCase):
         design_file = SimpleUploadedFile('Dragon.stl', file_content)
 
         self.design = CustomDesign.objects.create(
+            custom_design_id = '123e4567-e89b-12d3-a456-426614174000',
             name='Test Design',
             quantity=1,
             quality='High',
@@ -238,6 +241,7 @@ class DesignDetailsTestCase(APITestCase):
         self.client.force_authenticate(user=self.custom_user)
 
         self.design = CustomDesign.objects.create(
+            custom_design_id = '123e4567-e89b-12d3-a456-426614174000',
             name='Test Design',
             quantity=1,
             quality='High',
@@ -273,6 +277,7 @@ class DesignDetailsToPrinterTestCase(APITestCase):
         self.client.force_authenticate(user=self.custom_user)
 
         self.design = CustomDesign.objects.create(
+            custom_design_id = '123e4567-e89b-12d3-a456-426614174000',
             name='Test Design',
             quantity=1,
             quality='High',
