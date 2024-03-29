@@ -13,9 +13,6 @@ from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 # Create your tests here.
 class ProductsViewTestClase(TestCase):
     def setUp(self):
-        self.test_image_path = (
-            Path(__file__).resolve().parent.parent / "media/products/test1.jpg"
-        )
         self.factory = APIRequestFactory()
         self.user1 = CustomUser.objects.create(
             username='user1',
@@ -192,7 +189,7 @@ class ProductsViewTestClase(TestCase):
 
     def test_edit_product_image(self):
         url = reverse('products-detail', kwargs={'pk': self.product1.pk})
-        image = SimpleUploadedFile('test.jpg', content=open(self.test_image_path, 'rb').read(), content_type='image/jpeg')
+        image = SimpleUploadedFile('test.jpg', b'content', content_type='image/jpeg')
         request = self.factory.put(url, {'price': 200, 'name': 'Updated Product', 'description': 'Updated Description', 'show': 'true', 'stock_quantity': 20, 'image': image}, format='multipart')
         force_authenticate(request, user=self.user1)
         response = ProductsView.as_view({'put': 'edit_product'})(request, pk=self.product1.pk)
