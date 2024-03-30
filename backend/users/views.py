@@ -270,16 +270,12 @@ def follow_toggle(request, user_id):
         user.save()
         request.user.followings.remove(user)
         request.user.save()
-        print(user.followers.all())
-        print(request.user.followings.all())
         return JsonResponse({'success': 'Ya no sigues a ' + user.username}, status=201)
     else:
         user.followers.add(request.user)
         user.save()
         request.user.followings.add(user)
         request.user.save()
-        print(user.followers.all())
-        print(request.user.followings.all())
         return JsonResponse({'success': 'Ahora sigues a ' + user.username}, status=201)
 
 
