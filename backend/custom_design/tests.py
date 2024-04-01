@@ -300,6 +300,56 @@ class DesignDetailsToPrinterTestCase(APITestCase):
         response = self.client.get(reverse('details_to_printer', args=[self.design.custom_design_id]))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], 'Test Design')
+    
+    def test_anotherprinter(self):
+        user2 = get_user_model().objects.create_user(
+            username='testuser2',
+            email='test@example.com',
+            postal_code='12345',
+            email_verified=True
+        )
+
+        self.design = CustomDesign.objects.create(
+            custom_design_id = '123e4567-e89b-12d3-a456-426614174002',
+            name='Test Design',
+            quantity=1,
+            quality='High',
+            dimensions='10x10x10',
+            area=100,
+            volume=1000,
+            weight=10,
+            price=100,
+            postal_code='12345',
+            address='Test Address',
+            city='Test City',
+            buyer_mail='buyer@example.com',
+            payed=True,
+            status='searching',
+            printer=user2,
+            color='Red',
+            buyer=self.custom_user,
+        )
+    
+        response = self.client.get(reverse('details_to_printer', args=[self.design.custom_design_id]))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_not_authenticated(self):
+        self.client.force_authenticate(user=None)
+        response = self.client.get(reverse('details_to_printer', args=[self.design.custom_design_id]))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_not_printer(self):
+        self.custom_user = get_user_model().objects.create_user(
+            username='testuser3',
+            email='test@example.com',
+            postal_code='12345',
+            email_verified=True
+        )
+        self.client.force_authenticate(user=self.custom_user)
+    
+        response = self.client.get(reverse('details_to_printer', args=[self.design.custom_design_id]))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
 
 class LoguedUserTestCase(APITestCase):
     def setUp(self):
@@ -315,3 +365,35 @@ class LoguedUserTestCase(APITestCase):
         response = self.client.get(reverse('loguedUser'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['username'], 'testuser')
+
+class SearchingPrinterDesign(APITestCase):
+    def test_not_authenticated(self):
+        self.client.force_authenticate(user=None)
+        response = self.client.get(reverse('list_searching_printer_designs'))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def setUp(self):
+        self.custom_user = get_user_model().objects.create_user(
+            username='testuser',
+            email='test@example.com',
+            postal_code='12345',
+            email_verified=True
+        )
+        self.client.force_authenticate(user=self.custom_user)
+
+    def test_not_printer(self):
+        response = self.client.get(reverse('list_searching_printer_designs'))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+    
+    def test_not_design(self):
+        self.custom_user = get_user_model().objects.create_user(
+            username='test-user',
+            email='test@example.com',
+            postal_code='12345',
+            email_verified=True,
+            is_printer = True
+        )
+        self.client.force_authenticate(user=self.custom_user)
+
+        response = self.client.get(reverse('list_searching_printer_designs'))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
