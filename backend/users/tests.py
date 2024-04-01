@@ -110,6 +110,24 @@ class FollowToggleTestCase(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(self.user.followings.filter(id=self.other_user.id).exists())
+        response_data = json.loads(response.content)
+        self.assertTrue(response_data['success'])
+        self.assertEqual(response.json(), {'success': 'Ahora sigues a otheruser'})
+
+    def test_follow_toggle_unfollow(self):
+        url = reverse('follow_toggle', kwargs={'user_id': self.other_user.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue(self.user.followings.filter(id=self.other_user.id).exists())
+        response_data = json.loads(response.content)
+        self.assertEqual(response.json(), {'success': 'Ahora sigues a otheruser'})
+    
+        url = reverse('follow_toggle', kwargs={'user_id': self.other_user.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 201)
+        response_data = json.loads(response.content)
+        self.assertTrue(response_data['success'])
+        self.assertEqual(response.json(), {'success': 'Ya no sigues a otheruser'})
 
     def test_follow_status_follows(self):
         self.user.followings.add(self.other_user)
@@ -118,15 +136,22 @@ class FollowToggleTestCase(TestCase):
         self.assertEqual(response.status_code, 201)
         response_data = json.loads(response.content)
         self.assertFalse(response_data['follows'])
+        self.assertEqual(response.json(), {'follows': False})
+
         url = reverse('follow_toggle', kwargs={'user_id': self.other_user.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(self.user.followings.filter(id=self.other_user.id).exists())
+        response_data = json.loads(response.content)
+        self.assertTrue(response_data['success'])
+        self.assertEqual(response.json(), {'success': 'Ahora sigues a otheruser'})
+
         url = reverse('follow_status', kwargs={'user_id': self.other_user.id})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 201)
         response_data = json.loads(response.content)
         self.assertTrue(response_data['follows'])
+        self.assertEqual(response.json(), {'follows': True})
 
     def test_follow_status_not_follows(self):
         url = reverse('follow_status', kwargs={'user_id': self.other_user.id})
@@ -134,6 +159,7 @@ class FollowToggleTestCase(TestCase):
         self.assertEqual(response.status_code, 201)
         response_data = json.loads(response.content)
         self.assertFalse(response_data['follows'])
+        self.assertEqual(response.json(), {'follows': False})
 
 class ProfileTestCase(TestCase):
     
