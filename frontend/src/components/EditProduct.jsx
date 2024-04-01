@@ -82,7 +82,8 @@ const EditProduct = () => {
             const products = await responseProducts.json();
             let count = 0;
             products.forEach(product => {
-              if (product.show) {
+              
+              if (product.show && product.id.toString() !== id) {
                 count++;
               }
             });
@@ -164,10 +165,12 @@ const EditProduct = () => {
 
     if(show && seller_plan && designer_plan && countShow >= 8){
       errors.show = 'No puedes más destacar más de 8 productos';
-    } else if(show && seller_plan && countShow >= 5){
-      errors.show = 'Para destacar más de 5 productos necesitas un plan de diseñador';
-    } else if(show && designer_plan && countShow >= 3){
+    } else if(show && !seller_plan && designer_plan && countShow >= 3){
       errors.show = 'Para destacar más de 3 productos necesitas un plan de vendedor';
+    } else if(show && seller_plan && !designer_plan && countShow >= 5){
+      errors.show = 'Para destacar más de 5 productos necesitas un plan de diseñador';
+    } else if (show && !seller_plan && !designer_plan) {
+      errors.show = 'Para destacar productos debe adquirir un plan';
     }
 
     if (!/^\d+(\.\d{1,2})?$/.test(price)) {
