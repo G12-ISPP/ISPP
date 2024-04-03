@@ -142,3 +142,17 @@ class OrderDetailsTestCase(BaseTestCase):
         response = self.client.get(reverse('order_details', args=[non_existing_order_id]))
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {'error': 'El pedido no existe'})
+
+class MyOrdersTestCase(BaseTestCase):
+    def test_my_orders(self):
+        User.objects.create_user(username='testuser1', email='test@example.com', password='test', is_staff=True, postal_code='12345', email_verified=True)
+        response = self.client.post(reverse('login'), {'username': 'testuser1', 'password': 'test'})
+        token = response.json()["token"]
+
+        response = self.client.get(reverse('my_orders'), HTTP_AUTHORIZATION='Bearer ' + token)
+        self.assertEqual(response.status_code, 200)
+        order_data = response.json()
+        self.assertIsInstance(order_data['orders'], list)
+        self.assertEqual(len(order_data['orders']), 1)
+        self.assertIsInstance(order_data['empty'], bool)
+        self.assertEqual(order_data['empty'], False)
