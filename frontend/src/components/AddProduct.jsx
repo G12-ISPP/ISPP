@@ -134,10 +134,12 @@ class Product extends Component {
 
     if(show && this.state.seller_plan && this.state.designer_plan && this.state.countShow >= 8){
       errors.show = 'No puedes más destacar más de 8 productos';
-    } else if(show && this.state.seller_plan && this.state.countShow >= 5){
-      errors.show = 'Para destacar más de 5 productos necesitas un plan de diseñador';
-    } else if(show && this.state.designer_plan && this.state.countShow >= 3){
+    } else if(show && !this.state.seller_plan && this.state.designer_plan && this.state.countShow >= 3){
       errors.show = 'Para destacar más de 3 productos necesitas un plan de vendedor';
+    } else if(show && this.state.seller_plan && !this.state.designer_plan && this.state.countShow >= 5){
+      errors.show = 'Para destacar más de 5 productos necesitas un plan de diseñador';
+    } else if (show && !this.state.seller_plan && !this.state.designer_plan) {
+      errors.show = 'Para destacar productos debe adquirir un plan';
     }
 
     if (!/^\d+(\.\d{1,2})?$/.test(price)) {

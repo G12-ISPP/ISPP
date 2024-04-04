@@ -1,26 +1,20 @@
+import json
+
+from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from rest_framework_simplejwt.tokens import AccessToken
 
 from chat.serializers import ChatRoomSerializer
-from .models import ChatRoom, Message
-from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 from users.models import CustomUser
-from django.views.decorators.http import require_http_methods
-from django.utils.timezone import now
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.tokens import AccessToken
-from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from django.contrib.auth import get_user_model
-from users.serializer import CustomUserSerializer
-import json
+from .models import ChatRoom, Message
+
 
 def get_user_from_token(token):
     try:
@@ -40,14 +34,13 @@ def post_message(request, room_id):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         content = data.get('content', '')
-        username = data.get('username', '')
 
         token = request.headers.get('Authorization', '').split(' ')[1]
         user = get_user_from_token(token)
         room = get_object_or_404(ChatRoom, id=room_id)
         if user is None:
             return JsonResponse({'error': 'Invalid token'}, status=401)        
-
+        print(user)
         if user in room.members.all():
             room, created = ChatRoom.objects.get_or_create(id=room_id)
             message = Message.objects.create(room=room, content=content, author=user)
@@ -113,13 +106,9 @@ def chat_users(request):
     
 class GetOrCreateChatRoom(APIView):
     def post(self, request):
-        print("HOLA DESDE EL POST EN EL BACKKKKKK")
         # Asume que recibes los IDs de los usuarios como parte de la solicitud
         user_id_1 = request.data.get('currentUserID')
         user_id_2 = request.data.get('otherUserID')
-
-        print(user_id_1)
-        print(user_id_2)
 
         # Asegúrate de que ambos usuarios existen
         try:

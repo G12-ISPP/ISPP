@@ -6,10 +6,10 @@ from django.utils.http import urlsafe_base64_decode
 
 from users.models import CustomUser
 
-
 def validate_email(email):
-    patron = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-    return re.compile(patron).match(email)
+    patron = r'^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,4}$'
+    return bool(re.match(patron, email.lower()))
+
 
 def get_user(uidb64):
     try:
