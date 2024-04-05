@@ -5,6 +5,8 @@ import Button, { BUTTON_TYPES } from '../Button/Button';
 import logo from '../../assets/logo.png';
 import arrow from '../../assets/bx-left-arrow-alt.svg';
 import AuthContext from "../../context/AuthContext.jsx";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye,faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 
@@ -15,6 +17,7 @@ const LoginForm = () => {
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { loginUser } = useContext(AuthContext)
 
   useEffect(() => {
@@ -72,6 +75,10 @@ const LoginForm = () => {
     }
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  }
+
   return (
     <div className='login'>
       <div className="brand-container-login">
@@ -95,7 +102,19 @@ const LoginForm = () => {
               <input type='text' id='username' name='username' className='form-input' placeholder='Nombre de usuario' value={formData.username} onChange={handleChange} required />
             </div>
             <div className='login-form-group'>
-              <input type='password' id='password' name='password' className='form-input' placeholder='Contraseña' value={formData.password} onChange={handleChange} required />
+            <input
+                type={showPassword ? 'text' : 'password'} // Mostrar contraseña si showPassword es true
+                id='password'
+                name='password'
+                className='form-input'
+                placeholder='Contraseña*'
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            <a type="button" onClick={togglePasswordVisibility}>
+              {showPassword ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
+            </a>
             </div>
             {errorMessage && <p className="login-error-message">{errorMessage}</p>}
             <Button type={BUTTON_TYPES.AUTHENTICATION} text='Iniciar sesión' action='submit' />
