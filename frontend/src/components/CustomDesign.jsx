@@ -240,8 +240,11 @@ export default class CustomModel extends React.Component {
     if (!file) {
       this.state.errors.file = 'Debes subir un archivo';
     }
-    if (name === '' || name.length >255) {
-      this.state.errors.name = 'Debes introducir un nombre de menos de 255 caracteres';
+    if(!name.trim()){
+      this.state.errors.name = 'Debes introducir un nombre';
+    }
+    if (name.trim().length <3 || name.length >50) {
+      this.state.errors.name = 'Debes introducir un nombre de entre 3 y 50 caracteres';
     }
     if(quantity < 1 || quantity > 100 || quantity!=Math.round(quantity)){
       this.state.errors.quantity = 'La cantidad debe ser un número entre 1 y 100';
@@ -441,9 +444,9 @@ export default class CustomModel extends React.Component {
             </div>
             <div className='form-group'>
               <label className='color'>Color*:</label>
-              <input type='button' id='Rojo' name='color'  className={`${this.state.color === 'Rojo' ? 'selected' : 'fat-btn'}`} value='Rojo' onClick={() => this.handleColor('red')} />
-              <input type='button' id='Azul' name='color' className={`${this.state.color === 'Azul' ? 'selected' : 'fat-btn'}`} value='Azul' onClick={() => this.handleColor('skyblue')} />
-              <input type='button' id='Verde' name='color' className={`${this.state.color === 'Verde' ? 'selected' : 'fat-btn'}`} value='Verde' onClick={() => this.handleColor('green')} />
+              <input type='button' id='Rojo' name='color'  className={`${this.state.color === 'red' ? 'selected' : 'fat-btn'}`} value='Rojo' onClick={() => this.handleColor('red')} />
+              <input type='button' id='Azul' name='color' className={`${this.state.color === 'skyblue' ? 'selected' : 'fat-btn'}`} value='Azul' onClick={() => this.handleColor('skyblue')} />
+              <input type='button' id='Verde' name='color' className={`${this.state.color === 'green' ? 'selected' : 'fat-btn'}`} value='Verde' onClick={() => this.handleColor('green')} />
             </div>
             <div className='form-group'>
               <label className='postal_code'>Código Postal*:</label>

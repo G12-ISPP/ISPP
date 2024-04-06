@@ -128,6 +128,9 @@ class UserCreateAPIView(generics.CreateAPIView):
         try:
             user_json = super().post(request, *args, **kwargs)
             user = CustomUser.objects.get(username=request.data.get('username'))
+            user.followings.add(user)
+            user.followers.add(user)
+            user.save()
 
 
             # Generar el token único
