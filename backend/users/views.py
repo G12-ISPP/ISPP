@@ -94,7 +94,9 @@ class UserCreateAPIView(generics.CreateAPIView):
     @translate
     def post(self, request, *args, **kwargs):
         errors = {}
-        if len(request.data.get('password')) < 4 or not re.search(r'\d', request.data.get('password')) or not re.search(r'[a-zA-Z]', request.data.get('password')):
+        password = request.data.get('password').trim()
+        size_password = len(password.replace(" ", ""))
+        if size_password < 4 or not re.search(r'\d', password) or not re.search(r'[a-zA-Z]', password):
             errors['password'] = ['La contraseña debe tener al menos 4 caracteres de los cuales al menos uno debe ser un dígito y otro una letra']
         postal_code = request.data.get('postal_code')
         try:
@@ -103,32 +105,32 @@ class UserCreateAPIView(generics.CreateAPIView):
                 errors['postal_code'] = ['El código postal debe ser un número entero entre 1000 y 52999']
         except ValueError:
             errors['postal_code'] = ['El código postal debe ser un número entero válido']
-        address = request.data.get('address')
+        address = request.data.get('address').replace(" ", "")
         if len(address) < 5:
             errors['address'] = ['La dirección debe tener al menos 5 caracteres']
         elif len(address) > 255:
             errors['address'] = ['La dirección no puede tener más de 255 caracteres']
-        city = request.data.get('city')
+        city = request.data.get('city').replace(" ", "")
         if len(city) < 3:
             errors['city'] = ['La ciudad debe tener al menos 3 caracteres']
         elif len(city) > 50:
             errors['city'] = ['La ciudad no puede tener más de 50 caracteres']
-        username = request.data.get('username')
+        username = request.data.get('username').replace(" ", "")
         if len(username) < 4:
             errors['username'] = ['El nombre de usuario debe tener al menos 4 caracteres']
         elif len(username) > 30:
             errors['username'] = ['El nombre de usuario no puede tener más de 30 caracteres']
-        email = request.data.get('email')
+        email = request.data.get('email').replace(" ", "")
         if len(email) > 50:
             errors['email'] = ['El email no puede tener más de 50 caracteres']
+        email = request.data.get('email')
         if not validate_email(email):
             errors['email'] = ['El email no es válido']
         if errors:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         try:
             user_json = super().post(request, *args, **kwargs)
-            user = CustomUser.objects.get(username=request.data.get('username'))
-
+            user = CustomUser.objects.get(username=username)
 
             # Generar el token único
             token = default_token_generator.make_token(user)
@@ -157,7 +159,6 @@ class UserCreateAPIView(generics.CreateAPIView):
             return Response(translated_errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             error_message = str(e)
-            print(error_message)
             return Response({'error': _('An error occurred.')}, status=status.HTTP_400_BAD_REQUEST)
 
 class VerifyEmailView(APIView):
@@ -179,10 +180,11 @@ class LoginView(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
         user = authenticate(username=username, password=password)
+        print(user)
         if user is None:
-            raise APIException('Invalid username or password')
+            return Response({'error': 'Usuario o contraseña incorrectos'}, status=400)
         if not user.email_verified:
-            raise APIException('Email not verified')
+            return Response({'error': 'El email no ha sido verificado'}, status=400)
         refresh = RefreshToken.for_user(user)
         return Response({
             'refresh': str(refresh),
