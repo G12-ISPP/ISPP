@@ -94,7 +94,7 @@ class UserCreateAPIView(generics.CreateAPIView):
     @translate
     def post(self, request, *args, **kwargs):
         errors = {}
-        password = request.data.get('password').trim()
+        password = request.data.get('password').strip()
         size_password = len(password.replace(" ", ""))
         if size_password < 4 or not re.search(r'\d', password) or not re.search(r'[a-zA-Z]', password):
             errors['password'] = ['La contraseña debe tener al menos 4 caracteres de los cuales al menos uno debe ser un dígito y otro una letra']
@@ -182,7 +182,7 @@ class LoginView(APIView):
         user = authenticate(username=username, password=password)
         print(user)
         if user is None:
-            return Response({'error': 'Usuario o contraseña incorrectos'}, status=400)
+            return Response({'python manage.py runserver': 'Usuario o contraseña incorrectos'}, status=400)
         if not user.email_verified:
             return Response({'error': 'El email no ha sido verificado'}, status=400)
         refresh = RefreshToken.for_user(user)
