@@ -69,6 +69,11 @@ class ProductDetail extends React.Component {
 
       let existingProduct = cartCopy.find(cartProduct => cartProduct.id == product.id);
 
+      if(currentUserId && currentUserId === user.id){
+        alert('No puedes comprar tu propio producto');
+        return;
+      }
+
       if (existingProduct) {
         if ((product.stock_quantity - existingProduct.quantity) < 1){
           alert('No hay suficiente stock disponible')
@@ -120,7 +125,9 @@ class ProductDetail extends React.Component {
             </div>
             <div className="buy-container">
               <h3>Cantidad de stock: {product.stock_quantity}</h3>
-              <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => {addProduct(product); this.setState({ agregado :true })}} />
+              {!showEditButton &&(
+                <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => {addProduct(product); this.setState({ agregado :true })}} />
+              )}
               {showEditButton && (
               <Button type={BUTTON_TYPES.LARGE} text='Editar producto' onClick={this.handleEditProduct} />
             )}

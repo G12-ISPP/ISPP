@@ -128,8 +128,16 @@ class Product extends Component {
       errors.name = 'El nombre es obligatorio';
     }
 
+    if(name.trim().length<3||name.length>30){
+      errors.name = 'El nombre debe tener entre 3 y 30 caracteres';
+    }
+
     if (!description.trim()) {
       errors.description = 'La descripción es obligatoria';
+    }
+
+    if(description.trim().length<20||description.length>200){
+      errors.description = 'La descripción debe tener entre 20 y 200 caracteres';
     }
 
     if(show && this.state.seller_plan && this.state.designer_plan && this.state.countShow >= 8){
@@ -275,9 +283,6 @@ class Product extends Component {
               </div>
             )}
           </form>
-          {Object.keys(errors).length > 0 && (
-            <div className="error-message">Por favor, corrija los errores en el formulario</div>
-          )}
         </div>
         <button className='add-product-button' type='button' onClick={this.handleSubmit}>Añadir Producto</button>
       </>

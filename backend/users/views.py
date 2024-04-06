@@ -94,8 +94,9 @@ class UserCreateAPIView(generics.CreateAPIView):
     @translate
     def post(self, request, *args, **kwargs):
         errors = {}
-        if len(request.data.get('password')) < 4 or not re.search(r'\d', request.data.get('password')) or not re.search(r'[a-zA-Z]', request.data.get('password')):
-            errors['password'] = ['La contraseña debe tener al menos 4 caracteres de los cuales al menos uno debe ser un dígito y otro una letra']
+        password = request.data.get('password')
+        if len(password) < 8 or not re.search(r'\d', password) or not re.search(r'[a-z]', password) or not re.search(r'[!@#$%^&*()-_=+{};:,<.>]', password) or not re.search(r'[A-Z]', password):
+            errors['password'] = ['La contraseña debe tener al menos 8 caracteres y contener al menos un dígito, una letra mayúscula, una letra minúscula y un carácter especial']
         postal_code = request.data.get('postal_code')
         try:
             postal_code = int(postal_code)
