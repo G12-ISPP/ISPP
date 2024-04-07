@@ -67,7 +67,7 @@ const LoginForm = () => {
         window.location.href = "/";
       } else {
         const data = await response.json();
-        setErrorMessage(data.message || 'El usuario o contraseña introducido no es válido.');
+        setErrorMessage(data.error || 'El usuario o contraseña introducido no es válido.');
       }
     } catch (error) {
       console.error('Error al comunicarse con el backend:', error);
