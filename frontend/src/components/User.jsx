@@ -150,7 +150,7 @@ const UserDetail = () => {
   };
 
   const handleFollowingsClick = async () => {
-    if(followingCount === 0) return alert("Este usuario no sigue a nadie.");
+    if(followingCount.following_count === 0) return alert("Este usuario no sigue a nadie.");
     else{
       try {
         navigate(`/user-details/${id}/following`);
@@ -232,9 +232,8 @@ const UserDetail = () => {
                 ) : null}
                 <Button 
                 type={BUTTON_TYPES.TRANSPARENT} 
-                text={`${followingCount} seguidos`} 
+                text={`${followingCount.following_count} seguidos`} 
                 onClick={handleFollowingsClick} 
-                disabled={followingCount === 0}
                 />
               </div>
 

@@ -291,15 +291,19 @@ def follow_status(request, user_id):
     else:
         return JsonResponse({'follows': False}, status=201)
 
-
+@api_view(['GET'])
+@csrf_exempt
 def get_following_count(request, user_id):
     try:
         user = CustomUser.objects.get(id=user_id)
         following_count = user.followings.count()
-        return JsonResponse(following_count, safe=False)
+        return JsonResponse({'following_count': following_count})
     except CustomUser.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
 
+
+@api_view(['GET'])
+@csrf_exempt
 def get_followings(request, user_id):
     try:
         user = CustomUser.objects.get(id=user_id)
