@@ -11,6 +11,10 @@ from users.models import CustomUser
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 from rest_framework.authtoken.admin import User
 from django.core.files.uploadedfile import SimpleUploadedFile
+from order.models import Order, OrderProduct
+from django.utils import timezone
+import json
+
 
 # Create your tests here.
 class ProductsViewTestClase(TestCase):
@@ -345,3 +349,74 @@ class SellerPlanTestClase(TestCase):
             'file': image}
         response = self.client.post(reverse('add_product'), data, HTTP_AUTHORIZATION='Bearer ' + self.token2)
         self.assertEqual(response.status_code, 400)
+
+class BuyerPlanTestClase(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='testuser1', email='test@example.com', password='test', is_staff=True, postal_code='12345', email_verified=True, buyer_plan= True)
+        response = self.client.post(reverse('login'), {'username': 'testuser1', 'password': 'test'})
+        self.token = response.json()["token"]
+
+        self.user2 = User.objects.create_user(username='testuser2', email='test2@example.com', password='test', is_staff=True, postal_code='12345', email_verified=True, buyer_plan= False)
+        response2 = self.client.post(reverse('login'), {'username': 'testuser2', 'password': 'test'})
+        self.token2 = response2.json()["token"]
+
+        self.product = Product.objects.create(
+            product_type='I',
+            price=100,
+            name='Producto 1',
+            description='Descripción del producto 1',
+            stock_quantity=10,
+            seller=self.user2,
+        )
+
+        self.order_data = {
+            'address': '123 Test Street',
+            'city': 'Test City',
+            'postal_code': '12345',
+            'buyer_mail': 'test@example.com',
+            'cart': json.dumps([{'id': self.product.id, 'quantity': 1}]),
+        }
+
+        self.product2 = Product.objects.create(
+            product_type='I',
+            price=100,
+            name='Producto 1',
+            description='Descripción del producto 1',
+            stock_quantity=10,
+            seller=self.user1,
+        )
+
+        self.order_data2 = {
+            'address': '123 Test Street',
+            'city': 'Test City',
+            'postal_code': '12345',
+            'buyer_mail': 'test2@example.com',
+            'cart': json.dumps([{'id': self.product2.id, 'quantity': 1}]),
+        }
+    
+    def test_buy_no_send_spends(self):
+        response = self.client.post(reverse('create_order'), self.order_data, format='json', HTTP_AUTHORIZATION='Bearer ' + self.token)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Order.objects.count(), 1)
+        new_order = Order.objects.filter(buyer=self.user1).last()
+        self.assertEqual(new_order.buyer, self.user1)
+        self.assertEqual(OrderProduct.objects.count(), 1)
+        self.assertEqual(new_order.price, 100)
+        new_order_product = OrderProduct.objects.filter(order=new_order).last()
+        self.assertEqual(new_order_product.order, new_order)
+        self.assertEqual(new_order_product.product, self.product)
+        self.assertEqual(new_order_product.quantity, 1)
+
+    def test_buy_with_send_spends(self):
+        response = self.client.post(reverse('create_order'), self.order_data2, format='json', HTTP_AUTHORIZATION='Bearer ' + self.token2)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Order.objects.count(), 1)
+        new_order = Order.objects.filter(buyer=self.user2).last()
+        self.assertEqual(new_order.buyer, self.user2)
+        self.assertEqual(OrderProduct.objects.count(), 1)
+        self.assertEqual(new_order.price, 105)
+        new_order_product = OrderProduct.objects.filter(order=new_order).last()
+        self.assertEqual(new_order_product.order, new_order)
+        self.assertEqual(new_order_product.product, self.product2)
+        self.assertEqual(new_order_product.quantity, 1)
+        
