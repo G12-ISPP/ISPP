@@ -15,6 +15,7 @@ import Paginator from './Paginator/Paginator.jsx';
 const id = window.location.href.split('/')[4];
 
 const UserDetail = () => {
+  const [userLogued, setUserLogued] = useState(null);
   const [user, setUser] = useState(null);
   const currentUserID = localStorage.getItem('userId');
   const [ownUser, setOwnUser] = useState(false);
@@ -30,6 +31,23 @@ const UserDetail = () => {
   const [numPages, setNumPages] = useState(0);
 
   useEffect(() => {
+
+    const fetchUserLogued = async () => {
+      const id = localStorage.getItem('userId');
+        if (id){
+            const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
+            try {
+              const response = await fetch(petition);
+              if (!response.ok) {
+                  throw new Error('Error al obtener los datos del usuario');
+              }
+              const userData = await response.json();
+              setUserLogued(userData);
+          } catch (error) {
+              console.error('Error al obtener los datos del usuario:', error);
+          }
+        }
+    }          
 
     const id = window.location.href.split('/')[4];
     const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
@@ -84,6 +102,7 @@ const UserDetail = () => {
       }
     };
 
+    fetchUserLogued();
     fetchUserData();
     fetchOpinions();
 
@@ -176,6 +195,34 @@ const UserDetail = () => {
     }
   }
 
+  const toggleUserActiveStatus = async (userId, isActive) => {
+    const url = `${backend}/users/api/v1/users/${userId}/toggle_active/`;
+    const token = localStorage.getItem('token'); 
+
+    try {
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                is_active: isActive
+            })
+        });
+
+        if (!response.ok) {
+            alert('No se ha podido bloquear/desbloquear el usuario');
+        }
+
+        const data = await response.json();
+        setUser(data);
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
+
   return (
     <>
       {ownUser ? (
@@ -201,6 +248,16 @@ const UserDetail = () => {
             <div className="user-img-container">
               <img className='user-image' src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
             </div>
+            {userLogued && userLogued.is_staff && userLogued.id !== user.id ? (
+              !user.is_staff && user.is_active ? (
+                <button className="plain-btn button red" onClick={() => toggleUserActiveStatus(user.id, !user.is_active)}>
+                    Bloquear
+                </button>
+                ):( <button className="plain-btn button green" onClick={() => toggleUserActiveStatus(user.id, !user.is_active)}>
+                    Desbloquear
+                  </button>
+              )
+            ) : null}
           </div>
 
           <div className="right-user-container">
@@ -223,7 +280,9 @@ const UserDetail = () => {
               ) : (
                 <p className='user-review-text'>Sin valoraciones</p>
               )}
+              <p className='user-review-text'>Roles del usuario:</p>
               <div className="user-role-container">
+                
                 {user.is_designer === true ? (
                   <div className="user-role">Diseñador</div>
                 ) : null}
@@ -236,6 +295,25 @@ const UserDetail = () => {
                 onClick={handleFollowingsClick} 
                 />
               </div>
+
+              {ownUser ? (
+                <>
+                  <p className='user-review-text'>Planes del usuario:</p>
+                  <div className="user-role-container">
+                    {user.buyer_plan === true ? (
+                      <div className="user-role">Plan Diseñador</div>
+                    ) : null}
+                    {user.designer_plan === true ? (
+                      <div className="user-role">Plan Impresor</div>
+                    ) : null}
+                    {user.seller_plan === true ? (
+                      <div className="user-role">Plan Vendedor</div>
+                    ) : null}
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
 
               <div className="user-contact-container">
                 <p className="user-contact"><strong>Contacto: </strong> {user.email}</p>
@@ -254,7 +332,6 @@ const UserDetail = () => {
                   </div>
                 )}
               </div>
-
             </div>
           </div>
 

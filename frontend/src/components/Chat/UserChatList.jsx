@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function UserChatList({ onUserClick }) {
+  const [otherUser, setOtherUser] = useState({});
   const [users, setUsers] = useState([]);
   const backend = import.meta.env.VITE_APP_BACKEND;
 
@@ -94,6 +95,20 @@ function UserChatList({ onUserClick }) {
   };
 
   useEffect(() => {
+    const fetchUser = async (userId) => {
+      const petition = `${backend}/users/api/v1/users/${userId}/get_user_data/`;
+      try {
+        const response = await fetch(petition);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        const userData = await response.json();
+        setOtherUser(userData);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
     const fetchUsersAndLastMessages = async () => {
       const token = localStorage.getItem('token');
       try {
@@ -116,6 +131,7 @@ function UserChatList({ onUserClick }) {
         // Cargar el último mensaje para cada usuario
         const usersWithLastMessage = await Promise.all(users.map(async (user) => {
           const lastMessage = await getLastMessage(user.id);
+          await fetchUser(user.id);
           return {
             ...user,
             subtitle: lastMessage.content || "No hay mensajes",
@@ -143,8 +159,7 @@ function UserChatList({ onUserClick }) {
       className='user-list'
       dataSource={users.map(user => ({
         userId: user.id,
-        avatar: '/images/avatar.svg', // Puedes ajustar esto según necesites
-        alt: user.username,
+        avatar: otherUser.profile_picture ? otherUser.profile_picture : "/images/avatar.svg",
         title: user.username,
         subtitle: user.subtitle,
         date: user.lastTime, // Puedes ajustar esto según necesites, por ejemplo, la última vez que enviaron un mensaje

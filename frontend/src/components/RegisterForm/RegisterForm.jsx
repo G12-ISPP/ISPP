@@ -182,7 +182,7 @@ class RegisterForm extends React.Component {
               </div>
               <div className='register-form-row'>
                 <div className='register-form-group left'>
-                  <input type='text' id='postal_code' name='postal_code' className='form-input' placeholder='Código postal*' value={this.state.postal_code} onChange={this.handleChange} required />
+                  <input type='text' id='postal_code' name='postal_code' className='form-input' placeholder='CP*' value={this.state.postal_code} onChange={this.handleChange} required />
                 </div>
                 <div className='register-form-group right'>
                   <input type='text' id='city' name='city' className='form-input' placeholder='Ciudad*' value={this.state.city} onChange={this.handleChange} required />
