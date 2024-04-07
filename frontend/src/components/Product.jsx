@@ -128,7 +128,7 @@ class ProductDetail extends React.Component {
           <div className="product-summary">
             <div>
               <h2 className="product-detail-label">{product.name}</h2>
-              <AddProductReport></AddProductReport>
+              <AddProductReport product={product} />
               <Link
                 to={`/user-details/${user.id}`}
                 style={{ textDecoration: "none", color: "inherit" }}
