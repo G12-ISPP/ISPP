@@ -196,8 +196,9 @@ const UserDetail = () => {
               ) : (
                 <p className='user-review-text'>Sin valoraciones</p>
               )}
-
+              <p className='user-review-text'>Roles del usuario:</p>
               <div className="user-role-container">
+                
                 {user.is_designer === true ? (
                   <div className="user-role">Diseñador</div>
                 ) : null}
@@ -205,6 +206,25 @@ const UserDetail = () => {
                   <div className="user-role">Impresor</div>
                 ) : null}
               </div>
+
+              {ownUser ? (
+                <>
+                  <p className='user-review-text'>Planes del usuario:</p>
+                  <div className="user-role-container">
+                    {user.buyer_plan === true ? (
+                      <div className="user-role">Plan Diseñador</div>
+                    ) : null}
+                    {user.designer_plan === true ? (
+                      <div className="user-role">Plan Impresor</div>
+                    ) : null}
+                    {user.seller_plan === true ? (
+                      <div className="user-role">Plan Vendedor</div>
+                    ) : null}
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
 
               <div className="user-contact-container">
                 <p className="user-contact"><strong>Contacto: </strong> {user.email}</p>

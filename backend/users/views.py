@@ -94,10 +94,10 @@ class UserCreateAPIView(generics.CreateAPIView):
     @translate
     def post(self, request, *args, **kwargs):
         errors = {}
-        password = request.data.get('password').strip()
-        size_password = len(password.replace(" ", ""))
-        if size_password < 4 or not re.search(r'\d', password) or not re.search(r'[a-zA-Z]', password):
-            errors['password'] = ['La contraseña debe tener al menos 4 caracteres de los cuales al menos uno debe ser un dígito y otro una letra']
+        password = request.data.get('password')
+        if len(password.replace(" ", "") < 8 or not re.search(r'\d', password) or not re.search(r'[a-z]', password) or not re.search(r'[!@#$%^&*()-_=+{};:,<.>]', password) or not re.search(r'[A-Z]', password):
+            errors['password'] = ['La contraseña debe tener al menos 8 caracteres y contener al menos un dígito, una letra mayúscula, una letra minúscula y un carácter especial']
+
         postal_code = request.data.get('postal_code')
         try:
             postal_code = int(postal_code)
@@ -130,8 +130,11 @@ class UserCreateAPIView(generics.CreateAPIView):
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         try:
             user_json = super().post(request, *args, **kwargs)
-            user = CustomUser.objects.get(username=username)
 
+            user = CustomUser.objects.get(username=request.data.get('username'))
+            user.followings.add(user)
+            user.followers.add(user)
+            user.save()
             # Generar el token único
             token = default_token_generator.make_token(user)
 
