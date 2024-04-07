@@ -9,6 +9,9 @@
 
 .left-user-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
   justify-content: center;
   width: 50%;
 }

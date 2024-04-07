@@ -42,6 +42,8 @@ import AddPost from "./components/Post/AddPost.jsx";
 import Privacity from "./pages/PrivacityPage.jsx";
 import Terms from "./pages/TermsPage.jsx";
 import VerifyEmail from "./components/VerifyEmail/VerifyEmail.jsx";
+import Admin from "./components/Admin/Admin.jsx";
+import UsersList from "./components/UsersList/UsersList.jsx";
 
 function App() {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
@@ -62,6 +64,8 @@ function App() {
                 <Navbar/>
                 <Routes>
                     <Route path="/" element={<MainPage/>}/>
+                    <Route path="/admin" element={<Admin/>}/>
+                    <Route path="/admin/users" element={<UsersList/>}/>
                     <Route path="/chat/:roomId" element={<ChatPage/>}/>
                     <Route path="/chat/" element={<ChatPage />} />
                     <Route path="/product-details/:id" element={<ProductDetail cart={cart} setCart={setCart}/>}/>
