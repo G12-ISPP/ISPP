@@ -27,8 +27,8 @@ export default class UsersList extends React.Component {
                 }
                 const userData = await response.json();
                 if (!userData.is_staff) {
-                    window.location.href = '/';
                     alert('No tienes permisos para acceder a esta página');
+                    window.location.href = '/';
                 }
             } catch (error) {
                 console.error('Error al obtener al usuario:', error);
@@ -36,8 +36,8 @@ export default class UsersList extends React.Component {
         };
         fetchUserData();
     }else {
-        window.location.href = '/';
         alert('No tienes permisos para acceder a esta página');
+        window.location.href = '/';
     }
     const petition = `${backend}/users/api/v1/users/non_admin_users/`;
 

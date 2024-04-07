@@ -30,8 +30,8 @@ export default class Admin extends React.Component {
                     if (userData.is_staff) {
                         this.setState({ isAdmin: true });
                     } else {
-                        window.location.href = '/';
                         alert('No tienes permisos para acceder a esta página');
+                        window.location.href = '/';
                     }
                 } catch (error) {
                     console.error('Error al obtener los datos del usuario:', error);
@@ -39,8 +39,8 @@ export default class Admin extends React.Component {
             };
             fetchUserData();
         }else {
-            window.location.href = '/';
             alert('No tienes permisos para acceder a esta página');
+            window.location.href = '/';
         }
     }
 
