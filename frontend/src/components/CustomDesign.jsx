@@ -457,7 +457,6 @@ export default class CustomModel extends React.Component {
           </div>
         )}
           </form>
-        </div>
         <div className='summary'>
           <div className='summary-content'>
             <h2>Resumen</h2>
