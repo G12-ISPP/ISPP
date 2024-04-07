@@ -1,0 +1,51 @@
+.avatar-list {
+    width: 100px;
+    height: 100px;
+}
+
+.users-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    margin: 10px;
+}
+
+.user-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin: 10px;
+    padding: 10px;
+    grid-gap: 20px;
+    border: 1px solid black;
+    border-radius: 5px;
+    justify-items: center;
+    align-items: center;
+}
+
+.user-link {
+    color: #004040;
+}
+
+.user-link:hover{
+    color: #004040;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 1350px) {
+    .users-list {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .users-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .user-card {
+        grid-template-columns: 1fr;
+    }
+}
