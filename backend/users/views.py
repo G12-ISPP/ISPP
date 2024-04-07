@@ -292,3 +292,19 @@ def follow_status(request, user_id):
         return JsonResponse({'follows': False}, status=201)
 
 
+def get_following_count(request, user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        following_count = user.followings.count()
+        return JsonResponse(following_count, safe=False)
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+def get_followings(request, user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        followings = user.followings.exclude(id=user_id)
+        followings_data = [{'id': following.id, 'username': following.username, 'profile_picture': following.profile_picture.url if following.profile_picture else None} for following in followings]
+        return JsonResponse({'followings': followings_data})
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
