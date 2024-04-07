@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Paginator from '../Paginator/Paginator';
 import "./Post.css";
 import Button, { BUTTON_TYPES } from "../Button/Button";
+import { FcLikePlaceholder, FcLike  } from "react-icons/fc";
+
 
 const backend = import.meta.env.VITE_APP_BACKEND;
 
@@ -13,6 +15,8 @@ const Post = () => {
   const [username, setUsername] = useState("");
   const [page, setPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
+  const [liked, setLiked] = useState([])
+  const [disliked, setDisliked] = useState([])
 
 
   useEffect(() => {
@@ -71,13 +75,13 @@ const Post = () => {
                     }));
 
                     // Añadir userPostsWithName al estado de posts
-                    setPosts((posts) => [...posts, ...userPostsWithName]);
+                    setPosts((prevPosts) => [...prevPosts, ...userPostsWithName]);
                   });
               });
           });
         }
       });
-  }, []);
+  }, [liked, disliked]);
 
   if (!isLoggedIn) {
     // Si el usuario no está autenticado, no se renderizará ningún contenido
@@ -108,6 +112,63 @@ const Post = () => {
         {currentPosts
           .sort((a, b) => b.id - a.id)
           .map((post, index) => {
+            const handleLike = () => {
+              const token = localStorage.getItem("token");
+              fetch(`${backend}/posts/like/${post.id}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ token: token }),
+              })
+              .then((res) => {
+                if (res.status === 200) {
+                  setPosts(prevPosts => {
+                    const updatedPosts = prevPosts.map(prevPost => {
+                      if (prevPost.id === post.id) {
+                        return {
+                          ...prevPost,
+                          likes: [...prevPost.likes, username] // Agregar el nombre de usuario a los likes del post
+                        };
+                      }
+                      return prevPost;
+                    });
+                    return updatedPosts;
+                  });
+                }
+              });
+            };
+            
+            const handleDeleteLike = () => {
+              const token = localStorage.getItem("token");
+              fetch(`${backend}/posts/delete-like/${post.id}`, {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ token: token }),
+              })
+              .then((res) => {
+                if (res.status === 200) {
+                  setPosts(prevPosts => {
+                    const updatedPosts = prevPosts.map(prevPost => {
+                      if (prevPost.id === post.id) {
+                        return {
+                          ...prevPost,
+                          likes: prevPost.likes.filter(like => like !== username) 
+                        };
+                      }
+                      return prevPost;
+                    });
+                    return updatedPosts;
+                  });
+                }
+              });
+            };
+            
+
             return (
               <div key={index} className="post-item">
                 <div className="post-image-container">
@@ -117,7 +178,10 @@ const Post = () => {
                   <h3 className="post-title">{post.name}</h3>
                   <p className="post-description">{post.description}</p>
                   <p className="post-users">Publicado por: {post.users}</p>
+                  <hr />
+                  <p>{post.likes.includes(username) ? <FcLike onClick={handleDeleteLike} /> : <FcLikePlaceholder onClick={handleLike}/>} {post.likes.length}</p>
                 </div>
+                
 
               </div>
             );
