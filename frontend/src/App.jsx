@@ -61,7 +61,7 @@ function App() {
                 />
                 <Navbar/>
                 <Routes>
-                    <Route path="/" element={<MainPage/>}/>
+                    <Route path="/" element={<MainPage cart={cart} setCart={setCart}/>}/>
                     <Route path="/chat/:roomId" element={<ChatPage/>}/>
                     <Route path="/chat/" element={<ChatPage />} />
                     <Route path="/product-details/:id" element={<ProductDetail cart={cart} setCart={setCart}/>}/>

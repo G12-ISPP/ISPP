@@ -1,10 +1,17 @@
 import React from 'react'
 import './Product.css'
 import defaultImage from '../../assets/default_product_image.png'
+import Button, { BUTTON_TYPES } from '../Button/Button';
+import { FaCartPlus } from "react-icons/fa";
 
 const Product = (props) => {
     const images_path = import.meta.env.VITE_IMAGES_PATH;
-    const { name, price, pathImage, pathDetails, isImageRoute } = props
+    const { cart, setCart, product } = props
+    const name = props.product.name;
+    const price = props.product.price;
+    const pathImage = props.product.image_url ? props.product.image_url : props.product.imageRoute;
+    const pathDetails = props.product.id;
+    const isImageRoute = !props.product.image_url;
 
     const onButtonClick = () => {
         if (!pathDetails) {
@@ -27,6 +34,46 @@ const Product = (props) => {
     }
     const imageRoute = modifyImagePath(pathImage, isImageRoute);
 
+    const currentUserId = localStorage.getItem('userId');
+
+    const addProduct = (product) => {
+        let cartCopy = [...cart];
+
+        let existingProduct = cartCopy.find(cartProduct => cartProduct.id == product.id);
+
+        if (currentUserId && currentUserId === product.user_id) {
+            alert('No puedes comprar tu propio producto');
+            return;
+        }
+
+        if (existingProduct) {
+            if ((product.stock_quantity - existingProduct.quantity) < 1) {
+                alert('No hay suficiente stock disponible')
+                return
+            }
+            existingProduct.quantity += 1
+        } else {
+            if (product.stock_quantity > 0) {
+                cartCopy.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    imageRoute: product.imageRoute,
+                    image_url: product.image_url,
+                    stock_quantity: product.stock_quantity,
+                    product_type: product.product_type,
+                    quantity: 1,
+                    user_id: product.user_id
+                })
+            } else {
+                alert('No hay stock disponible')
+            }
+        }
+
+        setCart(cartCopy)
+        localStorage.setItem('cart', JSON.stringify(cart));
+    };
+
     return (
         <div className='product' onClick={onButtonClick}>
 
@@ -36,7 +83,12 @@ const Product = (props) => {
 
             <div className='product-description'>
                 <p className='name'>{name}</p>
-                <p className='price'>{price}€</p>
+                <div className='product-prd-container'>
+                    <a onClick={(e) => { e.stopPropagation(); addProduct(product); }}>
+                        <FaCartPlus className='product-icon-cart' /></a>
+                    <p className='price'>{price}€</p>
+                </div>
+
             </div>
 
         </div>

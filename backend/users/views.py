@@ -34,7 +34,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from users.serializer import ProfileUpdateSerializer
 from users.serializer import UserSerializer
 from .models import CustomUser
-from .utils import validate_email, get_user
+from .utils import validate_email, get_user, existe_email
 
 ruta_frontend = settings.RUTA_FRONTEND
 
@@ -124,6 +124,8 @@ class UserCreateAPIView(generics.CreateAPIView):
         if len(email) > 50:
             errors['email'] = ['El email no puede tener más de 50 caracteres']
         email = request.data.get('email')
+        if existe_email(email):
+            errors['email'] = ['Ya existe un usuario con este email']
         if not validate_email(email):
             errors['email'] = ['El email no es válido']
         if errors:

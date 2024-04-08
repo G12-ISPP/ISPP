@@ -4,8 +4,8 @@ import Button, { BUTTON_TYPES } from './Button/Button';
 import Text, { TEXT_TYPES } from "./Text/Text";
 import PageTitle from "./PageTitle/PageTitle";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
-import {Link} from 'react-router-dom';
+import { faAlignJustify, faUser } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -15,7 +15,7 @@ class ProductDetail extends React.Component {
     super(props);
     this.state = {
       product: null,
-
+      cantidad: 1,
     };
   }
 
@@ -48,11 +48,23 @@ class ProductDetail extends React.Component {
   handleEditProduct = () => {
     const { product } = this.state;
     if (product) {
-       const editUrl = `/products/${product.id}/edit/`;
-       window.location.href = editUrl;
+      const editUrl = `/products/${product.id}/edit/`;
+      window.location.href = editUrl;
     }
-   };
-   
+  };
+
+  incrementarCantidad = () => {
+    this.setState((prevState) => ({
+      cantidad: Math.min(prevState.cantidad + 1, this.state.product.stock_quantity ),
+    }));
+  };
+
+  decrementarCantidad = () => {
+    this.setState((prevState) => ({
+      cantidad: Math.max(prevState.cantidad - 1, 1)
+    }));
+  };
+
   render() {
     const { product, user, currentUserId } = this.state;
     if (!product || !user) {
@@ -61,27 +73,27 @@ class ProductDetail extends React.Component {
 
     const cart = this.props.cart;
     const setCart = this.props.setCart;
-    const { agregado } = this.state;
-    
+    const { agregado, cantidad } = this.state;
 
-    const addProduct = product => {
+
+    const addProduct = (product, cantidad) => {
       let cartCopy = [...cart];
 
       let existingProduct = cartCopy.find(cartProduct => cartProduct.id == product.id);
 
-      if(currentUserId && currentUserId === user.id){
+      if (currentUserId && currentUserId === user.id) {
         alert('No puedes comprar tu propio producto');
         return;
       }
 
       if (existingProduct) {
-        if ((product.stock_quantity - existingProduct.quantity) < 1){
+        if ((product.stock_quantity - existingProduct.quantity) < 1) {
           alert('No hay suficiente stock disponible')
           return
-        } 
+        }
         existingProduct.quantity += 1
       } else {
-        if(product.stock_quantity>0){
+        if (product.stock_quantity > 0) {
           cartCopy.push({
             id: product.id,
             name: product.name,
@@ -90,9 +102,10 @@ class ProductDetail extends React.Component {
             image_url: product.image_url,
             stock_quantity: product.stock_quantity,
             product_type: product.product_type,
-            quantity: 1
+            quantity: cantidad,
+            user_id: user.id
           })
-        }else{
+        } else {
           alert('No hay stock disponible')
         }
       }
@@ -116,7 +129,7 @@ class ProductDetail extends React.Component {
           <div className="product-summary">
             <div>
               <h2 className="product-detail-label">{product.name}</h2>
-              <Link to={`/user-details/${user.id}`} style={{textDecoration:'none',color:'inherit'}}>
+              <Link to={`/user-details/${user.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <h3><FontAwesomeIcon icon={faUser} /> {user.first_name} {user.last_name}</h3>
               </Link>
               <h3 className="product-detail-label">Detalles:</h3>
@@ -124,13 +137,20 @@ class ProductDetail extends React.Component {
               <h3 className="product-detail-label">Precio: {product.price} €</h3>
             </div>
             <div className="buy-container">
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
               <h3>Cantidad de stock: {product.stock_quantity}</h3>
-              {!showEditButton &&(
-                <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => {addProduct(product); this.setState({ agregado :true })}} />
+              </div>
+              <div className='product-quantity'>
+                <button className="product-cart-qty-plus" type="button" onClick={this.decrementarCantidad}>-</button>
+                <input type="text" name="qty" min="0" className="qty product-form-control" value={cantidad} readOnly />
+                <button className="product-cart-qty-minus" type="button" onClick={this.incrementarCantidad}>+</button>
+              </div>
+              {!showEditButton && (
+                <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => { addProduct(product, cantidad); this.setState({ agregado: true }) }} />
               )}
               {showEditButton && (
-              <Button type={BUTTON_TYPES.LARGE} text='Editar producto' onClick={this.handleEditProduct} />
-            )}
+                <Button type={BUTTON_TYPES.LARGE} text='Editar producto' onClick={this.handleEditProduct} />
+              )}
             </div>
           </div>
         </div>
