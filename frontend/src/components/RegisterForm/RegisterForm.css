@@ -206,6 +206,10 @@
     width: 100%;
     resize: none;
 }
+.register-form-textarea::placeholder {
+    font-size: 1em;
+    color: #5C7A89;
+}
 
 .register-form-textarea::-webkit-scrollbar {
     width: 0.5em;
@@ -341,6 +345,7 @@
     .register-data-container {
         width: 80%;
         padding: 1.5em 2em;
+        border-radius: 1.5em;
     }
 
     .register-form-title {
@@ -371,6 +376,10 @@
     .role-selector {
         flex-direction: column;
         gap: 1em;
+    }
+
+    .register-form-textarea::placeholder {
+        font-size: 1.2em;
     }
     
 }
@@ -420,6 +429,7 @@
     .register-data-container {
         width: 80%;
         padding: 1.5em 2em;
+        border-radius: 1.5em;
     }
 
     .register-form-title {
@@ -450,6 +460,10 @@
     .role-selector {
         flex-direction: column;
         gap: 1em;
+    }
+
+    .register-form-textarea::placeholder {
+        font-size: 1.2em;
     }
     
 }
