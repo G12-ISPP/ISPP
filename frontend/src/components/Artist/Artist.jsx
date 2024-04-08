@@ -4,6 +4,8 @@ import filledStar from '../../assets/bxs-star.svg'
 import emptyStar from '../../assets/bx-star.svg'
 import defaultImage from '../../assets/default_artist_image.png'
 
+const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
+
 const Artist = (props) => {
 
     const { username, pathImage, pathDetails } = props
@@ -12,7 +14,7 @@ const Artist = (props) => {
         if (!pathDetails) {
             window.location.href = '/';
         } else {
-            window.location.href = 'user-details/' + pathDetails;
+            window.location.href = JSON.parse(frontend) + `/user-details/${pathDetails}`;
         }
     }
 
