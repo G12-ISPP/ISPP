@@ -6,6 +6,9 @@ import PageTitle from "./PageTitle/PageTitle";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import {Link} from 'react-router-dom';
+import ProfileIcon from "./ProfileIcon/ProfileIcon";
+import defaultProfileImage from '../assets/avatar.svg';
+import ProductsGrid, { GRID_TYPES } from "./ProductsGrid/ProductsGrid";
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -14,8 +17,7 @@ class ProductDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      product: null,
-
+      product: null
     };
   }
 
@@ -42,7 +44,6 @@ class ProductDetail extends React.Component {
       const currentUserData = await response_currentUser.json();
       this.setState({ currentUserId: currentUserData.id });
     }
-
   }
 
   handleEditProduct = () => {
@@ -103,39 +104,69 @@ class ProductDetail extends React.Component {
 
     const showEditButton = product.seller === currentUserId;
 
+    function relatedProductsTitle() {
+      if (product.product_type === "D") {
+        return "Otros diseños destacados";
+      } else if (product.product_type === "P") {
+        return "Otras impresoras destacadas";
+      } else if (product.product_type === "M") {
+        return "Otros materiales destacados";
+      } else if (product.product_type === "I") {
+        return "Otras piezas destacadas";
+      }
+    }
+
     return (
-      <>
+      <div className="product-details-page">
+
         <PageTitle title={product.name} />
-        <div className="section-title-container">
+
+        <div className="product-title-container">
           <Text type={TEXT_TYPES.TITLE_BOLD} text='Detalles del producto' />
         </div>
-        <div className='product-container'>
-          <div className='product-img-container'>
-            <img id="podruct-img" className="img" src={product.imageRoute ? '/images/' + product.imageRoute : product.image_url} alt={product.name} />
-          </div>
-          <div className="product-summary">
-            <div>
-              <h2 className="product-detail-label">{product.name}</h2>
-              <Link to={`/user-details/${user.id}`} style={{textDecoration:'none',color:'inherit'}}>
-                <h3><FontAwesomeIcon icon={faUser} /> {user.first_name} {user.last_name}</h3>
-              </Link>
-              <h3 className="product-detail-label">Detalles:</h3>
-              <p>{product.description}</p>
-              <h3 className="product-detail-label">Precio: {product.price} €</h3>
+
+        <div className="product-container">
+
+          <div className="left-product-container">
+            <div className="product-img-container">
+              <img src={product.imageRoute ? '/images/' + product.imageRoute : product.image_url} alt={product.name} className="product-image" />
             </div>
-            <div className="buy-container">
-              <h3>Cantidad de stock: {product.stock_quantity}</h3>
-              {!showEditButton &&(
+          </div>
+
+          <div className="right-product-container">
+            <div className="product-info-container">
+              <h2 className="product-info-name">{product.name}</h2>
+              
+              <div className="product-info-owner">
+                <ProfileIcon image={user && user.profile_picture ? user.profile_picture : defaultProfileImage} name={user && user.username} onClick={user && user.id} showScore="True" userId={user.id} />
+              </div>
+
+              <div className="product-info-description">
+                <h3 className="product-info-description-label">Detalles:</h3>
+                <p className="product-info-description-text">{product.description}</p>
+              </div>
+
+              {product.product_type != "D" && <h3 className="product-info-stock"><strong>Cantidad disponible: </strong>{product.stock_quantity} {product.stock_quantity === 1 ? "unidad" : "unidades"}</h3>}
+              
+              <h2 className="product-info-price">{product.price}€</h2>
+
+              {!showEditButton &&
                 <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => {addProduct(product); this.setState({ agregado :true })}} />
-              )}
-              {showEditButton && (
-              <Button type={BUTTON_TYPES.LARGE} text='Editar producto' onClick={this.handleEditProduct} />
-            )}
+              }
+              {showEditButton &&
+                <Button type={BUTTON_TYPES.LARGE} text='Editar producto' onClick={this.handleEditProduct} />
+              }
             </div>
           </div>
+
         </div>
 
-      </>
+        <div className="related-products">
+          <Text type={TEXT_TYPES.TITLE_BOLD} text={relatedProductsTitle()} />
+          <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} elementType={product.product_type} excludedProducts={[product.id]} />
+        </div>
+
+      </div>
     );
   }
 }
