@@ -1,3 +1,4 @@
+from genericpath import exists
 from django.http import HttpResponse
 import json
 from django.shortcuts import render
@@ -27,6 +28,10 @@ class ReportView(viewsets.ModelViewSet):
             data = json.loads(request.body)
             data['author_user'] = author.id
             serializer = ReportSerializer(data=data)
+            print(data['product'])
+            print(Report.objects.filter(product=data['product'], author_user=author.id).__len__() > 0)
+            if Report.objects.filter(product=data['product'], author_user=author.id).__len__() > 0:
+                return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
             if serializer.is_valid():
                 serializer.save()
                 return HttpResponse(status=status.HTTP_201_CREATED)

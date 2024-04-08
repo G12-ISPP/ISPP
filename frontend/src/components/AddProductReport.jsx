@@ -1,5 +1,6 @@
 import React, { Component, useState } from "react";
 import Button, { BUTTON_TYPES } from "./Button/Button";
+import "./AddProductReport.css";
 // Modal Component
 class Modal extends React.Component {
   render() {
@@ -52,6 +53,10 @@ class AddProductReport extends Component {
       errors.description = "La descripción es obligatoria";
     }
 
+    if (title.trim().length < 5 || title.length > 20) {
+      errors.title = "El título debe tener entre 5 y 20 caracteres";
+    }
+
     if (description.trim().length < 10 || description.length > 250) {
       errors.description =
         "La descripción debe tener entre 10 y 250 caracteres";
@@ -59,6 +64,10 @@ class AddProductReport extends Component {
 
     if (!reason) {
       errors.reason = "Debes seleccionar una razón";
+    }
+
+    if (this.state.errors.unique) {
+      errors.unique = "Ya has reportado este producto";
     }
 
     this.setState({ errors });
@@ -110,9 +119,14 @@ class AddProductReport extends Component {
         created_at: new Date().toISOString(),
       }),
     }).then((response) => {
-      if (response.ok) {
+      if (response.status === 401) {
+        console.log("Error 401");
+        this.setState({ errors: { unique: "Ya has reportado este producto" } });
+        this.setState({ showForm: true });
+      } else if (response.ok) {
         console.log(response.json());
         this.setState({ showForm: false });
+        alert("Reporte enviado correctamente");
       } else {
         console.error("Error submitting report");
       }
@@ -168,24 +182,27 @@ class AddProductReport extends Component {
                   name="title"
                   value={this.state.title}
                   onChange={this.handleTitleChange}
+                  className="report-product-form-group-title"
                 />
                 {this.state.errors.title && (
                   <p className="error">{this.state.errors.title}</p>
                 )}
               </label>
               <br></br>
-              <label>
-                Descripción:
-                <input
-                  type="text"
-                  name="description"
-                  onChange={this.handleDescriptionChange}
-                  value={this.state.description}
-                />
-                {this.state.errors.description && (
-                  <p className="error">{this.state.errors.description}</p>
-                )}
-              </label>
+              <label>Descripción:</label>
+              <br></br>
+              <textarea
+                type="text"
+                name="description"
+                onChange={this.handleDescriptionChange}
+                value={this.state.description}
+                className="report-product-form-group-description"
+                rows={5}
+              />
+              {this.state.errors.description && (
+                <p className="error">{this.state.errors.description}</p>
+              )}
+
               <br></br>
               <label>
                 Motivo del Reporte:
@@ -193,6 +210,7 @@ class AddProductReport extends Component {
                   name="reason"
                   value={this.state.reason}
                   onChange={this.handleReasonsChange}
+                  className="report-product-form-group-selector"
                 >
                   <option value="P">Problema de calidad</option>
                   <option value="D">Derecho de Autor</option>
@@ -207,6 +225,9 @@ class AddProductReport extends Component {
               </label>
               <br></br>
             </form>
+            {this.state.errors.unique && (
+              <p className="error">{this.state.errors.unique}</p>
+            )}
             <Button
               type={BUTTON_TYPES.LARGE}
               text="Publicar"
