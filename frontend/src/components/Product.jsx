@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import './Product.css'
-import Button, { BUTTON_TYPES } from './Button/Button';
+import "./Product.css";
+import Button, { BUTTON_TYPES } from "./Button/Button";
 import Text, { TEXT_TYPES } from "./Text/Text";
 import PageTitle from "./PageTitle/PageTitle";
+import AddProductReport from "./AddProductReport";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import {Link} from 'react-router-dom';
@@ -17,28 +18,32 @@ class ProductDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      product: null
+      showForm: false,
+      product: null,
+
     };
   }
 
   async componentDidMount() {
-    const id = window.location.href.split('/')[4]
-    let petition = backend + '/products/api/v1/products/' + id + '/get_product_data/';
-    petition = petition.replace(/"/g, '')
+    const id = window.location.href.split("/")[4];
+    let petition =
+      backend + "/products/api/v1/products/" + id + "/get_product_data/";
+    petition = petition.replace(/"/g, "");
     const response = await fetch(petition);
     const product = await response.json();
-    let petition2 = backend + '/users/api/v1/users/' + product.seller + '/get_user_data/';
-    petition2 = petition2.replace(/"/g, '')
+    let petition2 =
+      backend + "/users/api/v1/users/" + product.seller + "/get_user_data/";
+    petition2 = petition2.replace(/"/g, "");
     const response_user = await fetch(petition2);
     const user = await response_user.json();
     this.setState({ product, user });
 
-    let petition3 = backend + '/designs/loguedUser';
-    petition3 = petition3.replace(/"/g, '');
+    let petition3 = backend + "/designs/loguedUser";
+    petition3 = petition3.replace(/"/g, "");
     const response_currentUser = await fetch(petition3, {
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
     });
     if (response_currentUser.ok) {
       const currentUserData = await response_currentUser.json();
@@ -49,11 +54,11 @@ class ProductDetail extends React.Component {
   handleEditProduct = () => {
     const { product } = this.state;
     if (product) {
-       const editUrl = `/products/${product.id}/edit/`;
-       window.location.href = editUrl;
+      const editUrl = `/products/${product.id}/edit/`;
+      window.location.href = editUrl;
     }
-   };
-   
+  };
+
   render() {
     const { product, user, currentUserId } = this.state;
     if (!product || !user) {
@@ -63,26 +68,27 @@ class ProductDetail extends React.Component {
     const cart = this.props.cart;
     const setCart = this.props.setCart;
     const { agregado } = this.state;
-    
 
-    const addProduct = product => {
+    const addProduct = (product) => {
       let cartCopy = [...cart];
 
-      let existingProduct = cartCopy.find(cartProduct => cartProduct.id == product.id);
+      let existingProduct = cartCopy.find(
+        (cartProduct) => cartProduct.id == product.id
+      );
 
-      if(currentUserId && currentUserId === user.id){
-        alert('No puedes comprar tu propio producto');
+      if (currentUserId && currentUserId === user.id) {
+        alert("No puedes comprar tu propio producto");
         return;
       }
 
       if (existingProduct) {
-        if ((product.stock_quantity - existingProduct.quantity) < 1){
-          alert('No hay suficiente stock disponible')
-          return
-        } 
-        existingProduct.quantity += 1
+        if (product.stock_quantity - existingProduct.quantity < 1) {
+          alert("No hay suficiente stock disponible");
+          return;
+        }
+        existingProduct.quantity += 1;
       } else {
-        if(product.stock_quantity>0){
+        if (product.stock_quantity > 0) {
           cartCopy.push({
             id: product.id,
             name: product.name,
@@ -91,18 +97,31 @@ class ProductDetail extends React.Component {
             image_url: product.image_url,
             stock_quantity: product.stock_quantity,
             product_type: product.product_type,
-            quantity: 1
-          })
-        }else{
-          alert('No hay stock disponible')
+            quantity: 1,
+          });
+        } else {
+          alert("No hay stock disponible");
         }
       }
 
-      setCart(cartCopy)
-      localStorage.setItem('cart', JSON.stringify(cart));
+      setCart(cartCopy);
+      localStorage.setItem("cart", JSON.stringify(cart));
     };
 
     const showEditButton = product.seller === currentUserId;
+    const { showForm } = this.state;
+
+    function relatedProductsTitle() {
+      if (product.product_type === "D") {
+        return "Otros diseños destacados";
+      } else if (product.product_type === "P") {
+        return "Otras impresoras destacadas";
+      } else if (product.product_type === "M") {
+        return "Otros materiales destacados";
+      } else if (product.product_type === "I") {
+        return "Otras piezas destacadas";
+      }
+    }
 
     function relatedProductsTitle() {
       if (product.product_type === "D") {
@@ -118,6 +137,7 @@ class ProductDetail extends React.Component {
 
     return (
       <div className="product-details-page">
+
 
         <PageTitle title={product.name} />
 
@@ -136,6 +156,8 @@ class ProductDetail extends React.Component {
           <div className="right-product-container">
             <div className="product-info-container">
               <h2 className="product-info-name">{product.name}</h2>
+              <AddProductReport product={product} />
+
               
               <div className="product-info-owner">
                 <ProfileIcon image={user && user.profile_picture ? user.profile_picture : defaultProfileImage} name={user && user.username} onClick={user && user.id} showScore="True" userId={user.id} />
@@ -165,6 +187,7 @@ class ProductDetail extends React.Component {
           <Text type={TEXT_TYPES.TITLE_BOLD} text={relatedProductsTitle()} />
           <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} elementType={product.product_type} excludedProducts={[product.id]} />
         </div>
+
 
       </div>
     );
