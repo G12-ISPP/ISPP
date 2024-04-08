@@ -44,6 +44,7 @@ import Terms from "./pages/TermsPage.jsx";
 import VerifyEmail from "./components/VerifyEmail/VerifyEmail.jsx";
 import Admin from "./components/Admin/Admin.jsx";
 import UsersList from "./components/UsersList/UsersList.jsx";
+import ReportsList from "./components/ReportsList/ReportsList.jsx";
 import FollowingList from "./components/FollowingList.jsx";
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
                     <Route path="/" element={<MainPage/>}/>
                     <Route path="/admin" element={<Admin/>}/>
                     <Route path="/admin/users" element={<UsersList/>}/>
+                    <Route path="/admin/reports" element={<ReportsList/>}/>
                     <Route path="/chat/:roomId" element={<ChatPage/>}/>
                     <Route path="/chat/" element={<ChatPage />} />
                     <Route path="/product-details/:id" element={<ProductDetail cart={cart} setCart={setCart}/>}/>
