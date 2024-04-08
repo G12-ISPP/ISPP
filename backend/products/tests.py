@@ -11,6 +11,10 @@ from users.models import CustomUser
 from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
 from rest_framework.authtoken.admin import User
 from django.core.files.uploadedfile import SimpleUploadedFile
+from order.models import Order, OrderProduct
+from django.utils import timezone
+import json
+
 
 # Create your tests here.
 class ProductsViewTestClase(TestCase):
@@ -345,3 +349,322 @@ class SellerPlanTestClase(TestCase):
             'file': image}
         response = self.client.post(reverse('add_product'), data, HTTP_AUTHORIZATION='Bearer ' + self.token2)
         self.assertEqual(response.status_code, 400)
+
+class BuyerPlanTestClase(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username='testuser1', email='test@example.com', password='test', is_staff=True, postal_code='12345', email_verified=True, buyer_plan= True)
+        response = self.client.post(reverse('login'), {'username': 'testuser1', 'password': 'test'})
+        self.token = response.json()["token"]
+
+        self.user2 = User.objects.create_user(username='testuser2', email='test2@example.com', password='test', is_staff=True, postal_code='12345', email_verified=True, buyer_plan= False)
+        response2 = self.client.post(reverse('login'), {'username': 'testuser2', 'password': 'test'})
+        self.token2 = response2.json()["token"]
+
+        self.product = Product.objects.create(
+            product_type='I',
+            price=100,
+            name='Producto 1',
+            description='Descripción del producto 1',
+            stock_quantity=10,
+            seller=self.user2,
+        )
+
+        self.order_data = {
+            'address': '123 Test Street',
+            'city': 'Test City',
+            'postal_code': '12345',
+            'buyer_mail': 'test@example.com',
+            'cart': json.dumps([{'id': self.product.id, 'quantity': 1}]),
+        }
+
+        self.product2 = Product.objects.create(
+            product_type='I',
+            price=100,
+            name='Producto 1',
+            description='Descripción del producto 1',
+            stock_quantity=10,
+            seller=self.user1,
+        )
+
+        self.order_data2 = {
+            'address': '123 Test Street',
+            'city': 'Test City',
+            'postal_code': '12345',
+            'buyer_mail': 'test2@example.com',
+            'cart': json.dumps([{'id': self.product2.id, 'quantity': 1}]),
+        }
+    
+    def test_buy_no_send_spends(self):
+        response = self.client.post(reverse('create_order'), self.order_data, format='json', HTTP_AUTHORIZATION='Bearer ' + self.token)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Order.objects.count(), 1)
+        new_order = Order.objects.filter(buyer=self.user1).last()
+        self.assertEqual(new_order.buyer, self.user1)
+        self.assertEqual(OrderProduct.objects.count(), 1)
+        self.assertEqual(new_order.price, 100)
+        new_order_product = OrderProduct.objects.filter(order=new_order).last()
+        self.assertEqual(new_order_product.order, new_order)
+        self.assertEqual(new_order_product.product, self.product)
+        self.assertEqual(new_order_product.quantity, 1)
+
+    def test_buy_with_send_spends(self):
+        response = self.client.post(reverse('create_order'), self.order_data2, format='json', HTTP_AUTHORIZATION='Bearer ' + self.token2)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(Order.objects.count(), 1)
+        new_order = Order.objects.filter(buyer=self.user2).last()
+        self.assertEqual(new_order.buyer, self.user2)
+        self.assertEqual(OrderProduct.objects.count(), 1)
+        self.assertEqual(new_order.price, 105)
+        new_order_product = OrderProduct.objects.filter(order=new_order).last()
+        self.assertEqual(new_order_product.order, new_order)
+        self.assertEqual(new_order_product.product, self.product2)
+        self.assertEqual(new_order_product.quantity, 1)
+        
+class DesignerPlanTestClase(TestCase):
+    def setUp(self):
+        # Creamos algunos usuarios y productos para usar en los tests
+        self.user1 = User.objects.create_user(username='testuser1', email='test@example.com', password='test', is_staff=True, postal_code='12345', email_verified=True, designer_plan= True)
+        response = self.client.post(reverse('login'), {'username': 'testuser1', 'password': 'test'})
+        self.token = response.json()["token"]
+
+        self.user2 = User.objects.create_user(username='testuser2', email='test2@example.com', password='test', is_staff=True, postal_code='12345', email_verified=True, designer_plan= False)
+        response = self.client.post(reverse('login'), {'username': 'testuser2', 'password': 'test'})
+        self.token2 = response.json()["token"]
+
+        self.product0 = Product.objects.create(
+            product_type='P',
+            price=100,
+            name='Producto 0',
+            description='Descripción del producto 0',
+            stock_quantity=10,
+            show=False,
+            seller=self.user2,
+        )
+
+        # Creamos algunos productos
+        self.product1 = Product.objects.create(
+            product_type='P',
+            price=100,
+            name='Producto 1',
+            description='Descripción del producto 1',
+            stock_quantity=10,
+            show=True,
+            seller=self.user1,
+        )
+        self.product2 = Product.objects.create(
+            product_type='P',
+            price=200,
+            name='Producto 2',
+            description='Descripción del producto 2',
+            show=True,
+            stock_quantity=5,
+            seller=self.user1,
+        )
+
+        self.product3 = Product.objects.create(
+            product_type='P',
+            price=200,
+            name='Producto 5',
+            description='Descripción del producto 5',
+            show=False,
+            stock_quantity=5,
+            seller=self.user1,
+        )
+        
+    def test_ok_add_product(self):
+        image_content = b'contenido_de_imagen' 
+        image = SimpleUploadedFile("image.jpg", image_content, content_type="image/jpeg")
+        data = {
+            'product_type':'P',
+            'price':200,
+            'name':'Producto 6',
+            'description':'Descripción del producto 6',
+            'show':'true',
+            'stock_quantity':5,
+            'seller':self.user1,
+            'file': image}
+        response = self.client.post(reverse('add_product'), data, HTTP_AUTHORIZATION='Bearer ' + self.token)
+        self.assertEqual(response.status_code, 201)
+        response = self.client.get(reverse('products-list') + '?product_type=P')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 5) 
+
+    def test_wrong_add_product(self):
+        self.product7 = Product.objects.create(
+            product_type='P',
+            price=200,
+            name='Producto 7',
+            description='Descripción del producto 7',
+            show=True,
+            stock_quantity=5,
+            seller=self.user1,
+        )
+        
+        image_content = b'contenido_de_imagen'
+        image = SimpleUploadedFile("image.jpg", image_content, content_type="image/jpeg")
+        data = {
+            'product_type':'P',
+            'price':200,
+            'name':'Producto 6',
+            'description':'Descripción del producto 6',
+            'show':'true',
+            'stock_quantity':5,
+            'seller':self.user1,
+            'file': image}
+        response = self.client.post(reverse('add_product'), data, HTTP_AUTHORIZATION='Bearer ' + self.token)
+        self.assertEqual(response.status_code, 400)
+    
+    def test_non_seller_add_product(self):
+        self.product8 = Product.objects.create(
+            product_type='P',
+            price=200,
+            name='Producto 8',
+            description='Descripción del producto 8',
+            show=True,
+            stock_quantity=5,
+            seller=self.user2,
+        )
+        
+        image_content = b'contenido_de_imagen'
+        image = SimpleUploadedFile("image.jpg", image_content, content_type="image/jpeg")
+        data = {
+            'product_type':'P',
+            'price':200,
+            'name':'Producto 6',
+            'description':'Descripción del producto 6',
+            'show':'true',
+            'stock_quantity':5,
+            'seller':self.user1,
+            'file': image}
+        response = self.client.post(reverse('add_product'), data, HTTP_AUTHORIZATION='Bearer ' + self.token2)
+        self.assertEqual(response.status_code, 400)
+
+
+class BothSellerAndDesignerPlanTestClase(TestCase):
+    def setUp(self):
+        # Creamos algunos usuarios y productos para usar en los tests
+        self.user1 = User.objects.create_user(username='testuser1', email='test@example.com', password='test', is_staff=True, postal_code='12345', email_verified=True, seller_plan= True, designer_plan=True)
+        response = self.client.post(reverse('login'), {'username': 'testuser1', 'password': 'test'})
+        self.token = response.json()["token"]
+
+        # Creamos algunos productos
+        self.product1 = Product.objects.create(
+            product_type='P',
+            price=100,
+            name='Producto 1',
+            description='Descripción del producto 1',
+            stock_quantity=10,
+            show=True,
+            seller=self.user1,
+        )
+        self.product2 = Product.objects.create(
+            product_type='P',
+            price=200,
+            name='Producto 2',
+            description='Descripción del producto 2',
+            show=True,
+            stock_quantity=5,
+            seller=self.user1,
+        )
+        self.product3 = Product.objects.create(
+            product_type='P',
+            price=200,
+            name='Producto 3',
+            description='Descripción del producto 3',
+            show=True,
+            stock_quantity=5,
+            seller=self.user1,
+        )
+        self.product4 = Product.objects.create(
+            product_type='P',
+            price=200,
+            name='Producto 4',
+            description='Descripción del producto 4',
+            show=True,
+            stock_quantity=5,
+            seller=self.user1,
+        )
+
+        self.product5 = Product.objects.create(
+            product_type='P',
+            price=200,
+            name='Producto 5',
+            description='Descripción del producto 5',
+            show=False,
+            stock_quantity=5,
+            seller=self.user1,
+        )
+
+        self.product6 = Product.objects.create(
+            product_type='P',
+            price=200,
+            name='Producto 6',
+            description='Descripción del producto 6',
+            show=True,
+            stock_quantity=5,
+            seller=self.user1,
+        )
+
+        self.product7 = Product.objects.create(
+            product_type='P',
+            price=200,
+            name='Producto 7',
+            description='Descripción del producto 7',
+            show=True,
+            stock_quantity=5,
+            seller=self.user1,
+        )
+
+        self.product8 = Product.objects.create(
+            product_type='P',
+            price=200,
+            name='Producto 8',
+            description='Descripción del producto 8',
+            show=True,
+            stock_quantity=5,
+            seller=self.user1,
+        )
+        
+    def test_ok_add_product(self):
+        image_content = b'contenido_de_imagen' 
+        image = SimpleUploadedFile("image.jpg", image_content, content_type="image/jpeg")
+        data = {
+            'product_type':'P',
+            'price':200,
+            'name':'Producto 6',
+            'description':'Descripción del producto 6',
+            'show':'true',
+            'stock_quantity':5,
+            'seller':self.user1,
+            'file': image}
+        response = self.client.post(reverse('add_product'), data, HTTP_AUTHORIZATION='Bearer ' + self.token)
+        self.assertEqual(response.status_code, 201)
+        response = self.client.get(reverse('products-list') + '?product_type=P')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 9) 
+
+    def test_wrong_add_product(self):
+        self.product7 = Product.objects.create(
+            product_type='P',
+            price=200,
+            name='Producto 7',
+            description='Descripción del producto 7',
+            show=True,
+            stock_quantity=5,
+            seller=self.user1,
+        )
+        
+        image_content = b'contenido_de_imagen'
+        image = SimpleUploadedFile("image.jpg", image_content, content_type="image/jpeg")
+        data = {
+            'product_type':'P',
+            'price':200,
+            'name':'Producto 6',
+            'description':'Descripción del producto 6',
+            'show':'true',
+            'stock_quantity':5,
+            'seller':self.user1,
+            'file': image}
+        response = self.client.post(reverse('add_product'), data, HTTP_AUTHORIZATION='Bearer ' + self.token)
+        self.assertEqual(response.status_code, 400)
+    

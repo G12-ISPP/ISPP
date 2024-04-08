@@ -38,9 +38,11 @@
   font-size: 1em;
   border-radius: 0.5em;
   border: 0.05em #004040 solid;
+  color: #004040;
 }
 
 .opinion-form-group-description {
+  color: #004040;
   font-family: inherit;
   border-radius: 0.5em;
   border: 0.05em #004040 solid;
