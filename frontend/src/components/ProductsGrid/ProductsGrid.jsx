@@ -10,7 +10,7 @@ const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
 
 const ProductsGrid = (consts) => {
 
-    const { gridType, elementType, filter, main, cart, setCart } = consts
+    const { gridType, elementType, filter, main, cart, setCart, excludedProducts } = consts
 
     const getGridClass = () => {
         return gridType.toLowerCase() + '-gr grid';
@@ -33,8 +33,14 @@ const ProductsGrid = (consts) => {
             });
 
             if (response.ok) {
-                const data = await response.json();
-                if (main) {
+                let data = await response.json();
+                
+                // Excluir productos
+                if (excludedProducts) {
+                    data = data.filter(product => !excludedProducts.includes(product.id));
+                }
+
+                if(main){
                     return data.filter(product => product.show === true);
                 }
                 return data;

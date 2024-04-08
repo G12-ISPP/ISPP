@@ -62,6 +62,23 @@ class UsersView(viewsets.ModelViewSet):
         serializer = self.get_serializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+    @action(detail=False, methods=['get'])
+    def non_admin_users(self, request):
+        non_admin_users = CustomUser.objects.filter(is_staff=False)
+        serializer = self.get_serializer(non_admin_users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['patch'])
+    def toggle_active(self, request, pk=None):
+        user = self.get_object()
+        serializer = self.get_serializer(user, data=request.data, partial=True)
+        is_active = request.data.get('is_active')
+        if serializer.is_valid():
+            user.is_active = is_active
+            user.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     @action(detail=True, methods=['patch'])
     def update_profile(self, request, pk=None):
         user = self.get_object()
@@ -298,4 +315,22 @@ def follow_status(request, user_id):
     else:
         return JsonResponse({'follows': False}, status=201)
 
+@api_view(['GET'])
+def get_following_count(request, user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        following_count = user.followings.count()
+        return JsonResponse({'following_count': following_count})
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
 
+
+@api_view(['GET'])
+def get_followings(request, user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        followings = user.followings.exclude(id=user_id)
+        followings_data = [{'id': following.id, 'username': following.username, 'profile_picture': following.profile_picture.url if following.profile_picture else None} for following in followings]
+        return JsonResponse({'followings': followings_data})
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)

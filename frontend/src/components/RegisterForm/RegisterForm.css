@@ -1,37 +1,11 @@
-.form-input {
+.register-form-input {
     background: #D9D9D9;
     color: #004040;
     border: 0.1em #004040 solid;
     border-radius: 0.25em;
     box-sizing: border-box;
     padding: 0.1em 0.5em;
-}
-
-.form-textarea-group {
-    width: 28em;
-    display: flex;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 1em 1em;
-    border-radius: 0.6em;
-    max-height: 10em;
-    margin-bottom: 0.5em;
-    border: 0.05em #004040 solid;
-}
-
-.form-textarea {
-    background: #D9D9D9;
-    color: #004040;
-    border: none;
-    box-sizing: border-box;
-    padding: 0.1em 0.5em;
-    max-height: 10em;
-    width: 100%;
-    resize: none;
-    font-size: 0.8em;
-    font-weight: normal;
-    font-family: system-ui;
-    outline: none;
+    margin: 0;
 }
 
 .form-textarea::placeholder {
@@ -42,6 +16,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    align-items: center;
     background: #004040;
     position: absolute;
     width: 100vw;
@@ -93,6 +68,7 @@
     object-fit: cover;
     cursor: pointer;
     border: 0.1em #004040 solid;
+    margin-bottom: 0.5em;
 }
 
 .register-group .edit-icon {
@@ -104,6 +80,7 @@
 
 .register-form-container {
     width: 100%;
+    height: 95%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -113,13 +90,32 @@
 .register-data-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     width: 35em;
     background: #D9D9D9;
-    border-radius: 1.5em;
-    padding: 1.5em 4em;
+    border-radius: 1.5em 0 0 1.5em;
+    padding: 1.2em 2em;
     box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.register-data-container::-webkit-scrollbar {
+    width: 0.5em;
+}
+
+.register-data-container::-webkit-scrollbar-track {
+    cursor: pointer;
+    background: #f1f1f1;
+}
+
+.register-data-container::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    background: #888;
+}
+
+.register-data-container::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+    background: #555;
 }
 
 .register-form-title {
@@ -193,6 +189,48 @@
     color: #5C7A89;
 }
 
+.register-form-group.textarea {
+    max-height: 5em;
+    padding: 0.5em 1em;
+}
+
+.register-form-textarea {
+    padding: 0em 0em;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: #004040;
+    font-size: 0.8em;
+    font-weight: normal;
+    font-family: system-ui;
+    width: 100%;
+    resize: none;
+}
+.register-form-textarea::placeholder {
+    font-size: 1em;
+    color: #5C7A89;
+}
+
+.register-form-textarea::-webkit-scrollbar {
+    width: 0.5em;
+    height: 100%;
+}
+
+.register-form-textarea::-webkit-scrollbar-track {
+    cursor: pointer;
+    background: #f1f1f1;
+}
+
+.register-form-textarea::-webkit-scrollbar-thumb {
+    cursor: pointer;
+    background: #888;
+}
+
+.register-form-textarea::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+    background: #555;
+}
+
 .back-button-register {
     display: flex;
 }
@@ -218,10 +256,10 @@
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
 }
 
-.role-selector input[type='checkbox'] {
+.register-checkbox-label input[type='checkbox'] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -231,7 +269,7 @@
     position: relative;
 }
 
-.role-selector input[type='checkbox']:checked:after {
+.register-checkbox-label input[type='checkbox']:checked:after {
     content: '';
     width: 0.9em;
     height: 0.9em;
@@ -248,10 +286,32 @@
     font-size: 1em;
 }
 
+.register-checkbox-label.agreement {
+    font-size: 0.9em;
+}
+
+.register-checkbox-label.agreement p {
+    margin: 0;
+}
+
+.register-checkbox-label.agreement a {
+    color: #004040;
+    font-weight: bold;
+}
+.register-checkbox-label.agreement a:hover {
+    text-decoration: underline;
+}
+
 .register-error-message {
     color: red;
     margin: 0;
     font-size: 0.9em;
+}
+
+.visibility-icon {
+    width: 1.1em;
+    height: 1.1em;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 1024px) {
@@ -285,6 +345,7 @@
     .register-data-container {
         width: 80%;
         padding: 1.5em 2em;
+        border-radius: 1.5em;
     }
 
     .register-form-title {
@@ -316,6 +377,10 @@
         flex-direction: column;
         gap: 1em;
     }
+
+    .register-form-textarea::placeholder {
+        font-size: 1.2em;
+    }
     
 }
 
@@ -331,4 +396,74 @@
     .register-form-row {
         width: 25em;
     }
+}
+
+@media screen and (max-height: 400px) {
+    .register {
+        flex-direction: column;
+        justify-content: flex-start;
+        position: absolute;
+        gap: 2em;
+        height: 90em;
+        width: 100%;
+    }
+
+    .brand-container-register {
+        margin-top: 1.5em;
+    }
+
+    .logo-register {
+        width: 18em;
+    }
+
+    .back-button-register {
+        align-self: flex-start;
+        margin-left: 1.2em;
+        margin-bottom: 1em;
+    }
+
+    .slogan-text-register {
+        font-size: 1.5em;
+    }
+
+    .register-data-container {
+        width: 80%;
+        padding: 1.5em 2em;
+        border-radius: 1.5em;
+    }
+
+    .register-form-title {
+        font-size: 1.5em;
+    }
+
+    .register-form-subtitle {
+        font-size: 1em;
+    }
+
+    .register-form-row {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .register-form-row .left {
+        width: 100%;
+    }
+
+    .register-form-group {
+        width: 100%;
+    }
+
+    .register-form-group input {
+        font-size: 1em;
+    }
+
+    .role-selector {
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    .register-form-textarea::placeholder {
+        font-size: 1.2em;
+    }
+    
 }

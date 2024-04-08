@@ -29,6 +29,7 @@ urlpatterns = [
     path('designs/', include('custom_design.urls')),
     path('users/', include('users.urls')),
     path('products/', include('products.urls')),
+    path('report/', include('report.urls')),
     path('opinion/', include('opinion.urls')),
     path('chat/', include('chat.urls')),
     path('posts/', include('community.urls')),
