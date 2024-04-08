@@ -179,7 +179,7 @@ const Post = () => {
                   <p className="post-description">{post.description}</p>
                   <p className="post-users">Publicado por: {post.users}</p>
                   <hr />
-                  <p>{post.likes.includes(username) ? <FcLike onClick={handleDeleteLike} /> : <FcLikePlaceholder onClick={handleLike}/>} {post.likes.length}</p>
+                  <p>{post.likes.filter(like => like === username).length === 1  ? <FcLike onClick={handleDeleteLike} /> : <FcLikePlaceholder onClick={handleLike}/>} {post.likes.length}</p>
                 </div>
                 
 
