@@ -3,6 +3,8 @@ import './Product.css'
 import defaultImage from '../../assets/default_product_image.png'
 import Button, { BUTTON_TYPES } from '../Button/Button';
 import { FaCartPlus } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
+import { useState } from 'react';
 
 const Product = (props) => {
     const images_path = import.meta.env.VITE_IMAGES_PATH;
@@ -12,6 +14,7 @@ const Product = (props) => {
     const pathImage = props.product.image_url ? props.product.image_url : props.product.imageRoute;
     const pathDetails = props.product.id;
     const isImageRoute = !props.product.image_url;
+    const [showCheckmark, setShowCheckmark] = useState(false);
 
     const onButtonClick = () => {
         if (!pathDetails) {
@@ -35,7 +38,7 @@ const Product = (props) => {
     const imageRoute = modifyImagePath(pathImage, isImageRoute);
 
     const currentUserId = parseInt(localStorage.getItem('userId'));
-    const isCurrentUserId = () => {return currentUserId && currentUserId === product.seller};
+    const isCurrentUserId = () => { return currentUserId && currentUserId === product.seller };
 
     const addProduct = (product) => {
         let cartCopy = [...cart];
@@ -57,6 +60,11 @@ const Product = (props) => {
             existingProduct.quantity += 1
         } else {
             if (product.stock_quantity > 0) {
+                setShowCheckmark(true);
+                setTimeout(() => {
+                    setShowCheckmark(false);
+                  }, 5000); 
+
                 cartCopy.push({
                     id: product.id,
                     name: product.name,
@@ -88,10 +96,18 @@ const Product = (props) => {
                 <p className='name'>{name}</p>
                 <div className='product-prd-container'>
                     {!isCurrentUserId() && (
-                    <a onClick={(e) => { e.stopPropagation(); addProduct(product); }}>
-                        <FaCartPlus className='product-icon-cart' /></a>
-                    
+                        <div>
+                            <button style={{ cursor: 'pointer', border: 'none', background: 'none', outline: 'none',  paddingTop: '0.3vh',padding: 0}} onClick={(e) => { e.stopPropagation(); addProduct(product); }}>
+                                <FaCartPlus className='product-icon-cart' />
+                            </button>
+                            {showCheckmark && (
+                                <span style={{ position: 'absolute', bottom: '-6px', left: '15px', color: 'green' }}>
+                                    <FaCheckCircle />
+                                </span>
+                            )}
+                        </div>
                     )}
+
                     <p className='price'>{price}€</p>
                 </div>
 

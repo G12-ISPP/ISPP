@@ -195,7 +195,11 @@ class ProductDetail extends React.Component {
 
                 {!showEditButton && (
                   <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                    <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => { addProduct(product, cantidad); this.setState({ agregado: true }) }} />
+                    <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => { addProduct(product, cantidad); 
+                      this.setState({ agregado: true });
+                      setTimeout(() => {
+                        this.setState({ agregado: false });
+                        }, 10000);}} />
                   </div>
                 )}
                 {showEditButton &&
