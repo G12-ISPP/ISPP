@@ -64,7 +64,7 @@ def add_product(request):
             if show == 'true':
                 products_showed = Product.objects.filter(seller=request.user, show=True)
                 user = CustomUser.objects.get(username=request.user)
-                if (user.seller_plan & user.designer_plan): 
+                if (user.seller_plan & user.designer_plan):
                     if (products_showed.count() > 7):
                         return JsonResponse({'error': 'Ya hay 8 productos destacados'}, status=400)
                     else:
@@ -76,7 +76,7 @@ def add_product(request):
                         show = True
                 elif (user.designer_plan):
                     if (products_showed.count() > 2):
-                            return JsonResponse({'error': 'Ya hay 3 productos destacados'}, status=400)
+                        return JsonResponse({'error': 'Ya hay 3 productos destacados'}, status=400)
                     else:
                         show = True
                 else:

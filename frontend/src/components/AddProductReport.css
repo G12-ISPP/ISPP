@@ -1,0 +1,23 @@
+.report-product-form-group-description {
+    font-family: inherit;
+    border-radius: 0.5em;
+    width: 500px;
+    height: 100px;
+  }
+
+.report-product-form-group-title {
+    font-family: inherit;
+    border-radius: 0.5em;
+    width: 300px;
+  }
+
+.report-product-form-group-selector {
+    font-family: inherit;
+    border-radius: 0.5em;
+
+  }
+
+.modal-content {
+
+    border: 4px ;
+  }

@@ -12,6 +12,9 @@ import AuthContext from "../../context/AuthContext.jsx";
 
 const Header = ({ cart, setCart }) => {
 
+    const [user, setUser] = useState(null);
+    const [ownUser, setOwnUser] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'));
     const [menuVisible, setMenuVisible] = useState(false);
     const [isHeaderFullScreen, setIsHeaderFullScreen] = useState(false);
@@ -22,7 +25,35 @@ const Header = ({ cart, setCart }) => {
     const [activeCart, setActiveCart] = useState(false);
     const [activeProfile, setActiveProfile] = useState(false);
 
+
+    const backend = import.meta.env.VITE_APP_BACKEND;
+
     useEffect(() => {
+        const id = localStorage.getItem('userId');
+        if (id) {
+            const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
+    
+            const fetchUserData = async () => {
+                try {
+                  const response = await fetch(petition);
+                  if (!response.ok) {
+                    throw new Error('Failed to fetch user data');
+                  }
+                  const userData = await response.json();
+                  setUser(userData);
+                  if (userData.is_staff) {
+                    setIsAdmin(true);
+                  }
+                  if (currentUserID === userData.id.toString()) {
+                    setOwnUser(true);
+                  }
+                } catch (error) {
+                  console.error('Error fetching user data:', error);
+                }
+            };
+            fetchUserData();
+        }
+
         const handleResize = () => {
             if (window.innerWidth > 1024) {
                 setMenuVisible(true);
@@ -344,6 +375,7 @@ const Header = ({ cart, setCart }) => {
                         )}
 
                         {isLoggedIn && <div className="menu-perfil">
+
                             <CgProfile className="icon-cart" onClick={() => setActiveProfile(!activeProfile)} />
                             {activeProfile && (
                                 <div onMouseLeave={() => setActiveProfile(false)} className="menu-contenedor">
