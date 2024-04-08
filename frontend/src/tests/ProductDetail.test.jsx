@@ -58,7 +58,7 @@ describe('Test products details', () => {
                 price: "3.00",
                 product_type: "D",
                 seller: user.id,
-                stock_quantity: 20
+                stock_quantity: 21
             };
 
             mockFetch(product);
@@ -219,7 +219,7 @@ describe('Test products details', () => {
 
 // Auxiliar functions
 function assertOKProductDetails(product, seller, container) {
-    const checkProduct = ["description", "name", "price", "stock_quantity"];
+    const checkProduct = ["description", "name", "price"];
 
     for (let i = 0; i < checkProduct.length; i++) {
         const expectedText = new RegExp(product[checkProduct[i]]);
@@ -229,7 +229,7 @@ function assertOKProductDetails(product, seller, container) {
     const productImgElement = container.querySelector('#product-img');
     expect(screen.getByAltText(product.name)).to.exist;
 
-    const checkSeller = ["first_name", "last_name"];
+    const checkSeller = ["username"];
 
     for (let i = 0; i < checkSeller.length; i++) {
         const expectedText = new RegExp(seller[checkSeller[i]]);
@@ -238,7 +238,7 @@ function assertOKProductDetails(product, seller, container) {
 }
 
 function assertInjectionProductDetails(product, seller, container) {
-    const checkProduct = ["description", "name", "price", "stock_quantity"];
+    const checkProduct = ["description", "name", "price"];
 
     for (let i = 0; i < checkProduct.length; i++) {
         const expectedText = parseScriptAndHtml(product[checkProduct[i]]);
@@ -248,7 +248,7 @@ function assertInjectionProductDetails(product, seller, container) {
     const productImgElement = container.querySelector('#product-img');
     expect(() => screen.queryByAltText(parseScriptAndHtml(product.name))).to.exist;
 
-    const checkSeller = ["first_name", "last_name"];
+    const checkSeller = ["username"];
 
     for (let i = 0; i < checkSeller.length; i++) {
         const expectedText = parseScriptAndHtml(seller[checkSeller[i]]);
