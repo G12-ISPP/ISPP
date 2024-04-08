@@ -22,6 +22,7 @@ const UserDetail = () => {
   const [opinions, setOpinions] = useState([]);
   const [totalOpinions, setTotalOpinions] = useState(0);
   const [avgScore, setAvgScore] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0); // Nuevo estado para el número de seguidores
   const navigate = useNavigate();
   const backend = import.meta.env.VITE_APP_BACKEND;
 
@@ -104,6 +105,21 @@ const UserDetail = () => {
     fetchUserLogued();
     fetchUserData();
     fetchOpinions();
+
+    const fetchFollowingCount = async () => {
+      try {
+        const response = await fetch(`${backend}/users/api/v1/users/${id}/get_following_count/`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch following count');
+        }
+        const followingCount = await response.json();
+        setFollowingCount(followingCount);
+      } catch (error) {
+        console.error('Error fetching following count:', error);
+      }
+    };
+
+    fetchFollowingCount();
   }, [id, currentUserID, page, reviewsPerPage]);
 
   const handleChatClick = async () => {
@@ -149,6 +165,17 @@ const UserDetail = () => {
       navigate(`/update-profile/` + id);
     } catch (error) {
       console.error('Error:', error);
+    }
+  };
+
+  const handleFollowingsClick = async () => {
+    if(followingCount.following_count === 0) return alert("Este usuario no sigue a nadie.");
+    else{
+      try {
+        navigate(`/user-details/${id}/following`);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   };
 
@@ -262,6 +289,11 @@ const UserDetail = () => {
                 {user.is_printer === true ? (
                   <div className="user-role">Impresor</div>
                 ) : null}
+                <Button 
+                type={BUTTON_TYPES.TRANSPARENT} 
+                text={`${followingCount.following_count} seguidos`} 
+                onClick={handleFollowingsClick} 
+                />
               </div>
 
               {ownUser ? (
