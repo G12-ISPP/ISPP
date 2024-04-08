@@ -99,12 +99,7 @@ const ProductList = () => {
           .filter(product => product.product_type === "D")
           .map(product => (
             <Product
-              key={product.id}
-              name={product.name}
-              price={product.price}
-              pathImage={product.image_url ? product.image_url : product.imageRoute}
-              pathDetails={product.id}
-              isImageRoute={!product.image_url}
+              product={product}
             />
           ))}
       />
@@ -116,12 +111,7 @@ const ProductList = () => {
           .filter(product => product.product_type === "I")
           .map(product => (
             <Product
-              key={product.id}
-              name={product.name}
-              price={product.price}
-              pathImage={product.image_url ? product.image_url : product.imageRoute}
-              pathDetails={product.id}
-              isImageRoute={!product.image_url}
+              product={product}
             />
           ))}
       />
@@ -133,12 +123,7 @@ const ProductList = () => {
           .filter(product => product.product_type === "P")
           .map(product => (
             <Product
-              key={product.id}
-              name={product.name}
-              price={product.price}
-              pathImage={product.image_url ? product.image_url : product.imageRoute}
-              pathDetails={product.id}
-              isImageRoute={!product.image_url}
+              product={product}
             />
           ))}
       />
@@ -150,12 +135,7 @@ const ProductList = () => {
           .filter(product => product.product_type === "M")
           .map(product => (
             <Product
-              key={product.id}
-              name={product.name}
-              price={product.price}
-              pathImage={product.image_url ? product.image_url : product.imageRoute}
-              pathDetails={product.id}
-              isImageRoute={!product.image_url}
+              product={product}
             />
           ))}
       />

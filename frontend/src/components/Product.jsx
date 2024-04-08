@@ -81,7 +81,7 @@ class ProductDetail extends React.Component {
 
       let existingProduct = cartCopy.find(cartProduct => cartProduct.id == product.id);
 
-      if (currentUserId && currentUserId === user.id) {
+      if (currentUserId && currentUserId === user.seller) {
         alert('No puedes comprar tu propio producto');
         return;
       }

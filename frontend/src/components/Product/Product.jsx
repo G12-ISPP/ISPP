@@ -34,14 +34,17 @@ const Product = (props) => {
     }
     const imageRoute = modifyImagePath(pathImage, isImageRoute);
 
-    const currentUserId = localStorage.getItem('userId');
+    const currentUserId = parseInt(localStorage.getItem('userId'));
+    const isCurrentUserId = () => {return currentUserId && currentUserId === product.seller};
 
     const addProduct = (product) => {
         let cartCopy = [...cart];
 
+        console.log(isCurrentUserId());
+
         let existingProduct = cartCopy.find(cartProduct => cartProduct.id == product.id);
 
-        if (currentUserId && currentUserId === product.user_id) {
+        if (currentUserId && currentUserId === product.seller) {
             alert('No puedes comprar tu propio producto');
             return;
         }
@@ -84,8 +87,11 @@ const Product = (props) => {
             <div className='product-description'>
                 <p className='name'>{name}</p>
                 <div className='product-prd-container'>
+                    {!isCurrentUserId() && (
                     <a onClick={(e) => { e.stopPropagation(); addProduct(product); }}>
                         <FaCartPlus className='product-icon-cart' /></a>
+                    
+                    )}
                     <p className='price'>{price}€</p>
                 </div>
 
