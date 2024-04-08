@@ -44,6 +44,11 @@ class RegisterForm extends React.Component {
 
   handleChange = (event) => {
     const { name, value, type, checked } = event.target;
+  
+    if ((name === 'first_name' || name === 'last_name' || name === 'city') && /\d/.test(value)) {
+      return;
+    }
+  
     this.setState({
       [name]: type === 'checkbox' ? checked : value,
       customerAgreementChecked: name === 'customerAgreementChecked' ? checked : this.state.customerAgreementChecked

@@ -45,8 +45,6 @@ const Post = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data.following);
-
         // Para cada usuario seguido, obtener sus posts
         if (Array.isArray(followedUsers)) {
           data.following.forEach((user) => {
