@@ -7,8 +7,6 @@ import AddProductReport from "./AddProductReport";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAlignJustify, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
-import {Link} from 'react-router-dom';
 import ProfileIcon from "./ProfileIcon/ProfileIcon";
 import defaultProfileImage from '../assets/avatar.svg';
 import ProductsGrid, { GRID_TYPES } from "./ProductsGrid/ProductsGrid";
@@ -188,7 +186,7 @@ class ProductDetail extends React.Component {
               
               <h2 className="product-info-price">{product.price}€</h2>
 
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ justifyContent: 'center' }}>
                 <div className='product-quantity'>
                   <button className="product-cart-qty-plus" type="button" onClick={this.decrementarCantidad}>-</button>
                   <input type="text" name="qty" min="0" className="qty product-form-control" value={cantidad} readOnly />
@@ -196,7 +194,9 @@ class ProductDetail extends React.Component {
                 </div>
 
                 {!showEditButton && (
-                  <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => { addProduct(product, cantidad); this.setState({ agregado: true }) }} />
+                  <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                    <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => { addProduct(product, cantidad); this.setState({ agregado: true }) }} />
+                  </div>
                 )}
                 {showEditButton &&
                   <Button type={BUTTON_TYPES.LARGE} text='Editar producto' onClick={this.handleEditProduct} />
@@ -209,7 +209,7 @@ class ProductDetail extends React.Component {
 
         <div className="related-products">
           <Text type={TEXT_TYPES.TITLE_BOLD} text={relatedProductsTitle()} />
-          <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} elementType={product.product_type} excludedProducts={[product.id]} />
+          <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} main={ true } elementType={product.product_type} excludedProducts={[product.id]} />
         </div>
 
 

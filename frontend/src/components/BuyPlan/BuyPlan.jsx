@@ -181,8 +181,8 @@ export default class BuyPlan extends React.Component {
                                     <input
                                         type="checkbox"
                                         style={{ transform: 'scale(2)' }}
-                                        checked={this.state.buyer_plan}
-                                        onChange={() => this.handlePlanChange('buyer_plan')}
+                                        checked={this.state.buyerPlan}
+                                        onChange={() => this.handlePlanChange('buyerPlan')}
                                     />
                                 </label>
                             )}
