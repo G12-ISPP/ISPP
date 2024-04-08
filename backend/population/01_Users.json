@@ -1,5 +1,39 @@
 [
   {
+    "model": "users.customuser",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$VKwLB6y5tK2fauPSYnRuYc$9eW2e+IHpHXnXsmPidUaWVMAJMJgjiSIA/e61wGK3Dc=",
+      "last_login": "2024-03-22T18:55:30.403Z",
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "admin@us.es",
+      "date_joined": "2024-03-22T18:53:01.095Z",
+      "profile_picture": "",
+      "address": "Mi casa",
+      "description": null,
+      "postal_code": 12345,
+      "city": "Mi pueblo",
+      "email_verified": false,
+      "is_staff": true,
+      "is_superuser": true,
+      "is_active": true,
+      "is_designer": false,
+      "is_printer": false,
+      "buyer_plan": false,
+      "buyer_plan_date": null,
+      "seller_plan": false,
+      "seller_plan_date": null,
+      "designer_plan": false,
+      "designer_plan_date": null,
+      "groups": [],
+      "user_permissions": [],
+      "followings": [],
+      "followers": []
+    }
+  },
+  {
     "model": "users.CustomUser",
     "pk": "2",
     "fields": {

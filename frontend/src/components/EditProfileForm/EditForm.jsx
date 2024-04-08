@@ -125,7 +125,7 @@ checkUserPermission = async () => {
      formData.append('city', this.state.city);
  
      if(this.state.preview !== avatar){
-      formData.append('profile_picture', blob, `profile_picture_${this.state.username}.png`);
+      formData.append('profile_picture', blob, `profile_picture_${this.state.username}.webp`);
       }
  
      const response = await fetch(url, {
