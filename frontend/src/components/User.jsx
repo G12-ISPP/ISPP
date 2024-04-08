@@ -344,7 +344,7 @@ const UserDetail = () => {
 
         <div className="reviews-section">
           <Text type={TEXT_TYPES.TITLE_BOLD} text='Opiniones' />
-          <AddOpinion target_user={user.id} />
+          {!ownUser ? (<AddOpinion target_user={user.id} />):("")}
           {opinions.length > 0 ? (
             <div className="user-reviews">
               {opinions.map(opinion => (
