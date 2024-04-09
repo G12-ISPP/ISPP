@@ -24,6 +24,10 @@
 	text-align: center;
 }
 
+.button-login {
+    margin-right: 10px;
+  }
+  
 .search-box {
     position: relative;
     width: 40%;
