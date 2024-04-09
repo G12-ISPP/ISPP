@@ -232,11 +232,19 @@ class DesignsAvailabilityTestCase(APITestCase):
 
 class DesignDetailsTestCase(APITestCase):
     def setUp(self):
-        self.custom_user = get_user_model().objects.create_user(
+        self.custom_user = get_user_model().objects.create_user( 
             username='testuser',
             email='test@example.com',
             postal_code='12345',
             email_verified=True
+        )
+        
+        self.custom_user_printer = get_user_model().objects.create_user( 
+        username='printeruser',
+        email='printer@example.com',
+        postal_code='54321',
+        email_verified=True
+        
         )
         self.client.force_authenticate(user=self.custom_user)
 
@@ -254,13 +262,15 @@ class DesignDetailsTestCase(APITestCase):
             address='Test Address',
             city='Test City',
             buyer_mail='buyer@example.com',
+            printer=self.custom_user_printer,
             payed=True,
             status='searching',
             color='Red',
             buyer=self.custom_user
+            
         )
 
-    def test_design_details(self):
+    def test_design_details(self):        
         response = self.client.get(reverse('details', args=[self.design.custom_design_id]))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], 'Test Design')
@@ -274,8 +284,18 @@ class DesignDetailsToPrinterTestCase(APITestCase):
             email_verified=True,
             is_printer=True
         )
-        self.client.force_authenticate(user=self.custom_user)
-
+        
+        
+        custom_user_printer = get_user_model().objects.create_user(
+        username='printeruser',
+        email='printer@example.com',
+        postal_code='54321',
+        email_verified=True,
+        is_printer = True
+        
+        )
+        self.client.force_authenticate(user=custom_user_printer)
+        
         self.design = CustomDesign.objects.create(
             custom_design_id = '123e4567-e89b-12d3-a456-426614174000',
             name='Test Design',
@@ -292,11 +312,14 @@ class DesignDetailsToPrinterTestCase(APITestCase):
             buyer_mail='buyer@example.com',
             payed=True,
             status='searching',
+            printer = custom_user_printer,
             color='Red',
             buyer=self.custom_user
+            
         )
 
     def test_design_details_to_printer(self):
+        
         response = self.client.get(reverse('details_to_printer', args=[self.design.custom_design_id]))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], 'Test Design')
