@@ -8,7 +8,7 @@ const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND).replace(/"/g, '
 const FollowingList = () => {
     const [following, setFollowing] = useState([]);
     const [page, setPage] = useState(1);
-    const userId = window.location.href.split('/')[4];
+    const userId = localStorage.getItem('userId');
     const [followingPerPage, setFollowingPerPage] = useState(5);
     const [numPages, setNumPages] = useState(0);
 
