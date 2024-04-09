@@ -194,6 +194,15 @@ const UserDetail = () => {
     }
   };
 
+  const handleRequest = async () => {
+    const id = window.location.href.split('/')[4];
+    try {
+        navigate(`/requests/${id}`);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
   const handleFollowersClick = async () => {
     if(followersCount.followers_count === 0) return alert("Este usuario no tiene seguidores.");
     else{
@@ -357,6 +366,11 @@ const UserDetail = () => {
                   <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
                 )}
                 <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
+                {ownUser === true ? 
+                  (<Button type={BUTTON_TYPES.TRANSPARENT} text='Mis solicitudes' onClick={handleRequest} />)
+                  :
+                  ("")
+                }
                 {ownUser || localStorage.getItem('token') === null ? null : (
                   <div className="user-button">
                     <FollowButton userId={id} />

@@ -212,3 +212,19 @@ def loguedUser(request):
             return Response({"message": "No hay usuario logueado"}, status=status.HTTP_200_OK)
     else:
         return Response({"message": "Método de solicitud no permitido"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+@api_view(['GET'])
+@csrf_exempt
+def custom_designs_request(request, buyer_id):
+    try:
+        # Obtener todos los CustomDesigns por imprimir del usuario con el ID de impresora proporcionado
+        designs = CustomDesign.objects.filter(buyer_id=buyer_id)
+
+        # Verificar si hay diseños por imprimir para el usuario dado
+        if designs.exists():
+            serializer = CustomDesignSerializer(designs, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'No hay solicitudes de impresión para este usuario'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message': f'Error al obtener las solicitudes de impresión: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
