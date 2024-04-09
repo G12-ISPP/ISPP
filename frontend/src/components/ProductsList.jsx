@@ -81,12 +81,12 @@ const ProductList = () => {
     <>
 
         {ownUser ? (
-          <div className="section-title-container">
+          <div style={{ textAlign: 'center' }} className="section-title-container">
             <Text type={TEXT_TYPES.TITLE_BOLD} text='Mis productos' />
             <PageTitle title={'Mis productos'} />
           </div>
         ) : (
-          <div className="section-title-container">
+          <div style={{ textAlign: 'center' }} className="section-title-container">
             <Text type={TEXT_TYPES.TITLE_BOLD} text={`Productos de: ${sellerName}`} />
             <PageTitle title={'Productos de ' + sellerName} />
           </div>

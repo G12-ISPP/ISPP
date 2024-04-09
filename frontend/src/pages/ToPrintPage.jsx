@@ -56,7 +56,7 @@ const ProductList = () => {
     return (
         <>
             <div className="section-title-container">
-                <Text type={TEXT_TYPES.TITLE_BOLD} text='Por imprimir' />
+                <h2 className="titulo-pagina" style={{ textAlign: 'center' }}>Por imprimir</h2>
                 <PageTitle title={'Por imprimir'} />
             </div>
             {error && <div className="error-message">{error}</div>}
