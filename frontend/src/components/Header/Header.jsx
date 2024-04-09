@@ -1,8 +1,9 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './Header.css';
 import logo from '../../assets/logo.png';
 import searchIcon from '../../assets/bx-search.svg';
-import messageIcon from '../../assets/mensajero.png'; 
+import messageIcon from '../../assets/mensajero.png';
+import herramientasIcon from '../../assets/herramientas.png';
 import menuIcon from '../../assets/bx-menu.svg';
 import exitIcon from '../../assets/bx-x.svg';
 import Button, { BUTTON_TYPES } from '../Button/Button';
@@ -19,8 +20,14 @@ const Header = ({ cart, setCart }) => {
     const [isHeaderFullScreen, setIsHeaderFullScreen] = useState(false);
     const { logoutUser } = useContext(AuthContext);
     const [searchText, setSearchText] = useState('');
+    const [dropdownVisible, setDropdownVisible] = useState(false);
     const [searchResults, setSearchResults] = useState({ productsData: [], usersData: [] });
+    const [activeCart, setActiveCart] = useState(false);
+    const [activeProfile, setActiveProfile] = useState(false);
+
+
     const backend = import.meta.env.VITE_APP_BACKEND;
+
     useEffect(() => {
         const id = localStorage.getItem('userId');
         if (id) {
@@ -64,17 +71,14 @@ const Header = ({ cart, setCart }) => {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-            setCart([]);
-            localStorage.removeItem('userId');
-		    setIsLoggedIn(null);
+        setCart([]);
+        localStorage.removeItem('userId');
+        setIsLoggedIn(null);
         logoutUser();
-		    alert('Se ha cerrado sesión con éxito!!');
-		    window.location.href = '/';
-	};
+        alert('Se ha cerrado sesión con éxito!!');
+        window.location.href = '/';
+    };
 
-    const [active, setActive] = useState(false);
-    const [activeProfile, setActiveProfile] = useState(false);
-    
     const deleteProduct = product => {
         const results = cart.filter(
             item => item.id !== product.id
@@ -146,6 +150,14 @@ const Header = ({ cart, setCart }) => {
 
     const currentUserID = localStorage.getItem('userId');
 
+    const handleCartMouseEnter = () => {
+        setActiveCart(true);
+    }
+
+    const handleCartMouseLeave = () => {
+        setActiveCart(false);
+    }
+
     return (
         <div className={isHeaderFullScreen ? 'header-fullscreen' : 'header'}>
             <div className={isHeaderFullScreen ? 'logo-container-fullscreen' : 'logo-container'}>
@@ -215,6 +227,28 @@ const Header = ({ cart, setCart }) => {
                             role="button" // Ayuda con la accesibilidad, indicando que la imagen actúa como un botón
                             style={{ cursor: 'pointer' }} // Cambia el cursor a un puntero para indicar que es clickable
                         />}
+
+
+                        <div className="dropdown-icon" onClick={() => setDropdownVisible(!dropdownVisible)}>
+                            <img
+                                src={herramientasIcon}
+                                alt="Menú desplegable"
+                                width={35}
+                                height={35}
+                                tabIndex="0"
+                                role="button"
+                                style={{ cursor: 'pointer' }}
+                            />
+                        </div>
+                        {dropdownVisible && (
+                            <div className="menu-perfil">
+                                <div className="menu-contenedor-herramientas">
+                                    <div onClick={() => window.location.href='/convert-to-stl'} className="menu-opcion">Convertir a STL</div>
+                                    <div onClick={() => window.location.href='/designs/my-design'} className="menu-opcion">Solicitar impresión</div>
+                                </div>
+                            </div>
+                        )}
+
                         {isHeaderFullScreen && (
                             <>
                                 <div className='container-icon'>
@@ -250,7 +284,8 @@ const Header = ({ cart, setCart }) => {
                                     <div
                                         className='container-cart-icon'
                                         onClick={() => onButtonClick('/cart')}
-                                        onMouseEnter={() => setActive(true)}
+                                        onMouseEnter={() => setActiveCart(true)}
+                                        onMouseLeave={() => setActiveCart(false)}
                                     >
                                         <svg
                                             xmlns='http://www.w3.org/2000/svg'
@@ -273,9 +308,9 @@ const Header = ({ cart, setCart }) => {
                                     </div>
 
                                     <div
-                                        onMouseEnter={() => setActive(true)}
-                                        onMouseLeave={() => setActive(false)}
-                                        className={`container-cart-products ${active ? '' : 'hidden-cart'
+                                        onMouseEnter={() => setActiveCart(true)}
+                                        onMouseLeave={() => setActiveCart(false)}
+                                        className={`container-cart-products ${activeCart ? '' : 'hidden-cart'
                                             }`}
                                     >
                                         {cart.length ? (
@@ -340,19 +375,25 @@ const Header = ({ cart, setCart }) => {
                         )}
 
                         {isLoggedIn && <div className="menu-perfil">
-                                <CgProfile className="icon-cart" onClick={() => setActiveProfile(!activeProfile)} onMouseEnter={() => setActiveProfile(true)} />
-                                {activeProfile && (
-                                    <div onMouseLeave={() => setActiveProfile(false)} className="menu-contenedor">
-                                        <div onClick={() => window.location.href=`/user-details/${currentUserID}`} className="menu-opcion">Ver Perfil</div>
-                                        <div onClick={() => window.location.href='/myOrders'} className="menu-opcion">Mis pedidos</div>
-                                        {isAdmin && <div onClick={() => window.location.href='/admin'} className="menu-opcion">Panel de administrador</div>}
-                                        <hr />
-                                        <div onClick={handleLogout} className="menu-opcion menu-cerrar-sesion">Cerrar Sesión</div>
-                                    </div>
-                                )}
-                        </div>}
-                        {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login' />}
-                        {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />}
+
+                            <CgProfile className="icon-cart" onClick={() => setActiveProfile(!activeProfile)} />
+                            {activeProfile && (
+                                <div onMouseLeave={() => setActiveProfile(false)} className="menu-contenedor">
+                                    <div onClick={() => window.location.href=`/user-details/${currentUserID}`} className="menu-opcion">Ver Perfil</div>
+                                    <div onClick={() => window.location.href='/myOrders'} className="menu-opcion">Mis pedidos</div>
+                                    <div onClick={() => window.location.href='/buy-plan'} className="menu-opcion">Comprar plan</div>
+                                    <hr />
+                                    <div onClick={handleLogout} className="menu-opcion menu-cerrar-sesion">Cerrar Sesión</div>
+
+                                </div>
+                            )}
+                        </div>
+                        }
+                        <div className='button-login'>
+                            {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Iniciar sesión' path='/login' />}
+                        </div>
+                        
+                        {!isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Registrarse' path='/register' />} 
                         {isLoggedIn && <Button type={BUTTON_TYPES.HEADER} text='Vender' path='/products/add-product' />}
                     </div>
                 </>

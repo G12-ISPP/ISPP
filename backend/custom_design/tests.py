@@ -64,7 +64,7 @@ class CreateCustomDesignTestCase(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test1@example.com',
             postal_code='12345',
             email_verified=True
         )
@@ -127,7 +127,7 @@ class ConfirmCancelTestCase(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test2@example.com',
             postal_code='12345',
             email_verified=True
         )
@@ -170,7 +170,7 @@ class UpdateDesignStatusTestCase(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test3@example.com',
             postal_code='12345',
             email_verified=True,
             is_printer=True
@@ -216,7 +216,7 @@ class DesignsAvailabilityTestCase(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test4@example.com',
             postal_code='12345',
             email_verified=True,
             is_printer=True
@@ -234,7 +234,7 @@ class DesignDetailsTestCase(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user( 
             username='testuser',
-            email='test@example.com',
+            email='test5@example.com',
             postal_code='12345',
             email_verified=True
         )
@@ -279,7 +279,7 @@ class DesignDetailsToPrinterTestCase(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test6@example.com',
             postal_code='12345',
             email_verified=True,
             is_printer=True
@@ -327,7 +327,7 @@ class DesignDetailsToPrinterTestCase(APITestCase):
     def test_anotherprinter(self):
         user2 = get_user_model().objects.create_user(
             username='testuser2',
-            email='test@example.com',
+            email='test7@example.com',
             postal_code='12345',
             email_verified=True
         )
@@ -364,7 +364,7 @@ class DesignDetailsToPrinterTestCase(APITestCase):
     def test_not_printer(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser3',
-            email='test@example.com',
+            email='test8@example.com',
             postal_code='12345',
             email_verified=True
         )
@@ -378,7 +378,7 @@ class LoguedUserTestCase(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test9@example.com',
             postal_code='12345',
             email_verified=True
         )
@@ -398,7 +398,7 @@ class SearchingPrinterDesign(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test10@example.com',
             postal_code='12345',
             email_verified=True
         )
@@ -411,7 +411,7 @@ class SearchingPrinterDesign(APITestCase):
     def test_not_design(self):
         self.custom_user = get_user_model().objects.create_user(
             username='test-user',
-            email='test@example.com',
+            email='test11@example.com',
             postal_code='12345',
             email_verified=True,
             is_printer = True

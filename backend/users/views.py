@@ -34,7 +34,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from users.serializer import ProfileUpdateSerializer
 from users.serializer import UserSerializer
 from .models import CustomUser
-from .utils import validate_email, get_user
+from .utils import validate_email, get_user, existe_email
 
 ruta_frontend = settings.RUTA_FRONTEND
 
@@ -141,6 +141,8 @@ class UserCreateAPIView(generics.CreateAPIView):
         if len(email) > 50:
             errors['email'] = ['El email no puede tener más de 50 caracteres']
         email = request.data.get('email')
+        if existe_email(email):
+            errors['email'] = ['Ya existe un usuario con este email']
         if not validate_email(email):
             errors['email'] = ['El email no es válido']
         if errors:
@@ -317,7 +319,7 @@ def follow_status(request, user_id):
 def get_following_count(request, user_id):
     try:
         user = CustomUser.objects.get(id=user_id)
-        following_count = user.followings.count()
+        following_count = user.followings.exclude(id=user_id).count()
         return JsonResponse({'following_count': following_count})
     except CustomUser.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)
@@ -330,5 +332,25 @@ def get_followings(request, user_id):
         followings = user.followings.exclude(id=user_id)
         followings_data = [{'id': following.id, 'username': following.username, 'profile_picture': following.profile_picture.url if following.profile_picture else None} for following in followings]
         return JsonResponse({'followings': followings_data})
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+    
+@api_view(['GET'])
+def get_followers_count(request, user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        followers_count = user.followers.exclude(id=user_id).count()
+        return JsonResponse({'followers_count': followers_count})
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+
+@api_view(['GET'])
+def get_followers(request, user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        followers = user.followers.exclude(id=user_id)
+        followers_data = [{'id': follower.id, 'username': follower.username, 'profile_picture': follower.profile_picture.url if follower.profile_picture else None} for follower in followers]
+        return JsonResponse({'followers': followers_data})
     except CustomUser.DoesNotExist:
         return JsonResponse({'error': 'User not found'}, status=404)

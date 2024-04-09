@@ -20,6 +20,24 @@
     object-fit: cover;
 }
 
+.product-prd-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+  
+  .product-prd-container .product-icon-cart {
+    color: #004040;
+    font-size: 1.2em;
+    transition: all 0.3s ease;
+  }
+  
+  .product-prd-container .product-icon-cart:hover {
+    color: #002D2D;
+    font-size: 1.5em;
+  }
+
 .product-description {
     box-sizing: border-box;
     padding: 0em 0.8em;
