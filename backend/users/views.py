@@ -12,19 +12,16 @@ from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import get_template
-from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import activate
 from django.utils.translation import gettext_lazy as _
-from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from paypalrestsdk import Payment
 from rest_framework import generics
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.decorators import api_view
-from rest_framework.exceptions import APIException
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -71,6 +68,8 @@ class UsersView(viewsets.ModelViewSet):
     @action(detail=True, methods=['patch'])
     def toggle_active(self, request, pk=None):
         user = self.get_object()
+        if not user.is_staff:
+            return Response({'error': 'No tienes permiso para editar este usuario'}, status=status.HTTP_403_FORBIDDEN)
         serializer = self.get_serializer(user, data=request.data, partial=True)
         is_active = request.data.get('is_active')
         if serializer.is_valid():
@@ -187,7 +186,6 @@ class VerifyEmailView(APIView):
 
     def get(self, request, uidb64, token):
         user = get_user(uidb64)
-        print(user)
         if user is not None and default_token_generator.check_token(user, token):
             if user.email_verified:
                 return Response({'message': 'Usuario ya verificado.'}, status=200)
@@ -202,7 +200,6 @@ class LoginView(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
         user = authenticate(username=username, password=password)
-        print(user)
         if user is None:
             return Response({'python manage.py runserver': 'Usuario o contraseña incorrectos'}, status=400)
         if not user.email_verified:

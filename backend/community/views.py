@@ -1,22 +1,22 @@
 from tokenize import TokenError
-from django.shortcuts import render
-from requests import Response
-from users.models import CustomUser
-from community.serializer import PostSerializer, PostSerializerWrite
-from community.models import Post, Like
-from rest_framework import viewsets
-from rest_framework import permissions
-from rest_framework_simplejwt.tokens import AccessToken
+
 from django.contrib.auth import get_user_model
-from rest_framework_simplejwt.exceptions import InvalidToken
-from rest_framework.views import APIView
-from django.http import JsonResponse
-from django.db.models import Q
-from rest_framework.decorators import api_view
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
+from django.db.models import Q
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from requests import Response
+from rest_framework import permissions
+from rest_framework.decorators import api_view
+from rest_framework.views import APIView
+from rest_framework_simplejwt.exceptions import InvalidToken
+from rest_framework_simplejwt.tokens import AccessToken
+
+from community.models import Post, Like
+from community.serializer import PostSerializer, PostSerializerWrite
+from users.models import CustomUser
 
 
 # Create your views here.
@@ -145,6 +145,8 @@ def add_post(request):
         description = request.data.get('description')
         users = get_user_from_token(request.headers.get('Authorization', '').split(' ')[1])
         image = request.FILES.get('file')
+
+        print(name, description, users, image)
 
         # Verificar que todos los campos requeridos estén presentes
         if not all([name, description, image]):
