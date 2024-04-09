@@ -187,7 +187,7 @@ class RegisterForm extends React.Component {
                   type={this.state.showPassword ? 'text' : 'password'} // Mostrar contraseña si showPassword es true
                   id='confirmPassword'
                   name='confirmPassword'
-                  className='form-input'
+                  className='register-form-input'
                   placeholder='Confirmar contraseña*'
                   value={this.state.confirmPassword}
                   onChange={this.handleConfirmPasswordChange}
