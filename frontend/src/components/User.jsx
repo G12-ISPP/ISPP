@@ -179,6 +179,15 @@ const UserDetail = () => {
     }
   };
 
+  const handleRequest = async () => {
+    const id = window.location.href.split('/')[4];
+    try {
+        navigate(`/requests/${id}`);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -326,6 +335,11 @@ const UserDetail = () => {
                   <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
                 )}
                 <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
+                {ownUser === true ? 
+                  (<Button type={BUTTON_TYPES.TRANSPARENT} text='Mis solicitudes' onClick={handleRequest} />)
+                  :
+                  ("")
+                }
                 {ownUser || localStorage.getItem('token') === null ? null : (
                   <div className="user-button">
                     <FollowButton userId={id} />
