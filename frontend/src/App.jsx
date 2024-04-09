@@ -37,6 +37,7 @@ import PrintersPage from "./pages/PrintersPage.jsx";
 import MaterialsPage from "./pages/MaterialsPage.jsx";
 import ToPrintPage from "./pages/ToPrintPage.jsx";
 import ArtistsPage from "./pages/ArtistsPage.jsx";
+import RequestsPage from "./pages/RequestsPage.jsx";
 
 import ComunityPage from "./pages/ComunityPage.jsx";
 import AddPost from "./components/Post/AddPost.jsx";
@@ -106,6 +107,7 @@ function App() {
                     <Route path="/privacidad" element={<Privacity/>} />
                     <Route path="/terminos" element={<Terms/>} />
                     <Route path="/verify-email/:uuid/:token" element={<VerifyEmail />} />
+                    <Route path="/requests/:id" element={<RequestsPage/>} />
                 </Routes>
                 <Footer/>
             </AuthProvider>

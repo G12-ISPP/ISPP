@@ -226,6 +226,6 @@ def custom_designs_to_print(request, printer_id):
             serializer = CustomDesignSerializer(designs, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response({'message': 'No hay diseños por imprimir para este usuario'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'message': 'No hay solicitudes de impresión para este usuario'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        return Response({'message': f'Error al obtener los diseños por imprimir: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({'message': f'Error al obtener las solicitudes de impresión: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
