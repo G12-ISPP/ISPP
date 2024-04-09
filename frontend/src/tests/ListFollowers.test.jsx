@@ -31,15 +31,13 @@ describe('Test para listar seguidores', () => {
 
         localStorage.setItem('token', token_friend);
 
-        console.log(await (await getFollowStatus(user.id)).json());
         if ((await (await getFollowStatus(user.id)).json())['follows'] === false) {
             let response = await toggleFollow(user.id);
-            console.log(await response.json());
         }
 
-        localStorage.setItem('userId', user.id);
+        localStorage.setItem('userId', friend.id);
 
-        localStorage.setItem('token', token);
+        localStorage.setItem('token', token_friend);
 
 
 
@@ -55,7 +53,7 @@ describe('Test para listar seguidores', () => {
 
     test('render correctly', async () => {
         await waitFor(() => {
-            expect(screen.getByText(friend.username)).to.exist;
+            expect(screen.getByText(user.username)).to.exist;
         });
     })
 });
