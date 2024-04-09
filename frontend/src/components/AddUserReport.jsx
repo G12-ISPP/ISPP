@@ -1,6 +1,6 @@
 import React, { Component, useState } from "react";
 import Button, { BUTTON_TYPES } from "./Button/Button";
-import "./AddProductReport.css";
+import "./AddUserReport.css";
 // Modal Component
 class Modal extends React.Component {
   render() {
@@ -11,7 +11,7 @@ class Modal extends React.Component {
     return (
       <div className="modal">
         <div className="modal-content">
-          <a onClick={this.props.onClose} className="close">&times;</a>
+          <a onClick={this.props.onClose} class="close">&times;</a>
           {this.props.children}
         </div>
       </div>
@@ -19,12 +19,11 @@ class Modal extends React.Component {
   }
 }
 
-class AddProductReport extends Component {
+class AddUserReport extends Component {
   constructor(props) {
     super(props);
 
     this.openModal = this.openModal.bind(this);
-    this.product = this.props.product;
     this.closeModal = this.closeModal.bind(this);
     this.state = {
       isAuthenticated: localStorage.getItem("token") ? true : false,
@@ -62,10 +61,6 @@ class AddProductReport extends Component {
       errors.reason = "Debes seleccionar una razón";
     }
 
-    if (this.state.errors.unique) {
-      errors.unique = "Ya has reportado este producto";
-    }
-
     this.setState({ errors });
     return Object.keys(errors).length === 0;
   }
@@ -74,7 +69,7 @@ class AddProductReport extends Component {
     this.setState({ showForm: true });
     if (!this.state.isAuthenticated) {
       this.setState({
-        errors: { login: "Debes iniciar sesión para reportar el producto." },
+        errors: { login: "Debes iniciar sesión para reportar al usuario." },
       });
     }
   }
@@ -87,22 +82,20 @@ class AddProductReport extends Component {
       this.setState((prevState) => ({ showForm: !prevState.showForm }));
     } else {
       this.setState({
-        errors: { login: "Debes iniciar sesión para reportar el producto." },
+        errors: { login: "Debes iniciar sesión para reportar al usuario." },
       });
     }
   };
   handleSubmit = (e) => {
     e.preventDefault();
     // Send report to the backend
-
     if (!this.validateForm()) {
       return;
     }
     const formData = new FormData();
 
     const backend = import.meta.env.VITE_APP_BACKEND;
-    const petition = `${backend}/report/add-report-product`;
-
+    const petition = `${backend}/report/add-report-user`;
     fetch(petition, {
       method: "POST",
       headers: {
@@ -112,14 +105,14 @@ class AddProductReport extends Component {
         title: this.state.title,
         description: this.state.description,
         reason: this.state.reason,
-        product: this.product.id,
-        user: null,
+        product: null,
+        user: this.props.user.id,
         created_at: new Date().toISOString(),
       }),
     }).then((response) => {
       if (response.status === 401) {
-        console.log("Error 401");
-        this.setState({ errors: { unique: "Ya has reportado este producto" } });
+        console.log("Error submitting report: Ya has reportado este usuario");
+        this.setState({ errors: { unique: "Ya has reportado este usuario" } });
         this.setState({ showForm: true });
       } else if (response.ok) {
         console.log(response.json());
@@ -128,8 +121,6 @@ class AddProductReport extends Component {
       } else {
         console.error("Error submitting report");
       }
-    }).catch((error) => {
-      console.error("Error submitting report", error);
     });
 
     fetch();
@@ -155,10 +146,12 @@ class AddProductReport extends Component {
           type={BUTTON_TYPES.REPORT}
           text={
             showForm && isAuthenticated
-              ? "Ocultar formulario"
-              : "Reportar producto"
+              ? "Reporte"
+              : "Reportar usuario"
           }
-          onClick={this.openModal}
+          onClick={showForm && isAuthenticated
+            ? this.closeModal
+            : this.openModal}
         />
         {errors.login && (
           <div className="opinion-login-error">
@@ -173,7 +166,7 @@ class AddProductReport extends Component {
 
         {showForm && isAuthenticated && (
           <Modal show={showForm} onClose={this.closeModal}>
-            <h2>Reportar un producto</h2>
+            <h2>Reportar un usuario</h2>
             <form>
               <label>
                 Titulo:
@@ -183,7 +176,7 @@ class AddProductReport extends Component {
                   name="title"
                   value={this.state.title}
                   onChange={this.handleTitleChange}
-                  className="report-product-form-group-title"
+                  className="report-user-form-group-title"
                 />
                 {this.state.errors.title && (
                   <p className="error">{this.state.errors.title}</p>
@@ -197,7 +190,7 @@ class AddProductReport extends Component {
                 name="description"
                 onChange={this.handleDescriptionChange}
                 value={this.state.description}
-                className="report-product-form-group-description"
+                className="report-user-form-group-description"
                 rows={5}
               />
               {this.state.errors.description && (
@@ -212,7 +205,7 @@ class AddProductReport extends Component {
                   name="reason"
                   value={this.state.reason}
                   onChange={this.handleReasonsChange}
-                  className="report-product-form-group-selector"
+                  className="report-user-form-group-selector"
                 >
                   <option value="P">Problema de calidad</option>
                   <option value="D">Derecho de Autor</option>
@@ -230,7 +223,7 @@ class AddProductReport extends Component {
             {this.state.errors.unique && (
               <p className="error">{this.state.errors.unique}</p>
             )}
-            <div className="report-product-form-group-button">
+            <div className="report-user-form-group-button">
               <Button
                 type={BUTTON_TYPES.LARGE}
                 text="Publicar"
@@ -243,4 +236,4 @@ class AddProductReport extends Component {
     );
   }
 }
-export default AddProductReport;
+export default AddUserReport;

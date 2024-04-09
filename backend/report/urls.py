@@ -8,6 +8,7 @@ router.register('reports', ReportView, basename='reports')  # Register the Repor
 urlpatterns = [
     path('api/v1/', include(router.urls)),
     path('add-report-product', ReportView.add_report_product, name='add_report'),
+    path('add-report-user', ReportView.add_report_user, name='add_report_user'),
     ]
 
 

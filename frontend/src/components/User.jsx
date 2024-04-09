@@ -11,6 +11,7 @@ import PageTitle from './PageTitle/PageTitle';
 import filledStar from '../assets/bxs-star.svg';
 import emptyStar from '../assets/bx-star.svg';
 import Paginator from './Paginator/Paginator.jsx';
+import AddUserReport from './AddUserReport.jsx';
 
 const id = window.location.href.split('/')[4];
 
@@ -263,6 +264,7 @@ const UserDetail = () => {
           <PageTitle title={user.username} />
           <div className="artist-title-container">
             <Text type={TEXT_TYPES.TITLE_BOLD} text='Detalles de usuario' />
+            <AddUserReport user={user} />
           </div>
         </>
       )}
