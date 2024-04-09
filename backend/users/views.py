@@ -67,9 +67,9 @@ class UsersView(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['patch'])
     def toggle_active(self, request, pk=None):
-        user = self.get_object()
-        if not user.is_staff:
+        if not request.user.is_staff:
             return Response({'error': 'No tienes permiso para editar este usuario'}, status=status.HTTP_403_FORBIDDEN)
+        user = self.get_object()
         serializer = self.get_serializer(user, data=request.data, partial=True)
         is_active = request.data.get('is_active')
         if serializer.is_valid():
