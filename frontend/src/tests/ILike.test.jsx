@@ -28,7 +28,7 @@ describe('I Like tests', () => {
     let post = undefined;
 
 
-    beforeEach(async () => {
+    beforeAll(async () => {
         localStorage.removeItem('token');
 
         user = (await (await getUser(12)).json());
@@ -54,15 +54,19 @@ describe('I Like tests', () => {
             let response = await toggleFollow(user.id);
             console.log(await response.json());
         }
-
-        render(
-            <MemoryRouter>
-                <AuthProvider>
-                    <Post/>
-                </AuthProvider>
-            </MemoryRouter>
-        );
     });
+
+    beforeEach(
+        () => {
+            render(
+                <MemoryRouter>
+                    <AuthProvider>
+                        <Post/>
+                    </AuthProvider>
+                </MemoryRouter>
+            );
+        }
+    )
 
     test('Like a post', async () => {
         await waitFor(() => {
@@ -80,7 +84,7 @@ describe('I Like tests', () => {
         await waitFor(() => {
             expect(screen.getByTestId('like')).to.exist;
         });
-        let bottom = screen.getByTestId('dislike');
+        let bottom = screen.getByTestId('like');
         fireEvent.click(bottom);
 
         await waitFor(() => {
