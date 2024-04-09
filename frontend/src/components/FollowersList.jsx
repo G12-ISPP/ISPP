@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './FollowingList.css';
 import Artist from './Artist/Artist';
 import Paginator from './Paginator/Paginator';
+import Text, { TEXT_TYPES } from "./Text/Text";
+import PageTitle from './PageTitle/PageTitle';
+
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND).replace(/"/g, '');
 
@@ -47,22 +50,28 @@ const FollowersList = () => {
     const paginatedFollowers = followers.slice(startIndex, startIndex + followersPerPage);
 
     return (
-        <div className="following-list">
-            <div className="following-item">
-                {paginatedFollowers.map((user, index) => {
-                    return (                     
+        <>
+            <PageTitle title="Seguidores" />
+            <div className="artist-title-container">
+                <Text type={TEXT_TYPES.TITLE_BOLD} text='Seguidores' />
+            </div>
+            <div className="following-list">
+                <div className="following-item">
+                    {paginatedFollowers.map((user, index) => {
+                        return (                     
                             <Artist 
                                 username={user.username} 
                                 pathImage={user.profile_picture ? `${backend}${user.profile_picture}` : ''}
                                 pathDetails={user.id}
                                 key={index}
                             />   
-                    );
-                })}
+                        );
+                    })}
+                </div>
+                <Paginator page={page} setPage={handlePageChange} numPages={numPages} />
             </div>
-            <Paginator page={page} setPage={handlePageChange} numPages={numPages} />
-        </div>
-    );  
+        </>
+    );    
 };
 
 export default FollowersList;
