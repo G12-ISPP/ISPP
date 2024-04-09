@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 const RequestList = () => {
     const [designs, setDesigns] = useState([]);
     const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true); // Estado para controlar la carga
+    const [loading, setLoading] = useState(true);
     const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
     const id = window.location.href.split('/')[4];
     const currentUserID = localStorage.getItem('userId');
@@ -57,7 +57,7 @@ const RequestList = () => {
     return (
         <>
             <div className="section-title-container">
-                <h2 className="titulo-pagina" style={{ textAlign: 'center' }}>Por imprimir</h2>
+                <h2 className="titulo-pagina" style={{ textAlign: 'center' }}>Mis solicitudes de impresión</h2>
                 <PageTitle title={'Mis solicitudes'} />
             </div>
             {error && <div className="error-message">{error}</div>}
