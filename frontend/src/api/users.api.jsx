@@ -24,3 +24,22 @@ export const login = (username, password) => {
 export const getUser = (id) => {
     return fetch(backend + '/users/api/v1/users/' + id + '/get_user_data/');
 }
+
+export const getFollowStatus = (userId) => {
+    return fetch(backend + '/users/api/v1/follow/' + userId + '/status/', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    });
+}
+
+export const toggleFollow = (userId) => {
+    return fetch(backend + '/users/api/v1/follow/' + userId + '/toggle/', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    });
+}
+
