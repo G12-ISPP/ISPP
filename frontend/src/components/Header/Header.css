@@ -24,6 +24,10 @@
 	text-align: center;
 }
 
+.button-login {
+    margin-right: 10px;
+  }
+  
 .search-box {
     position: relative;
     width: 40%;
@@ -351,6 +355,20 @@
 .menu-contenedor {
     position: absolute;
     right: 0;
+    background-color: #FFF;
+    border: 1px solid #004040;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    box-sizing: border-box;
+    z-index: 999; /* Asegura que el menú esté encima de otros elementos */
+    width: 10em;
+    text-align: center;
+}
+
+.menu-contenedor-herramientas {
+    position: absolute;
+    right: 0;
+    top: 5vh;
     background-color: #FFF;
     border: 1px solid #004040;
     border-radius: 0.5em;

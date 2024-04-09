@@ -7,6 +7,8 @@ import arrow from '../../assets/bx-left-arrow-alt.svg';
 import avatar from '../../assets/avatar.svg';
 import editIcon from '../../assets/bxs-edit.svg';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import eye from '../../assets/eye-solid.svg';
 import eyeSlash from '../../assets/eye-slash-solid.svg';
 
@@ -23,6 +25,7 @@ class RegisterForm extends React.Component {
       username: '',
       email: '',
       password: '',
+      confirmPassword: '', // Nuevo estado para confirmar la contraseña
       first_name: '',
       last_name: '',
       address: '',
@@ -38,8 +41,8 @@ class RegisterForm extends React.Component {
   }
 
   onButtonClick = (path) => {
-		window.location.href = path;
-	};
+    window.location.href = path;
+  };
 
   handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -47,6 +50,10 @@ class RegisterForm extends React.Component {
       [name]: type === 'checkbox' ? checked : value,
       customerAgreementChecked: name === 'customerAgreementChecked' ? checked : this.state.customerAgreementChecked
     });
+  }
+
+  handleConfirmPasswordChange = (event) => {
+    this.setState({ confirmPassword: event.target.value });
   }
 
   setImage = (preview) => {
@@ -66,12 +73,18 @@ class RegisterForm extends React.Component {
   handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Verificar si el checkbox de acuerdo del cliente está marcado
+    if (this.state.password !== this.state.confirmPassword) {
+      this.setState({
+        errors: { confirmPassword: 'Las contraseñas no coinciden' }
+      });
+      return;
+    }
+
     if (!this.state.customerAgreementChecked) {
       this.setState({
         errors: { customerAgreement: 'Debe aceptar el acuerdo del cliente' }
       });
-      return; // Detener el envío del formulario si el checkbox no está marcado
+      return;
     }
 
     try {
@@ -167,6 +180,19 @@ class RegisterForm extends React.Component {
                   onChange={this.handleChange}
                   required/>
                   <img src={this.state.showPassword ? eyeSlash : eye} alt="visibility" className="visibility-icon" onClick={this.togglePasswordVisibility} />
+
+              </div>
+              <div className='register-form-group'>
+                <input
+                  type={this.state.showPassword ? 'text' : 'password'} // Mostrar contraseña si showPassword es true
+                  id='confirmPassword'
+                  name='confirmPassword'
+                  className='register-form-input'
+                  placeholder='Confirmar contraseña*'
+                  value={this.state.confirmPassword}
+                  onChange={this.handleConfirmPasswordChange}
+                  required
+                />
               </div>
               <div className='register-form-row'>
                 <div className='register-form-group left'>
@@ -210,6 +236,7 @@ class RegisterForm extends React.Component {
                 {errors.username && <p className="register-error-message">{'Nombre de usuario: ' + errors.username[0]}</p>}
                 {errors.email && <p className="register-error-message">{'Email: ' + errors.email[0]}</p>}
                 {errors.password && <p className="register-error-message">{'Contraseña: ' + errors.password[0]}</p>}
+                {errors.confirmPassword && <p className="register-error-message">{'Confirmar contraseña: ' + errors.confirmPassword}</p>} {/* Nuevo mensaje de error para confirmar contraseña */}
                 {errors.first_name && <p className="register-error-message">{'Nombre: ' + errors.first_name[0]}</p>}
                 {errors.last_name && <p className="register-error-message">{'Apellidos: ' + errors.last_name[0]}</p>}
                 {errors.address && <p className="register-error-message">{'Dirección: ' + errors.address[0]}</p>}
@@ -232,4 +259,3 @@ RegisterForm.propTypes = {
   modal: PropTypes.bool,
   toggle: PropTypes.func,
 };
-
