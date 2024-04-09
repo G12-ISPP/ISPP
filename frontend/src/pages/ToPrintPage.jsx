@@ -3,6 +3,7 @@ import ItemsList from '../components/ItemsList/ItemsList';
 import Design from '../components/Design/CustomDesign';
 import PageTitle from '../components/PageTitle/PageTitle';
 import Text, { TEXT_TYPES } from "../components/Text/Text";
+import { Link } from 'react-router-dom';
 
 const ProductList = () => {
     const [designs, setDesigns] = useState([]);
@@ -63,7 +64,9 @@ const ProductList = () => {
             {!error && designs.length > 0 && (
                 <ItemsList
                     items={designs.map(design => (
-                        <Design design={design} />
+                        <Link key={design.custom_design_id} to={`/designs/details-to-printer/${design.custom_design_id}`}>
+                            <Design design={design} />
+                        </Link>
                     ))}
                 />
             )}
