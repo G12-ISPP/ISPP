@@ -21,6 +21,7 @@ class ProductsViewTestClase(TestCase):
             address='test',
             postal_code=1234,
             city='test',
+            email='test1@example.com',
             email_verified=True
         )
         self.user2 = CustomUser.objects.create(
@@ -29,6 +30,7 @@ class ProductsViewTestClase(TestCase):
             address='test',
             postal_code=1234,
             city='test',
+            email='test2@example.com',
             email_verified=True
         )
 
@@ -223,7 +225,7 @@ class ProductsViewTestClase(TestCase):
 class SellerPlanTestClase(TestCase):
     def setUp(self):
         # Creamos algunos usuarios y productos para usar en los tests
-        self.user1 = User.objects.create_user(username='testuser1', email='test@example.com', password='test',
+        self.user1 = User.objects.create_user(username='testuser1', email='test3@example.com', password='test',
                                               is_staff=True, postal_code='12345', email_verified=True, seller_plan=True)
         response = self.client.post(reverse('login'), {'username': 'testuser1', 'password': 'test'})
         self.token = response.json()["token"]
@@ -371,20 +373,20 @@ class AddProductTest(APITestCase):
     def setUp(self):
         # Configuración inicial para cada prueba
         # Crear usuarios de prueba
-        self.normal_user = self.create_user('normal_user', email_verified=True)
+        self.normal_user = self.create_user('normal_user', email='test11@example.com', email_verified=True)
         self.normal_token = self.get_token('normal_user', 'normal_user')
 
-        self.designer_user = self.create_user('designer_user', email_verified=True, designer_plan=True)
+        self.designer_user = self.create_user('designer_user', email='test12@example.com', email_verified=True, designer_plan=True)
         self.designer_token = self.get_token('designer_user', 'designer_user')
 
-        self.seller_user = self.create_user('seller_user', email_verified=True, seller_plan=True)
+        self.seller_user = self.create_user('seller_user', email= 'test13@example.com',email_verified=True, seller_plan=True)
         self.seller_token = self.get_token('seller_user', 'seller_user')
 
-        self.seller_and_designer_user = self.create_user('seller_and_designer_user', email_verified=True,
+        self.seller_and_designer_user = self.create_user('seller_and_designer_user', email='test14@example.com', email_verified=True,
                                                          seller_plan=True, designer_plan=True)
         self.seller_and_designer_token = self.get_token('seller_and_designer_user', 'seller_and_designer_user')
 
-    def create_user(self, username, email_verified=False, designer_plan=False, seller_plan=False):
+    def create_user(self, username, email, email_verified=False, designer_plan=False, seller_plan=False):
         # Crear un usuario con parámetros opcionales
         return User.objects.create_user(
             username=username,
@@ -392,6 +394,7 @@ class AddProductTest(APITestCase):
             address='test',
             postal_code=1234,
             city='test',
+            email=email,
             email_verified=email_verified,
             designer_plan=designer_plan,
             seller_plan=seller_plan
@@ -679,7 +682,7 @@ class AddProductTest(APITestCase):
 
 class BuyerPlanTestClase(TestCase):
     def setUp(self):
-        self.user1 = User.objects.create_user(username='testuser1', email='test@example.com', password='test',
+        self.user1 = User.objects.create_user(username='testuser1', email='test4@example.com', password='test',
                                               is_staff=True, postal_code='12345', email_verified=True, buyer_plan=True)
         response = self.client.post(reverse('login'), {'username': 'testuser1', 'password': 'test'})
         self.token = response.json()["token"]
@@ -702,7 +705,7 @@ class BuyerPlanTestClase(TestCase):
             'address': '123 Test Street',
             'city': 'Test City',
             'postal_code': '12345',
-            'buyer_mail': 'test@example.com',
+            'buyer_mail': 'test5@example.com',
             'cart': json.dumps([{'id': self.product.id, 'quantity': 1}]),
         }
 
@@ -755,7 +758,7 @@ class BuyerPlanTestClase(TestCase):
 class DesignerPlanTestClase(TestCase):
     def setUp(self):
         # Creamos algunos usuarios y productos para usar en los tests
-        self.user1 = User.objects.create_user(username='testuser1', email='test@example.com', password='test',
+        self.user1 = User.objects.create_user(username='testuser1', email='test6@example.com', password='test',
                                               is_staff=True, postal_code='12345', email_verified=True,
                                               designer_plan=True)
         response = self.client.post(reverse('login'), {'username': 'testuser1', 'password': 'test'})
@@ -879,7 +882,7 @@ class DesignerPlanTestClase(TestCase):
 class BothSellerAndDesignerPlanTestClase(TestCase):
     def setUp(self):
         # Creamos algunos usuarios y productos para usar en los tests
-        self.user1 = User.objects.create_user(username='testuser1', email='test@example.com', password='test',
+        self.user1 = User.objects.create_user(username='testuser1', email='test7@example.com', password='test',
                                               is_staff=True, postal_code='12345', email_verified=True, seller_plan=True,
                                               designer_plan=True)
         response = self.client.post(reverse('login'), {'username': 'testuser1', 'password': 'test'})
