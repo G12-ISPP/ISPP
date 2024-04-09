@@ -22,7 +22,8 @@ const UserDetail = () => {
   const [opinions, setOpinions] = useState([]);
   const [totalOpinions, setTotalOpinions] = useState(0);
   const [avgScore, setAvgScore] = useState(0);
-  const [followingCount, setFollowingCount] = useState(0); // Nuevo estado para el número de seguidores
+  const [followingCount, setFollowingCount] = useState(0);
+  const [followersCount, setFollowersCount] = useState(0);
   const navigate = useNavigate();
   const backend = import.meta.env.VITE_APP_BACKEND;
 
@@ -102,10 +103,6 @@ const UserDetail = () => {
       }
     };
 
-    fetchUserLogued();
-    fetchUserData();
-    fetchOpinions();
-
     const fetchFollowingCount = async () => {
       try {
         const response = await fetch(`${backend}/users/api/v1/users/${id}/get_following_count/`);
@@ -119,7 +116,25 @@ const UserDetail = () => {
       }
     };
 
+    const fetchFollowersCount = async () => {
+      try {
+        const response = await fetch(`${backend}/users/api/v1/users/${id}/get_followers_count/`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch followers count');
+        }
+        const followersCount = await response.json();
+        setFollowersCount(followersCount);
+      } catch (error) {
+        console.error('Error fetching following count:', error);
+      }
+    };
+
+    fetchUserLogued();
+    fetchUserData();
+    fetchOpinions();
     fetchFollowingCount();
+    fetchFollowersCount();
+
   }, [id, currentUserID, page, reviewsPerPage]);
 
   const handleChatClick = async () => {
@@ -185,6 +200,17 @@ const UserDetail = () => {
         navigate(`/requests/${id}`);
     } catch (error) {
       console.error('Error:', error);
+    }
+  };
+  
+  const handleFollowersClick = async () => {
+    if(followersCount.followers_count === 0) return alert("Este usuario no tiene seguidores.");
+    else{
+      try {
+        navigate(`/user-details/${id}/followers`);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   };
 
@@ -302,6 +328,11 @@ const UserDetail = () => {
                 type={BUTTON_TYPES.TRANSPARENT} 
                 text={`${followingCount.following_count} seguidos`} 
                 onClick={handleFollowingsClick} 
+                />
+                <Button 
+                type={BUTTON_TYPES.TRANSPARENT} 
+                text={`${followersCount.followers_count} seguidores`} 
+                onClick={handleFollowersClick} 
                 />
               </div>
 

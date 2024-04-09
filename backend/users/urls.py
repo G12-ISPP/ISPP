@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 from rest_framework.documentation import include_docs_urls
 from users.views import UsersView, follow_toggle, follow_status, VerifyEmailView
-from .views import UserCreateAPIView, LoginView, get_user_id_by_username, get_following_count, get_followings
+from .views import UserCreateAPIView, LoginView, get_user_id_by_username, get_following_count, get_followings, get_followers_count, get_followers
 
 router = routers.DefaultRouter()
 router.register('users', UsersView, basename='users') 
@@ -18,5 +18,7 @@ urlpatterns = [
     path('api/v1/verify-email/<str:uidb64>/<str:token>/', VerifyEmailView.as_view(), name='verify_email'),
     path('api/v1/users/<int:user_id>/get_following_count/', get_following_count, name='get_following_count'),
     path('api/v1/users/<int:user_id>/following/', get_followings, name='get_followings'),
+    path('api/v1/users/<int:user_id>/get_followers_count/', get_followers_count, name='get_followers_count'),
+    path('api/v1/users/<int:user_id>/followers/', get_followers, name='get_followers'),
 
 ]

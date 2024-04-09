@@ -46,6 +46,7 @@ import VerifyEmail from "./components/VerifyEmail/VerifyEmail.jsx";
 import Admin from "./components/Admin/Admin.jsx";
 import UsersList from "./components/UsersList/UsersList.jsx";
 import FollowingList from "./components/FollowingList.jsx";
+import FollowersList from "./components/FollowersList.jsx";
 
 function App() {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
@@ -87,6 +88,7 @@ function App() {
                     <Route path="/update-profile/:id" element={<EditProfilePage/>}/>
                     <Route path="/user-details/:id/products" element={<ProductsList/>}/>
                     <Route path="/user-details/:id/following" element={<FollowingList/>}/>
+                    <Route path="/user-details/:id/followers" element={<FollowersList/>}/>
                     <Route path="/products/add-product" element={<AddProduct/>}/>
                     <Route path="/cart" element={<Cart cart={cart} setCart={setCart}/>}/>
                     <Route path="/order/details/:id" element={<OrderDetails/>}/>
