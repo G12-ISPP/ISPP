@@ -26,7 +26,7 @@ const UserDetail = () => {
   const [followersCount, setFollowersCount] = useState(0);
   const navigate = useNavigate();
   const backend = import.meta.env.VITE_APP_BACKEND;
-
+  
   const [page, setPage] = useState(1);
   const reviewsPerPage = 10;
   const [numPages, setNumPages] = useState(0);
@@ -170,6 +170,15 @@ const UserDetail = () => {
   const handleProductListClick = async () => {
     try {
       navigate(`/user-details/${id}/products`);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handlePorImprimir = async () => {
+    const id = window.location.href.split('/')[4];
+    try {
+        navigate(`/to-print/${id}`);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -366,6 +375,11 @@ const UserDetail = () => {
                   <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
                 )}
                 <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
+                {ownUser && user.is_printer === true ? 
+                  (<Button type={BUTTON_TYPES.TRANSPARENT} text='Por imprimir' onClick={handlePorImprimir} />)
+                  :
+                  ("")
+                }
                 {ownUser === true ? 
                   (<Button type={BUTTON_TYPES.TRANSPARENT} text='Mis solicitudes' onClick={handleRequest} />)
                   :

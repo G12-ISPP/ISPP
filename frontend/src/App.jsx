@@ -35,6 +35,7 @@ import DesignsPage from "./pages/DesignsPage.jsx";
 import PiecesPage from "./pages/PiecesPage.jsx";
 import PrintersPage from "./pages/PrintersPage.jsx";
 import MaterialsPage from "./pages/MaterialsPage.jsx";
+import ToPrintPage from "./pages/ToPrintPage.jsx";
 import ArtistsPage from "./pages/ArtistsPage.jsx";
 import RequestsPage from "./pages/RequestsPage.jsx";
 
@@ -79,6 +80,7 @@ function App() {
                     <Route path="/designs/details-to-printer/:id" element={<CustomDesignPrinters />} />
                     <Route path="/designs/cancelled" element={<CustonDesignCancelled/>}/>
                     <Route path="/pieces" element={<PiecesPage/>}/>
+                    <Route path="/to-print/:id" element={<ToPrintPage/>}/>
                     <Route path="/printers" element={<PrintersPage/>}/>
                     <Route path="/materials" element={<MaterialsPage/>}/>
                     <Route path="/artists" element={<ArtistsPage/>}/>
