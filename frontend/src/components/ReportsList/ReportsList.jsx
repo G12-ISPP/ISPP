@@ -117,17 +117,17 @@ export default class ReportsList extends React.Component {
             <div className="profile-title-container">
               <Text type={TEXT_TYPES.TITLE_BOLD} text='Listado de reportes de productos' />
             </div>
-            <div className="users-list">
+            <div className="report-users-list">
               {reports.map((report) => {
                 const reason = REASONS.find(([key]) => key === report.reason);
                 const reasonText = reason ? reason[1] : 'Razón desconocida';
                 return (
-                  <div key={report.id} className="user-card">
+                  <div key={report.id} className="report-user-card">
                     <h3>{report.title}</h3>
                     <p>{report.description}</p>
-                    <p className="reasonBox">{reasonText}</p>
+                    <p className="report-reasonBox">{reasonText}</p>
 
-                    <div className="buttons-report">
+                    <div className="report-buttons">
                       <button className="plain-btn button green" onClick={() => window.location.href = `/user-details/${report.author_user}`}>Ver usuario</button>
                       <button className="plain-btn button green" onClick={() => window.location.href = `/product-details/${report.product}`}>Ver producto</button>
                       <button className="plain-btn button red" onClick={() => this.deleteProduct(report.product)}>
