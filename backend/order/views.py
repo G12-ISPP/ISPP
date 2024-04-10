@@ -179,7 +179,7 @@ def send_seller_order_emails(order_id):
     except Exception as e:
         return f"Error al enviar los correos a los vendedores: {e}"
     
-def mark_products_as_sent(request, token):
+def mark_products_as_sent(token):
     action_token = get_object_or_404(OrderActionToken, token=token)
 
     if not action_token.is_valid():
@@ -251,16 +251,3 @@ def my_orders(request):
     except Exception as e:
         print(e)
         return JsonResponse({'error': 'Internal server error'}, status=500)
-    
-def set_order_as_shipped(request, token):
-    order_action_token = get_object_or_404(OrderActionToken, token=token)
-    
-    if not order_action_token.is_valid():
-        return HttpResponse('El enlace ha expirado.', status=400)
-    
-    order = order_action_token.order
-    order.status = 'Enviado'  # Cambia el estado a Enviado
-    order.save()
-    order_action_token.delete()  # Opcional: eliminar el token para que no se pueda usar de nuevo
-    
-    return HttpResponse('Pedido marcado como enviado.')
