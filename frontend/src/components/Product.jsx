@@ -150,7 +150,7 @@ class ProductDetail extends React.Component {
         }
       }
 
-      setCart(cartCopy)
+      setCart(cartCopy);
       localStorage.setItem('cart', JSON.stringify(cart));
     };
 
