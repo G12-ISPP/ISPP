@@ -10,6 +10,10 @@ def validate_email(email):
     patron = r'^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,4}$'
     return bool(re.match(patron, email.lower()))
 
+def existe_email(email):
+    print(email)
+    return CustomUser.objects.filter(email=email).exists()
+
 
 def get_user(uidb64):
     try:

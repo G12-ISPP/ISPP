@@ -5,7 +5,10 @@ import Button, { BUTTON_TYPES } from '../components/Button/Button'
 import ArtistsGrid from '../components/ArtistsGrid/ArtistsGrid'
 import {ModalChildren} from "../components/ModalChildren/ModalChildren.jsx";
 
-const MainPage = () => {
+const MainPage = ({
+    cart,
+    setCart,
+  }) => {
     const [isOpen, setIsOpen] = useState(localStorage.getItem('firstTime') === null);
 
     function onCloseModal() {
@@ -22,32 +25,17 @@ const MainPage = () => {
                     <Text type={TEXT_TYPES.TITLE_NORMAL} text='Nuestro objetivo es conectar a diseñadores, impresores y entusiastas de la impresión 3D para que puedan compartir, comprar y vender diseños, impresoras y materiales de alta calidad.' />
                 </div>
             </ModalChildren>
-            <div className="slogan">
-                <Text type={TEXT_TYPES.TITLE_BOLD} text='¡Explora la innovación en 3D!' />
-                <Text type={TEXT_TYPES.TITLE_NORMAL} text='Encuentra diseños, impresoras y materiales de alta calidad.' />
-                <Text type={TEXT_TYPES.TITLE_BOLD} text='¡Haz tus ideas realidad!' />
-            </div>
-
-            <div className="slogan">
-                <Text type={TEXT_TYPES.TITLE_NORMAL} text='¿Tienes un modelo en formato STL que quieras imprimir?' />
-                <Button type={BUTTON_TYPES.LARGE} text='Solicitar impresión' path='/designs/my-design'  />
-                {localStorage.getItem('token')? <Button type={BUTTON_TYPES.LARGE} text='Comprar plan' path='/buy-plan' /> : null}
-            </div>
-
-            <div className="slogan">
-                <Text type={TEXT_TYPES.TITLE_NORMAL} text='¿No puedes imprimirlo porque tu diseño no es STL?' />
-                <Button type={BUTTON_TYPES.LARGE} text='Convertir a STL' path='/convert-to-stl'  />
-            </div>
+            
 
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Diseños destacados' />
             </div>
-            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=D'} main={true} />
+            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=D'} main={true} cart={cart} setCart={setCart} />
 
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Piezas destacadas' />
             </div>
-            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=I'} main={true} />
+            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=I'} main={true} cart={cart} setCart={setCart} />
 
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Mejores artistas' />
@@ -57,12 +45,12 @@ const MainPage = () => {
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Impresoras a la venta' />
             </div>
-            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=P'} main={true} />
+            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=P'} main={true} cart={cart} setCart={setCart}  />
 
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Materiales a la venta' />
             </div>
-            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=M'} main={true} />
+            <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=M'} main={true} cart={cart} setCart={setCart}  />
 
             <div className='blank-space' />
 

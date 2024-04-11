@@ -35,13 +35,20 @@ import DesignsPage from "./pages/DesignsPage.jsx";
 import PiecesPage from "./pages/PiecesPage.jsx";
 import PrintersPage from "./pages/PrintersPage.jsx";
 import MaterialsPage from "./pages/MaterialsPage.jsx";
+import ToPrintPage from "./pages/ToPrintPage.jsx";
 import ArtistsPage from "./pages/ArtistsPage.jsx";
+import RequestsPage from "./pages/RequestsPage.jsx";
 
 import ComunityPage from "./pages/ComunityPage.jsx";
 import AddPost from "./components/Post/AddPost.jsx";
 import Privacity from "./pages/PrivacityPage.jsx";
 import Terms from "./pages/TermsPage.jsx";
 import VerifyEmail from "./components/VerifyEmail/VerifyEmail.jsx";
+import Admin from "./components/Admin/Admin.jsx";
+import UsersList from "./components/UsersList/UsersList.jsx";
+import ReportsList from "./components/ReportsList/ReportsList.jsx";
+import FollowingList from "./components/FollowingList.jsx";
+import FollowersList from "./components/FollowersList.jsx";
 
 function App() {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
@@ -61,7 +68,10 @@ function App() {
                 />
                 <Navbar/>
                 <Routes>
-                    <Route path="/" element={<MainPage/>}/>
+                    <Route path="/" element={<MainPage cart={cart} setCart={setCart}/>}/>
+                    <Route path="/admin" element={<Admin/>}/>
+                    <Route path="/admin/users" element={<UsersList/>}/>
+                    <Route path="/admin/reports" element={<ReportsList/>}/>
                     <Route path="/chat/:roomId" element={<ChatPage/>}/>
                     <Route path="/chat/" element={<ChatPage />} />
                     <Route path="/product-details/:id" element={<ProductDetail cart={cart} setCart={setCart}/>}/>
@@ -72,6 +82,7 @@ function App() {
                     <Route path="/designs/details-to-printer/:id" element={<CustomDesignPrinters />} />
                     <Route path="/designs/cancelled" element={<CustonDesignCancelled/>}/>
                     <Route path="/pieces" element={<PiecesPage/>}/>
+                    <Route path="/to-print/:id" element={<ToPrintPage/>}/>
                     <Route path="/printers" element={<PrintersPage/>}/>
                     <Route path="/materials" element={<MaterialsPage/>}/>
                     <Route path="/artists" element={<ArtistsPage/>}/>
@@ -80,6 +91,8 @@ function App() {
                     <Route path="/user-details/:id" element={<UserDetail/>}/>
                     <Route path="/update-profile/:id" element={<EditProfilePage/>}/>
                     <Route path="/user-details/:id/products" element={<ProductsList/>}/>
+                    <Route path="/user-details/:id/following" element={<FollowingList/>}/>
+                    <Route path="/user-details/:id/followers" element={<FollowersList/>}/>
                     <Route path="/products/add-product" element={<AddProduct/>}/>
                     <Route path="/cart" element={<Cart cart={cart} setCart={setCart}/>}/>
                     <Route path="/order/details/:id" element={<OrderDetails/>}/>
@@ -96,6 +109,7 @@ function App() {
                     <Route path="/privacidad" element={<Privacity/>} />
                     <Route path="/terminos" element={<Terms/>} />
                     <Route path="/verify-email/:uuid/:token" element={<VerifyEmail />} />
+                    <Route path="/requests/:id" element={<RequestsPage/>} />
                 </Routes>
                 <Footer/>
             </AuthProvider>

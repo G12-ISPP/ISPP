@@ -40,12 +40,14 @@ export function TermsPage() {
         <p>No vendemos, alquilamos ni compartimos tu información personal con terceros con fines comerciales sin tu consentimiento expreso, excepto según lo permita esta Política de Privacidad o cuando la ley lo requiera.</p>
         <h3>4. Seguridad de la Información</h3>
         <p>Implementamos medidas de seguridad técnicas, administrativas y físicas para proteger tu información contra pérdida, uso indebido, acceso no autorizado o divulgación.</p>
+        <p>En supuesto caso de fallos en las medidas seguridad, utilizaremos los correos de nuestros usuarios para contactarlos individualmente y notificarles del impacto que puede haber tenido la filtración.</p>
         <h3>5. Acceso y Control de tu Información</h3>
-        <p>Puedes acceder, corregir o eliminar tu información personal en cualquier momento a través de tu cuenta. También puedes optar por no recibir comunicaciones promocionales de nuestra parte.</p>
+        <p>Puedes acceder a tu información personal y corregirla en cualquier momento a través de tu cuenta.</p>
+        <p>Si quieres eliminar tu información personal de la aplicación o quieres que te enviemos todos los datos que tenemos sobre ti, puedes solicitárnoslo en nuestro correo shar3d.confirmaciones@gmail.com y nosotros nos encargaremos de darte tus datos o eliminar/anonimizarlos si lo solicitas.</p>
         <h3>6. Cambios en esta Política de Privacidad</h3>
         <p>Los cambios en nuestra política de privacidad serán notificados mediante una notificación visible en nuestro sitio web o por los medios convenientes para que el usuario pueda aceptar de nuevo los cambios tras su lectura y comprensión. </p>
         <p>Al aceptar los Términos de Servicio, aceptas esta Política de Privacidad y nuestro procesamiento de tu información personal de acuerdo con ella. Si tienes alguna pregunta o inquietud sobre nuestra Política de Privacidad o el manejo de tu información personal, no dudes en <a href="https://landing-page-shar3d.vercel.app/#contact">contactarnos</a>.</p>
-        <div className='fecha'>Fecha de entrada en vigor: 17/03/2024</div>
+        <div className='fecha'>Fecha de entrada en vigor: 06/04/2024</div>
       </div>
     </>
 

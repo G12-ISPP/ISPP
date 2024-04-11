@@ -2,7 +2,6 @@ import React from 'react';
 import './CustomDesign.css';
 
 const CustomDesign = (props) => {
-    console.log(props);
     const { name, quantity, dimensions, area, quality, weight, price } = props.design;
 
     const dimensionsText = dimensions ? `${dimensions.width} x ${dimensions.height} x ${dimensions.depth} cm` : 'Dimensiones no disponibles';

@@ -18,7 +18,7 @@ class Opinion extends Component {
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.validateForm = this.validateForm.bind(this);
+        
     }
 
     toggleForm = () => {
@@ -29,28 +29,10 @@ class Opinion extends Component {
         }
     };
 
-    validateForm() {
-        const { description, score } = this.state;
-        const errors = {};
-
-        if (!description.trim()) {
-            errors.description = 'La descripción es obligatoria';
-        }
-
-        if (!Number.isInteger(parseFloat(score)) || score < 1 || score > 5) {
-            errors.score = 'La puntuación debe ser un número entero entre 1 y 5';
-        }
-
-        this.setState({ errors });
-        return Object.keys(errors).length === 0;
-    }
 
     handleSubmit = (event) => {
-        event.preventDefault();
-
-        if (!this.validateForm()) {
-            return;
-        }
+        event.preventDefault();      
+        
 
         const formData = new FormData();
         formData.append('target_user', this.state.target_user);
@@ -71,10 +53,16 @@ class Opinion extends Component {
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') },
             body: formData,
         })
-            .then((response) => response.json())
+            .then(async (response) => {
+                if (!response.ok) {
+                    const errorData = await response.json(); // Espera a que se resuelva la promesa de la respuesta
+                    throw new Error(errorData.error); // Lanza un error con el mensaje recibido del servidor
+                }
+                return response.json(); // Retorna los datos JSON si la respuesta es satisfactoria
+            })
             .then((data) => {
                 if (data.error) {
-                    this.setState({ errors: data.error });
+                    throw new Error(data.error);
                 } else {
                     alert('Opinión añadida correctamente');
                     window.location.href = '/user-details/' + this.state.target_user;
@@ -82,7 +70,7 @@ class Opinion extends Component {
             })
             .catch((error) => {
                 console.error('Error al enviar el formulario:', error);
-                alert(error);
+                this.setState({ errors: { server: error.message } });
             });
     };
 
@@ -98,6 +86,7 @@ class Opinion extends Component {
                         <Button type={BUTTON_TYPES.LARGE} text='Iniciar sesión' path='/login' />
                     </div>
                 )}
+                
                 {showForm && isAuthenticated && (
                     <div className='opinion-form-container'>
                         <form className='opinion-form' onSubmit={this.handleSubmit}>
@@ -113,6 +102,7 @@ class Opinion extends Component {
                                     onChange={(e) => this.setState({ score: e.target.value })}
                                     className='opinion-form-group-score'
                                 />
+                                {errors.score && <span className='opinion-error-text'>{errors.score}</span>}
                             </div>
                             <div className='opinion-form-group'>
                                 <label htmlFor='description' className='opinion-form-group-title'>Descripción</label>
@@ -122,8 +112,8 @@ class Opinion extends Component {
                                     className='opinion-form-group-description'
                                 />
                             </div>
-                            {errors.score && <span className='opinion-error-text'>{errors.score}</span>}
-                            {errors.description && <span className='opinion-error-text'>{errors.description}</span>}
+                            {/* {errors.description && <span className='opinion-error-text'>{errors.description}</span>} */}
+                            {errors.server && <span className='opinion-error-text'>{errors.server}</span>}
                             <Button type={BUTTON_TYPES.LARGE} text='Publicar Opinión' onClick={this.handleSubmit} />
                         </form>
                     </div>

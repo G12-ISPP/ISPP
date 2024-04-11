@@ -1,0 +1,61 @@
+
+.report-users-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    margin: 10px;
+}
+
+.report-user-card {
+    display: inline-block;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin: 10px;
+    padding: 10px;
+    grid-gap: 20px;
+    border: 1px solid black;
+    border-radius: 5px;
+    justify-items: center;
+    align-items: center;
+}
+
+
+@media screen and (max-width: 1350px) {
+    .report-users-list {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .report-users-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .report-user-card {
+        grid-template-columns: 1fr;
+    }
+}
+
+.report-reasonBox {
+    display: inline-block;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    background-color: #004040;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+}
+
+.report-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.report-buttons button {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

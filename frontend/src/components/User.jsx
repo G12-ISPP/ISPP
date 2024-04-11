@@ -15,20 +15,40 @@ import Paginator from './Paginator/Paginator.jsx';
 const id = window.location.href.split('/')[4];
 
 const UserDetail = () => {
+  const [userLogued, setUserLogued] = useState(null);
   const [user, setUser] = useState(null);
   const currentUserID = localStorage.getItem('userId');
   const [ownUser, setOwnUser] = useState(false);
   const [opinions, setOpinions] = useState([]);
   const [totalOpinions, setTotalOpinions] = useState(0);
   const [avgScore, setAvgScore] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
+  const [followersCount, setFollowersCount] = useState(0);
   const navigate = useNavigate();
   const backend = import.meta.env.VITE_APP_BACKEND;
-
+  
   const [page, setPage] = useState(1);
   const reviewsPerPage = 10;
   const [numPages, setNumPages] = useState(0);
 
   useEffect(() => {
+
+    const fetchUserLogued = async () => {
+      const id = localStorage.getItem('userId');
+        if (id){
+            const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
+            try {
+              const response = await fetch(petition);
+              if (!response.ok) {
+                  throw new Error('Error al obtener los datos del usuario');
+              }
+              const userData = await response.json();
+              setUserLogued(userData);
+          } catch (error) {
+              console.error('Error al obtener los datos del usuario:', error);
+          }
+        }
+    }          
 
     const id = window.location.href.split('/')[4];
     const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
@@ -83,8 +103,38 @@ const UserDetail = () => {
       }
     };
 
+    const fetchFollowingCount = async () => {
+      try {
+        const response = await fetch(`${backend}/users/api/v1/users/${id}/get_following_count/`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch following count');
+        }
+        const followingCount = await response.json();
+        setFollowingCount(followingCount);
+      } catch (error) {
+        console.error('Error fetching following count:', error);
+      }
+    };
+
+    const fetchFollowersCount = async () => {
+      try {
+        const response = await fetch(`${backend}/users/api/v1/users/${id}/get_followers_count/`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch followers count');
+        }
+        const followersCount = await response.json();
+        setFollowersCount(followersCount);
+      } catch (error) {
+        console.error('Error fetching following count:', error);
+      }
+    };
+
+    fetchUserLogued();
     fetchUserData();
     fetchOpinions();
+    fetchFollowingCount();
+    fetchFollowersCount();
+
   }, [id, currentUserID, page, reviewsPerPage]);
 
   const handleChatClick = async () => {
@@ -125,11 +175,51 @@ const UserDetail = () => {
     }
   };
 
+  const handlePorImprimir = async () => {
+    const id = window.location.href.split('/')[4];
+    try {
+        navigate(`/to-print/${id}`);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   const handleEditClick = async () => {
     try {
       navigate(`/update-profile/` + id);
     } catch (error) {
       console.error('Error:', error);
+    }
+  };
+
+  const handleFollowingsClick = async () => {
+    if(followingCount.following_count === 0) return alert("Este usuario no sigue a nadie.");
+    else{
+      try {
+        navigate(`/user-details/${id}/following`);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  };
+
+  const handleRequest = async () => {
+    const id = window.location.href.split('/')[4];
+    try {
+        navigate(`/requests/${id}`);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
+  const handleFollowersClick = async () => {
+    if(followersCount.followers_count === 0) return alert("Este usuario no tiene seguidores.");
+    else{
+      try {
+        navigate(`/user-details/${id}/followers`);
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
   };
 
@@ -148,6 +238,34 @@ const UserDetail = () => {
       return roundedValue;
     }
   }
+
+  const toggleUserActiveStatus = async (userId, isActive) => {
+    const url = `${backend}/users/api/v1/users/${userId}/toggle_active/`;
+    const token = localStorage.getItem('token'); 
+
+    try {
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                is_active: isActive
+            })
+        });
+
+        if (!response.ok) {
+            alert('No se ha podido bloquear/desbloquear el usuario');
+        }
+
+        const data = await response.json();
+        setUser(data);
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
 
   return (
     <>
@@ -174,6 +292,16 @@ const UserDetail = () => {
             <div className="user-img-container">
               <img className='user-image' src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username} />
             </div>
+            {userLogued && userLogued.is_staff && userLogued.id !== user.id ? (
+              !user.is_staff && user.is_active ? (
+                <button className="plain-btn button red" onClick={() => toggleUserActiveStatus(user.id, !user.is_active)}>
+                    Bloquear
+                </button>
+                ):( <button className="plain-btn button green" onClick={() => toggleUserActiveStatus(user.id, !user.is_active)}>
+                    Desbloquear
+                  </button>
+              )
+            ) : null}
           </div>
 
           <div className="right-user-container">
@@ -196,15 +324,45 @@ const UserDetail = () => {
               ) : (
                 <p className='user-review-text'>Sin valoraciones</p>
               )}
-
+              <p className='user-review-text'>Roles del usuario:</p>
               <div className="user-role-container">
+                
                 {user.is_designer === true ? (
                   <div className="user-role">Diseñador</div>
                 ) : null}
                 {user.is_printer === true ? (
                   <div className="user-role">Impresor</div>
                 ) : null}
+                <Button 
+                type={BUTTON_TYPES.TRANSPARENT} 
+                text={`${followingCount.following_count} seguidos`} 
+                onClick={handleFollowingsClick} 
+                />
+                <Button 
+                type={BUTTON_TYPES.TRANSPARENT} 
+                text={`${followersCount.followers_count} seguidores`} 
+                onClick={handleFollowersClick} 
+                />
               </div>
+
+              {ownUser ? (
+                <>
+                  <p className='user-review-text'>Planes del usuario:</p>
+                  <div className="user-role-container">
+                    {user.buyer_plan === true ? (
+                      <div className="user-role">Plan Diseñador</div>
+                    ) : null}
+                    {user.designer_plan === true ? (
+                      <div className="user-role">Plan Impresor</div>
+                    ) : null}
+                    {user.seller_plan === true ? (
+                      <div className="user-role">Plan Vendedor</div>
+                    ) : null}
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
 
               <div className="user-contact-container">
                 <p className="user-contact"><strong>Contacto: </strong> {user.email}</p>
@@ -217,13 +375,22 @@ const UserDetail = () => {
                   <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
                 )}
                 <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
+                {ownUser && user.is_printer === true ? 
+                  (<Button type={BUTTON_TYPES.TRANSPARENT} text='Por imprimir' onClick={handlePorImprimir} />)
+                  :
+                  ("")
+                }
+                {ownUser === true ? 
+                  (<Button type={BUTTON_TYPES.TRANSPARENT} text='Mis solicitudes' onClick={handleRequest} />)
+                  :
+                  ("")
+                }
                 {ownUser || localStorage.getItem('token') === null ? null : (
                   <div className="user-button">
                     <FollowButton userId={id} />
                   </div>
                 )}
               </div>
-
             </div>
           </div>
 
@@ -236,7 +403,7 @@ const UserDetail = () => {
 
         <div className="reviews-section">
           <Text type={TEXT_TYPES.TITLE_BOLD} text='Opiniones' />
-          <AddOpinion target_user={user.id} />
+          {!ownUser ? (<AddOpinion target_user={user.id} />):("")}
           {opinions.length > 0 ? (
             <div className="user-reviews">
               {opinions.map(opinion => (

@@ -66,7 +66,9 @@ def create_order(request):
         except Product.DoesNotExist:
             return JsonResponse({'error': 'El producto con ID {} no existe'.format(product_id)}, status=400)
         price += product.price * quantity
-    buyerPlan = order.buyer
+    buyername = order.buyer
+    buyer = CustomUser.objects.get(username=buyername)
+    buyerPlan = buyer.buyer_plan
     if envio and not(buyerPlan):
         price += 5
     order.price = price

@@ -28,7 +28,6 @@ describe('OK Opinion Component', () => {
 
     /* ACT */
     const { container } = render(<Opinion opinion={opinion}  key={opinion.id}/>);
-    console.log(prettyDOM(container));
     await waitFor(() => { expect(screen.getAllByText("Great product!")).to.exist; });
 
     /* ASSERT */
