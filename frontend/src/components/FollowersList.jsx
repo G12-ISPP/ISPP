@@ -5,19 +5,20 @@ import Paginator from './Paginator/Paginator';
 import Text, { TEXT_TYPES } from "./Text/Text";
 import PageTitle from './PageTitle/PageTitle';
 
+
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND).replace(/"/g, '');
 
-const FollowingList = () => {
-    const [following, setFollowing] = useState([]);
+const FollowersList = () => {
+    const [followers, setFollowers] = useState([]);
     const [page, setPage] = useState(1);
-    const userId = localStorage.getItem('userId');
-    const [followingPerPage, setFollowingPerPage] = useState(5);
+    const userId = window.location.href.split('/')[4];
+    const [followersPerPage, setFollowersPerPage] = useState(5);
     const [numPages, setNumPages] = useState(0);
 
     useEffect(() => {
-        const fetchFollowing = async () => {
+        const fetchFollowers = async () => {
             try {
-                const petition = `${backend}/users/api/v1/users/${userId}/following/`;
+                const petition = `${backend}/users/api/v1/users/${userId}/followers/`;
                 const response = await fetch(petition, {
                     method: 'GET',
                     headers: {
@@ -25,38 +26,38 @@ const FollowingList = () => {
                     }
                 });
                 if (!response.ok) {
-                    throw new Error('Failed to fetch following list');
+                    throw new Error('Failed to fetch followers list');
                 }
                 const data = await response.json();
-                setFollowing(data.followings);
+                setFollowers(data.followers);
             } catch (error) {
-                console.error('Error fetching following list:', error);
+                console.error('Error fetching followers list:', error);
             }
         };
 
-        fetchFollowing();
-    }, [userId, followingPerPage]);
+        fetchFollowers();
+    }, [userId, followersPerPage]);
 
     useEffect(() => {
-        setNumPages(Math.ceil(following.length / followingPerPage) || 1);
-    }, [following, followingPerPage]);
+        setNumPages(Math.ceil(followers.length / followersPerPage) || 1);
+    }, [followers, followersPerPage]);
 
     const handlePageChange = (newPage) => {
         setPage(newPage);
     };
 
-    const startIndex = (page - 1) * followingPerPage;
-    const paginatedFollowing = following.slice(startIndex, startIndex + followingPerPage);
+    const startIndex = (page - 1) * followersPerPage;
+    const paginatedFollowers = followers.slice(startIndex, startIndex + followersPerPage);
 
     return (
         <>
-            <PageTitle title="Seguidos" />
+            <PageTitle title="Seguidores" />
             <div className="artist-title-container">
-                <Text type={TEXT_TYPES.TITLE_BOLD} text='Seguidos' />
+                <Text type={TEXT_TYPES.TITLE_BOLD} text='Seguidores' />
             </div>
             <div className="following-list">
                 <div className="following-item">
-                    {paginatedFollowing.map((user, index) => {
+                    {paginatedFollowers.map((user, index) => {
                         return (                     
                             <Artist 
                                 username={user.username} 
@@ -70,7 +71,7 @@ const FollowingList = () => {
                 <Paginator page={page} setPage={handlePageChange} numPages={numPages} />
             </div>
         </>
-    );  
+    );    
 };
 
-export default FollowingList;
+export default FollowersList;

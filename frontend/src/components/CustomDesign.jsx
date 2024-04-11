@@ -190,7 +190,11 @@ export default class CustomModel extends React.Component {
     };
 
     handleName = (event) => {
-        this.setState({name: event.target.value});
+      if ((event.target.name === 'name') && /\d/.test(event.target.value)) {
+        return;
+      }
+      
+      this.setState({name: event.target.value});
     }
 
     handleQuality = (value) => {
@@ -211,8 +215,13 @@ export default class CustomModel extends React.Component {
     }
 
     handleCity = (event) => {
-        this.setState({city: event.target.value});
-    }
+      if ((event.target.name === 'city') && /\d/.test(event.target.value)) {
+        return;
+      }
+      
+      this.setState({ city: event.target.value });
+  }
+  
 
     handleAddress = (event) => {
         this.setState({address: event.target.value});
@@ -243,7 +252,7 @@ export default class CustomModel extends React.Component {
       this.state.errors.name = 'Debes introducir un nombre';
     }
     if (name.trim().length <3 || name.length >50) {
-      this.state.errors.name = 'Debes introducir un nombre de entre 3 y 50 caracteres';
+      this.state.errors.name = 'Debes introducir un nombre de entre 3 y 50 caracteres sin caracteres numéricos';
     }
     if(quantity < 1 || quantity > 100 || quantity!=Math.round(quantity)){
       this.state.errors.quantity = 'La cantidad debe ser un número entre 1 y 100';
@@ -254,7 +263,7 @@ export default class CustomModel extends React.Component {
     }
 
     if(typeof city==='undefined' ||city === '' || city.length > 50){
-      this.state.errors.city = 'Debes introducir una ciudad de menos de 255 caracteres';
+      this.state.errors.city = 'Debes introducir una ciudad de menos de 255 caracteres sin caracteres numéricos';
     }
 
     if(typeof address==='undefined' ||address === '' || address.length > 255){

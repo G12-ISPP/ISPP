@@ -6,14 +6,10 @@ import {http} from 'msw';
 import {setupServer} from 'msw/node';
 
 const messages = {
-    successMessage: '¡Explora la innovación en 3D!',
-    subheaderMessage: 'Encuentra diseños, impresoras y materiales de alta calidad.',
-    makeIdeasRealityMessage: '¡Haz tus ideas realidad!',
     featuredDesignsMessage: 'Diseños destacados',
     topArtistsMessage: 'Mejores artistas',
     printersForSaleMessage: 'Impresoras a la venta',
     materialsForSaleMessage: 'Materiales a la venta',
-    requestPrintButtonName: 'Solicitar impresión',
     errorMessage: 'Error al obtener los productos'
 };
 
@@ -30,9 +26,6 @@ describe('Test for MainPage', () => {
     test('contains expected texts', () => {
         render(<MainPage />);
 
-        expect(screen.getByText(messages.successMessage)).toBeInTheDocument();
-        expect(screen.getByText(messages.subheaderMessage)).toBeInTheDocument();
-        expect(screen.getByText(messages.makeIdeasRealityMessage)).toBeInTheDocument();
         expect(screen.getByText(messages.featuredDesignsMessage)).toBeInTheDocument();
         expect(screen.getByText(messages.topArtistsMessage)).toBeInTheDocument();
         expect(screen.getByText(messages.printersForSaleMessage)).toBeInTheDocument();

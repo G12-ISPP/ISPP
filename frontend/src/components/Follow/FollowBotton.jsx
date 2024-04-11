@@ -32,6 +32,7 @@ function FollowButton({ userId }) {
                 setFollowing(!following);
                 response = await response.json();
                 alert(response.success)
+                window.location.reload();
             })
             .catch(error => {
                 console.error('Error al realizar la acción de follow/unfollow:', error);

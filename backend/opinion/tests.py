@@ -13,8 +13,8 @@ class OpinionModelTests(TestCase):
     @classmethod
     def setUpTestData(self):
         # Crea dos usuarios para usar en los tests
-        self.author = User.objects.create_user(username='author', password='testpass123', postal_code='12323')
-        self.target_user = User.objects.create_user(username='target_user', password='testpass456', postal_code='45600')
+        self.author = User.objects.create_user(username='author', password='testpass123', postal_code='12323', email='test3@example.com')
+        self.target_user = User.objects.create_user(username='target_user', password='testpass456', postal_code='45600', email='test4@example.com')
         
     def test_create_opinion(self):
         # Test para verificar la creación de una opinión
@@ -90,6 +90,7 @@ class OpinionViewTestCase(TestCase):
             address='autor',
             postal_code=1234,
             city='autor',
+            email='test1@example.com',
             email_verified=True
         )
         target_user = CustomUser.objects.create_user(
@@ -99,6 +100,7 @@ class OpinionViewTestCase(TestCase):
             address='target_user',
             postal_code=12345,
             city='target_user',
+            email='test2@example.com',
             email_verified=True
         )
 

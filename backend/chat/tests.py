@@ -5,7 +5,6 @@ from django.test import TestCase
 from chat.models import ChatRoom
 from users.models import CustomUser
 
-
 class ChatUsersViewTest(TestCase):
     def setUp(self):
         self.user1 = CustomUser.objects.create_user(
@@ -15,6 +14,7 @@ class ChatUsersViewTest(TestCase):
             address='test1',
             postal_code=1234,
             city='test1',
+            email='test1@example.com',
             email_verified=True
         )
         self.user2 = CustomUser.objects.create_user(
@@ -24,6 +24,7 @@ class ChatUsersViewTest(TestCase):
             address='test2',
             postal_code=12345,
             city='test2',
+            email='test2@example.com',
             email_verified=True
         )
         self.user3 = CustomUser.objects.create_user(
@@ -33,9 +34,11 @@ class ChatUsersViewTest(TestCase):
             address='test3',
             postal_code=12345,
             city='test2',
+            email='test3@example.com',
         )
         self.chatroom = ChatRoom.objects.create(title='Test Chat Room')
         self.chatroom.members.add(self.user1, self.user2)
+
 
     def test_chat_users_success(self):
         token = self.get_user_token(self.user1.username, 'test1')
@@ -77,6 +80,7 @@ class ChatViewTest(TestCase):
             address='test',
             postal_code=1234,
             city='test',
+            email='test4@example.com',
             email_verified=True
         )
         CustomUser.objects.create_user(
@@ -86,6 +90,7 @@ class ChatViewTest(TestCase):
             address='test2',
             postal_code=12345,
             city='test2',
+            email='test5@example.com',
             email_verified=True
         )
         CustomUser.objects.create_user(
@@ -95,6 +100,7 @@ class ChatViewTest(TestCase):
             address='test3',
             postal_code=12345,
             city='test3',
+            email='test6@example.com',
             email_verified=True
         )
         chat = ChatRoom.objects.create(
