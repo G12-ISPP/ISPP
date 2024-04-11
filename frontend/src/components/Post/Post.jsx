@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import Paginator from '../Paginator/Paginator';
 import "./Post.css";
 import Button, { BUTTON_TYPES } from "../Button/Button";
-import { FcLikePlaceholder, FcLike  } from "react-icons/fc";
+import { FcLikePlaceholder, FcLike } from "react-icons/fc";
 
-
+const id = window.location.href.split('/')[4];
 const backend = import.meta.env.VITE_APP_BACKEND;
 
 const Post = () => {
@@ -32,53 +32,84 @@ const Post = () => {
     // Si hay un token, se supone que el usuario está autenticado
     setIsLoggedIn(true);
 
-    // Aquí realizar la petición para obtener el usuario mediante el token
-    fetch(`${backend}/posts/get_user_from_token`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ token: token }),
-    })
-      .then((response) => {
-        return response.json();
+    if (id) {
+      fetch(`${backend}/posts/get_post_by_user/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then((data) => {
-        // Para cada usuario seguido, obtener sus posts
-        if (Array.isArray(followedUsers)) {
-          data.following.forEach((user) => {
-            fetch(`${backend}/posts/get_post_by_user/${user}`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            })
-              .then((response) => response.json())
-              .then((userPosts) => {
-                fetch(`${backend}/users/api/v1/users/${user}`, {
-                  method: "GET",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                  },
-                })
-                  .then((response) => response.json())
-                  .then((user) => {
-                    setUsername(user.username);
-                    const userPostsWithName = userPosts.map((post) => ({
-                      ...post,
-                      users: user.username, // Reemplazar post.users con el nombre de usuario
-                    }));
+        .then((response) => response.json())
+        .then((userPosts) => {
+          fetch(`${backend}/users/api/v1/users/${id}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          })
+            .then((response) => response.json())
+            .then((user) => {
+              setUsername(user.username);
+              const userPostsWithName = userPosts.map((post) => ({
+                ...post,
+                users: user.username, // Incluir el nombre del usuario en el post
+              }));
 
-                    // Añadir userPostsWithName al estado de posts
-                    setPosts((prevPosts) => [...prevPosts, ...userPostsWithName]);
-                  });
-              });
-          });
-        }
-      });
+              // Añadir userPostsWithName al estado de posts
+              setPosts((prevPosts) => [...prevPosts, ...userPostsWithName]);
+            });
+        });
+
+    } else {
+      fetch(`${backend}/posts/get_user_from_token`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ token: token }),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          // Para cada usuario seguido, obtener sus posts
+          if (Array.isArray(followedUsers)) {
+            data.following.forEach((user) => {
+              fetch(`${backend}/posts/get_post_by_user/${user}`, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+                .then((response) => response.json())
+                .then((userPosts) => {
+                  fetch(`${backend}/users/api/v1/users/${user}`, {
+                    method: "GET",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}`,
+                    },
+                  })
+                    .then((response) => response.json())
+                    .then((user) => {
+                      setUsername(user.username);
+                      const userPostsWithName = userPosts.map((post) => ({
+                        ...post,
+                        users: user.username, // Reemplazar post.users con el nombre de usuario
+                      }));
+
+                      // Añadir userPostsWithName al estado de posts
+                      setPosts((prevPosts) => [...prevPosts, ...userPostsWithName]);
+                    });
+                });
+            });
+          }
+        });
+    }
   }, [liked, disliked]);
 
   if (!isLoggedIn) {
@@ -98,7 +129,9 @@ const Post = () => {
   return (
     <>
       <div className="introduccion">
-        <h1 className="titulo-pagina">Comunidad</h1>
+        <h1 className="titulo-pagina">
+          {id ? `Comunidad: ${username}` : 'Comunidad'}
+        </h1>
 
         <Button
           type={BUTTON_TYPES.LARGE}
@@ -120,24 +153,24 @@ const Post = () => {
                 },
                 body: JSON.stringify({ token: token }),
               })
-              .then((res) => {
-                if (res.status === 200) {
-                  setPosts(prevPosts => {
-                    const updatedPosts = prevPosts.map(prevPost => {
-                      if (prevPost.id === post.id) {
-                        return {
-                          ...prevPost,
-                          likes: [...prevPost.likes, username] // Agregar el nombre de usuario a los likes del post
-                        };
-                      }
-                      return prevPost;
+                .then((res) => {
+                  if (res.status === 200) {
+                    setPosts(prevPosts => {
+                      const updatedPosts = prevPosts.map(prevPost => {
+                        if (prevPost.id === post.id) {
+                          return {
+                            ...prevPost,
+                            likes: [...prevPost.likes, username] // Agregar el nombre de usuario a los likes del post
+                          };
+                        }
+                        return prevPost;
+                      });
+                      return updatedPosts;
                     });
-                    return updatedPosts;
-                  });
-                }
-              });
+                  }
+                });
             };
-            
+
             const handleDeleteLike = () => {
               const token = localStorage.getItem("token");
               fetch(`${backend}/posts/delete-like/${post.id}`, {
@@ -148,24 +181,24 @@ const Post = () => {
                 },
                 body: JSON.stringify({ token: token }),
               })
-              .then((res) => {
-                if (res.status === 200) {
-                  setPosts(prevPosts => {
-                    const updatedPosts = prevPosts.map(prevPost => {
-                      if (prevPost.id === post.id) {
-                        return {
-                          ...prevPost,
-                          likes: prevPost.likes.filter(like => like !== username) 
-                        };
-                      }
-                      return prevPost;
+                .then((res) => {
+                  if (res.status === 200) {
+                    setPosts(prevPosts => {
+                      const updatedPosts = prevPosts.map(prevPost => {
+                        if (prevPost.id === post.id) {
+                          return {
+                            ...prevPost,
+                            likes: prevPost.likes.filter(like => like !== username)
+                          };
+                        }
+                        return prevPost;
+                      });
+                      return updatedPosts;
                     });
-                    return updatedPosts;
-                  });
-                }
-              });
+                  }
+                });
             };
-            
+
 
             return (
               <div key={index} className="post-item">
@@ -176,11 +209,11 @@ const Post = () => {
                   <h3 className="post-title">{post.name}</h3>
                   <p className="post-description">{post.description}</p>
                   <p className="post-users">Publicado por: {post.users}</p>
-                  <hr/>
+                  <hr />
                   <p>
                     {post.likes.filter(like => like === username).length === 1 ?
-                        <FcLike data-testid="like" onClick={handleDeleteLike}/> :
-                        <FcLikePlaceholder data-testid="dislike" onClick={handleLike}/>
+                      <FcLike data-testid="like" onClick={handleDeleteLike} /> :
+                      <FcLikePlaceholder data-testid="dislike" onClick={handleLike} />
                     }
                     {post.likes.length}
                   </p>
@@ -192,9 +225,9 @@ const Post = () => {
             );
           })}
         {selectedImage && (
-            <div className="modal">
-              <div className="modal-content">
-                <img src={selectedImage} alt="post" className="modal-image" />
+          <div className="modal">
+            <div className="modal-content">
+              <img src={selectedImage} alt="post" className="modal-image" />
             </div>
           </div>
         )}
