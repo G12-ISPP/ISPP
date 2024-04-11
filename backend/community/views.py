@@ -175,15 +175,16 @@ def like(request, postId):
             return JsonResponse({'error': 'Invalid token'}, status=401) 
         
         post = get_object_or_404(Post, id=postId)
-
+        
         try:
+            if Like.objects.filter(user=user, post=post).exists():
+                return JsonResponse({'error': 'Ya existe un like para este usuario y post.'}, status=400)
+
             Like.objects.create(
                 user=user,
                 post=post
             )
             return JsonResponse({'message': 'Like creado exitosamente!'}, status=200)
-        except IntegrityError:
-            return JsonResponse({'error': 'Ya existe un like para este usuario y post.'}, status=400)
         except Exception as e:
             return JsonResponse({'error': f'Error al crear el like: {e}'}, status=500)
 
