@@ -59,7 +59,6 @@ class ProductDetail extends React.Component {
 
   handleDeleteProduct = () => {
     this.setState({ showModal: true });
-    console.log("Entro en handleDeleteProduct")  
   };
 
   handleCancelDelete = () => {
@@ -68,7 +67,6 @@ class ProductDetail extends React.Component {
 
   handleConfirmDelete = async () => {
     const { product } = this.state;
-    console.log("Entro en handleConfirmDelete")
     if (product) {
       let deleteUrl = `${backend}/products/api/v1/products/${product.id}/delete_product/`;
       deleteUrl = deleteUrl.replace(/"/g, '');
@@ -76,10 +74,8 @@ class ProductDetail extends React.Component {
         const response = await fetch(deleteUrl, { method: 'DELETE',headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('token')
         }, });
-        console.log(response)
         if (response.ok) {
-          console.log("Producto eliminado correctamente");
-          // Redirige al usuario a la página de inicio o a donde desees después de la eliminación
+          alert("Producto eliminado correctamente");
           window.location.href = '/';
         } else {
           console.error("Error al eliminar el producto");

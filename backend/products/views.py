@@ -192,8 +192,7 @@ class ProductsView(viewsets.ModelViewSet):
     @action(detail=True, methods=['delete'])
     def delete_product(self, request, pk=None):
         product = get_object_or_404(Product, pk=pk)
-        if request.user != product.seller or not request.user.is_staff:
+        if not (request.user == product.seller or request.user.is_staff):
             return Response({'error': 'No tienes permiso para eliminar este producto'}, status=status.HTTP_403_FORBIDDEN)
-        
         product.delete()
         return Response({'message': 'Producto eliminado correctamente'}, status=status.HTTP_204_NO_CONTENT)
