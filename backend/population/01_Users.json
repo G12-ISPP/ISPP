@@ -15,7 +15,7 @@
       "description": null,
       "postal_code": 12345,
       "city": "Mi pueblo",
-      "email_verified": false,
+      "email_verified": true,
       "is_staff": true,
       "is_superuser": true,
       "is_active": true,
