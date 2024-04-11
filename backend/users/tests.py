@@ -7,7 +7,7 @@ from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_encode
 from rest_framework import status
 from rest_framework.test import APIClient
-
+from django.core.files.uploadedfile import SimpleUploadedFile
 from main import settings
 from .models import CustomUser
 from .utils import validate_email, get_user
@@ -102,6 +102,18 @@ class UsersTestCase(TestCase):
         uidb64 = urlsafe_base64_encode(force_str(user.pk).encode())
         retrieved_user = get_user(uidb64)
         self.assertEqual(user, retrieved_user)
+
+class RegisterWithPictureTestCase(TestCase):
+    def test_register_with_picture(self):
+        file_content = b'contenido'
+
+        image= SimpleUploadedFile('dummy.jpg', file_content, content_type='image/jpeg')
+        data = {'username': 'UserTest123', 'email': 'email@test.com', 'password': 'UserPass123', 'name': 'NameTest', 'address': 'AddressTest', 'postal_code': '06228', 'city': 'Sevilla','file': image}
+        response = self.client.post('/users/api/v1/users/', data, format='multipart')
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue(CustomUser.objects.filter(username='UserTest123').exists())
+        u = CustomUser.objects.get(username='UserTest123')
+        self.assertIsNotNone(u.profile_picture)
 
 class FollowToggleTestCase(TestCase):
     def setUp(self):
