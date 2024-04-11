@@ -71,10 +71,10 @@ export default class ReportsList extends React.Component {
     if (!confirmation) {
       return;
     }
-  
+
     const url = `${backend}/products/api/v1/products/${productId}`;
     const token = localStorage.getItem('token');
-  
+
     try {
       const response = await fetch(url, {
         method: 'DELETE',
@@ -83,7 +83,7 @@ export default class ReportsList extends React.Component {
           'Authorization': `Bearer ${token}`
         }
       });
-  
+
       if (!response.ok) {
         alert('No se ha podido borrar el producto');
       } else {
@@ -95,6 +95,34 @@ export default class ReportsList extends React.Component {
     }
   };
 
+  deleteUser = async (userId) => {
+    const confirmation = window.confirm('¿Estás seguro de que quieres eliminar el reporte y el usuario reportado?');
+    if (!confirmation) {
+      return;
+    }
+
+    const url = `${backend}/users/api/v1/users/${userId}`;
+    const token = localStorage.getItem('token');
+
+    try {
+      const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        alert('No se ha podido borrar el usuario');
+      } else {
+        alert('Usuario y producto eliminado con éxito');
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   render() {
     const { reports } = this.state;
@@ -115,7 +143,19 @@ export default class ReportsList extends React.Component {
           <>
             <PageTitle title="Panel de administrador" />
             <div className="profile-title-container">
-              <Text type={TEXT_TYPES.TITLE_BOLD} text='Listado de reportes de productos' />
+              <Text type={TEXT_TYPES.TITLE_BOLD} text='Listado de reportes' />
+            </div>
+            <div>
+              {/* <label className="report-list-switch">
+                <input type="checkbox" className="report-list-checkbox">
+                  <div className="report-list-slider"></div>
+                </input>
+              </label>
+              <label className="report-list-switch">
+                <input type="checkbox" className="report-list-checkbox">
+                  <div className="report-list-slider"></div>
+                </input>
+              </label> */}
             </div>
             <div className="report-users-list">
               {reports.map((report) => {
@@ -123,16 +163,23 @@ export default class ReportsList extends React.Component {
                 const reasonText = reason ? reason[1] : 'Razón desconocida';
                 return (
                   <div key={report.id} className="report-user-card">
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                      <p className="report-reasonBox">{report.product ? 'Reporte de producto' : 'Reporte de usuario'}</p>
+                      <p className="report-reasonBox">{reasonText}</p>
+                    </div>
                     <h3>{report.title}</h3>
                     <p>{report.description}</p>
-                    <p className="report-reasonBox">{reasonText}</p>
+                    <div className="post-image-container">
+                      <img src={report.image} alt="post" className="post-image" />
+                    </div>
+
 
                     <div className="report-buttons">
-                      <button className="plain-btn button green" onClick={() => window.location.href = `/user-details/${report.author_user}`}>Ver usuario</button>
-                      <button className="plain-btn button green" onClick={() => window.location.href = `/product-details/${report.product}`}>Ver producto</button>
-                      <button className="plain-btn button red" onClick={() => this.deleteProduct(report.product)}>
-                      Eliminar
-                    </button>
+                      <button className="plain-btn button green" onClick={() => window.location.href = `/user-details/${report.author_user}`}>Ver autor</button>
+                      <button className="plain-btn button green" onClick={() => window.location.href = report.product ? `/product-details/${report.product}` : `/user-details/${report.user}`}>{ report.product ? 'Ver producto' : 'Ver usuario' } </button>
+                      <button className="plain-btn button red" onClick={() => report.product ? this.deleteProduct(report.product): this.deleteUser(report.user)}>
+                        Eliminar
+                      </button>
                     </div>
                   </div>
                 );
