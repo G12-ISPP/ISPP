@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import {Link} from 'react-router-dom';
 import ProfileIcon from "./ProfileIcon/ProfileIcon";
-import defaultProfileImage from '../assets/avatar.svg';
 import ProductsGrid, { GRID_TYPES } from "./ProductsGrid/ProductsGrid";
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
@@ -194,7 +193,7 @@ class ProductDetail extends React.Component {
               <AddProductReport product={product} />
               
               <div className="product-info-owner">
-                <ProfileIcon image={user && user.profile_picture ? user.profile_picture : defaultProfileImage} name={user && user.username} onClick={user && user.id} showScore="True" userId={user.id} />
+                {user && <ProfileIcon key={user.id} name={user.username} onClick={user.id} showScore="True" userId={user.id} />}
               </div>
 
               <div className="product-info-description">

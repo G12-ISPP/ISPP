@@ -31,6 +31,7 @@ urlpatterns = [
     path('products/', include('products.urls')),
     path('report/', include('report.urls')),
     path('opinion/', include('opinion.urls')),
+    path('comment/', include('comment.urls')),
     path('chat/', include('chat.urls')),
     path('posts/', include('community.urls')),
     path('newOrder', create_order, name='create_order'),

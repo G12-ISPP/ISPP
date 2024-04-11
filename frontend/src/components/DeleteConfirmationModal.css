@@ -17,11 +17,6 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
-p {
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-
 .buttons-container {
   display: flex;
   justify-content: center;
