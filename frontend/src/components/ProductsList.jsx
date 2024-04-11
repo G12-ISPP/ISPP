@@ -5,6 +5,7 @@ import Product from './Product/Product';
 import PageTitle from './PageTitle/PageTitle';
 import Text, { TEXT_TYPES } from "./Text/Text";
 
+
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [sellerName, setSellerName] = useState('');
