@@ -27,7 +27,7 @@ const UserDetail = () => {
   const [followersCount, setFollowersCount] = useState(0);
   const navigate = useNavigate();
   const backend = import.meta.env.VITE_APP_BACKEND;
-  
+
   const [page, setPage] = useState(1);
   const reviewsPerPage = 10;
   const [numPages, setNumPages] = useState(0);
@@ -176,10 +176,18 @@ const UserDetail = () => {
     }
   };
 
+  const handlePosts = async () => {
+    try {
+      navigate(`/community/${id}`);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   const handlePorImprimir = async () => {
     const id = window.location.href.split('/')[4];
     try {
-        navigate(`/to-print/${id}`);
+      navigate(`/to-print/${id}`);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -207,12 +215,12 @@ const UserDetail = () => {
   const handleRequest = async () => {
     const id = window.location.href.split('/')[4];
     try {
-        navigate(`/requests/${id}`);
+      navigate(`/requests/${id}`);
     } catch (error) {
       console.error('Error:', error);
     }
   };
-  
+
   const handleFollowersClick = async () => {
     if (followersCount.followers_count === 0) return alert("Este usuario no tiene seguidores.");
     else {
@@ -310,6 +318,8 @@ const UserDetail = () => {
 
               <h2 className="user-name">{user.first_name} {user.last_name}</h2>
 
+
+
               {opinions.length > 0 ? (
                 <div className="user-review">
                   <div className="user-review-stars">
@@ -325,15 +335,8 @@ const UserDetail = () => {
               ) : (
                 <p className='user-review-text'>Sin valoraciones</p>
               )}
-              <p className='user-review-text'>Roles del usuario:</p>
-              <div className="user-role-container">
 
-                {user.is_designer === true ? (
-                  <div className="user-role">Diseñador</div>
-                ) : null}
-                {user.is_printer === true ? (
-                  <div className="user-role">Impresor</div>
-                ) : null}
+              <div className="user-role-container">
                 <Button
                   type={BUTTON_TYPES.TRANSPARENT}
                   text={`${followingCount.following_count} seguidos`}
@@ -344,6 +347,17 @@ const UserDetail = () => {
                   text={`${followersCount.followers_count} seguidores`}
                   onClick={handleFollowersClick}
                 />
+              </div>
+
+              <p className='user-review-text'>Roles del usuario:</p>
+              <div className="user-role-container">
+
+                {user.is_designer === true ? (
+                  <div className="user-role">Diseñador</div>
+                ) : null}
+                {user.is_printer === true ? (
+                  <div className="user-role">Impresor</div>
+                ) : null}
               </div>
 
               {ownUser ? (
@@ -388,12 +402,14 @@ const UserDetail = () => {
                   <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
                 )}
                 <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
-                {ownUser && user.is_printer === true ? 
+              </div>
+              <div className="user-button-wrapper">
+                {ownUser && user.is_printer === true ?
                   (<Button type={BUTTON_TYPES.TRANSPARENT} text='Por imprimir' onClick={handlePorImprimir} />)
                   :
                   ("")
                 }
-                {ownUser === true ? 
+                {ownUser === true ?
                   (<Button type={BUTTON_TYPES.TRANSPARENT} text='Mis solicitudes' onClick={handleRequest} />)
                   :
                   ("")
@@ -404,6 +420,10 @@ const UserDetail = () => {
                   </div>
                 )}
               </div>
+              <div className="user-button-wrapper">
+                  <Button type={BUTTON_TYPES.TRANSPARENT} text='Publicaciones' onClick={handlePosts} />
+              </div>
+            
             </div>
           </div>
 

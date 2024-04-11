@@ -22,7 +22,7 @@ import './App.css'
 import BuyPlan from "./components/BuyPlan/BuyPlan.jsx";
 import CancelPlan from "./components/BuyPlan/CancelPlan.jsx";
 import ConfirmPlan from "./components/BuyPlan/ConfirmPlan.jsx";
-
+import PersonalComunityPage from "./pages/PersonalComunityPage.jsx";
 import OrderDetails from "./components/OrderDetails.jsx";
 import OrderCancelled from "./components/OrderCancelled.jsx";
 import { SearchingPrinterDesignsPage } from './pages/PrinterDesigns.jsx';
@@ -104,7 +104,8 @@ function App() {
                     <Route path="/buy-plan" element={<BuyPlan/>} />
                     <Route path="/cancel-plan" element={<CancelPlan/>} />
                     <Route path="/confirm-plan" element={<ConfirmPlan/>} />
-                    <Route path="/comunity" element={<ComunityPage />} />
+                    <Route path="/community" element={<ComunityPage />} />
+                    <Route path="/community/:id" element={<PersonalComunityPage />} />
                     <Route path="/posts/add-post" element={<AddPost/>}/>
                     <Route path="/privacidad" element={<Privacity/>} />
                     <Route path="/terminos" element={<Terms/>} />
