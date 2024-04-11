@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from users.views import buy_plan, obtain_plan
-from order.views import create_order, confirm_order, cancel_order, order_details, my_orders
+from order.views import create_order, confirm_order, cancel_order, mark_products_as_sent, order_details, my_orders
 
 
 urlpatterns = [
@@ -42,4 +42,5 @@ urlpatterns = [
     path('conversion/', include('conversion_to_stl.urls')),
     path('order/myorders', my_orders, name='my_orders'),
     path('', include('tokens.urls')),
+    path('order/mark-as-sent/<uuid:token>/', mark_products_as_sent, name='mark-order-products-as-sent'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
