@@ -176,18 +176,25 @@ const Post = () => {
                   <h3 className="post-title">{post.name}</h3>
                   <p className="post-description">{post.description}</p>
                   <p className="post-users">Publicado por: {post.users}</p>
-                  <hr />
-                  <p>{post.likes.filter(like => like === username).length === 1  ? <FcLike onClick={handleDeleteLike} /> : <FcLikePlaceholder onClick={handleLike}/>} {post.likes.length}</p>
+                  <hr/>
+                  <p>
+                    {post.likes.filter(like => like === username).length === 1 ?
+                        <FcLike data-testid="like" onClick={handleDeleteLike}/> :
+                        <FcLikePlaceholder data-testid="dislike" onClick={handleLike}/>
+                    }
+                    {post.likes.length}
+                  </p>
+
                 </div>
-                
+
 
               </div>
             );
           })}
         {selectedImage && (
-          <div className="modal">
-            <div className="modal-content">
-              <img src={selectedImage} alt="post" className="modal-image" />
+            <div className="modal">
+              <div className="modal-content">
+                <img src={selectedImage} alt="post" className="modal-image" />
             </div>
           </div>
         )}
