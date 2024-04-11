@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "conversion_to_stl",
     "community",
     "report",
+    "comment",
 ]
 
 MIDDLEWARE = [

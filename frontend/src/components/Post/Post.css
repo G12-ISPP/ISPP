@@ -51,6 +51,14 @@
   text-align: center;
 }
 
+.post-comments-like {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
 .titulo-pagina {
   margin-left: 0;
 }

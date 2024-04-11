@@ -3,6 +3,8 @@ import Paginator from '../Paginator/Paginator';
 import "./Post.css";
 import Button, { BUTTON_TYPES } from "../Button/Button";
 import { FcLikePlaceholder, FcLike  } from "react-icons/fc";
+import ModalComment from "../ModalComment/ModalComment";
+import PropTypes from 'prop-types';
 
 
 const backend = import.meta.env.VITE_APP_BACKEND;
@@ -17,6 +19,8 @@ const Post = () => {
   const [postsPerPage, setPostsPerPage] = useState(5);
   const [liked, setLiked] = useState([])
   const [disliked, setDisliked] = useState([])
+  const [wantComment, setWantComment] = useState(false);
+  const [idPost, setIdPost] = useState(null);
 
 
   useEffect(() => {
@@ -80,6 +84,11 @@ const Post = () => {
         }
       });
   }, [liked, disliked]);
+
+  const handleCommentModal = (id) => {
+    setWantComment(!wantComment);
+    setIdPost(id);
+  };
 
   if (!isLoggedIn) {
     // Si el usuario no está autenticado, no se renderizará ningún contenido
@@ -177,14 +186,24 @@ const Post = () => {
                   <p className="post-description">{post.description}</p>
                   <p className="post-users">Publicado por: {post.users}</p>
                   <hr/>
-                  <p>
-                    {post.likes.filter(like => like === username).length === 1 ?
-                        <FcLike data-testid="like" onClick={handleDeleteLike}/> :
-                        <FcLikePlaceholder data-testid="dislike" onClick={handleLike}/>
-                    }
-                    {post.likes.length}
-                  </p>
-
+                  <div className="post-comments-like">
+                    <p>
+                      {post.likes.filter(like => like === username).length === 1 ?
+                          <FcLike data-testid="like" onClick={handleDeleteLike}/> :
+                          <FcLikePlaceholder data-testid="dislike" onClick={handleLike}/>
+                      }
+                      {post.likes.length}
+                    </p>
+                    <p>
+                      <Button
+                        type={BUTTON_TYPES.MEDIUM}
+                        text="Comentar"
+                        onClick={() => {
+                          handleCommentModal(post.id);
+                        }}
+                      />
+                    </p>
+                  </div>
                 </div>
 
 
@@ -197,6 +216,10 @@ const Post = () => {
                 <img src={selectedImage} alt="post" className="modal-image" />
             </div>
           </div>
+        )}
+
+        {wantComment && (
+          <ModalComment setWantComment={setWantComment} postId={idPost} />
         )}
         <Paginator page={page} setPage={handleOnClick} numPages={numPages} />
 
