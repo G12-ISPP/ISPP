@@ -11,6 +11,7 @@ import PageTitle from './PageTitle/PageTitle';
 import filledStar from '../assets/bxs-star.svg';
 import emptyStar from '../assets/bx-star.svg';
 import Paginator from './Paginator/Paginator.jsx';
+import AddUserReport from './AddUserReport.jsx';
 
 const id = window.location.href.split('/')[4];
 
@@ -381,6 +382,18 @@ const UserDetail = () => {
               <div className="user-contact-container">
                 <p className="user-contact"><strong>Contacto: </strong> {user.email}</p>
               </div>
+
+              {!ownUser ? (
+                <>
+                  <div className='report-user' >
+                    <AddUserReport user={user} />
+                  </div>
+                </>
+              ) : (
+                <>
+                </>
+              )}
+
 
               <div className="user-button-wrapper">
                 {ownUser ? (

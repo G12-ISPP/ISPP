@@ -1,8 +1,10 @@
+from collections import defaultdict
 from django.shortcuts import render
+from django.urls import reverse
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
-from .models import Order, OrderProduct
+from .models import Order, OrderActionToken, OrderProduct
 import json
 from paypalrestsdk import Payment
 from django.shortcuts import redirect
@@ -59,7 +61,7 @@ def create_order(request):
                 if product.stock_quantity < quantity:
                     return JsonResponse({'error': 'No hay suficiente stock de ' + product.name}, status=400)
                 envio = True
-            OrderProduct.objects.create(order=order, product=product, quantity=quantity)
+            OrderProduct.objects.create(order=order, product=product, quantity=quantity, state='Pendiente')
             product.save()
         except Product.DoesNotExist:
             return JsonResponse({'error': 'El producto con ID {} no existe'.format(product_id)}, status=400)
@@ -108,6 +110,7 @@ def confirm_order(request, order_id):
             product.stock_quantity -= order_product.quantity
             product.save()
     send_order_confirmation_email(order, op)
+    send_seller_order_emails(order_id)
     
     return HttpResponseRedirect(ruta_frontend + '/order/details/' + str(order.id))
 
@@ -134,6 +137,60 @@ def send_order_confirmation_email(order, order_products):
     except Exception as e:
         print(f"Error al enviar el correo: {e}")
 
+def send_seller_order_emails(order_id):
+    try:
+        order = Order.objects.get(id=order_id)
+        order_products = OrderProduct.objects.filter(order=order).select_related('product', 'product__seller')
+
+        # Agrupar productos por vendedor
+        products_by_seller = defaultdict(list)
+        for op in order_products:
+            products_by_seller[op.product.seller].append(op)
+
+        # Enviar un correo a cada vendedor
+        for seller, ops in products_by_seller.items():
+            try:
+
+                # Generar el OrderActionToken específico para el vendedor
+                action_token = OrderActionToken.objects.create(order=order, seller=seller)
+                
+                # Construir el enlace utilizando el token
+                action_url = settings.RUTA_BACKEND + reverse('mark-order-products-as-sent', args=[action_token.token])
+                print(action_url)
+            except Exception as e:
+                print(e)
+
+            contexto = {
+                'seller': seller,
+                'ops': ops,
+                'order': order,
+                'action_url': action_url,  # Añadir el enlace al contexto
+            }
+            mensaje = render_to_string('seller_order_notification_email.html', contexto)
+
+            email = EmailMessage(
+                'Productos vendidos en Shar3d',
+                mensaje,
+                settings.EMAIL_HOST_USER,
+                [seller.email],
+            )
+            email.content_subtype = "html"
+            email.send()
+
+        return "Correos enviados correctamente a los vendedores."
+    except Exception as e:
+        return f"Error al enviar los correos a los vendedores: {e}"
+    
+def mark_products_as_sent(request, token):
+    action_token = get_object_or_404(OrderActionToken, token=token)
+
+    if not action_token.is_valid():
+        return HttpResponse('Este enlace ha expirado o es inválido.', status=400)
+
+    # Asumiendo que usas el primer enfoque y que el token está asociado a un vendedor
+    OrderProduct.objects.filter(order=action_token.order, product__seller=action_token.seller).update(state='Enviado')
+    return HttpResponse('Productos marcados como enviados. Puedes cerrar la pestaña.')
+
 def cancel_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     order.delete()
@@ -149,7 +206,7 @@ def order_details(request, order_id):
         order_products = list(OrderProduct.objects.filter(order_id=order_id))
         products = []
         for p in order_products:
-            products.append({'id': p.product_id, 'quantity':p.quantity})
+            products.append({'id': p.product_id, 'quantity':p.quantity, 'state': p.state})
 
         order_details = {
             'id': order.id,

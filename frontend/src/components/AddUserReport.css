@@ -1,0 +1,47 @@
+.report-user-form-group-description {
+    font-family: inherit;
+    border-radius: 0.5em;
+    width: 500px;
+    height: 100px;
+  }
+
+.report-user-form-group-title {
+    font-family: inherit;
+    border-radius: 0.5em;
+    width: 300px;
+  }
+
+.report-user-form-group-selector {
+    font-family: inherit;
+    border-radius: 0.5em;
+
+  }
+
+.modal-content {
+  border: 0.25vh solid #004040;
+  text-align: center;
+  }
+
+.report-user-form-group-button{
+  display: flex;
+  justify-content: center;
+}
+
+.close {
+  color: red;
+  float: right;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  top: 0.5em;
+  right: 1em;
+  border-radius: 50%;
+  margin-right: -20px;
+  margin-top: -20px;
+}
+
+.close:hover,
+.close:focus {
+  color: darkred;
+}
