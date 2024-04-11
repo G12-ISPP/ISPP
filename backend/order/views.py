@@ -179,7 +179,7 @@ def send_seller_order_emails(order_id):
     except Exception as e:
         return f"Error al enviar los correos a los vendedores: {e}"
     
-def mark_products_as_sent(token):
+def mark_products_as_sent(request, token):
     action_token = get_object_or_404(OrderActionToken, token=token)
 
     if not action_token.is_valid():
