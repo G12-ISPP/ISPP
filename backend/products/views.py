@@ -14,6 +14,7 @@ from rest_framework import status
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from users.models import CustomUser
+from django.shortcuts import get_object_or_404
 
 
 ruta_backend = settings.RUTA_BACKEND
@@ -64,7 +65,7 @@ def add_product(request):
             if show == 'true':
                 products_showed = Product.objects.filter(seller=request.user, show=True)
                 user = CustomUser.objects.get(username=request.user)
-                if (user.seller_plan & user.designer_plan):
+                if (user.seller_plan & user.designer_plan): 
                     if (products_showed.count() > 7):
                         return JsonResponse({'error': 'Ya hay 8 productos destacados'}, status=400)
                     else:
@@ -76,7 +77,7 @@ def add_product(request):
                         show = True
                 elif (user.designer_plan):
                     if (products_showed.count() > 2):
-                        return JsonResponse({'error': 'Ya hay 3 productos destacados'}, status=400)
+                            return JsonResponse({'error': 'Ya hay 3 productos destacados'}, status=400)
                     else:
                         show = True
                 else:
@@ -188,3 +189,10 @@ class ProductsView(viewsets.ModelViewSet):
         product.save()
         return Response({'message': 'Producto actualizado correctamente'}, status=status.HTTP_200_OK)
 
+    @action(detail=True, methods=['delete'])
+    def delete_product(self, request, pk=None):
+        product = get_object_or_404(Product, pk=pk)
+        if not (request.user == product.seller or request.user.is_staff):
+            return Response({'error': 'No tienes permiso para eliminar este producto'}, status=status.HTTP_403_FORBIDDEN)
+        product.delete()
+        return Response({'message': 'Producto eliminado correctamente'}, status=status.HTTP_204_NO_CONTENT)
