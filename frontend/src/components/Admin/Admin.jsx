@@ -63,6 +63,14 @@ export default class Admin extends React.Component {
                         Administrar usuarios
                     </button>
                     </div>
+                    <div className="admin-container">
+                            <button
+                                className='admin-users-button'
+                                onClick={() => { window.location.href = '/admin/reports' }}
+                            >
+                                Administrar reportes de productos
+                            </button>
+                        </div>
                 </>
                 ) : <div>Loading...</div>}
             </>
