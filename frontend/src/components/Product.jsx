@@ -3,6 +3,7 @@ import './Product.css'
 import Button, { BUTTON_TYPES } from './Button/Button';
 import Text, { TEXT_TYPES } from "./Text/Text";
 import PageTitle from "./PageTitle/PageTitle";
+import AddProductReport from "./AddProductReport";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import {Link} from 'react-router-dom';
@@ -19,7 +20,9 @@ class ProductDetail extends React.Component {
     super(props);
     this.state = {
       product: null,
-      showModal: false
+      showModal: false,
+      showForm: false,
+      cantidad: 1,
     };
   }
 
@@ -56,6 +59,18 @@ class ProductDetail extends React.Component {
        window.location.href = editUrl;
     }
    };
+
+  incrementarCantidad = () => {
+    this.setState((prevState) => ({
+      cantidad: Math.min(prevState.cantidad + 1, this.state.product.stock_quantity ),
+    }));
+  };
+
+  decrementarCantidad = () => {
+    this.setState((prevState) => ({
+      cantidad: Math.max(prevState.cantidad - 1, 1)
+    }));
+  };
 
   handleDeleteProduct = () => {
     this.setState({ showModal: true });
@@ -96,27 +111,29 @@ class ProductDetail extends React.Component {
 
     const cart = this.props.cart;
     const setCart = this.props.setCart;
-    const { agregado } = this.state;
+    const { agregado, cantidad} = this.state;
     
 
-    const addProduct = product => {
+    const addProduct = (product, cantidad) => {
       let cartCopy = [...cart];
 
-      let existingProduct = cartCopy.find(cartProduct => cartProduct.id == product.id);
+      let existingProduct = cartCopy.find(
+        (cartProduct) => cartProduct.id == product.id
+      );
 
-      if(currentUserId && currentUserId === user.id){
+      if (currentUserId && currentUserId === user.seller) {
         alert('No puedes comprar tu propio producto');
         return;
       }
 
       if (existingProduct) {
-        if ((product.stock_quantity - existingProduct.quantity) < 1){
+        if ((product.stock_quantity - existingProduct.quantity) < 1) {
           alert('No hay suficiente stock disponible')
           return
-        } 
+        }
         existingProduct.quantity += 1
       } else {
-        if(product.stock_quantity>0){
+        if (product.stock_quantity > 0) {
           cartCopy.push({
             id: product.id,
             name: product.name,
@@ -125,9 +142,10 @@ class ProductDetail extends React.Component {
             image_url: product.image_url,
             stock_quantity: product.stock_quantity,
             product_type: product.product_type,
-            quantity: 1
+            quantity: cantidad,
+            user_id: user.id
           })
-        }else{
+        } else {
           alert('No hay stock disponible')
         }
       }
@@ -138,6 +156,8 @@ class ProductDetail extends React.Component {
 
     const showEditButton = product.seller === currentUserId;
     const showDeleteButton = (product.seller === currentUserId) || (user.is_staff)
+
+    const { showForm } = this.state;
 
     function relatedProductsTitle() {
       if (product.product_type === "D") {
@@ -171,6 +191,7 @@ class ProductDetail extends React.Component {
           <div className="right-product-container">
             <div className="product-info-container">
               <h2 className="product-info-name">{product.name}</h2>
+              <AddProductReport product={product} />
               
               <div className="product-info-owner">
                 <ProfileIcon image={user && user.profile_picture ? user.profile_picture : defaultProfileImage} name={user && user.username} onClick={user && user.id} showScore="True" userId={user.id} />
@@ -185,21 +206,35 @@ class ProductDetail extends React.Component {
               
               <h2 className="product-info-price">{product.price}€</h2>
 
-              {!showEditButton &&
-                <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => {addProduct(product); this.setState({ agregado :true })}} />
-              }
-              {showEditButton && (
+              <div style={{ justifyContent: 'center' }}>
+                <div className='product-quantity'>
+                  <button className="product-cart-qty-plus" type="button" onClick={this.decrementarCantidad}>-</button>
+                  <input type="text" name="qty" min="0" className="qty product-form-control" value={cantidad} readOnly />
+                  <button className="product-cart-qty-minus" type="button" onClick={this.incrementarCantidad}>+</button>
+                </div>
+
+                {!showEditButton && (
+                  <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                    <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => { addProduct(product, cantidad); 
+                      this.setState({ agregado: true });
+                      setTimeout(() => {
+                        this.setState({ agregado: false });
+                        }, 10000);}} />
+                  </div>
+                )}
+                {showEditButton &&
                   <Button type={BUTTON_TYPES.LARGE} text='Editar producto' onClick={this.handleEditProduct} />
-              )}
-              {showDeleteButton && (
+                }
+                {showDeleteButton && (
                   <Button type={BUTTON_TYPES.LARGE} text='Eliminar producto' onClick={this.handleDeleteProduct} />
-              )}
-              {showModal && (
-                <DeleteConfirmationModal
-                  onCancel={this.handleCancelDelete}
-                  onConfirm={this.handleConfirmDelete}
-                />
-              )}
+                )}
+                {showModal && (
+                  <DeleteConfirmationModal
+                    onCancel={this.handleCancelDelete}
+                    onConfirm={this.handleConfirmDelete}
+                  />
+                )}
+              </div>
             </div>
           </div>
 
@@ -207,9 +242,8 @@ class ProductDetail extends React.Component {
 
         <div className="related-products">
           <Text type={TEXT_TYPES.TITLE_BOLD} text={relatedProductsTitle()} />
-          <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} elementType={product.product_type} excludedProducts={[product.id]} />
+          <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} main={ true } elementType={product.product_type} excludedProducts={[product.id]} />
         </div>
-
       </div>
     );
   }
