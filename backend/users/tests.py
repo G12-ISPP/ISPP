@@ -166,6 +166,22 @@ class FollowToggleTestCase(TestCase):
         self.assertFalse(response_data['follows'])
         self.assertEqual(response.json(), {'follows': False})
 
+    def test_get_followings(self):
+        url = reverse('get_followings', kwargs={'user_id': self.user.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['followings']), 0)
+
+        # Add followings for the user
+        self.user.followings.add(self.other_user)
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['followings']), 1)
+        self.assertEqual(response_data['followings'][0]['username'], 'otheruser')
+
 class ProfileTestCase(TestCase):
     
     def setUp(self):
