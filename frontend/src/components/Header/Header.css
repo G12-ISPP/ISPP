@@ -24,9 +24,6 @@
 	text-align: center;
 }
 
-.button-login {
-    margin-right: 10px;
-  }
   
 .search-box {
     position: relative;
@@ -78,6 +75,7 @@
     align-items: center;
     justify-content: space-between;
     width: 17em;
+    gap: 1em;
 }
 
 .mobile-menu-icon {

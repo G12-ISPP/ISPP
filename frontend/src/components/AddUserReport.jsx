@@ -1,6 +1,6 @@
 import React, { Component, useState } from "react";
 import Button, { BUTTON_TYPES } from "./Button/Button";
-import "./AddProductReport.css";
+import "./AddUserReport.css";
 // Modal Component
 class Modal extends React.Component {
   render() {
@@ -11,7 +11,7 @@ class Modal extends React.Component {
     return (
       <div className="modal">
         <div className="modal-content">
-          <a onClick={this.props.onClose} className="close">&times;</a>
+          <a onClick={this.props.onClose} class="close">&times;</a>
           {this.props.children}
         </div>
       </div>
@@ -19,12 +19,11 @@ class Modal extends React.Component {
   }
 }
 
-class AddProductReport extends Component {
+class AddUserReport extends Component {
   constructor(props) {
     super(props);
 
     this.openModal = this.openModal.bind(this);
-    this.product = this.props.product;
     this.closeModal = this.closeModal.bind(this);
     this.state = {
       isAuthenticated: localStorage.getItem("token") ? true : false,
@@ -35,7 +34,6 @@ class AddProductReport extends Component {
       errors: {},
       showForm: false,
       file: null,
-      image_url: null,
     };
 
     this.handleFileChange = this.handleFileChange.bind(this);
@@ -66,10 +64,6 @@ class AddProductReport extends Component {
       errors.reason = "Debes seleccionar una razón";
     }
 
-    if (this.state.errors.unique) {
-      errors.unique = "Ya has reportado este producto";
-    }
-
     if (!file) {
       errors.file = 'La foto es obligatoria';
     }
@@ -82,7 +76,7 @@ class AddProductReport extends Component {
     this.setState({ showForm: true });
     if (!this.state.isAuthenticated) {
       this.setState({
-        errors: { login: "Debes iniciar sesión para reportar el producto." },
+        errors: { login: "Debes iniciar sesión para reportar al usuario." },
       });
     }
   }
@@ -95,7 +89,7 @@ class AddProductReport extends Component {
       this.setState((prevState) => ({ showForm: !prevState.showForm }));
     } else {
       this.setState({
-        errors: { login: "Debes iniciar sesión para reportar el producto." },
+        errors: { login: "Debes iniciar sesión para reportar al usuario." },
       });
     }
   };
@@ -109,11 +103,11 @@ class AddProductReport extends Component {
       formData.append('title', this.state.title);
       formData.append('description', this.state.description);
       formData.append('reason', this.state.reason);
-      formData.append('product', this.product.id);
-      formData.append('user', null);
+      formData.append('product', null);
+      formData.append('user', this.props.user.id);
 
       const backend = import.meta.env.VITE_APP_BACKEND;
-      let petition1 = `${backend}/report/add-report-product`;
+      let petition1 = `${backend}/report/add-report-user`;
       petition1 = petition1.replace(/"/g, '')
       fetch(petition1, {
         method: 'POST',
@@ -156,10 +150,6 @@ class AddProductReport extends Component {
     this.setState({ title: e.target.value });
   };
 
-  handleDescriptionChange = (e) => {
-    this.setState({ description: e.target.value });
-  };
-
   handleFileChange(event) {
     const selectedFile = event.target.files[0];
     const allowedExtensions = ["jpg", "jpeg", "png"];
@@ -179,6 +169,9 @@ class AddProductReport extends Component {
 
   }
 
+  handleDescriptionChange = (e) => {
+    this.setState({ description: e.target.value });
+  };
   render() {
     const { isAuthenticated, errors, showForm } = this.state;
 
@@ -188,10 +181,12 @@ class AddProductReport extends Component {
           type={BUTTON_TYPES.REPORT}
           text={
             showForm && isAuthenticated
-              ? "Ocultar formulario"
-              : "Reportar producto"
+              ? "Reporte"
+              : "Reportar usuario"
           }
-          onClick={this.openModal}
+          onClick={showForm && isAuthenticated
+            ? this.closeModal
+            : this.openModal}
         />
         {errors.login && (
           <div className="opinion-login-error">
@@ -206,7 +201,7 @@ class AddProductReport extends Component {
 
         {showForm && isAuthenticated && (
           <Modal show={showForm} onClose={this.closeModal}>
-            <h2>Reportar un producto</h2>
+            <h2>Reportar un usuario</h2>
             <form>
               <label>
                 Titulo:
@@ -216,7 +211,7 @@ class AddProductReport extends Component {
                   name="title"
                   value={this.state.title}
                   onChange={this.handleTitleChange}
-                  className="report-product-form-group-title"
+                  className="report-user-form-group-title"
                 />
                 {this.state.errors.title && (
                   <p className="error">{this.state.errors.title}</p>
@@ -230,21 +225,19 @@ class AddProductReport extends Component {
                 name="description"
                 onChange={this.handleDescriptionChange}
                 value={this.state.description}
-                className="report-product-form-group-description"
+                className="report-user-form-group-description"
                 rows={5}
               />
               {this.state.errors.description && (
                 <p className="error">{this.state.errors.description}</p>
               )}
-                            <label htmlFor='file' className='upload'>
+              <label htmlFor='file' className='upload'>
                 Comprobación
               </label>
               <div className='file-select'>
                 <input type='file' id='file' name='file' className='form-input' accept='.jpg, .jpeg, .png' onChange={this.handleFileChange} />
                 {errors.file && <div className="error">{errors.file}</div>}
               </div>
-              
-
               <br></br>
               <label>
                 Motivo del Reporte:
@@ -253,7 +246,7 @@ class AddProductReport extends Component {
                   name="reason"
                   value={this.state.reason}
                   onChange={this.handleReasonsChange}
-                  className="report-product-form-group-selector"
+                  className="report-user-form-group-selector"
                 >
                   <option value="P">Problema de calidad</option>
                   <option value="D">Derecho de Autor</option>
@@ -271,11 +264,11 @@ class AddProductReport extends Component {
             {this.state.errors.unique && (
               <p className="error">{this.state.errors.unique}</p>
             )}
-            <div className="report-product-form-group-button">
+            <div className="report-user-form-group-button">
               <Button
                 type={BUTTON_TYPES.LARGE}
                 text="Publicar"
-                onClick={this.handleSubmit} 
+                onClick={this.handleSubmit}
               />
             </div>
           </Modal>
@@ -284,4 +277,4 @@ class AddProductReport extends Component {
     );
   }
 }
-export default AddProductReport;
+export default AddUserReport;

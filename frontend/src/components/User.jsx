@@ -11,6 +11,7 @@ import PageTitle from './PageTitle/PageTitle';
 import filledStar from '../assets/bxs-star.svg';
 import emptyStar from '../assets/bx-star.svg';
 import Paginator from './Paginator/Paginator.jsx';
+import AddUserReport from './AddUserReport.jsx';
 
 const id = window.location.href.split('/')[4];
 
@@ -35,20 +36,20 @@ const UserDetail = () => {
 
     const fetchUserLogued = async () => {
       const id = localStorage.getItem('userId');
-        if (id){
-            const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
-            try {
-              const response = await fetch(petition);
-              if (!response.ok) {
-                  throw new Error('Error al obtener los datos del usuario');
-              }
-              const userData = await response.json();
-              setUserLogued(userData);
-          } catch (error) {
-              console.error('Error al obtener los datos del usuario:', error);
+      if (id) {
+        const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
+        try {
+          const response = await fetch(petition);
+          if (!response.ok) {
+            throw new Error('Error al obtener los datos del usuario');
           }
+          const userData = await response.json();
+          setUserLogued(userData);
+        } catch (error) {
+          console.error('Error al obtener los datos del usuario:', error);
         }
-    }          
+      }
+    }
 
     const id = window.location.href.split('/')[4];
     const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
@@ -82,7 +83,7 @@ const UserDetail = () => {
 
         if (response.ok) {
           const data = await response.json();
-          
+
           const totalOpinions = data.length;
           setTotalOpinions(totalOpinions);
 
@@ -142,9 +143,9 @@ const UserDetail = () => {
     const petition = `${backend}/chat/chatroom/`;
     const token = localStorage.getItem('token');
 
-    if(!token){
+    if (!token) {
       alert("Debes estar logueado para acceder a los chats.");
-      return window.location.href=`/login`;
+      return window.location.href = `/login`;
     }
 
     try {
@@ -193,8 +194,8 @@ const UserDetail = () => {
   };
 
   const handleFollowingsClick = async () => {
-    if(followingCount.following_count === 0) return alert("Este usuario no sigue a nadie.");
-    else{
+    if (followingCount.following_count === 0) return alert("Este usuario no sigue a nadie.");
+    else {
       try {
         navigate(`/user-details/${id}/following`);
       } catch (error) {
@@ -213,8 +214,8 @@ const UserDetail = () => {
   };
   
   const handleFollowersClick = async () => {
-    if(followersCount.followers_count === 0) return alert("Este usuario no tiene seguidores.");
-    else{
+    if (followersCount.followers_count === 0) return alert("Este usuario no tiene seguidores.");
+    else {
       try {
         navigate(`/user-details/${id}/followers`);
       } catch (error) {
@@ -241,31 +242,31 @@ const UserDetail = () => {
 
   const toggleUserActiveStatus = async (userId, isActive) => {
     const url = `${backend}/users/api/v1/users/${userId}/toggle_active/`;
-    const token = localStorage.getItem('token'); 
+    const token = localStorage.getItem('token');
 
     try {
-        const response = await fetch(url, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                is_active: isActive
-            })
-        });
+      const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          is_active: isActive
+        })
+      });
 
-        if (!response.ok) {
-            alert('No se ha podido bloquear/desbloquear el usuario');
-        }
+      if (!response.ok) {
+        alert('No se ha podido bloquear/desbloquear el usuario');
+      }
 
-        const data = await response.json();
-        setUser(data);
+      const data = await response.json();
+      setUser(data);
 
     } catch (error) {
-        console.error('Error:', error);
+      console.error('Error:', error);
     }
-};
+  };
 
   return (
     <>
@@ -295,11 +296,11 @@ const UserDetail = () => {
             {userLogued && userLogued.is_staff && userLogued.id !== user.id ? (
               !user.is_staff && user.is_active ? (
                 <button className="plain-btn button red" onClick={() => toggleUserActiveStatus(user.id, !user.is_active)}>
-                    Bloquear
+                  Bloquear
                 </button>
-                ):( <button className="plain-btn button green" onClick={() => toggleUserActiveStatus(user.id, !user.is_active)}>
-                    Desbloquear
-                  </button>
+              ) : (<button className="plain-btn button green" onClick={() => toggleUserActiveStatus(user.id, !user.is_active)}>
+                Desbloquear
+              </button>
               )
             ) : null}
           </div>
@@ -326,22 +327,22 @@ const UserDetail = () => {
               )}
               <p className='user-review-text'>Roles del usuario:</p>
               <div className="user-role-container">
-                
+
                 {user.is_designer === true ? (
                   <div className="user-role">Diseñador</div>
                 ) : null}
                 {user.is_printer === true ? (
                   <div className="user-role">Impresor</div>
                 ) : null}
-                <Button 
-                type={BUTTON_TYPES.TRANSPARENT} 
-                text={`${followingCount.following_count} seguidos`} 
-                onClick={handleFollowingsClick} 
+                <Button
+                  type={BUTTON_TYPES.TRANSPARENT}
+                  text={`${followingCount.following_count} seguidos`}
+                  onClick={handleFollowingsClick}
                 />
-                <Button 
-                type={BUTTON_TYPES.TRANSPARENT} 
-                text={`${followersCount.followers_count} seguidores`} 
-                onClick={handleFollowersClick} 
+                <Button
+                  type={BUTTON_TYPES.TRANSPARENT}
+                  text={`${followersCount.followers_count} seguidores`}
+                  onClick={handleFollowersClick}
                 />
               </div>
 
@@ -367,6 +368,18 @@ const UserDetail = () => {
               <div className="user-contact-container">
                 <p className="user-contact"><strong>Contacto: </strong> {user.email}</p>
               </div>
+
+              {!ownUser ? (
+                <>
+                  <div className='report-user' >
+                    <AddUserReport user={user} />
+                  </div>
+                </>
+              ) : (
+                <>
+                </>
+              )}
+
 
               <div className="user-button-wrapper">
                 {ownUser ? (
@@ -403,19 +416,19 @@ const UserDetail = () => {
 
         <div className="reviews-section">
           <Text type={TEXT_TYPES.TITLE_BOLD} text='Opiniones' />
-          {!ownUser ? (<AddOpinion target_user={user.id} />):("")}
+          {!ownUser ? (<AddOpinion target_user={user.id} />) : ("")}
           {opinions.length > 0 ? (
             <div className="user-reviews">
               {opinions.map(opinion => (
                 <Opinion key={opinion.id} opinion={opinion} />
               ))}
               <Paginator page={page} setPage={setPage} numPages={numPages} />
-            </div>       
+            </div>
           ) : (
             <div>Aún no hay opiniones para este usuario.</div>
           )}
         </div>
-        
+
       </>
 
     </>

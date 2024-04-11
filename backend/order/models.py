@@ -1,3 +1,5 @@
+from datetime import timedelta
+from django.utils import timezone
 from django.db import models
 import uuid
 
@@ -14,6 +16,7 @@ class Order(models.Model):
         ('C','Contrareembolso'),
         ('T','Transferencia')
     ]
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     buyer = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -28,6 +31,23 @@ class Order(models.Model):
     buyer_mail = models.EmailField(max_length=254,null=False,blank=False,default='a@a.com')
 
 class OrderProduct(models.Model):
+    STATUS_CHIOCES = [
+        ('Pendiente','Pendiente'),
+        ('Cancelado','Cancelado'),
+        ('Enviado','Enviado'),
+        ('En reparto','En reparto')
+    ]
+    state = models.CharField(max_length=10, choices=STATUS_CHIOCES, default='Pendiente')
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+
+class OrderActionToken(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    seller = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE)  # Nuevo campo para el vendedor
+    token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField(default=timezone.now() + timedelta(days=5)) # 5 días de validez
+
+    def is_valid(self):
+        return timezone.now() < self.expires_at

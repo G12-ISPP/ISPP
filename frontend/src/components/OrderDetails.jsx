@@ -39,8 +39,10 @@ export default class CustomModelDetails extends React.Component{
                     price: product.price,
                     imageRoute: product.imageRoute,
                     image_url: product.image_url,
-                    quantity: datos.products[i].quantity
+                    quantity: datos.products[i].quantity,
+                    state: datos.products[i].state
                 }
+
                 i++
             } 
             this.setState({ data:datos});
@@ -65,7 +67,7 @@ export default class CustomModelDetails extends React.Component{
                             {data && <>{data.products.map((p, index) => (
                                 <OrderProductResume key={index} name={data.products[index].name} price={data.products[index].price} 
                                 image_url={data.products[index].image_url} imageRoute={data.products[index].imageRoute}
-                                id={data.products[index].id} quantity={data.products[index].quantity} />
+                                id={data.products[index].id} quantity={data.products[index].quantity} state={data.products[index].state} />
                             ))}</>}
     
                             {data && <h5>Gastos de envío: 5€</h5>}
