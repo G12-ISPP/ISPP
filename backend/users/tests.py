@@ -211,6 +211,46 @@ class ProfileTestCase(TestCase):
         response = self.client.get('/users/api/v1/users/2/')
         self.assertEqual(response.status_code, 404)
 
+class MyFollowingsTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = CustomUser.objects.create_user(id=1, username='UserTest',email='test@example.com', password='UserPass123', address='TestAddress', postal_code=12345, city='Sevilla', email_verified=True)
+        self.client.force_authenticate(user=self.user)
+        CustomUser.objects.create_user(id=2, username='UserTest2',email='test2@example.com', password='UserPass123', address='TestAddress', postal_code=12345, city='Sevilla', email_verified=True)
+        url = reverse('follow_toggle', kwargs={'user_id': 2})
+        self.client.get(url)
+
+    def tearDown(self):
+        return super().tearDown()
+
+    def test_my_followings(self):
+        response = self.client.get('/users/api/v1/users/1/following/')
+        self.assertEqual(response.status_code, 200)
+        response_data = json.loads(response.content)
+        self.assertEqual(response_data['followings'][0]['id'], 2)
+        self.assertEqual(len(response_data['followings']), 1)
+
+        response = self.client.get('/users/api/v1/users/1/get_following_count/')
+        self.assertEqual(response.status_code, 200)
+        response_data = json.loads(response.content)
+        self.assertEqual(response_data['following_count'], 1)
+
+        url = reverse('follow_toggle', kwargs={'user_id': 2})
+        self.client.get(url)
+
+        response = self.client.get('/users/api/v1/users/1/following/')
+        self.assertEqual(response.status_code, 200)
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['followings']), 0)
+
+        response = self.client.get('/users/api/v1/users/1/get_following_count/')
+        self.assertEqual(response.status_code, 200)
+        response_data = json.loads(response.content)
+        self.assertEqual(response_data['following_count'], 0)
+        
+        
+
+
 from rest_framework.test import APITestCase
 from rest_framework.reverse import reverse
 
