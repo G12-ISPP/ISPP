@@ -129,6 +129,10 @@
   margin: 0;
 }
 
+.report-user {
+  display: flex;
+}
+
 @media (max-width: 767px) {
 
   .artist-title-container, .profile-title-container {
@@ -207,6 +211,12 @@
     font-size: 0.9em;
   }
 
+  .report-user {
+    width: 100%; 
+    display: flex;
+    justify-content: center;
+  }
+
 }
 
 @media (max-width: 320px) {
@@ -233,6 +243,12 @@
 
   .reviews-section {
     margin: 0 6.5em 2.5em;
+  }
+
+  .report-user {
+    width: 100%; 
+    display: flex;
+    justify-content: center;
   }
 
 }

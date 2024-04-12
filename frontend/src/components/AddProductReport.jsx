@@ -11,12 +11,8 @@ class Modal extends React.Component {
     return (
       <div className="modal">
         <div className="modal-content">
+          <a onClick={this.props.onClose} className="close">&times;</a>
           {this.props.children}
-          <Button
-            type={BUTTON_TYPES.REPORT}
-            text="Cancelar"
-            onClick={this.props.onClose}
-          />
         </div>
       </div>
     );
@@ -38,11 +34,15 @@ class AddProductReport extends Component {
       reason: "P",
       errors: {},
       showForm: false,
+      file: null,
+      image_url: null,
     };
+
+    this.handleFileChange = this.handleFileChange.bind(this);
   }
 
   validateForm() {
-    const { title, description, reason } = this.state;
+    const { title, description, reason, file } = this.state;
     const errors = {};
 
     if (!title.trim()) {
@@ -68,6 +68,10 @@ class AddProductReport extends Component {
 
     if (this.state.errors.unique) {
       errors.unique = "Ya has reportado este producto";
+    }
+
+    if (!file) {
+      errors.file = 'La foto es obligatoria';
     }
 
     this.setState({ errors });
@@ -98,42 +102,51 @@ class AddProductReport extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     // Send report to the backend
-    if (!this.validateForm()) {
+
+    if (this.validateForm()) {
+      const formData = new FormData();
+      formData.append('file', this.state.file);
+      formData.append('title', this.state.title);
+      formData.append('description', this.state.description);
+      formData.append('reason', this.state.reason);
+      formData.append('product', this.product.id);
+      formData.append('user', null);
+
+      const backend = import.meta.env.VITE_APP_BACKEND;
+      let petition1 = `${backend}/report/add-report-product`;
+      petition1 = petition1.replace(/"/g, '')
+      fetch(petition1, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData
+      })
+        .then(response => {
+          if (response.status === 400) {
+            response.json().then(data => {
+              console.log("Error 400: " + data.error);
+              this.setState({ errors: { unique: data.error } });
+              this.setState({ showForm: true });
+            });
+          } else if (response.ok) {
+            this.setState({ showForm: false });
+            alert("Reporte enviado correctamente" );
+          } else {
+            console.error("Error submitting report");
+          }
+        })
+        .catch(error => {
+          console.error('Error al enviar el formulario:', error);
+          alert('Error al enviar el formulario');
+        });
+        
+        fetch();
+        this.setState({ showForm: false });
+
+    } else {
       return;
     }
-    const formData = new FormData();
-
-    const backend = import.meta.env.VITE_APP_BACKEND;
-    const petition = `${backend}/report/add-report-product`;
-    fetch(petition, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({
-        title: this.state.title,
-        description: this.state.description,
-        reason: this.state.reason,
-        product: this.product.id,
-        user: null,
-        created_at: new Date().toISOString(),
-      }),
-    }).then((response) => {
-      if (response.status === 401) {
-        console.log("Error 401");
-        this.setState({ errors: { unique: "Ya has reportado este producto" } });
-        this.setState({ showForm: true });
-      } else if (response.ok) {
-        console.log(response.json());
-        this.setState({ showForm: false });
-        alert("Reporte enviado correctamente");
-      } else {
-        console.error("Error submitting report");
-      }
-    });
-
-    fetch();
-    this.setState({ showForm: false });
   };
 
   handleReasonsChange = (e) => {
@@ -146,6 +159,26 @@ class AddProductReport extends Component {
   handleDescriptionChange = (e) => {
     this.setState({ description: e.target.value });
   };
+
+  handleFileChange(event) {
+    const selectedFile = event.target.files[0];
+    const allowedExtensions = ["jpg", "jpeg", "png"];
+    const fileExtension = selectedFile ? selectedFile.name.split('.').pop().toLowerCase() : null;
+
+    if (!selectedFile) {
+      this.setState({ file: null });
+      return;
+    }
+
+    if (!allowedExtensions.includes(fileExtension)) {
+      this.setState({ file: null, errors: { file: 'Por favor, seleccione un archivo de imagen válido (.jpg, .jpeg, .png)' } });
+      return;
+    }
+
+    this.setState({ file: selectedFile });
+
+  }
+
   render() {
     const { isAuthenticated, errors, showForm } = this.state;
 
@@ -177,6 +210,7 @@ class AddProductReport extends Component {
             <form>
               <label>
                 Titulo:
+                <br></br>
                 <input
                   type="text"
                   name="title"
@@ -202,10 +236,19 @@ class AddProductReport extends Component {
               {this.state.errors.description && (
                 <p className="error">{this.state.errors.description}</p>
               )}
+                            <label htmlFor='file' className='upload'>
+                Comprobación
+              </label>
+              <div className='file-select'>
+                <input type='file' id='file' name='file' className='form-input' accept='.jpg, .jpeg, .png' onChange={this.handleFileChange} />
+                {errors.file && <div className="error">{errors.file}</div>}
+              </div>
+              
 
               <br></br>
               <label>
                 Motivo del Reporte:
+                <br></br>
                 <select
                   name="reason"
                   value={this.state.reason}
@@ -228,11 +271,13 @@ class AddProductReport extends Component {
             {this.state.errors.unique && (
               <p className="error">{this.state.errors.unique}</p>
             )}
-            <Button
-              type={BUTTON_TYPES.LARGE}
-              text="Publicar"
-              onClick={this.handleSubmit}
-            />
+            <div className="report-product-form-group-button">
+              <Button
+                type={BUTTON_TYPES.LARGE}
+                text="Publicar"
+                onClick={this.handleSubmit} 
+              />
+            </div>
           </Modal>
         )}
       </>

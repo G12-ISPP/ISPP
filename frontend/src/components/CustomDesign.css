@@ -1,152 +1,660 @@
-.title {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 150px;
-    font-weight: bold;
-  }
-
-.cd-pc-view{
-  display: flex;
+.my-design-page {
+  margin: 2em 10em;
 }
 
-.cd-mv-view{
+.my-design-title-container {
+  margin-bottom: 1em;
+}
+
+.my-design-page-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2em;
+}
+
+.my-design-page-info-button {
+  width: 15%;
+  justify-self: center;
+  text-align: center;
+  font-weight: 600;
+  border: #004040 0.1em solid;
+  background: #FFF;
+  border-radius: 1em;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.my-design-page-info-button:hover {
+  background: #E0EEC6;
+}
+
+.my-design-page-info-button.active {
+  border-radius: 0.5em 0.5em 0 0;
+  border-bottom: 0;
+}
+
+.my-design-page-info-contents {
+  display: none;
+  background: #FFF;
+  border: #004040 0.1em solid;
+  border-radius: 0.8em;
+  padding: 1em 1.5em;
+  box-sizing: border-box;
+  width: 90%;
+  color: #004040;
+}
+
+.my-design-page-info-contents .info-title {
+  margin: 0 0 0.5em 0;
+}
+
+.my-design-page-info-contents .info-description {
+  margin: 0 0 0.4em 0;
+}
+
+.my-design-page-info-contents .info-description-list {
+  display: block;
+  text-align: left;
+  height: auto;
+  list-style-type: disc;
+  margin: 0;
+  padding: 0 0 0 2.5em;
+  white-space: normal;
+}
+
+.my-design-page-info-contents .info-description-list li {
+  display: list-item;
+  margin: 0;
+  font-size: 1em;
+  color: #004040;
+  cursor: default;
+  transition: none;
+}
+.my-design-page-info-contents .info-description-list li:hover {
+  scale: none;
+  text-decoration: none;
+}
+
+.my-design-container {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2em;
+}
+
+.left-my-design-container {
+  display: flex;
+  justify-content: center;
+  width: 50%;
+  padding-right: 3em;
+}
+
+.right-my-design-container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.model-viewer-container {
+  width: 100%;
+  height: 26em;
+}
+
+.model-viewer-container .canvas {
+  border-radius: 1em;
+}
+
+.my-design-data-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.my-design-data-section-title {
+  margin: 0 0 0.4em 0;
+  font-size: 1.5em;
+  line-height: 1.2em;
+}
+
+.my-design-data-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.form-group-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.form-group-row .form-group-elements {
+  display: flex;
+  gap: 1em;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.my-design-data-form .form-group .form-input {
+  width: 100%;
+  margin: 0;
+  padding: 0.4em 1em;
+  box-sizing: border-box;
+  border-radius: 1em;
+  background: #D9D9D9;
+  color: #004040;
+  border: 1px solid #004040;
+}
+
+.my-design-data-form .form-group .form-input.upload {
   display: none;
 }
 
-@media (max-width:550px){
- 
-  .cd-pc-view{
-    display: none;
-  }
-  
-  .cd-mv-view{
-    display: flex;
-  }
-}
-  
-  .main {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-bottom: 150px;
-  }
-  
-  .form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-  }
-  
-  label {
-    font-weight: normal;
-  }
-  
-  .summary {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 500px;
-    margin: auto;
-    margin-bottom: 5em;
-    padding: 0.5em 2em;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .buy {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    margin: 20px;
-  }
-
-  .form-input {
-    background: #D9D9D9;
-    color: #004040;
-    border: 0.1em #004040 solid;
-    border-radius: 0.25em;
-    box-sizing: border-box;
-    padding: 0.1em 0.5em;
-  }
-  
-  input[type="button"] {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #4CAF50;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-  }
-
-  .custom-design-details{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 20px;
-  }
-
-  input.selected{
-    background-color: #004040;
-    color: #E0EEC6;
-    border: 0.1em #004040 solid;
-    width: 8em;
-    height: 3em;
-    font-weight: bold;
+.my-design-data-form .form-group-row .form-group-elements .form-group.left {
+  width: 25%;
 }
 
-  @media (max-width: 1040px) {
-    .main {
-      flex-direction: column;
-    }
+.my-design-data-form .form-group-row .form-group-elements .form-group.right {
+  width: calc(75% - 1em);
+}
 
-    .form {
-      height: auto;
-    }
+.my-design-data-form .form-group .upload-file-button {
+  width: 100%;
+  background: #004040;
+  color: #FFF;
+  border-radius: 1.2em;
+  font-size: 1em;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.4em 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.my-design-data-form .form-group .upload-file-button:hover {
+  background: #E0EEC6;
+  border: 1px solid #004040;
+  color: #004040;
+}
 
-    .canvas-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-  }
+.my-design-data-form .form-group .upload-file-button.loaded {
+  border-radius: 0 0 0.5em 0.5em;
+}
 
-  @media (max-width: 550px) {
+.my-design-data-form .form-group .file-name {
+  width: 100%;
+  max-height: 2em;
+  margin: 0;
+  background: #D9D9D9;
+  border: 1px solid #004040;
+  border-bottom: none;
+  border-radius: 0.5em 0.5em 0 0;
+  padding: 0.2em 1em;
+  box-sizing: border-box;
+  text-align: center;
+  font-weight: 600;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
 
-    .canvas {
-      display: flex;
-      width: 250px;
-      height: 150px;
-      margin-bottom: 50px;
-      border-radius: 15px;
-      touch-action: none;
-    }
+.my-design-data-form .form-group .label {
+  width: fit-content;
+  cursor: text;
+  font-size: 1em;
+  font-weight: 600;
+}
 
-    .form-group {
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      width: 300px;
-    }
+.my-design-selection-properties-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4em;
+}
 
-    .summary {
-      max-width: 300px;
-    }
-  }
+.my-design-selection-properties-container .my-design-properties-section-title {
+  margin: 0 0 0.4em 0;
+  font-size: 1.6em;
+  line-height: 1.2em;
+}
 
-/* Para los botones debajo del diseño */
-.button-container {
+.my-design-selection-properties-container .properties-form {
+  display: flex;
+  justify-content: space-around;
+  gap: 1em;
+}
+
+.my-design-selection-properties-container .properties-form .form-group .label {
+  width: fit-content;
+  cursor: text;
+  font-size: 1.1em;
+  font-weight: 600;
+}
+
+.my-design-selection-properties-container .properties-form .form-group.left,
+.my-design-selection-properties-container .properties-form .form-group.right {
+  width: 50%;
   display: flex;
   align-items: center;
 }
 
-.info-button,
-.plus-button,
-.minus-button {
-  margin-right: 10px;
+.my-design-selection-properties-container .properties-form .form-group .form-group-contents {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+
+.my-design-selection-properties-container .properties-form .form-group .button-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5em;
+  width: 100%;
+}
+
+.my-design-selection-properties-container .properties-form .form-group .button-wrapper .quality-btn,
+.my-design-selection-properties-container .properties-form .form-group .button-wrapper .color-btn {
+  width: calc(33.3% - 0.5em);
+  max-height: 2.5em;
+  background: #D9D9D9;
+  color: #004040;
+  border: 1px solid #004040;
+  padding: 0.5em 0.8em;
+  border-radius: 1em;
+  font-size: 0.8em;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.my-design-selection-properties-container .properties-form .form-group .button-wrapper .quality-btn:hover,
+.my-design-selection-properties-container .properties-form .form-group .button-wrapper .color-btn:hover,
+.my-design-selection-properties-container .properties-form .form-group .button-wrapper .quality-btn.selected,
+.my-design-selection-properties-container .properties-form .form-group .button-wrapper .color-btn.selected {
+  background: #004040;
+  color: #D9D9D9;
+}
+
+.my-design-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2em;
+}
+
+.my-design-summary-section-title {
+  width: 15%;
+  justify-self: center;
+  text-align: center;
+  font-weight: 700;
+  border: #004040 0.1em solid;
+  background: #FFF;
+  border-radius: 0.5em 0.5em 0 0;
+  border-bottom: 0;
+}
+
+.my-design-summary-contents {
+  background: #FFF;
+  border: #004040 0.1em solid;
+  border-radius: 0.8em;
+  padding: 1em 1.5em;
+  box-sizing: border-box;
+  width: 90%;
+  color: #004040;
+}
+
+.my-design-summary-contents .summary-title {
+  margin: 0 0 0.5em 0;
+}
+
+.my-design-summary-contents .summary-list {
+  display: block;
+  text-align: left;
+  height: auto;
+  list-style-type: disc;
+  margin: 0 0 0.4em 0;
+  padding: 0 0 0 2.5em;
+  white-space: normal;
+}
+
+.my-design-summary-contents .summary-list li {
+  display: list-item;
+  margin: 0;
+  font-size: 1em;
+  color: #004040;
+  cursor: default;
+  transition: none;
+}
+.my-design-summary-contents .summary-list li:hover {
+  scale: none;
+  text-decoration: none;
+}
+
+.my-design-summary-contents .summary-price {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  margin-bottom: 0.8em;
+}
+
+.my-design-summary-contents .summary-price .price {
+  margin: 0;
+  font-size: 1.4em;
+  font-weight: 600;
+}
+
+.my-design-summary-contents .summary-price .iva {
+  margin: 0;
+  font-size: 1em;
+}
+
+.my-design-summary-contents .payment-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.my-design-summary-contents .payment-container .form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.my-design-summary-contents .payment-container .form-group .form-group-contents {
+  display: flex;
+  align-items: center;
+}
+
+.my-design-summary-contents .payment-container .form-group .form-group-contents .customer-agreement {
+  font-size: 1em;
+}
+
+.my-design-summary-contents .payment-container .form-group .form-group-contents .customer-agreement a {
+  color: #004040;
+  font-weight: 700;
+}
+.my-design-summary-contents .payment-container .form-group .form-group-contents .customer-agreement a:hover {
+  text-decoration: underline;
+}
+
+.my-design-summary-contents .payment-container .form-group .form-group-contents input[type="checkbox"] {
+  appearance: none;
+  border: 1px solid #004040;
+  padding: 0.6em;
+  border-radius: 0.2em;
+}
+.my-design-summary-contents .payment-container .form-group .form-group-contents input[type="checkbox"]:checked:after {
+  content: '';
+  width: 0.9em;
+  height: 0.9em;
+  position: absolute;
+  background-color: #004040;
+  transform: translate(-50%, -50%);
+  border-radius: 0.1em;
+}
+
+
+@media screen and (max-width: 768px) {
+
+  .my-design-page {
+    margin: 1.5em 1.5em;
+  }
+
+  .my-design-title-container {
+    font-size: 0.8em;
+  }
+
+  .my-design-page-info {
+    margin-bottom: 1.5em;
+  }
+
+  .my-design-page-info-button {
+    width: 50%;
+  }
+
+  .my-design-page-info-contents {
+    width: 100%;
+  }
+
+  .my-design-page-info-contents .info-description-list {
+    padding: 0 0 0 1.5em;
+  }
+
+  .my-design-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2em;
+  }
+
+  .left-my-design-container {
+    width: 100%;
+    padding: 0;
+  }
+
+  .right-my-design-container {
+    width: 100%;
+  }
+
+  .model-viewer-container {
+    height: 15em;
+    touch-action: none;
+  }
+
+  .my-design-data-section-title {
+    font-size: 1.2em;
+  }
+
+  .my-design-data-form {
+    gap: 0.5em;
+  }
+
+  .form-group-row .form-group-elements {
+    flex-direction: column;
+    gap: 0.5em;
+  }
+
+  .my-design-data-form .form-group-row .form-group-elements .form-group.left {
+    width: 100%;
+  }
+
+  .my-design-data-form .form-group-row .form-group-elements .form-group.right {
+    width: 100%;
+  }
+
+  .my-design-data-form .form-group .label {
+    width: fit-content;
+    cursor: text;
+    font-size: 0.9em;
+    font-weight: 600;
+  }
+
+  .my-design-selection-properties-container {
+    margin-bottom: 2em;
+  }
+
+  .my-design-selection-properties-container .my-design-properties-section-title {
+    font-size: 1.2em;
+  }
+
+  .my-design-selection-properties-container .properties-form {
+    flex-direction: column;
+  }
+
+  .my-design-selection-properties-container .properties-form .form-group.left,
+  .my-design-selection-properties-container .properties-form .form-group.right {
+    width: 100%;
+  }
+
+  .my-design-selection-properties-container .properties-form .form-group .form-group-contents {
+    width: 100%;
+  }
+
+  .my-design-selection-properties-container .properties-form .form-group .label {
+    font-size: 1em;
+    padding-bottom: 0.4em;
+  }
+
+  .my-design-selection-properties-container .properties-form .form-group .button-wrapper {
+    flex-direction: row;
+    margin: 0;
+  }
+
+  .my-design-summary {
+    margin-bottom: 1em;
+  }
+
+  .my-design-summary-section-title {
+    width: 50%;
+  }
+
+  .my-design-summary-contents {
+    width: 100%;
+  }
+
+  .my-design-summary-contents .summary-list {
+    padding: 0 0 0 1.5em;
+  }
+
+  .my-design-summary-contents .summary-price {
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 1.2em;
+  }
+
+  .my-design-summary-contents .payment-container {
+    width: 100%;
+    gap: 0.2em;
+  }
+
+  .my-design-summary-contents .payment-container .form-group .form-group-contents .customer-agreement {
+    font-size: 0.9em;
+  }
+
+  .my-design-summary-contents .payment-container .large-btn {
+    width: 90%;
+  }
+
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+  .my-design-page {
+    margin: 1.5em 5em;
+  }
+
+  .my-design-page-info-button {
+    width: 30%;
+  }
+
+  .my-design-page-info-contents {
+    width: 80%;
+  }
+
+  .my-design-container {
+    gap: 1.5em;
+  }
+
+  .model-viewer-container {
+    height: 20em;
+  }
+
+  .my-design-data-section-title {
+    font-size: 1.2em;
+  }
+
+  .my-design-data-form {
+    gap: 0.5em;
+  }
+
+  .form-group-row .form-group-elements {
+    flex-direction: column;
+    gap: 0.5em;
+  }
+
+  .my-design-data-form .form-group-row .form-group-elements .form-group.left {
+    width: 100%;
+  }
+
+  .my-design-data-form .form-group-row .form-group-elements .form-group.right {
+    width: 100%;
+  }
+
+  .my-design-data-form .form-group .label {
+    width: fit-content;
+    cursor: text;
+    font-size: 1em;
+    font-weight: 600;
+  }
+
+  .my-design-selection-properties-container {
+    margin-bottom: 3em;
+  }
+
+  .my-design-selection-properties-container .my-design-properties-section-title {
+    font-size: 1.4em;
+  }
+
+  .my-design-selection-properties-container .properties-form {
+    gap: 1em;
+  }
+
+  .my-design-selection-properties-container .properties-form .form-group .form-group-contents {
+    width: 75%;
+  }
+
+  .my-design-selection-properties-container .properties-form .form-group .label {
+    font-size: 1em;
+  }
+
+  .my-design-selection-properties-container .properties-form .form-group .button-wrapper {
+    flex-direction: row;
+    margin: 0;
+  }
+
+  .my-design-summary {
+    margin-bottom: 2em;
+  }
+
+  .my-design-summary-section-title {
+    width: 20%;
+  }
+
+  .my-design-summary-contents {
+    width: 80%;
+  }
+
+  .my-design-summary-contents .summary-list {
+    padding: 0 0 0 1.5em;
+  }
+
+  .my-design-summary-contents .summary-price {
+    margin-bottom: 1.2em;
+  }
+
+  .my-design-summary-contents .payment-container .large-btn {
+    width: 15em;
+    font-size: 0.8em;
+  }
+
+}
+
+@media (min-width: 1025px) and (max-width: 1260px) {
+
+  .form-group-row .form-group-elements {
+    flex-direction: column;
+    gap: 0.5em;
+  }
+
+  .my-design-data-form .form-group-row .form-group-elements .form-group.left {
+    width: 100%;
+  }
+
+  .my-design-data-form .form-group-row .form-group-elements .form-group.right {
+    width: 100%;
+  }
+
 }
