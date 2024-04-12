@@ -49,6 +49,7 @@ import UsersList from "./components/UsersList/UsersList.jsx";
 import ReportsList from "./components/ReportsList/ReportsList.jsx";
 import FollowingList from "./components/FollowingList.jsx";
 import FollowersList from "./components/FollowersList.jsx";
+import PostDetail from './components/Post/PostDetail.jsx';
 
 function App() {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
@@ -106,6 +107,7 @@ function App() {
                     <Route path="/confirm-plan" element={<ConfirmPlan/>} />
                     <Route path="/community" element={<ComunityPage />} />
                     <Route path="/community/:id" element={<PersonalComunityPage />} />
+                    <Route path="/community/post/:id" element={<PostDetail />} />
                     <Route path="/posts/add-post" element={<AddPost/>}/>
                     <Route path="/privacidad" element={<Privacity/>} />
                     <Route path="/terminos" element={<Terms/>} />

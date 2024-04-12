@@ -23,6 +23,7 @@ urlpatterns = [
     path('get_from_user', PostViewClass.get_post_by_usernames, name='get_from_user'),
     path('get_user_from_token', GetUserFromTokenView.as_view(), name='get_user_from_token'),
     path('get_post_by_user/<int:userid>', PostViewClass.get_post_by_userids, name='get_post_by_user'),
+    path('get_post_by_id/<int:postid>', PostViewClass.get_post_by_id, name='get_post_by_id'),
     path('like/<int:postId>', like, name='like'),
     path('delete-like/<int:postId>', delete_like, name='delete_like'),
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

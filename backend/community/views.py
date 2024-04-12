@@ -120,6 +120,18 @@ class PostViewClass(APIView):
         serializer = PostSerializer(queryset, many=True)
         return Response(serializer.data)
     
+    def get_post_by_id(request, postid):
+        queryset = Post.objects.filter(id=postid)
+        serializer = PostSerializer(queryset, many=True ,context={'request': request})
+
+        data = []
+        for post in queryset:
+            post_data = serializer.data.pop(0)  # Tomamos el primer elemento de la lista
+            post_data['likes'] = list(post.like_set.values_list('user__username', flat=True))  # Agregamos los IDs de usuarios que dieron like al post
+            data.append(post_data)
+
+        return JsonResponse(data, safe=False)
+
     def get_post_by_userids(request, userid):
         queryset = Post.objects.filter(users=userid)
         serializer = PostSerializer(queryset, many=True, context={'request': request})

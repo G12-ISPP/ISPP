@@ -133,6 +133,12 @@
   display: flex;
 }
 
+.post-detail-comment{
+  background-color: #e2e1e1;
+  border-radius: 0.8em;
+  
+}
+
 @media (max-width: 767px) {
 
   .artist-title-container, .profile-title-container {
