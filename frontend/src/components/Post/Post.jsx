@@ -121,6 +121,14 @@ const Post = () => {
     setIdPost(id);
   };
 
+  const handleDetail = (id) => {
+    if (!id) {
+        window.location.href = '/community';
+    } else {
+        window.location.href = '/community/post/' + id;
+    }
+}
+
   if (!isLoggedIn) {
     // Si el usuario no está autenticado, no se renderizará ningún contenido
     return null;
@@ -230,9 +238,9 @@ const Post = () => {
                     <p>
                       <Button
                         type={BUTTON_TYPES.MEDIUM}
-                        text="Comentar"
+                        text="Más detalles"
                         onClick={() => {
-                          handleCommentModal(post.id);
+                          handleDetail(post.id);
                         }}
                       />
                     </p>

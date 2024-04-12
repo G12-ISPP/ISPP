@@ -58,5 +58,14 @@ class CommentViewSet(viewsets.ModelViewSet):
                 return JsonResponse({'error': 'El comentario no existe'}, status=404)
             comment.delete()
             return JsonResponse({'message': 'Comentario eliminado correctamente'}, status=200)
-
+        
+    @api_view(['GET'])
+    def get_comments(request, postid):
+        if request.method == 'GET':
+            post = get_object_or_404(Post, id=postid)
+            if not post:
+                return JsonResponse({'error': 'El post no existe'}, status=404)
+            comments = Comment.objects.filter(post=post)
+            serializer = CommentSerializer(comments, many=True)
+            return JsonResponse(serializer.data, safe=False, status=200)
 
