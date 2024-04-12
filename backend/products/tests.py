@@ -1008,3 +1008,47 @@ class BothSellerAndDesignerPlanTestClase(TestCase):
             'file': image}
         response = self.client.post(reverse('add_product'), data, HTTP_AUTHORIZATION='Bearer ' + self.token)
         self.assertEqual(response.status_code, 400)
+
+class ProductDeleteTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = CustomUser.objects.create(username='testuser',email='test34@example.com', password='password123', postal_code=12345)
+        self.client.force_authenticate(user=self.user)
+        self.product = Product.objects.create(
+            product_type='P',
+            price=10.0,
+            name='Test Product',
+            description='Test Description',
+            show=True,
+            stock_quantity=10,
+            seller=self.user,
+            imageRoute='',
+            image='products/test_image.jpg',
+            design=None
+        )
+
+    def test_delete_product(self):
+        url = reverse('products-delete-product', kwargs={'pk': self.product.pk})
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Product.objects.filter(pk=self.product.pk).exists())
+
+    def test_delete_product_unauthorized(self):
+        unauthorized_user = CustomUser.objects.create(username='unauthorized',email='test35@example.com', password='password123', postal_code=12345)
+        self.client.force_authenticate(user=unauthorized_user)
+        url = reverse('products-delete-product', kwargs={'pk': self.product.pk})
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_delete_product_not_owner(self):
+        other_user = CustomUser.objects.create(username='otheruser',email='test36@example.com', password='password123', postal_code=12345)
+        self.client.force_authenticate(user=other_user)
+        url = reverse('products-delete-product', kwargs={'pk': self.product.pk})
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_delete_product_not_authenticated(self):
+        self.client.force_authenticate(user=None)
+        url = reverse('products-delete-product', kwargs={'pk': self.product.pk})
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

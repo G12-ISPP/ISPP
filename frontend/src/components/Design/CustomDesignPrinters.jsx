@@ -66,16 +66,21 @@ const CustomDesignPrinters = () => {
         <>
             <PageTitle title="Detalles de la solicitud" />
             <div className="custom-design-printers">
-                <h2>{data && data.name}</h2>
-                <p>Volumen: {data && data.volume} cm³</p>
-                <p>Área: {data && data.area} cm²</p>
-                <p>Dimensiones: {data && `${data.dimensions.width} x ${data.dimensions.height} x ${data.dimensions.depth} cm`}</p>
-                <p>Peso: {data && data.weight} kg</p>
-                <p>Calidad: {data && data.quality}</p>
-                <p>Color: {data && data.color}</p>
-                <p>Cantidad: {data && data.quantity}</p>
-                <p>Precio: {data && data.price}€</p>
-                <button onClick={handlePrint}>Imprimir</button>
+                {data && (
+                    <>
+                        <h2>{data.name}</h2>
+                        <p>Volumen: {data.volume} cm³</p>
+                        <p>Área: {data.area} cm²</p>
+                        <p>Dimensiones: {`${data.dimensions.width} x ${data.dimensions.height} x ${data.dimensions.depth} cm`}</p>
+                        <p>Peso: {data.weight} kg</p>
+                        <p>Calidad: {data.quality}</p>
+                        <p>Color: {data.color}</p>
+                        <p>Cantidad: {data.quantity}</p>
+                        <p>Precio: {data.price}€</p>
+                        {data.printer && <p>Estado: {data.status}</p>}
+                    </>
+                )}
+                {!data?.printer && <button onClick={handlePrint}>Imprimir</button>}
             </div>
         </>
     );
