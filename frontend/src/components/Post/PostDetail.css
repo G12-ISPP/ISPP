@@ -6,62 +6,16 @@
     margin-bottom: 2em;
 }
 
+.post-comments{
+    margin: auto;
+}
+
 .post-detail-container {
     display: flex;
     justify-content: space-around;
     margin-bottom: 2em;
 }
 
-.product-quantity {
-    display: flex;
-    flex-direction: row;
-    align-items: normal;
-    margin-bottom: 1vh;
-    justify-content: center;
-}
-
-.product-cart-qty-plus,
-.product-cart-qty-minus {
-    width: 38px;
-    height: 38px;
-    border: 2px solid #004040;
-    color: #004040;
-    border-radius: .25rem;
-    padding: 0;
-    background-color: #D9D9D9;
-}
-
-.product-cart-qty-plus:hover,
-.product-cart-qty-minus:hover {
-    background-color: #004040;
-    color: #D9D9D9;
-}
-
-.product-cart-qty-plus,
-.product-cart-qty-minus {
-    width: 25px;
-    height: 25px;
-}
-
-.product-quantity .product-form-control {
-    max-width: 40px;
-    text-align: center;
-    display: inline-block;
-    margin: 0px 5px;
-    background-color: #004040;
-    border-radius: 0.25rem;
-}
-
-#myTable .product-form-control {
-    width: auto;
-    display: inline-block;
-}
-
-.product-summary {
-    border: none !important;
-    padding: 0.25em 2em;
-    box-sizing: border-box;
-}
 
 .left-post-detail-container {
     display: flex;
@@ -148,17 +102,6 @@
     -webkit-line-clamp: 5;
 }
 
-.product-info-stock {
-    margin: 0 0 0.5em 0;
-    font-size: 1.2em;
-    font-weight: 600;
-}
-
-.product-info-price {
-    margin: 0 0 0.2em 0;
-    font-size: 2em;
-}
-
 .post-detail-info-container .large-btn.button {
     justify-self: center;
 }
@@ -170,6 +113,10 @@
 .related-products .main-page-gr.grid {
     margin: 0;
     width: 100%;
+}
+
+.post-detail-comment-description{
+    padding: 1em;
 }
 
 .post-detail-section {
@@ -260,14 +207,6 @@
         -webkit-line-clamp: 20;
     }
 
-    .product-info-stock {
-        font-size: 1em;
-    }
-
-    .product-info-price {
-        font-size: 1.8em;
-    }
-
     .right-post-detail-container .large-btn.button {
         width: 100%;
         height: 2.2em;
@@ -277,24 +216,12 @@
         font-size: 0.9em;
     }
 
-    .related-products .text {
-        font-size: 1.5em;
-    }
-
-    .related-products .grid {
-        padding: 0;
-    }
-
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
 
     .post-detail-details-page {
         margin: 1.5em 3.5em;
-    }
-
-    .related-products .grid {
-        padding: 0;
     }
 
     .post-detail-section {

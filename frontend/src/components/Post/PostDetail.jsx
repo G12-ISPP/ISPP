@@ -168,6 +168,11 @@ export default class PostDetail extends React.Component {
       this.setState({ wantComment: true, idPost: id });
     };
 
+    const setWantComment = (value) => {
+      this.setState({ wantComment: value });
+      this.componentDidMount();
+    }
+
     return (
       <>
         <div className="post-detail-details-page">
@@ -206,15 +211,15 @@ export default class PostDetail extends React.Component {
                   <p className="post-detail-info-description-text">{post.description}</p>
                 </div>
                 <hr />
-                <div className="post-comments-like">
+                <div className="post-comments">
                   <p>
-                    {/* <Button
+                    <Button
                       type={BUTTON_TYPES.MEDIUM}
                       text="Comentar"
                       onClick={() => {
                         handleCommentModal(post.id);
                       }}
-                    /> */}
+                    />
                   </p>
                 </div>
               </div>
