@@ -49,6 +49,7 @@ export default class CustomModelDetails extends React.Component{
                 {data && <p>Ciudad: {data.city}</p>}
                 {data && <p>Código Postal: {data.postal_code}</p>}
                 {data && <p>Dirección: {data.address}</p>}
+                {data.printer && <p>Estado: {data.status}</p>}                
             </div>
 
             <div className='summary'>
