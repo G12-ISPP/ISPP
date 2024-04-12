@@ -238,13 +238,6 @@ const Post = () => {
                     <p>
                       <Button
                         type={BUTTON_TYPES.MEDIUM}
-                        text="Comentar"
-                        onClick={() => {
-                          handleCommentModal(post.id);
-                        }}
-                      />
-                      <Button
-                        type={BUTTON_TYPES.MEDIUM}
                         text="Más detalles"
                         onClick={() => {
                           handleDetail(post.id);
