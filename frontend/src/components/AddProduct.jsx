@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './AddProduct.css';
 import PageTitle from './PageTitle/PageTitle';
+import Text, { TEXT_TYPES } from "./Text/Text";
+
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
 
@@ -215,77 +217,98 @@ class Product extends Component {
   render() {
     const { errors } = this.state;
     return (
-      <>
+      <div className="upload-product-page">
+
         <PageTitle title="Subir producto" />
-        <h1 className='title'>Mi Producto</h1>
-        <div className='main'>
-          {this.state.imagePreview && (
-            <img src={this.state.imagePreview} alt='Preview' className='image-preview-container' />
-          )}
-          <form className='form' onSubmit={this.handleSubmit}>
-            <div className='form-group'>
-              <label htmlFor='file' className='upload'>
-                Foto
-              </label>
-              <div className='file-select'>
-                <input type='file' id='file' name='file' className='form-input' accept='.jpg, .jpeg, .png' onChange={this.handleFileChange} />
-                {errors.file && <div className="error">{errors.file}</div>}
-              </div>
+
+        <div className="upload-product-title-container">
+          <Text type={TEXT_TYPES.TITLE_BOLD} text='Subir producto' />
+        </div>
+
+        <div className="upload-product-container">
+
+          <div className="left-upload-product-container">
+            <div className="product-image">
+              {this.state.imagePreview && <img src={this.state.imagePreview} alt='Preview' className='product-image-preview'/>}
             </div>
-            {this.state.productType === 'D' && (
+          </div>
+
+          <div className="right-upload-product-container">
+            <div className="upload-product-data-container">
+              <h2 className="upload-product-data-section-title">Datos sobre el producto</h2>
+
+              <form className="upload-product-data-form" onSubmit={this.handleSubmit}>
+
                 <div className='form-group'>
-                  <label htmlFor="file2" className='upload'> Sube tu diseño:</label>
-                  <div className='file-select'>
-                    <input type='file' id='file2' name='file2' className='form-input' accept='.stl'
-                         onChange={this.handleDesignChange}/>
-                    {errors.design && <div className="error">{errors.design}</div>}
+                  <label className='product-type label'>Tipo</label>
+                  <div className='select-container'>
+                    <div className={`product-type-button ${this.state.productType === 'P' ? 'selected' : ''}`} onClick={() => this.setState({ productType: 'P' })}>Impresora</div>
+                    <div className={`product-type-button ${this.state.productType === 'D' ? 'selected' : ''}`} onClick={() => this.setState({ productType: 'D' })}>Diseño</div>
+                    <div className={`product-type-button ${this.state.productType === 'M' ? 'selected' : ''}`} onClick={() => this.setState({ productType: 'M' })}>Material</div>
+                    <div className={`product-type-button ${this.state.productType === 'I' ? 'selected' : ''}`} onClick={() => this.setState({ productType: 'I' })}>Pieza</div>
                   </div>
                 </div>
-            )}
-            <div className='form-group'>
-              <label htmlFor='name'>Nombre</label>
-              <input type='text' id='name' name='name' className='form-input' value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} placeholder="Cerdito rosa" />
-              {errors.name && <div className="error">{errors.name}</div>}
+
+                <div className='form-group'>
+                  {this.state.file && <p className="image-name"><strong>Imagen seleccionada: </strong>{this.state.file.name}</p>}
+                  <label htmlFor="file" className={this.state.file ? "upload-image-button loaded" : "upload-image-button"}>{this.state.file ? "Cambiar imagen" : "Seleccionar imagen"}</label>
+                  <input type='file' id='file' name='file' className='form-input upload' accept='.jpg, .jpeg, .png' onChange={this.handleFileChange} />
+                  {errors.file && <div className="error">{errors.file}</div>}
+                </div>
+
+                {this.state.productType === 'D' && (
+                  <div className='form-group'>
+                    {this.state.design && <p className="design-name"><strong>Diseño seleccionado: </strong>{this.state.design.name}</p>}
+                    <label htmlFor="file2" className={this.state.design ? "upload-design-button loaded" : "upload-design-button"}>{this.state.design ? "Cambiar diseño" : "Seleccionar diseño"}</label>
+                    <input type='file' id='file2' name='file2' className='form-input upload' accept='.stl' onChange={this.handleDesignChange} />
+                    {errors.design && <div className="error">{errors.design}</div>}
+                  </div>
+                )}
+
+                <div className='form-group'>
+                  <label htmlFor='name' className='name label'>Nombre</label>
+                  <input type='text' id='name' name='name' className='form-input' value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} placeholder="Cerdito rosa" />
+                  {errors.name && <div className="error">{errors.name}</div>}
+                </div>
+
+                <div className='form-group'>
+                  <label htmlFor='description' className='description label'>Descripción</label>
+                  <textarea id='description' name='description' className='form-input' value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Pieza de un cerdo con dimensiones de 20x12 cm, perfecto estado" />
+                  {errors.description && <div className="error">{errors.description}</div>}
+                </div>
+
+                {this.state.productType !== 'D' && (
+                  <div className='form-group'>
+                    <label htmlFor='stock-quantity' className='stock_quantity label'>Cantidad</label>
+                    <input type='number' id='stock-quantity' name='stock-quantity' className='form-input' value={this.state.stockQuantity} min={1} max={100} onChange={(e) => this.setState({ stockQuantity: e.target.value })} placeholder="2" />
+                    {errors.stockQuantity && <div className="error">{errors.stockQuantity}</div>}
+                  </div>
+                )}
+
+                <div className='form-group'>
+                  <label htmlFor='price' className='price label'>Precio</label>
+                  <input type='text' id='price' name='price' className='form-input' value={this.state.price} onChange={(e) => this.setState({ price: e.target.value })} placeholder="5.99" />
+                  {errors.price && <div className="error">{errors.price}</div>}
+                </div>
+
+                <div className='form-group'>
+                  <div className="form-group-contents">
+                    <input type='checkbox' id='show' name='show' checked={this.state.show} onChange={(e) => this.setState(prevState => ({ ...prevState, show: e.target.checked }))} />
+                    <label htmlFor='show' className='show label'>Destacar el producto</label>
+                  </div>
+                  {errors.show && <div className="error">{errors.show}</div>}
+                </div>
+
+              </form>
             </div>
-            <div className='form-group'>
-              <label htmlFor='description'>Descripción</label>
-              <textarea id='description' name='description' className='form-input' value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Pieza de un cerdo con dimensiones de 20x12 cm, perfecto estado" />
-              {errors.description && <div className="error">{errors.description}</div>}
-            </div>
-            <div className='form-group'>
-              <label htmlFor='show'>
-                Destacar el producto
-                <input type='checkbox' id='show' name='show' checked={this.state.show} onChange={(e) => this.setState(prevState => ({ ...prevState, show: e.target.checked }))} />
-                {errors.show && <div className="error">{errors.show}</div>}
-              </label>
-            </div>
-            <div className='form-group'>
-              <label htmlFor='price'>Precio</label>
-              <input type='text' id='price' name='price' className='form-input' value={this.state.price} onChange={(e) => this.setState({ price: e.target.value })} placeholder="5.99" />
-              {errors.price && <div className="error">{errors.price}</div>}
-            </div>
-            <div className='form-group'>
-              <label className='product-type'>Tipo</label>
-              <div className='select-container'>
-                <select value={this.state.productType} onChange={(e) => this.setState({ productType: e.target.value })}>
-                  <option value='P'>Impresora</option>
-                  <option value='D'>Diseño</option>
-                  <option value='M'>Material</option>
-                  <option value='I'>Pieza</option>
-                </select>
-              </div>
-            </div>
-            {this.state.productType !== 'D' && (
-              <div className='form-group'>
-                <label htmlFor='stock-quantity'>Cantidad</label>
-                <input type='number' id='stock-quantity' name='stock-quantity' className='form-input' value={this.state.stockQuantity} min={1} max={100} onChange={(e) => this.setState({ stockQuantity: e.target.value })} placeholder="2" />
-                {errors.stockQuantity && <div className="error">{errors.stockQuantity}</div>}
-              </div>
-            )}
-          </form>
+
+            <button className='large-btn button' type='button' onClick={this.handleSubmit}>Añadir producto</button>
+
+          </div>
+
         </div>
-        <button className='add-product-button' type='button' onClick={this.handleSubmit}>Añadir Producto</button>
-      </>
+
+      </div>
     );
   }
 }
