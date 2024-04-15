@@ -8,9 +8,8 @@ import ProfileIcon from "../ProfileIcon/ProfileIcon";
 import {FcLikePlaceholder} from "react-icons/fc";
 import ModalComment from "../ModalComment/ModalComment";
 import {getUsername} from "../../api/users.api.jsx";
-import {getComments} from "../../api/comments.api.jsx";
-import {getPost} from "../../api/posts.api.jsx";
 import {useParams} from "react-router-dom";
+import {getComments, getPost} from "../../api/community.api.jsx";
 
 export default function PostDetail(props) {
     const {id: idFromRoute} = useParams();
@@ -91,7 +90,7 @@ export default function PostDetail(props) {
                             <h3 className="post-detail-info-description-label">Detalles:</h3>
                             <p className="post-detail-info-description-text">{post.description}</p>
                         </div>
-                        <hr/>
+
                         <div className="post-comments">
                             <p>
                                 <Button
