@@ -42,3 +42,10 @@ export const toggleFollow = (userId) => {
         }
     });
 }
+
+export const getUsername = async (userId) => {
+    return getUser(userId)
+        .then(response => response.json())
+        .then(data => data.username)
+        .catch(error => console.error('Error fetching user data:', error));
+};

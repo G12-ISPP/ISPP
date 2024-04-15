@@ -14,3 +14,25 @@ export function savePost(post) {
         body: formData
     });
 }
+
+export const getPost = (postId) => {
+    return fetch(backend + '/posts/get_post_by_id/' + postId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+}
+
+export const getComments = (postId) => {
+    return fetch(backend + '/comment/get_comments/' + postId,
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        }
+    );
+}
