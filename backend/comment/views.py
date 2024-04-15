@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
