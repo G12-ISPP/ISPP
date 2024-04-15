@@ -381,7 +381,9 @@ const Header = ({ cart, setCart }) => {
                                 <div onMouseLeave={() => setActiveProfile(false)} className="menu-contenedor">
                                     <div onClick={() => window.location.href=`/user-details/${currentUserID}`} className="menu-opcion">Ver Perfil</div>
                                     <div onClick={() => window.location.href='/myOrders'} className="menu-opcion">Mis pedidos</div>
+                                    <div onClick={() => window.location.href=`/requests/${currentUserID}`} className="menu-opcion">Mis solicitudes</div>
                                     <div onClick={() => window.location.href='/buy-plan'} className="menu-opcion">Comprar plan</div>
+                                    {isAdmin && <div onClick={() => window.location.href='/admin'} className="menu-opcion">Panel de administrador</div>}
                                     <hr />
                                     <div onClick={handleLogout} className="menu-opcion menu-cerrar-sesion">Cerrar Sesión</div>
 

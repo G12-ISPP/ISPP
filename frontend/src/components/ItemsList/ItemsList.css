@@ -2,7 +2,9 @@
     color: #004040;
     margin: auto;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nonwrap;
+    overflow-x: auto;
+    overflow-y: hidden;
     justify-content: space-between;
     gap: 20px;
     padding-left:10%;

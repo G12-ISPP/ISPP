@@ -1,88 +1,289 @@
-.title {
-    margin-bottom:  50px;
+.upload-product-page {
+  margin: 2em 10em;
+}
+
+.upload-product-title-container {
+  margin-bottom: 1em;
+}
+
+.upload-product-container {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2em;
+}
+
+.left-upload-product-container {
+  display: flex;
+  justify-content: center;
+  width: 50%;
+  padding-right: 3em;
+}
+
+.right-upload-product-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+}
+
+.right-upload-product-container .large-btn {
+  border-radius: 1em;
+}
+
+.left-upload-product-container .product-image {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 29em;
+  background: #D9D9D9;
+  border-radius: 0.8em;
+}
+
+.left-upload-product-container .product-image .product-image-preview {
+  width: 100%;
+  object-fit: contain;
+  border-radius: 0.8em;
+}
+
+.upload-product-data-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-product-data-section-title {
+  margin: 0 0 0.4em 0;
+  font-size: 1.5em;
+  line-height: 1.2em;
+}
+
+.upload-product-data-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+
+.upload-product-data-form .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.upload-product-data-form .form-group .form-group-contents {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.upload-product-data-form .form-group .form-group-contents .show.label {
+  font-size: 1em;
+}
+
+.upload-product-data-form .form-group .form-group-contents input[type="checkbox"] {
+  appearance: none;
+  border: 1px solid #004040;
+  padding: 0.6em;
+  border-radius: 0.2em;
+  cursor: pointer;
+}
+.upload-product-data-form .form-group .form-group-contents input[type="checkbox"]:checked:after {
+  content: '';
+  width: 0.9em;
+  height: 0.9em;
+  position: absolute;
+  background-color: #004040;
+  transform: translate(-50%, -50%);
+  border-radius: 0.1em;
+}
+
+.upload-product-data-form .form-group .select-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5em;
+  width: 100%;
+}
+
+.upload-product-data-form .form-group .select-container .product-type-button {
+  width: calc(25% - 0.5em);
+  max-height: 2.5em;
+  background: #D9D9D9;
+  color: #004040;
+  border: 1px solid #004040;
+  padding: 0.5em 0.8em;
+  border-radius: 1em;
+  font-size: 0.8em;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.upload-product-data-form .form-group .select-container .product-type-button:hover,
+.upload-product-data-form .form-group .select-container .product-type-button.selected {
+  background: #004040;
+  color: #D9D9D9;
+}
+
+.upload-product-data-form .form-group .form-input,
+.upload-product-data-form .form-group textarea {
+  width: 100%;
+  margin: 0;
+  padding: 0.4em 1em;
+  box-sizing: border-box;
+  background: #D9D9D9;
+  border-radius: 1em;
+  color: #004040;
+  border: 1px solid #004040;
+}
+
+.upload-product-data-form .form-group #description {
+  font-family: system-ui;
+  resize: none;
+  border-radius: 1em 0 0 1em;
+}
+
+.upload-product-data-form .form-group textarea::-webkit-scrollbar {
+  width: 1em;
+  height: 100%;
+}
+
+.upload-product-data-form .form-group textarea::-webkit-scrollbar-track {
+  cursor: pointer;
+  background: #f1f1f1;
+}
+
+.upload-product-data-form .form-group textarea::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  background: #888;
+}
+
+.upload-product-data-form .form-group textarea::-webkit-scrollbar-thumb:hover {
+  cursor: pointer;
+  background: #555;
+}
+
+.upload-product-data-form .form-group .form-input.upload {
+  display: none;
+}
+
+.upload-product-data-form .form-group .upload-image-button,
+.upload-product-data-form .form-group .upload-design-button {
+  width: 100%;
+  background: #004040;
+  color: #FFF;
+  border-radius: 1.2em;
+  font-size: 1em;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.4em 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.upload-product-data-form .form-group .upload-image-button:hover,
+.upload-product-data-form .form-group .upload-design-button:hover {
+  background: #E0EEC6;
+  border: 1px solid #004040;
+  color: #004040;
+}
+
+.upload-product-data-form .form-group .upload-image-button.loaded,
+.upload-product-data-form .form-group .upload-design-button.loaded {
+  border-radius: 0 0 0.5em 0.5em;
+}
+
+.upload-product-data-form .form-group .image-name,
+.upload-product-data-form .form-group .design-name {
+  width: 100%;
+  max-height: 2em;
+  margin: 0;
+  background: #D9D9D9;
+  border: 1px solid #004040;
+  border-bottom: none;
+  border-radius: 0.5em 0.5em 0 0;
+  padding: 0.2em 1em;
+  box-sizing: border-box;
+  text-align: center;
+  font-weight: 600;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.upload-product-data-form .form-group .label {
+  width: fit-content;
+  cursor: text;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+
+@media screen and (max-width: 1024px) {
+
+  .upload-product-page {
+    margin: 1.5em;
   }
 
-  .image-preview-container {
-    display: flex;
-    justify-content: center;
+  .upload-product-title-container {
+    font-size: 0.8em;
+  }
+
+  .upload-product-container {
+    flex-direction: column;
     align-items: center;
-    max-width:  600px;
-    max-height:  500px;
-    object-fit: contain;
-    margin-bottom:  20px;
-    border:  1px solid #ccc;
-    border-radius:  10px;
-    box-shadow:  0  2px  8px #004040;
-    background-color: #f0f0f0;
-    position: relative;
-}
-
-.error {
-  color: red;
-}
-
-@media screen and (max-width:  768px) {
-  .image-preview-container {
-    max-width: calc(100% -  30px);
-    margin:  0 auto;
-  }
-}
-  
-  .form {
-    margin-top:  50px;
-    margin-bottom: 50px;
-  }
-
-  .add-product-button {
-    display: block;
-    width: auto;
-    padding:  10px  20px;
-    margin:  50px auto;
-    background-color: #004040;
-    color: white;
-    border: none;
-    border-radius:  5px;
-    cursor: pointer;
-    transition: background-color  0.3s ease; 
+    gap: 1.2em;
   }
   
-  .add-product-button:hover {
-    background-color: #004040;
+  .left-upload-product-container {
+    width: 100%;
+    padding: 0;
   }
-
-  .select-container select {
-    background-repeat: no-repeat;
-    background-position: right  0.7em center;
-    background-size:  0.65em auto,  100%;
-    background: #D9D9D9;
-    color: #004040;
-  }
-
-  .error-message {
-    position: absolute;
-    left:   50%;
-    transform: translateX(-50%);
-    color: red;
-    font-size:   14px;
-    bottom: -30px;
-    padding:   10px   20px; 
-    background-color: transparent; 
-    border:  2px solid red; 
-    border-radius:   5px; 
-    box-shadow:   0   2px   8px rgba(0,   0,   0,   0.2);
-}
-
-
-@media screen and (max-width:   768px) {
-    .error-message {
-        font-size:   12px;
-        bottom: -30px; /* Ajusta el espacio entre el mensaje de error y el formulario para pantallas pequeñas */
-        left:   50%; /* Ajusta la posición horizontal al centro para pantallas pequeñas */
-        transform: translateX(-50%); /* Centra el mensaje de error horizontalmente para pantallas pequeñas */
-        padding:   8px   16px; /* Ajusta el padding para pantallas pequeñas */
-    }
-}
   
-  .main {
-    position: relative;
+  .right-upload-product-container {
+    width: 100%;
   }
+
+  .left-upload-product-container .product-image {
+    height: 15em;
+  }
+
+  .upload-product-data-section-title {
+    font-size: 1.2em;
+  }
+
+  .upload-product-data-form .form-group .label {
+    align-self: flex-start;
+    font-size: 0.9em;
+    padding-bottom: 0.4em;
+  }
+
+  .upload-product-data-form .form-group {
+    width: 100%;
+    gap: 0;
+  }
+
+  .upload-product-data-form .form-group .select-container {
+    flex-wrap: wrap;
+  }
+
+  .upload-product-data-form .form-group .select-container .product-type-button {
+    box-sizing: border-box;
+    width: calc(50% - 0.5em);
+  }
+
+  .upload-product-data-form .form-group #description {
+    border-radius: 1em;
+    height: 3em;
+  }
+
+  .upload-product-data-form .form-group .form-group-contents .show.label {
+    padding: 0;
+  }
+
+  .right-upload-product-container .large-btn {
+    width: 90%;
+  }
+
+}

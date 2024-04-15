@@ -10,15 +10,15 @@ import {login} from "../api/users.api.jsx";
 
 let messages = {
     labels: {
-        title: 'Mi Producto',
-        photo: 'Foto',
+        title: 'Subir producto',
+        photo: 'Seleccionar imagen',
         name: 'Nombre',
         description: 'Descripción',
         show: 'Destacar el producto',
         price: 'Precio',
-        type: 'combobox',
+        type: 'Tipo',
         stockQuantity: 'Cantidad',
-        button: 'Añadir Producto'
+        button: 'Añadir producto'
     },
     token: {
         user: 'test1Frontend',
@@ -60,23 +60,30 @@ describe('Tests to add product', () => {
         );
     });
 
-    const fillFormAndSubmit = async (fileInputValue, nameInputValue, descriptionInputValue,  priceInputValue, typeInputValue, stockQuantityValue, typeFileInputValue='image/jpeg') => {
+    const fillFormAndSubmit = async (fileInputValue, nameInputValue, descriptionInputValue, priceInputValue, typeInputValue, stockQuantityValue, typeFileInputValue='image/jpeg') => {
         const fileInput = screen.getByLabelText(messages.labels.photo);
         const nameInput = screen.getByLabelText(messages.labels.name);
         const descriptionInput = screen.getByLabelText(messages.labels.description);
         const priceInput = screen.getByLabelText(messages.labels.price);
-        const typeInput = screen.getByRole(messages.labels.type)
         const stockQuantityInput = screen.getByLabelText(messages.labels.stockQuantity);
-
+    
+        // Seleccionar el tipo de producto
+        const productTypeButtons = screen.getAllByText(/Impresora|Diseño|Material|Pieza/);
+        const selectedProductTypeButton = productTypeButtons.find(button => button.textContent === typeInputValue);
+        if (!selectedProductTypeButton) {
+            throw new Error(`Tipo de producto "${typeInputValue}" no encontrado.`);
+        }
+    
         await act(async () => {
             fireEvent.change(fileInput, { target: { files: [new File(['dummy'], fileInputValue, { type: typeFileInputValue })] } });
             fireEvent.change(nameInput, { target: { value: nameInputValue } });
             fireEvent.change(descriptionInput, { target: { value: descriptionInputValue } });
             fireEvent.change(priceInput, { target: { value: priceInputValue } });
-            fireEvent.change(typeInput, { target: { value: typeInputValue } });
+            fireEvent.click(selectedProductTypeButton); // Simular clic en el botón del tipo de producto
             fireEvent.change(stockQuantityInput, { target: { value: stockQuantityValue } });
         });
     };
+    
 
 
     async function addProductAndCheckAmount(difference) {
@@ -96,17 +103,19 @@ describe('Tests to add product', () => {
 
 
     test('Page has all elements', async () => {
-        // Verifica que los elementos del formulario estén presentes en la página
         expect(screen.getByText(messages.labels.title)).toBeInTheDocument();
         expect(screen.getByLabelText(messages.labels.photo)).toBeInTheDocument();
         expect(screen.getByLabelText(messages.labels.name)).toBeInTheDocument();
         expect(screen.getByLabelText(messages.labels.description)).toBeInTheDocument();
         expect(screen.getByLabelText(messages.labels.show)).toBeInTheDocument();
         expect(screen.getByLabelText(messages.labels.price)).toBeInTheDocument();
-        expect(screen.getByRole(messages.labels.type)).toBeInTheDocument();
+        const productTypeButtons = screen.getAllByText(/Impresora|Diseño|Material|Pieza/);
+        expect(productTypeButtons.length).toBeGreaterThanOrEqual(4);
         expect(screen.getByText(messages.labels.stockQuantity)).toBeInTheDocument();
         expect(screen.getByRole('button', {name: messages.labels.button})).toBeInTheDocument();
-    })
+    });
+    
+    
 
     test('Test empty form', () => {
         // Simula hacer clic en el botón "Añadir Producto" sin llenar ningún campo
@@ -121,7 +130,7 @@ describe('Tests to add product', () => {
 
 
     test('Test valid form', async () => {
-        await fillFormAndSubmit('test.jpg', 'Test Product', 'Test Description Test Description Test Description',  '10.99', 'P', 1);
+        await fillFormAndSubmit('test.jpg', 'Test Product', 'Test Description Test Description Test Description',  '10.99', 'Impresora', 1);
 
         await act(async () => {
             await addProductAndCheckAmount(1)
@@ -137,7 +146,7 @@ describe('Tests to add product', () => {
 
     /* Foto */
     test('Test photo not selected', async () => {
-        await fillFormAndSubmit('', 'Test Product', 'Test Description', '10.99', 'P', 1);
+        await fillFormAndSubmit('', 'Test Product', 'Test Description', '10.99', 'Impresora', 1);
 
         await act(async () => {
             await addProductAndCheckAmount(0)
@@ -172,7 +181,7 @@ describe('Tests to add product', () => {
         ];
 
         for (let i = 0; i < incorrectFormats.length; i++) {
-            await fillFormAndSubmit(incorrectFormats[i][0], 'Test Product', 'Test Description',  '10.99', 'P', 1, incorrectFormats[i][1]);
+            await fillFormAndSubmit(incorrectFormats[i][0], 'Test Product', 'Test Description',  '10.99', 'Impresora', 1, incorrectFormats[i][1]);
 
             await act(async () => {
                 await addProductAndCheckAmount(0)
@@ -181,12 +190,12 @@ describe('Tests to add product', () => {
             // Verifica que aparezca el mensaje de error por foto incorrecta
             expect(screen.getByText(messages.errors.photo)).toBeInTheDocument();
         }
-        fillFormAndSubmit('test.jpg', 'Test Product', 'Test Description', '10.99', 'P', 1);
+        fillFormAndSubmit('test.jpg', 'Test Product', 'Test Description', '10.99', 'Impresora', 1);
     });
 
     /* Nombre */
     test('Test name too short', async () => {
-        await fillFormAndSubmit('test.jpg', 'Ab', 'Test Description', '10.99', 'P', 1);
+        await fillFormAndSubmit('test.jpg', 'Ab', 'Test Description', '10.99', 'Impresora', 1);
 
         await act(async () => {
             await addProductAndCheckAmount(0)
@@ -197,7 +206,7 @@ describe('Tests to add product', () => {
     });
 
     test('Test name too long', async () => {
-        await fillFormAndSubmit('test.jpg', 'Very Long Name'.repeat(5), 'Test Description', '10.99', 'P', 1);
+        await fillFormAndSubmit('test.jpg', 'Very Long Name'.repeat(5), 'Test Description', '10.99', 'Impresora', 1);
 
         await act(async () => {
             await addProductAndCheckAmount(0)
@@ -209,7 +218,7 @@ describe('Tests to add product', () => {
 
     /* Descripción */
     test('Test description too short', async () => {
-        await fillFormAndSubmit('test.jpg', 'Test Product', 'Short', '10.99', 'P', 1);
+        await fillFormAndSubmit('test.jpg', 'Test Product', 'Short', '10.99', 'Impresora', 1);
 
         await act(async () => {
             await addProductAndCheckAmount(0)
@@ -220,7 +229,7 @@ describe('Tests to add product', () => {
     });
 
     test('Test description too long', async () => {
-        await fillFormAndSubmit('test.jpg', 'Test Product', 'Very long description'.repeat(10), '10.99', 'P', 1);
+        await fillFormAndSubmit('test.jpg', 'Test Product', 'Very long description'.repeat(10), '10.99', 'Impresora', 1);
 
         await act(async () => {
             await addProductAndCheckAmount(0)
@@ -232,7 +241,7 @@ describe('Tests to add product', () => {
 
     /* Precios */
     test('Test price not a number', async () => {
-        await fillFormAndSubmit('test.jpg', 'Test Product', 'Test Description', 'aa', 'P', 1);
+        await fillFormAndSubmit('test.jpg', 'Test Product', 'Test Description', 'aa', 'Impresora', 1);
 
         await act(async () => {
             await addProductAndCheckAmount(0)
@@ -242,7 +251,7 @@ describe('Tests to add product', () => {
     });
 
     test('Test price out of range', async () => {
-        await fillFormAndSubmit('test.jpg', 'Test Product', 'Test Description', '1000001', 'P',1);
+        await fillFormAndSubmit('test.jpg', 'Test Product', 'Test Description', '1000001', 'Impresora',1);
 
         await act(async () => {
             await addProductAndCheckAmount(0)
@@ -254,7 +263,7 @@ describe('Tests to add product', () => {
 
     /* Cantidad */
     test('Test stock quantity out of range', async () => {
-        await fillFormAndSubmit('test.jpg', 'Test Product', 'Test Description', '10.99', 'P', -1);
+        await fillFormAndSubmit('test.jpg', 'Test Product', 'Test Description', '10.99', 'Impresora', -1);
 
         await act(async () => {
             await addProductAndCheckAmount(0)
@@ -265,7 +274,7 @@ describe('Tests to add product', () => {
     });
 
     test('Test stock quantity not a number', async () => {
-        fillFormAndSubmit('test.jpg', 'Test Product', 'Test Description', '10.99', 'P', 101);
+        fillFormAndSubmit('test.jpg', 'Test Product', 'Test Description', '10.99', 'Impresora', 101);
 
         await act(async () => {
             await addProductAndCheckAmount(0)

@@ -16,9 +16,9 @@ export default class Admin extends React.Component {
 
     async componentDidMount() {
         const id = localStorage.getItem('userId');
-        if (id){
+        if (id) {
             const petition = `${backend}/users/api/v1/users/${id}/get_user_data/`;
-    
+
             const fetchUserData = async () => {
                 try {
                     const response = await fetch(petition);
@@ -38,7 +38,7 @@ export default class Admin extends React.Component {
                 }
             };
             fetchUserData();
-        }else {
+        } else {
             alert('No tienes permisos para acceder a esta página');
             window.location.href = '/';
         }
@@ -49,24 +49,32 @@ export default class Admin extends React.Component {
 
         return (
             <>
-              {isAdmin ? (
-                <>
-                  <PageTitle title="Panel de administrador" />
-                  <div className="profile-title-container">
-                    <Text type={TEXT_TYPES.TITLE_BOLD} text='Panel de administrador' />
-                  </div>
-                  <div className="admin-container">
-                    <button
-                      className='admin-users-button'
-                      onClick={() => { window.location.href = '/admin/users' }}
-                    >
-                        Administrar usuarios
-                    </button>
-                    </div>
-                </>
+                {isAdmin ? (
+                    <>
+                        <PageTitle title="Panel de administrador" />
+                        <div className="profile-title-container">
+                            <Text type={TEXT_TYPES.TITLE_BOLD} text='Panel de administrador' />
+                        </div>
+                        <div className="admin-container">
+                            <button
+                                className='admin-users-button'
+                                onClick={() => { window.location.href = '/admin/users' }}
+                            >
+                                Administrar usuarios
+                            </button>
+                        </div>
+                        <div className="admin-container">
+                            <button
+                                className='admin-users-button'
+                                onClick={() => { window.location.href = '/admin/reports' }}
+                            >
+                                Administrar reportes
+                            </button>
+                        </div>
+                    </>
                 ) : <div>Loading...</div>}
             </>
-        
-          );
+
+        );
     }
-    }
+}

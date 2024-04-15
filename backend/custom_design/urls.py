@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import create_custom_design, confirm, cancel,details, list_searching_printer_designs, loguedUser, update_design_status, details_to_printer
+from .views import create_custom_design, confirm, cancel,details, list_searching_printer_designs, loguedUser, update_design_status, details_to_printer,custom_designs_to_print, custom_designs_request
 from django.conf import settings
 from django.conf.urls.static import static  
 
@@ -12,6 +12,8 @@ urlpatterns = [
     path('loguedUser', loguedUser, name='loguedUser'),
     path('searching_printer', list_searching_printer_designs, name='list_searching_printer_designs'),
     path('update-status/<uuid:design_id>/', update_design_status, name='update_design_status'),
+    path('to-print/<str:printer_id>/', custom_designs_to_print, name='custom_designs_to_print'),
+    path('requests/<str:buyer_id>/', custom_designs_request, name='custom_designs_request'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

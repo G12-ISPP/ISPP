@@ -156,15 +156,28 @@ def details(request, id):
 @api_view(['GET'])
 def details_to_printer(request, id):
     design = get_object_or_404(CustomDesign, custom_design_id=id)
+    print(design.printer)
     if not request.user.is_authenticated:
         return Response({'message': 'No estás logueado. Por favor, inicia sesión.'}, status=status.HTTP_401_UNAUTHORIZED)
-    elif not request.user.is_printer:
-        return Response({'message': 'No tienes permiso para acceder a esta página. Solo los impresores pueden ver los diseños.'}, status=status.HTTP_403_FORBIDDEN)
-    elif design.printer is not None:
-        return Response({'message': 'Este diseño ya tiene asignado un comprador.'}, status=status.HTTP_403_FORBIDDEN)
-    else:
-        serializer = CustomDesignSerializer(design)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    if design.printer is None:
+        if not request.user.is_printer:
+            if request.user.id != design.buyer.id:
+                return Response({'message': 'No tienes permiso para ver el diseño'}, status=status.HTTP_403_FORBIDDEN)
+            else:
+                serializer = CustomDesignSerializer(design)
+                return Response(serializer.data, status=status.HTTP_200_OK)    
+        else:
+            serializer = CustomDesignSerializer(design)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    if design.printer is not None:
+        if request.user.id not in (design.buyer.id, design.printer.id):
+            return Response({'message': 'Este diseño ya tiene asignado un comprador y un impresor.'}, status=status.HTTP_403_FORBIDDEN)
+    
+    serializer = CustomDesignSerializer(design)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 @csrf_exempt
@@ -212,3 +225,35 @@ def loguedUser(request):
             return Response({"message": "No hay usuario logueado"}, status=status.HTTP_200_OK)
     else:
         return Response({"message": "Método de solicitud no permitido"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+@api_view(['GET'])
+@csrf_exempt
+def custom_designs_to_print(request, printer_id):
+    try:
+        # Obtener todos los CustomDesigns por imprimir del usuario con el ID de impresora proporcionado
+        designs = CustomDesign.objects.filter(printer_id=printer_id, status='printing')
+
+        # Verificar si hay diseños por imprimir para el usuario dado
+        if designs.exists():
+            serializer = CustomDesignSerializer(designs, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'No hay solicitudes de impresión para este usuario'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message': f'Error al obtener las solicitudes de impresión: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+@csrf_exempt
+def custom_designs_request(request, buyer_id):
+    try:
+        # Obtener todos los CustomDesigns por imprimir del usuario con el ID de impresora proporcionado
+        designs = CustomDesign.objects.filter(buyer_id=buyer_id)
+
+        # Verificar si hay diseños por imprimir para el usuario dado
+        if designs.exists():
+            serializer = CustomDesignSerializer(designs, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'No hay solicitudes de impresión para este usuario'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'message': f'Error al obtener las solicitudes de impresión: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

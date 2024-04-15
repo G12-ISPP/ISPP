@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmación de pedido en Shar3d</title>
+</head>
+<body>
+    <p>Hola {{ seller.username }},</p>
+    <p>Se han vendido tus siguientes productos:</p>
+    <ul>
+    {% for op in ops %}
+        <li>Nombre: {{ op.product.name }} - Cantidad: {{ op.quantity }}</li>
+    {% endfor %}
+    </ul>
+    <p>Al pulsar el siguiente enlace marcarás los prodductos como enviados, asegurate de que así sea. Este enlace tiene 5 días de validez.</p>
+    <a href="{{ action_url }}">Marcar como Enviados</a>
+    <p>Gracias por usar nuestro servicio.</p>
+</body>
+</html>

@@ -1,13 +1,18 @@
 import json
 
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_encode
+from rest_framework import status
 from rest_framework.test import APIClient
-
+from django.core.files.uploadedfile import SimpleUploadedFile
+from main import settings
 from .models import CustomUser
 from .utils import validate_email, get_user
+
+ruta_backend = settings.RUTA_BACKEND
 
 
 class LoginTestCase(TestCase):
@@ -98,6 +103,18 @@ class UsersTestCase(TestCase):
         retrieved_user = get_user(uidb64)
         self.assertEqual(user, retrieved_user)
 
+class RegisterWithPictureTestCase(TestCase):
+    def test_register_with_picture(self):
+        file_content = b'contenido'
+
+        image= SimpleUploadedFile('dummy.jpg', file_content, content_type='image/jpeg')
+        data = {'username': 'UserTest123', 'email': 'email@test.com', 'password': 'UserPass123', 'name': 'NameTest', 'address': 'AddressTest', 'postal_code': '06228', 'city': 'Sevilla','file': image}
+        response = self.client.post('/users/api/v1/users/', data, format='multipart')
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue(CustomUser.objects.filter(username='UserTest123').exists())
+        u = CustomUser.objects.get(username='UserTest123')
+        self.assertIsNotNone(u.profile_picture)
+
 class FollowToggleTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
@@ -161,6 +178,22 @@ class FollowToggleTestCase(TestCase):
         self.assertFalse(response_data['follows'])
         self.assertEqual(response.json(), {'follows': False})
 
+    def test_get_followings(self):
+        url = reverse('get_followings', kwargs={'user_id': self.user.id})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['followings']), 0)
+
+        # Add followings for the user
+        self.user.followings.add(self.other_user)
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['followings']), 1)
+        self.assertEqual(response_data['followings'][0]['username'], 'otheruser')
+
 class ProfileTestCase(TestCase):
     
     def setUp(self):
@@ -178,4 +211,75 @@ class ProfileTestCase(TestCase):
         response = self.client.get('/users/api/v1/users/2/')
         self.assertEqual(response.status_code, 404)
 
+class MyFollowingsTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = CustomUser.objects.create_user(id=1, username='UserTest',email='test@example.com', password='UserPass123', address='TestAddress', postal_code=12345, city='Sevilla', email_verified=True)
+        self.client.force_authenticate(user=self.user)
+        CustomUser.objects.create_user(id=2, username='UserTest2',email='test2@example.com', password='UserPass123', address='TestAddress', postal_code=12345, city='Sevilla', email_verified=True)
+        url = reverse('follow_toggle', kwargs={'user_id': 2})
+        self.client.get(url)
+
+    def tearDown(self):
+        return super().tearDown()
+
+    def test_my_followings(self):
+        response = self.client.get('/users/api/v1/users/1/following/')
+        self.assertEqual(response.status_code, 200)
+        response_data = json.loads(response.content)
+        self.assertEqual(response_data['followings'][0]['id'], 2)
+        self.assertEqual(len(response_data['followings']), 1)
+
+        response = self.client.get('/users/api/v1/users/1/get_following_count/')
+        self.assertEqual(response.status_code, 200)
+        response_data = json.loads(response.content)
+        self.assertEqual(response_data['following_count'], 1)
+
+        url = reverse('follow_toggle', kwargs={'user_id': 2})
+        self.client.get(url)
+
+        response = self.client.get('/users/api/v1/users/1/following/')
+        self.assertEqual(response.status_code, 200)
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['followings']), 0)
+
+        response = self.client.get('/users/api/v1/users/1/get_following_count/')
+        self.assertEqual(response.status_code, 200)
+        response_data = json.loads(response.content)
+        self.assertEqual(response_data['following_count'], 0)
+        
+        
+
+
+from rest_framework.test import APITestCase
+from rest_framework.reverse import reverse
+
+class ToggleActiveTestCase(APITestCase):
+    def setUp(self):
+        self.admin = CustomUser.objects.create_user(username='admin', email='admin@example.com', password='admin', address='TestAddress', postal_code=12345, city='Sevilla', email_verified=True, is_staff=True, is_superuser=True)
+        self.admin_token = self.get_user_token('admin', 'admin')
+        self.user = CustomUser.objects.create_user(username='testuser', email='test@example.com', password='testpassword', address='TestAddress', postal_code=12345, city='Sevilla')
+        self.user_token = self.get_user_token('testuser', 'testpassword')
+
+    def get_user_token(self, username, password):
+        response_login = self.client.post('/users/login/', {'username': username, 'password': password}, format='json')
+        return response_login.data.get('token', '')
+
+    def test_toggle_active_as_admin(self):
+        self.client.force_authenticate(user=self.admin)
+        url = reverse('toggle_active', kwargs={'pk': self.user.pk})
+        data = {'is_active': False}  # Change active status to False
+        response = self.client.patch(url, data, format='json')
+        self.assertEqual(response.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertFalse(self.user.is_active)
+
+    def test_toggle_active_as_user(self):
+        self.client.force_authenticate(user=self.user)
+        url = reverse('toggle_active', kwargs={'pk': self.user.pk})
+        data = {'is_active': False}  # Change active status to False
+        response = self.client.patch(url, data, format='json')
+        self.assertEqual(response.status_code, 403)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.is_active)
 

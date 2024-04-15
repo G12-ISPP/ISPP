@@ -1,22 +1,22 @@
 from tokenize import TokenError
-from django.shortcuts import render
-from requests import Response
-from users.models import CustomUser
-from community.serializer import PostSerializer, PostSerializerWrite
-from community.models import Post, Like
-from rest_framework import viewsets
-from rest_framework import permissions
-from rest_framework_simplejwt.tokens import AccessToken
+
 from django.contrib.auth import get_user_model
-from rest_framework_simplejwt.exceptions import InvalidToken
-from rest_framework.views import APIView
-from django.http import JsonResponse
-from django.db.models import Q
-from rest_framework.decorators import api_view
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
+from django.db.models import Q
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from requests import Response
+from rest_framework import permissions
+from rest_framework.decorators import api_view
+from rest_framework.views import APIView
+from rest_framework_simplejwt.exceptions import InvalidToken
+from rest_framework_simplejwt.tokens import AccessToken
+
+from community.models import Post, Like
+from community.serializer import PostSerializer, PostSerializerWrite
+from users.models import CustomUser
 
 
 # Create your views here.
@@ -120,6 +120,18 @@ class PostViewClass(APIView):
         serializer = PostSerializer(queryset, many=True)
         return Response(serializer.data)
     
+    def get_post_by_id(request, postid):
+        queryset = Post.objects.filter(id=postid)
+        serializer = PostSerializer(queryset, many=True ,context={'request': request})
+
+        data = []
+        for post in queryset:
+            post_data = serializer.data.pop(0)  # Tomamos el primer elemento de la lista
+            post_data['likes'] = list(post.like_set.values_list('user__username', flat=True))  # Agregamos los IDs de usuarios que dieron like al post
+            data.append(post_data)
+
+        return JsonResponse(data, safe=False)
+
     def get_post_by_userids(request, userid):
         queryset = Post.objects.filter(users=userid)
         serializer = PostSerializer(queryset, many=True, context={'request': request})
@@ -145,6 +157,8 @@ def add_post(request):
         description = request.data.get('description')
         users = get_user_from_token(request.headers.get('Authorization', '').split(' ')[1])
         image = request.FILES.get('file')
+
+        print(name, description, users, image)
 
         # Verificar que todos los campos requeridos estén presentes
         if not all([name, description, image]):
@@ -175,15 +189,16 @@ def like(request, postId):
             return JsonResponse({'error': 'Invalid token'}, status=401) 
         
         post = get_object_or_404(Post, id=postId)
-
+        
         try:
+            if Like.objects.filter(user=user, post=post).exists():
+                return JsonResponse({'error': 'Ya existe un like para este usuario y post.'}, status=400)
+
             Like.objects.create(
                 user=user,
                 post=post
             )
             return JsonResponse({'message': 'Like creado exitosamente!'}, status=200)
-        except IntegrityError:
-            return JsonResponse({'error': 'Ya existe un like para este usuario y post.'}, status=400)
         except Exception as e:
             return JsonResponse({'error': f'Error al crear el like: {e}'}, status=500)
 

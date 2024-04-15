@@ -5,6 +5,7 @@ import Product from './Product/Product';
 import PageTitle from './PageTitle/PageTitle';
 import Text, { TEXT_TYPES } from "./Text/Text";
 
+
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [sellerName, setSellerName] = useState('');
@@ -81,16 +82,16 @@ const ProductList = () => {
     <>
 
       {ownUser ? (
-        <div className="section-title-container">
-          <Text type={TEXT_TYPES.TITLE_BOLD} text='Mis productos' />
-          <PageTitle title={'Mis productos'} />
-        </div>
-      ) : (
-        <div className="section-title-container">
-          <Text type={TEXT_TYPES.TITLE_BOLD} text={`Productos de: ${sellerName}`} />
-          <PageTitle title={'Productos de ' + sellerName} />
-        </div>
-      )}
+          <div style={{ textAlign: 'center' }} className="section-title-container">
+            <Text type={TEXT_TYPES.TITLE_BOLD} text='Mis productos' />
+            <PageTitle title={'Mis productos'} />
+          </div>
+        ) : (
+          <div style={{ textAlign: 'center' }} className="section-title-container">
+            <Text type={TEXT_TYPES.TITLE_BOLD} text={`Productos de: ${sellerName}`} />
+            <PageTitle title={'Productos de ' + sellerName} />
+          </div>
+        )}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Text type={TEXT_TYPES.TITLE_BOLD} text='Diseños' />
       </div>

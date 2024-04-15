@@ -32,6 +32,7 @@ class CustomUser(AbstractUser):
     followings = models.ManyToManyField('self', related_name='follower_users', symmetrical=False, blank=True, default=[])
     followers = models.ManyToManyField('self', related_name='following_users', symmetrical=False, blank=True, default=[])
 
+    email = models.EmailField(unique=True)
 
     USERNAME_FIELD = 'username'
     

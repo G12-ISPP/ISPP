@@ -64,7 +64,7 @@ class CreateCustomDesignTestCase(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test1@example.com',
             postal_code='12345',
             email_verified=True
         )
@@ -127,7 +127,7 @@ class ConfirmCancelTestCase(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test2@example.com',
             postal_code='12345',
             email_verified=True
         )
@@ -170,7 +170,7 @@ class UpdateDesignStatusTestCase(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test3@example.com',
             postal_code='12345',
             email_verified=True,
             is_printer=True
@@ -216,7 +216,7 @@ class DesignsAvailabilityTestCase(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test4@example.com',
             postal_code='12345',
             email_verified=True,
             is_printer=True
@@ -232,11 +232,19 @@ class DesignsAvailabilityTestCase(APITestCase):
 
 class DesignDetailsTestCase(APITestCase):
     def setUp(self):
-        self.custom_user = get_user_model().objects.create_user(
+        self.custom_user = get_user_model().objects.create_user( 
             username='testuser',
-            email='test@example.com',
+            email='test5@example.com',
             postal_code='12345',
             email_verified=True
+        )
+        
+        self.custom_user_printer = get_user_model().objects.create_user( 
+        username='printeruser',
+        email='printer@example.com',
+        postal_code='54321',
+        email_verified=True
+        
         )
         self.client.force_authenticate(user=self.custom_user)
 
@@ -254,13 +262,15 @@ class DesignDetailsTestCase(APITestCase):
             address='Test Address',
             city='Test City',
             buyer_mail='buyer@example.com',
+            printer=self.custom_user_printer,
             payed=True,
             status='searching',
             color='Red',
             buyer=self.custom_user
+            
         )
 
-    def test_design_details(self):
+    def test_design_details(self):        
         response = self.client.get(reverse('details', args=[self.design.custom_design_id]))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], 'Test Design')
@@ -269,13 +279,23 @@ class DesignDetailsToPrinterTestCase(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test6@example.com',
             postal_code='12345',
             email_verified=True,
             is_printer=True
         )
-        self.client.force_authenticate(user=self.custom_user)
-
+        
+        
+        custom_user_printer = get_user_model().objects.create_user(
+        username='printeruser',
+        email='printer@example.com',
+        postal_code='54321',
+        email_verified=True,
+        is_printer = True
+        
+        )
+        self.client.force_authenticate(user=custom_user_printer)
+        
         self.design = CustomDesign.objects.create(
             custom_design_id = '123e4567-e89b-12d3-a456-426614174000',
             name='Test Design',
@@ -292,11 +312,14 @@ class DesignDetailsToPrinterTestCase(APITestCase):
             buyer_mail='buyer@example.com',
             payed=True,
             status='searching',
+            printer = custom_user_printer,
             color='Red',
             buyer=self.custom_user
+            
         )
 
     def test_design_details_to_printer(self):
+        
         response = self.client.get(reverse('details_to_printer', args=[self.design.custom_design_id]))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], 'Test Design')
@@ -304,7 +327,7 @@ class DesignDetailsToPrinterTestCase(APITestCase):
     def test_anotherprinter(self):
         user2 = get_user_model().objects.create_user(
             username='testuser2',
-            email='test@example.com',
+            email='test7@example.com',
             postal_code='12345',
             email_verified=True
         )
@@ -341,7 +364,7 @@ class DesignDetailsToPrinterTestCase(APITestCase):
     def test_not_printer(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser3',
-            email='test@example.com',
+            email='test8@example.com',
             postal_code='12345',
             email_verified=True
         )
@@ -355,7 +378,7 @@ class LoguedUserTestCase(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test9@example.com',
             postal_code='12345',
             email_verified=True
         )
@@ -375,7 +398,7 @@ class SearchingPrinterDesign(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test10@example.com',
             postal_code='12345',
             email_verified=True
         )
@@ -388,7 +411,7 @@ class SearchingPrinterDesign(APITestCase):
     def test_not_design(self):
         self.custom_user = get_user_model().objects.create_user(
             username='test-user',
-            email='test@example.com',
+            email='test11@example.com',
             postal_code='12345',
             email_verified=True,
             is_printer = True
