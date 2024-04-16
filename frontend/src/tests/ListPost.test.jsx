@@ -42,8 +42,8 @@ describe('Test list posts', () => {
         // Create a file object
         const file = new File([''], 'test.jpg', { type: 'image/jpeg' });
         post = {
-            name: 'test_name',
-            description: 'test_description',
+            name: 'test_name1',
+            description: 'test_description1',
             file: file,
             users: user,
         }
