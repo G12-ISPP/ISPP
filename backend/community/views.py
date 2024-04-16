@@ -1,6 +1,7 @@
 from tokenize import TokenError
 from django.shortcuts import render
 from requests import Response
+from comment.serializer import CommentSerializer
 from users.models import CustomUser
 from community.serializer import PostSerializer, PostSerializerWrite
 from community.models import Post
@@ -15,6 +16,9 @@ from django.db.models import Q
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from comment.models import Comment
+from django.shortcuts import get_object_or_404
+
 
 
 # Create your views here.
@@ -117,6 +121,17 @@ class PostViewClass(APIView):
         serializer = PostSerializer(queryset, many=True, context={'request': request})
         return JsonResponse(serializer.data, safe=False)
     
+    def get_post_by_id(request, postid):
+        queryset = Post.objects.filter(id=postid)
+        serializer = PostSerializer(queryset, many=True ,context={'request': request})
+
+        data = []
+        for post in queryset:
+            post_data = serializer.data.pop(0)  # Tomamos el primer elemento de la lista
+            post_data['likes'] = list(post.like_set.values_list('user__username', flat=True))  # Agregamos los IDs de usuarios que dieron like al post
+            data.append(post_data)
+
+        return JsonResponse(data, safe=False)
 
 
 
@@ -148,3 +163,14 @@ def add_post(request):
             return JsonResponse({'message': 'Post añadido correctamente'}, status=201)
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
+@api_view(['GET'])
+def get_comments(request, postid):
+    if request.method == 'GET':
+        post = get_object_or_404(Post, id=postid)
+        if not post:
+            return JsonResponse({'error': 'El post no existe'}, status=404)
+        comments = Comment.objects.filter(post=post)
+        serializer = CommentSerializer(comments, many=True)
+        return JsonResponse(serializer.data, safe=False, status=200)

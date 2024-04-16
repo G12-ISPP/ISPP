@@ -4,6 +4,7 @@ import "./Post.css";
 import Button, { BUTTON_TYPES } from "../Button/Button";
 
 const backend = import.meta.env.VITE_APP_BACKEND;
+const id = window.location.href.split("/")[4];
 
 const Post = () => {
   const [followedUsers, setFollowedUsers] = useState([]);
@@ -27,56 +28,94 @@ const Post = () => {
     // Si hay un token, se supone que el usuario está autenticado
     setIsLoggedIn(true);
 
-    // Aquí realizar la petición para obtener el usuario mediante el token
-    fetch(`${backend}/posts/get_user_from_token`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ token: token }),
-    })
-      .then((response) => {
-        return response.json();
+    const handleDetail = (id) => {
+      if (!id) {
+        window.location.href = "/community";
+      } else {
+        window.location.href = "/community/post/" + id;
+      }
+    };
+
+    if (id) {
+      fetch(`${backend}/posts/get_post_by_user/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then((data) => {
-        console.log(data.following);
+        .then((response) => response.json())
+        .then((userPosts) => {
+          fetch(`${backend}/users/api/v1/users/${id}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          })
+            .then((response) => response.json())
+            .then((user) => {
+              setUsername(user.username);
+              const userPostsWithName = userPosts.map((post) => ({
+                ...post,
+                users: user.username, // Incluir el nombre del usuario en el post
+              }));
 
-        // Para cada usuario seguido, obtener sus posts
-        if (Array.isArray(followedUsers)) {
-          data.following.forEach((user) => {
-            fetch(`${backend}/posts/get_post_by_user/${user}`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
-            })
-              .then((response) => response.json())
-              .then((userPosts) => {
-                fetch(`${backend}/users/api/v1/users/${user}`, {
-                  method: "GET",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                  },
-                })
-                  .then((response) => response.json())
-                  .then((user) => {
-                    setUsername(user.username);
-                    const userPostsWithName = userPosts.map((post) => ({
-                      ...post,
-                      users: user.username, // Reemplazar post.users con el nombre de usuario
-                    }));
+              // Añadir userPostsWithName al estado de posts
+              setPosts((prevPosts) => [...prevPosts, ...userPostsWithName]);
+            });
+        });
+    } else {
+      fetch(`${backend}/posts/get_user_from_token`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ token: token }),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data.following);
 
-                    // Añadir userPostsWithName al estado de posts
-                    setPosts((posts) => [...posts, ...userPostsWithName]);
-                    console.log(posts);
-                  });
-              });
-          });
-        }
-      });
+          // Para cada usuario seguido, obtener sus posts
+          if (Array.isArray(followedUsers)) {
+            data.following.forEach((user) => {
+              fetch(`${backend}/posts/get_post_by_user/${user}`, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+                .then((response) => response.json())
+                .then((userPosts) => {
+                  fetch(`${backend}/users/api/v1/users/${user}`, {
+                    method: "GET",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}`,
+                    },
+                  })
+                    .then((response) => response.json())
+                    .then((user) => {
+                      setUsername(user.username);
+                      const userPostsWithName = userPosts.map((post) => ({
+                        ...post,
+                        users: user.username, // Reemplazar post.users con el nombre de usuario
+                      }));
+
+                      // Añadir userPostsWithName al estado de posts
+                      setPosts((posts) => [...posts, ...userPostsWithName]);
+                      console.log(posts);
+                    });
+                });
+            });
+          }
+        });
+    }
   }, []);
 
   if (!isLoggedIn) {
@@ -95,6 +134,14 @@ const Post = () => {
   const handleOnClick = (newPage) => {
     setPage(newPage);
     window.scrollTo(0, 0);
+  };
+
+  const handleDetail = (id) => {
+    if (!id) {
+      window.location.href = "/community";
+    } else {
+      window.location.href = "/community/post/" + id;
+    }
   };
 
   return (
@@ -121,6 +168,21 @@ const Post = () => {
                   <h3 className="post-title">{post.name}</h3>
                   <p className="post-description">{post.description}</p>
                   <p className="post-users">Publicado por: {post.users}</p>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Button
+                    type={BUTTON_TYPES.MEDIUM}
+                    text="Más detalles"
+                    onClick={() => {
+                      handleDetail(post.id);
+                    }}
+                  />
                 </div>
               </div>
             );
