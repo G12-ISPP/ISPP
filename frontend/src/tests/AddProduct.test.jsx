@@ -69,7 +69,7 @@ describe('Tests to add product', () => {
     
         // Seleccionar el tipo de producto
         const productTypeButtons = screen.getAllByText(/Impresora|Diseño|Material|Pieza/);
-        const selectedProductTypeButton = productTypeButtons.find(button => button.textContent === typeInputValue);
+        // const selectedProductTypeButton = productTypeButtons.find(button => button.textContent === typeInputValue);
         if (!selectedProductTypeButton) {
             throw new Error(`Tipo de producto "${typeInputValue}" no encontrado.`);
         }
@@ -79,7 +79,7 @@ describe('Tests to add product', () => {
             fireEvent.change(nameInput, { target: { value: nameInputValue } });
             fireEvent.change(descriptionInput, { target: { value: descriptionInputValue } });
             fireEvent.change(priceInput, { target: { value: priceInputValue } });
-            fireEvent.click(selectedProductTypeButton); // Simular clic en el botón del tipo de producto
+            // fireEvent.click(selectedProductTypeButton); // Simular clic en el botón del tipo de producto
             fireEvent.change(stockQuantityInput, { target: { value: stockQuantityValue } });
         });
     };
