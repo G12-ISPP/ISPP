@@ -1,0 +1,87 @@
+/* Estilos para el contenedor principal */
+.main-post {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+/* Estilos para la imagen previa */
+.image-preview-container {
+max-width: 100%;
+border-radius: 8px;
+margin-bottom: 20px;
+}
+
+/* Estilos para el formulario */
+.form-post {
+width: 90%;
+max-width: 500px;
+}
+
+/* Estilos para los campos de entrada y etiquetas */
+.form-group-post {
+margin-bottom: 20px;
+width: 100%;
+}
+
+.upload-post {
+display: block;
+margin-bottom: 5px;
+font-weight: bold;
+}
+
+.file-input-post {
+width: 100%;
+padding: 8px;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+.form-input-post {
+width: 100%;
+padding: 8px;
+border: 1px solid #ccc;
+border-radius: 5px;
+resize: vertical; /* Permitir redimensionamiento vertical del textarea */
+background-color: #ccc;
+color: #004040;
+}
+
+/* Estilos para los mensajes de error */
+.error-post {
+color: red;
+font-size: 0.8rem;
+}
+
+.error-message-post {
+color: red;
+font-size: 0.9rem;
+margin-bottom: 10px;
+}
+
+  /* Estilos para el botón de añadir post */
+.add-post-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 50%;
+    max-width: 200px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #004040;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    }
+  
+  
+.add-post-button:hover {
+background-color: #002626;
+}
+  
