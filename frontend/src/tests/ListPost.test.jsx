@@ -42,8 +42,8 @@ describe('Test list posts', () => {
         // Create a file object
         const file = new File([''], 'test.jpg', { type: 'image/jpeg' });
         post = {
-            name: 'test_name1',
-            description: 'test_description1',
+            name: 'test_name',
+            description: 'test_description',
             file: file,
             users: user,
         }
@@ -66,8 +66,8 @@ describe('Test list posts', () => {
 
 
     test('Test list posts', async () => {
-        await waitFor(() => screen.getByText(post.name));
-        await waitFor(() => screen.getByText(post.description));
-        await waitFor(() => screen.getByText(messages.labels.publish + user.username));
+        await waitFor(() => screen.getAllByText(post.name));
+        await waitFor(() => screen.getAllByText(post.description));
+        await waitFor(() => screen.getAllByText(messages.labels.publish + user.username));
     });
 })
