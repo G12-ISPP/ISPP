@@ -156,7 +156,6 @@ def details(request, id):
 @api_view(['GET'])
 def details_to_printer(request, id):
     design = get_object_or_404(CustomDesign, custom_design_id=id)
-    print(design.printer)
     if not request.user.is_authenticated:
         return Response({'message': 'No estás logueado. Por favor, inicia sesión.'}, status=status.HTTP_401_UNAUTHORIZED)
     
@@ -171,10 +170,13 @@ def details_to_printer(request, id):
             serializer = CustomDesignSerializer(design)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
-
     if design.printer is not None:
-        if request.user.id not in (design.buyer.id, design.printer.id):
-            return Response({'message': 'Este diseño ya tiene asignado un comprador y un impresor.'}, status=status.HTTP_403_FORBIDDEN)
+        if design.buyer !=None:
+            if request.user.id not in (design.buyer.id, design.printer.id):
+                return Response({'message': 'Este diseño ya tiene asignado un comprador y un impresor.'}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            if request.user.id != design.printer.id:
+                return Response({'message': 'Este diseño ya tiene asignado un comprador y un impresor.'}, status=status.HTTP_403_FORBIDDEN)
     
     serializer = CustomDesignSerializer(design)
     return Response(serializer.data, status=status.HTTP_200_OK)

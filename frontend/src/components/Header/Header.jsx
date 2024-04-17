@@ -168,7 +168,7 @@ const Header = ({ cart, setCart }) => {
             {menuVisible && (
                 <>
                     <div className='search-box'>
-                        <img src={searchIcon} className='search-icon' onClick={handleSearchClick} />
+                        <img src={searchIcon} className='search-icon' />
                         <input type='text' placeholder={isHeaderFullScreen ? 'Busca diseños, impresoras y más...' : 'Busca diseños, impresoras, materiales y más...'} className='input-text'
                             value={searchText}
                             onChange={handleSearchChange} />

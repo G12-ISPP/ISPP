@@ -1,8 +1,4 @@
 import React, { Suspense } from 'react';
-import { Canvas, useLoader } from '@react-three/fiber';
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
-import { Stage, PresentationControls, Html, useProgress } from '@react-three/drei';
-import { MeshStandardMaterial, Color, Vector3 } from 'three';
 import './CustomDesign.css';
 import PageTitle from './PageTitle/PageTitle';
 
@@ -13,11 +9,12 @@ const url = window.location.href;
 const url2 = url.split('/');
 const id = url2[url2.length - 1];
 
-export default class CustomModelDetails extends React.Component{
+export default class CustomModelDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             data: null,
+            error: null,
         };
     }
 
@@ -28,40 +25,70 @@ export default class CustomModelDetails extends React.Component{
             petition = petition + id;
             const response = await fetch(petition);
             const datos = await response.json();
-            this.setState({ data:datos});
+            this.setState({ data: datos });
         } catch (error) {
-            console.log(error);
+            this.setState({ error: error.message });
         }
     }
 
     render() {
-        const { data } = this.state;
+        const { data, error } = this.state;
         return (
-            <>        
-            <PageTitle title="Detalles de la solicitud" />    
-            <div className="custom-design-details">
-                <h1>Detalles de tu solicitud de impresión</h1>
-                {data && <p>Nombre: {data.name}</p>}
-                {data && <p>Cantidad: {data.quantity}</p>}
-                {data && <p>Calidad: {data.quality}</p>}
-                {data && <p>Color: {data.color}</p>}
-                <h2>Datos de entrega</h2>
-                {data && <p>Ciudad: {data.city}</p>}
-                {data && <p>Código Postal: {data.postal_code}</p>}
-                {data && <p>Dirección: {data.address}</p>}
-                {data.printer && <p>Estado: {data.status}</p>}                
-            </div>
+            <>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <PageTitle title="Detalles de la solicitud" />
+                    <div style={{textAlign:'center',margin:'30px', fontSize:'20px'}}>
+                        <h1>Detalles de tu solicitud de impresión</h1>
+                        {error && <p>Error: {error}</p>}
+                        {data && (
+                            <>
+                                <p>Nombre: {data.name}</p>
+                                <p>Cantidad: {data.quantity}</p>
+                                <p>Color: {data.color === 'red' ? 'rojo' : (data.color === 'green' ? 'verde' : (data.color === 'blue' ? 'azul' : 'Color desconocido'))}</p>
+                                <h2>Datos de entrega</h2>
+                                <p>Ciudad: {data.city}</p>
+                                <p>Código Postal: {data.postal_code}</p>
+                                <p>Dirección: {data.address}</p>
+                                <p>Estado: {
+                                    data.status === 'searching' ? 'Buscando impresor' :
+                                    (data.status === 'printing' ? 'Imprimiendo' :
+                                    (data.status === 'printed' ? 'Impreso' :
+                                    'Estado desconocido'))
+                                }</p>
+                            </>
+                        )}
+                    </div>
+                    <div className="my-design-summary">
 
-            <div className='summary'>
-                <div className='summary-content'>
-                    <h2>Resumen de la pieza</h2>
-                    {data && <h3>Dimensiones:{data.dimensions.width}cm x {data.dimensions.height}cm x {data.dimensions.depth}cm</h3>}
-                    {data &&<h3>Área/Volumen: {data.area}cm²/ {data.volume}cm³ </h3>}
-                    {data &&<h3>Peso: {data.weight}g</h3>}
-                    {data &&<h3>Precio: <span>{data.price}€ (IVA incluido)</span></h3>}
-                </div>
-            </div> 
-          </>
+                        <div className="my-design-summary-section-title">
+                            Resumen
+                        </div>
+                        <div className="my-design-summary-contents">
+                            {data &&(
+                                <>
+                                    <h3 className="summary-title">Resumen de tu diseño</h3>
+
+                                    <ul className="summary-list">
+                                    <li><strong>Dimensiones: </strong>{data.dimensions.width}cm x {data.dimensions.height}cm x {data.dimensions.depth}cm</li>
+                                    <li><strong>Área/Volumen: </strong>{data.area}cm²/ {data.volume}cm³</li>
+                                    <li><strong>Peso: </strong>{data.weight}g</li>
+                                    <li><strong>Calidad: </strong>{data.quality}</li>
+                                    </ul>
+
+                                    <div className="summary-price">
+                                    <p className="price">Precio: <strong>{data.price}€</strong></p>
+                                    <p className="iva">(IVA y gastos de envío incluidos)</p>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+
+
+
+                    
+                </Suspense>
+            </>
         );
     }
 }

@@ -8,7 +8,7 @@ import AddProduct from "./components/AddProduct.jsx";
 import EditProduct from "./components/EditProduct";
 import Header from "./components/Header/Header.jsx";
 import Navbar from "./components/Navbar/Navbar.jsx";
-import CustomDesignDetails from "./components/CustomDesignDetails.jsx";
+import CustomModelDetails from "./components/CustomDesignDetails.jsx";
 import CustomDesignPrinters from "./components/Design/CustomDesignPrinters.jsx";
 import SearchResults from "./components/SearchResults.jsx";
 import CustonDesignCancelled from "./components/CustomDesignCancelled.jsx";
@@ -51,6 +51,7 @@ import FollowingList from "./components/FollowingList.jsx";
 import FollowersList from "./components/FollowersList.jsx";
 import PostDetail from './components/Post/PostDetail.jsx';
 
+
 function App() {
     const cartLocalStorage = JSON.parse(localStorage.getItem("cart") || "[]")
     const [cart, setCart] = useState(cartLocalStorage)
@@ -79,7 +80,7 @@ function App() {
                     <Route path="/products/:id/edit" element={<EditProduct />} />
                     <Route path="/designs" element={<DesignsPage/>}/>
                     <Route path="/designs/my-design" element={<CustomDesign/>}/>
-                    <Route path="/designs/details/:id" element={<CustomDesignDetails/>}/>
+                    <Route path="/designs/details/:id" element={<CustomModelDetails/>}/>
                     <Route path="/designs/details-to-printer/:id" element={<CustomDesignPrinters />} />
                     <Route path="/designs/cancelled" element={<CustonDesignCancelled/>}/>
                     <Route path="/pieces" element={<PiecesPage/>}/>

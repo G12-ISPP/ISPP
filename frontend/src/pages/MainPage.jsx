@@ -38,7 +38,7 @@ const MainPage = ({
             <ProductsGrid gridType={GRID_TYPES.MAIN_PAGE} filter={'?product_type=I'} main={true} cart={cart} setCart={setCart} />
 
             <div className="section-title">
-                <Text type={TEXT_TYPES.TITLE_BOLD} text='Mejores artistas' />
+                <Text type={TEXT_TYPES.TITLE_BOLD} text='Mejores diseñadores' />
             </div>
             <ArtistsGrid gridType={GRID_TYPES.MAIN_PAGE} />
 

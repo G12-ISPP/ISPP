@@ -47,7 +47,6 @@ class ProductDetail extends React.Component {
     if (response_currentUser.ok) {
       const currentUserData = await response_currentUser.json();
       this.setState({currentUserId: currentUserData.id});
-      this.setState({user: currentUserData})
     }
   }
 
@@ -206,20 +205,23 @@ class ProductDetail extends React.Component {
               <h2 className="product-info-price">{product.price}€</h2>
 
               <div style={{ justifyContent: 'center' }}>
-                <div className='product-quantity'>
-                  <button className="product-cart-qty-plus" type="button" onClick={this.decrementarCantidad}>-</button>
-                  <input type="text" name="qty" min="0" className="qty product-form-control" value={cantidad} readOnly />
-                  <button className="product-cart-qty-minus" type="button" onClick={this.incrementarCantidad}>+</button>
-                </div>
+                
 
                 {!showEditButton && (
-                  <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                    <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => { addProduct(product, cantidad); 
-                      this.setState({ agregado: true });
-                      setTimeout(() => {
-                        this.setState({ agregado: false });
-                        }, 10000);}} />
-                  </div>
+                  <>
+                    <div className='product-quantity'>
+                      <button className="product-cart-qty-plus" type="button" onClick={this.decrementarCantidad}>-</button>
+                      <input type="text" name="qty" min="0" className="qty product-form-control" value={cantidad} readOnly />
+                      <button className="product-cart-qty-minus" type="button" onClick={this.incrementarCantidad}>+</button>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+                      <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => { addProduct(product, cantidad); 
+                        this.setState({ agregado: true });
+                        setTimeout(() => {
+                          this.setState({ agregado: false });
+                          }, 10000);}} />
+                    </div>
+                  </>
                 )}
                 {showEditButton &&
                   <Button type={BUTTON_TYPES.LARGE} text='Editar producto' onClick={this.handleEditProduct} />

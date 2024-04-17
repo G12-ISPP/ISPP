@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './CustomDesignPrinters.css';
+import '../CustomDesign.css';
 import { useParams } from 'react-router-dom';
 import PageTitle from '../PageTitle/PageTitle';
 
@@ -8,6 +9,7 @@ const backend = import.meta.env.VITE_APP_BACKEND;
 const CustomDesignPrinters = () => {
     const { id } = useParams();
     const [data, setData] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,6 +32,16 @@ const CustomDesignPrinters = () => {
                 } else {
                     alert('Error al cargar los detalles del diseño.');
                     window.location.href = '/';
+                }
+                const userResponse = await fetch(`${backend}/designs/loguedUser`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    },
+                });
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    setCurrentUser(userData);
+                } else {
                 }
             } catch (error) {
                 console.log(error);
@@ -65,23 +77,63 @@ const CustomDesignPrinters = () => {
     return (
         <>
             <PageTitle title="Detalles de la solicitud" />
-            <div className="custom-design-printers">
-                {data && (
+
+            {data && (
+                <>
+                    <div style={{textAlign:'center',margin:'30px', fontSize:'20px'}}>
+                        <h1>Detalles de la solicitud de impresión</h1>
+                        {data && (
+                            <>
+                                <p>Nombre: {data.name}</p>
+                                <p>Cantidad: {data.quantity}</p>
+                                <p>Color: {data.color === 'red' ? 'rojo' : (data.color === 'green' ? 'verde' : (data.color === 'blue' ? 'azul' : 'Color desconocido'))}</p>
+                                <h2>Datos de entrega</h2>
+                                <p>Ciudad: {data.city}</p>
+                                <p>Código Postal: {data.postal_code}</p>
+                                <p>Dirección: {data.address}</p>
+                                <p>Estado: {
+                                    data.status === 'searching' ? 'Buscando impresor' :
+                                    (data.status === 'printing' ? 'Imprimiendo' :
+                                    (data.status === 'printed' ? 'Impreso' :
+                                    'Estado desconocido'))
+                                }</p>
+                            </>
+                        )}
+                    </div>
+                    <div className="my-design-summary">
+                        <div className="my-design-summary-section-title">
+                            Resumen
+                        </div>
+                        <div className="my-design-summary-contents">
+                            {data &&(
+                                <>
+                                    <h3 className="summary-title">Resumen del diseño</h3>
+
+                                    <ul className="summary-list">
+                                    <li><strong>Dimensiones: </strong>{data.dimensions.width}cm x {data.dimensions.height}cm x {data.dimensions.depth}cm</li>
+                                    <li><strong>Área/Volumen: </strong>{data.area}cm²/ {data.volume}cm³</li>
+                                    <li><strong>Peso: </strong>{data.weight}g</li>
+                                    <li><strong>Calidad: </strong>{data.quality}</li>
+                                    </ul>
+
+                                    <div className="summary-price">
+                                    <p className="price">Precio: <strong>{data.price}€</strong></p>
+                                    <p className="iva">(IVA y gastos de envío incluidos)</p>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </>
+                )}
+                {data && currentUser &&(
                     <>
-                        <h2>{data.name}</h2>
-                        <p>Volumen: {data.volume} cm³</p>
-                        <p>Área: {data.area} cm²</p>
-                        <p>Dimensiones: {`${data.dimensions.width} x ${data.dimensions.height} x ${data.dimensions.depth} cm`}</p>
-                        <p>Peso: {data.weight} kg</p>
-                        <p>Calidad: {data.quality}</p>
-                        <p>Color: {data.color}</p>
-                        <p>Cantidad: {data.quantity}</p>
-                        <p>Precio: {data.price}€</p>
-                        {data.printer && <p>Estado: {data.status}</p>}
+                    {!data?.printer && currentUser.id !=data.buyer && 
+                        <div style={{textAlign:'center', alignItems:'center'}}>
+                            <button className='large-btn button' style={{marginLeft:'45%'}} onClick={handlePrint}>Imprimir</button>
+                        </div>}
                     </>
                 )}
-                {!data?.printer && <button onClick={handlePrint}>Imprimir</button>}
-            </div>
         </>
     );
 };

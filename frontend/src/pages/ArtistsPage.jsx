@@ -5,7 +5,7 @@ import PageTitle from '../components/PageTitle/PageTitle'
 const ArtistsPage = () => {
   return (
     <div>
-      <PageTitle title="Artistas" />
+      <PageTitle title="Diseñadores" />
       <ArtistsGrid gridType={GRID_TYPES.UNLIMITED} />
     </div>
   )
