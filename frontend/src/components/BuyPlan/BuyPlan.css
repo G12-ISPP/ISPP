@@ -42,3 +42,21 @@ div.container{
     gap: 10px;
 }
 
+.cancelar-plan-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.cancelar-plan-button-verde {
+    background-color: #004040;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 20px;
+}
+
+

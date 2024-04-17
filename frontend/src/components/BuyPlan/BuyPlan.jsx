@@ -50,14 +50,14 @@ class ModalDeletePlan extends React.Component {
         console.log(this.props.planName);
         return (
             <>
-                <button onClick={() => this.setState({ show: true })}>Cancelar Plan</button>
+                <button className='cancelar-plan-button' onClick={() => this.setState({ show: true })}>Cancelar Plan</button>
                 {this.state.show && (
                     <div className='modal'>
                         <div className='modal-content'>
                             <span className='close' onClick={() => this.setState({ show: false })}>&times;</span>
-                            <h1>¿Estás seguro de que quieres cancelar el plan?</h1>
-                            <button onClick={() => this.handleDeletePlan(this.props.planName)}>Sí</button>
-                            <button onClick={() => this.setState({ show: false })}>No</button>
+                            <h3>¿Estás seguro de que quieres cancelar el plan?</h3>
+                            <button className='cancelar-plan-button' onClick={() => this.handleDeletePlan(this.props.planName)}>Sí</button>
+                            <button className='cancelar-plan-button-verde' onClick={() => this.setState({ show: false })}>No</button>
                         </div>
                     </div>
                 )}
@@ -161,36 +161,6 @@ export default class BuyPlan extends React.Component {
                 window.location.href = paypalPaymentUrl;
             } else {
                 alert('No se pudo comprar el plan')
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-
-    handleDeletePlan = async (planName) => {
-        let petition = backend + '/deletePlan/';
-        petition = petition.replace(/"/g, '');
-        const token = localStorage.getItem('token');
-
-        try {
-            const response = await fetch(petition, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ planName })
-            });
-
-            if (response.ok) {
-                const responseData = await response.json();
-                if (responseData.success) {
-                    alert('Plan cancelado correctamente');
-                    window.location.reload();
-                } else {
-                    alert('No se pudo cancelar el plan');
-                }
-            } else {
             }
         } catch (error) {
             console.error('Error:', error);
