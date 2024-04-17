@@ -201,13 +201,16 @@ class LoginView(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
         user = authenticate(username=username, password=password)
-        user_models = CustomUser.objects.filter(username=username).first()
-        if user_models.is_blocked():
-            return Response({'error': 'El usuario ha sido bloqueado'}, status=403)
+        
+        if CustomUser.objects.filter(username=username).exists():
+            user_models = CustomUser.objects.filter(username=username).first()
+            if user_models.is_blocked():
+                return Response({'error': 'El usuario ha sido bloqueado'}, status=403)
+            if not user.email_verified:
+                return Response({'error': 'El email no ha sido verificado'}, status=400)
         if user is None:
             return Response({'python manage.py runserver': 'Usuario o contraseña incorrectos'}, status=400)
-        if not user.email_verified:
-            return Response({'error': 'El email no ha sido verificado'}, status=400)
+        
         refresh = RefreshToken.for_user(user)
         return Response({
             'refresh': str(refresh),
