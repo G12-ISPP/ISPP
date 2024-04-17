@@ -36,4 +36,9 @@ div.container{
     font-size: 20px;
 }
 
+.plan-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 

@@ -17,6 +17,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import activate
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
+from chat.views import get_user_from_token
 from paypalrestsdk import Payment
 from rest_framework import generics
 from rest_framework import viewsets, status
@@ -283,6 +284,24 @@ def obtain_plan(request, plan_seller, plan_buyer, plan_designer,user_id):
 
     user.save()
     return HttpResponseRedirect(ruta_frontend + '/confirm-plan')
+
+@api_view(['POST'])
+@csrf_exempt
+def delete_plan(request):
+    token = request.headers.get('Authorization', '').split(' ')[1]
+    user = get_user_from_token(token)
+    if request.data['planName'] == 'buyer_plan':
+        user.buyer_plan = False
+        user.buyer_plan_date = None
+    if request.data['planName'] == 'seller_plan':
+        user.seller_plan = False
+        user.seller_plan_date = None
+    if request.data['planName'] == 'designer_plan':
+        user.designer_plan = False
+        user.designer_plan_date = None
+    user.save()
+    return JsonResponse({'success': 'Plan cancelado exitosamente'}, status=201)
+
 
 # Following Functions
 @api_view(['GET'])
