@@ -67,10 +67,13 @@ def create_order(request):
             return JsonResponse({'error': 'El producto con ID {} no existe'.format(product_id)}, status=400)
         price += product.price * quantity
     buyername = order.buyer
-    buyer = CustomUser.objects.get(username=buyername)
-    buyerPlan = buyer.buyer_plan
-    if envio and not(buyerPlan):
-        price += 5
+    if buyername != None:
+        buyer = CustomUser.objects.get(username=buyername)
+        buyerPlan = buyer.buyer_plan
+        if envio and not(buyerPlan):
+            price += 5
+    else:
+        price += 5	
     order.price = price
     order.save()
     paypal_payment = Payment({
