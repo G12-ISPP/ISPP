@@ -41,15 +41,26 @@ const Opinion = (props) => {
   }, [opinion]);
 
   return (
-    <div className="opinion">
-      <ProfileIcon image={user && user.profile_picture ? user.profile_picture : defaultProfileImage} name={user && user.username} onClick={user && user.id} />
-      <div className="opinion-stars">
-        {filledStarsArray}
-        {emptyStarsArray}
-      </div>
-      <p className="opinion-date">{opinion.date}</p>
-      <p className='opinion-desc'>{opinion.description}</p>
-    </div>
+    <>
+    {user ? (
+      <>
+        <div className='opinion'>
+          <div style={{display:'flex', alignItems:'center'}}>
+            <img style={{ width: '35px', height:'35px', marginRight:'10px' }} src={user.image_url ? user.image_url : '/images/avatar.svg'} alt={user.username}></img> 
+            <h3>{user.username}</h3>
+          </div>
+          <div className="opinion-stars">
+            {filledStarsArray}
+            {emptyStarsArray}
+          </div>
+          <p className="opinion-date">{opinion.date}</p>
+          <p className='opinion-desc'>{opinion.description}</p>
+        </div>
+      </>
+    ) : (
+      <p>Cargando...</p>
+    )}
+    </>
   );
 };
 

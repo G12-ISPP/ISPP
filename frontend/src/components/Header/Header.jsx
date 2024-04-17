@@ -180,8 +180,8 @@ const Header = ({ cart, setCart }) => {
             {menuVisible && (
                 <>
                     <div className='search-box'>
-                        <img src={searchIcon} className='search-icon' onClick={handleSearchClick} />
-                        <input placeholder={isHeaderFullScreen ? 'Busca productos, artistas...' : 'Busca diseños, impresoras, materiales y más...'} className='input-text'
+                        <img src={searchIcon} className='search-icon' />
+                        <input placeholder={isHeaderFullScreen ? 'Busca diseños, impresoras y más...' : 'Busca diseños, impresoras, materiales y más...'} className='input-text'
                             value={searchText}
                             onChange={handleSearchChange} />
                         {searchText && (
