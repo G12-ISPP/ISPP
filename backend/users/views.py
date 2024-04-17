@@ -206,7 +206,7 @@ class LoginView(APIView):
             user_models = CustomUser.objects.filter(username=username).first()
             if user_models.is_blocked():
                 return Response({'error': 'El usuario ha sido bloqueado'}, status=403)
-            if not user.email_verified:
+            if not user_models.email_verified:
                 return Response({'error': 'El email no ha sido verificado'}, status=400)
         if user is None:
             return Response({'python manage.py runserver': 'Usuario o contraseña incorrectos'}, status=400)
