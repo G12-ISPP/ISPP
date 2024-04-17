@@ -275,7 +275,7 @@
     height: 100%;
 }
 
-.titulo-producto-carrito {
+.info-cart-product span, .titulo-producto-carrito {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
