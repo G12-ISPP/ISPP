@@ -74,7 +74,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 17em;
+    width: 21em;
     gap: 1em;
 }
 
@@ -154,6 +154,12 @@
     }
 }
 
+@media (min-width: 1025px) and (max-width: 1250px) {
+    .header {
+        padding: 0.25em 2em;
+    }
+}
+
 @media screen and (min-height: 1600px) {
 
     .logo {
@@ -225,6 +231,12 @@
 	border-radius: 10px;
 }
 
+.container-cart-products .buy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .button-container {
 	display: flex;
 	justify-content: space-between;
@@ -284,13 +296,14 @@
 }
 
 .icon-close {
-	width: 25px;
-	height: 25px;
+	width: 5em;
+	height: 5em;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .icon-close:hover {
 	stroke: red;
-	cursor: pointer;
 }
 
 .cart-total {
