@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./AddPost.css";
+import "../AddProduct.css";
 import PageTitle from "../PageTitle/PageTitle";
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -119,9 +119,8 @@ class Post extends Component {
     return (
       <>
         <PageTitle title="Subir post" />
-        <div className="main-post">
-          <h1 className="title">Publicar Post</h1>
-
+        <h1 className="title">Mi Post</h1>
+        <div className="main">
           {this.state.imagePreview && (
             <img
               src={this.state.imagePreview}
@@ -129,9 +128,9 @@ class Post extends Component {
               className="image-preview-container"
             />
           )}
-          <form className="form-post" onSubmit={this.handleSubmit}>
-            <div className="form-group-post">
-              <label htmlFor="file" className="upload-post">
+          <form className="form" onSubmit={this.handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="file" className="upload">
                 Foto
               </label>
               <div className="file-select">
@@ -139,11 +138,11 @@ class Post extends Component {
                   type="file"
                   id="file"
                   name="file"
-                  className="file-input-post"
+                  className="form-input"
                   accept=".jpg, .jpeg, .png"
                   onChange={this.handleFileChange}
                 />
-                {errors.file && <div className="error-post">{errors.file}</div>}
+                {errors.file && <div className="error">{errors.file}</div>}
               </div>
             </div>
             <div className="form-group">
@@ -152,42 +151,42 @@ class Post extends Component {
                 type="text"
                 id="name"
                 name="name"
-                className="form-input-post"
+                className="form-input"
                 value={this.state.name}
                 onChange={(e) => this.setState({ name: e.target.value })}
                 placeholder="Post de mi pieza"
               />
-              {errors.name && <div className="error-post">{errors.name}</div>}
+              {errors.name && <div className="error">{errors.name}</div>}
             </div>
             <div className="form-group">
               <label htmlFor="description">Descripción</label>
               <textarea
                 id="description"
                 name="description"
-                className="form-input-post"
+                className="form-input"
                 value={this.state.description}
                 onChange={(e) => this.setState({ description: e.target.value })}
                 placeholder="Estoy haciendo esta pieza..."
                 rows="5"
               />
               {errors.description && (
-                <div className="error-post">{errors.description}</div>
+                <div className="error">{errors.description}</div>
               )}
             </div>
           </form>
           {Object.keys(errors).length > 0 && (
-            <div className="error-message-post">
+            <div className="error-message">
               Por favor, corrija los errores en el formulario
             </div>
           )}
-          <button
-            className="add-post-button"
-            type="button"
-            onClick={this.handleSubmit}
-          >
-            Añadir Post
-          </button>
         </div>
+        <button
+          className="add-product-button"
+          type="button"
+          onClick={this.handleSubmit}
+        >
+          Añadir Post
+        </button>
       </>
     );
   }
