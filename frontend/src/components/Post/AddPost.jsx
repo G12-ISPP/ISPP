@@ -72,6 +72,14 @@ class Post extends Component {
       errors.description = 'La descripción es obligatoria';
     }
 
+    if(description.length > 300) {
+      errors.description = 'La descripción no puede tener más de 300 caracteres';
+    }
+
+    if(name.length > 50) {
+      errors.name = 'El título no puede tener más de 50 caracteres';
+    }
+
     this.setState({ errors });
 
     return Object.keys(errors).length === 0;
