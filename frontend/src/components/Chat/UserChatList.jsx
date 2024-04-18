@@ -159,7 +159,7 @@ function UserChatList({ onUserClick }) {
       className='user-list'
       dataSource={users.map(user => ({
         userId: user.id,
-        avatar: otherUser.profile_picture ? otherUser.profile_picture : "/images/avatar.svg",
+        avatar: user.image_url ? user.image_url : "/images/avatar.svg",
         title: user.username,
         subtitle: user.subtitle,
         date: user.lastTime, // Puedes ajustar esto según necesites, por ejemplo, la última vez que enviaron un mensaje

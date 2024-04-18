@@ -1,9 +1,10 @@
-import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import {getFollowStatus, getUser, login, toggleFollow} from "../api/users.api.jsx";
-import Post from "../components/Post/Post.jsx";
+import {render, screen, waitFor} from "@testing-library/react";
 import {MemoryRouter} from "react-router-dom";
 import {AuthProvider} from "../context/AuthContext.jsx";
-import {savePost} from "../api/community.api.jsx";
+import React from "react";
+import Post from "../components/Post/Post.jsx";
+import {savePost} from "../api/comunity.api.jsx";
 
 let messages = {
     token: {
@@ -17,8 +18,7 @@ let messages = {
     }
 }
 
-describe('I Like tests', () => {
-
+describe('Test list posts', () => {
     let user = undefined;
     let friends = undefined;
 
@@ -28,7 +28,7 @@ describe('I Like tests', () => {
     let post = undefined;
 
 
-    beforeAll(async () => {
+    beforeEach(async () => {
         localStorage.removeItem('token');
 
         user = (await (await getUser(12)).json());
@@ -40,7 +40,7 @@ describe('I Like tests', () => {
         localStorage.setItem('token', token);
 
         // Create a file object
-        const file = new File([''], 'test.jpg', {type: 'image/jpeg'});
+        const file = new File([''], 'test.jpg', { type: 'image/jpeg' });
         post = {
             name: 'test_name',
             description: 'test_description',
@@ -54,41 +54,20 @@ describe('I Like tests', () => {
             let response = await toggleFollow(user.id);
             console.log(await response.json());
         }
+
+        render(
+            <MemoryRouter>
+                <AuthProvider>
+                    <Post/>
+                </AuthProvider>
+            </MemoryRouter>
+        );
     });
 
-    beforeEach(
-        () => {
-            render(
-                <MemoryRouter>
-                    <AuthProvider>
-                        <Post/>
-                    </AuthProvider>
-                </MemoryRouter>
-            );
-        }
-    )
 
-    test('Like a post', async () => {
-        await waitFor(() => {
-            expect(screen.getByTestId('dislike')).to.exist;
-        });
-        let bottom = screen.getByTestId('dislike');
-        fireEvent.click(bottom);
-
-        await waitFor(() => {
-            expect(screen.getByTestId('like')).to.exist;
-        });
+    test('Test list posts', async () => {
+        await waitFor(() => screen.getAllByText(post.name));
+        await waitFor(() => screen.getAllByText(post.description));
+        await waitFor(() => screen.getAllByText(messages.labels.publish + user.username));
     });
-
-    test('Dislike a post', async () => {
-        await waitFor(() => {
-            expect(screen.getByTestId('like')).to.exist;
-        });
-        let bottom = screen.getByTestId('like');
-        fireEvent.click(bottom);
-
-        await waitFor(() => {
-            expect(screen.getByTestId('like')).to.exist;
-        });
-    })
 })

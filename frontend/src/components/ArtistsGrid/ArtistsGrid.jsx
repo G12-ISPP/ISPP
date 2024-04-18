@@ -99,7 +99,7 @@ const ArtistsGrid = (consts) => {
         <div className={getGridClass()}>
             {gridType === GRID_TYPES.UNLIMITED ? (
                 <div className='artists-container'>
-                    <Text type={TEXT_TYPES.TITLE_BOLD} text='Artistas' />
+                    <Text type={TEXT_TYPES.TITLE_BOLD} text='Diseñadores' />
                     {artists.map((group, groupIndex) => (
                         <div key={groupIndex} className={`artists-row ${group.length < 5 ? 'last' : ''}`}>
                             {group.map((artist, artistIndex) => (

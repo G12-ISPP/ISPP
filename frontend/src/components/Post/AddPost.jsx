@@ -76,6 +76,14 @@ class Post extends Component {
         errors.description = 'La descripción no puede tener más de 500 caracteres';
     }
 
+    if(description.length > 300) {
+      errors.description = 'La descripción no puede tener más de 300 caracteres';
+    }
+
+    if(name.length > 50) {
+      errors.name = 'El título no puede tener más de 50 caracteres';
+    }
+
     this.setState({ errors });
 
     return Object.keys(errors).length === 0;
@@ -101,7 +109,7 @@ class Post extends Component {
         .then(response => {
           if (response.ok) {
             alert('Post añadido correctamente');
-            window.location.href = '/comunity';
+            window.location.href = '/community';
           } else {
             throw new Error('Error al subir la imagen');
           }
@@ -120,37 +128,59 @@ class Post extends Component {
     return (
       <>
         <PageTitle title="Subir post" />
-        <h1 className='title'>Mi Post</h1>
-        <div className='main'>
-          {this.state.imagePreview && (
-            <img src={this.state.imagePreview} alt='Preview' className='image-preview-container' />
-          )}
-          <form className='form' onSubmit={this.handleSubmit}>
-            <div className='form-group'>
-              <label htmlFor='file' className='upload'>
-                Foto
-              </label>
-              <div className='file-select'>
-                <input type='file' id='file' name='file' className='form-input' accept='.jpg, .jpeg, .png' onChange={this.handleFileChange} />
-                {errors.file && <div className="error">{errors.file}</div>}
-              </div>
+        
+        <div style={{margin: '50px'}}>
+          <h1 style={{}}>Subir post</h1>
+
+          <div className="upload-product-container">
+
+          <div className="left-upload-product-container">
+            <div className="product-image">
+              {this.state.imagePreview && <img src={this.state.imagePreview} alt='Preview' className='product-image-preview'/>}
             </div>
-            <div className='form-group'>
-              <label htmlFor='name'>Título</label>
-              <input type='text' id='name' name='name' className='form-input' value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} placeholder="Post de mi pieza" />
-              {errors.name && <div className="error">{errors.name}</div>}
+          </div>
+
+          <div className="right-upload-product-container">
+            <div className="upload-product-data-container">
+              <h2 className="upload-product-data-section-title">Datos sobre el producto</h2>
+
+              <form className="upload-product-data-form" onSubmit={this.handleSubmit}>
+                <div className='form-group'>
+                  {this.state.file && <p className="image-name"><strong>Imagen seleccionada: </strong>{this.state.file.name}</p>}
+                  <label htmlFor="file" className={this.state.file ? "upload-image-button loaded" : "upload-image-button"}>{this.state.file ? "Cambiar imagen" : "Seleccionar imagen"}</label>
+                  <input type='file' id='file' name='file' className='form-input upload' accept='.jpg, .jpeg, .png' onChange={this.handleFileChange} />
+                  {errors.file && <div className="error">{errors.file}</div>}
+                </div>
+                {this.state.productType === 'D' && (
+                  <div className='form-group'>
+                    {this.state.design && <p className="design-name"><strong>Diseño seleccionado: </strong>{this.state.design.name}</p>}
+                    <label htmlFor="file2" className={this.state.design ? "upload-design-button loaded" : "upload-design-button"}>{this.state.design ? "Cambiar diseño" : "Seleccionar diseño"}</label>
+                    <input type='file' id='file2' name='file2' className='form-input upload' accept='.stl' onChange={this.handleDesignChange} />
+                    {errors.design && <div className="error">{errors.design}</div>}
+                  </div>
+                )}
+                <div className='form-group'>
+                  <label htmlFor='name' className='name label'>Título</label>
+                  <input type='text' id='name' name='name' className='form-input' value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} placeholder="Cerdito rosa" />
+                  {errors.name && <div className="error">{errors.name}</div>}
+                </div>
+
+                <div className='form-group'>
+                  <label htmlFor='description' className='description label'>Descripción</label>
+                  <textarea id='description' name='description' className='form-input' value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Estoy haciendo esta pieza..." />
+                  {errors.description && <div className="error">{errors.description}</div>}
+                </div>
+
+              </form>
             </div>
-            <div className='form-group'>
-              <label htmlFor='description'>Descripción</label>
-              <textarea id='description' name='description' className='form-input' value={this.state.description} onChange={(e) => this.setState({ description: e.target.value })} placeholder="Estoy haciendo esta pieza..." rows="5" />
-              {errors.description && <div className="error">{errors.description}</div>}
-            </div>
-          </form>
-          {Object.keys(errors).length > 0 && (
-            <div className="error-message">Por favor, corrija los errores en el formulario</div>
-          )}
+
+            <button className='large-btn button' type='button' onClick={this.handleSubmit}>Añadir publicación</button>
+
+          </div>
+
         </div>
-        <button className='add-product-button' type='button' onClick={this.handleSubmit}>Añadir Post</button>
+        </div>
+        
       </>
     );
   }

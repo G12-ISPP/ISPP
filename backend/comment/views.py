@@ -1,13 +1,15 @@
-from django.shortcuts import render
-from rest_framework import viewsets
-from .models import Comment
-from .serializer import CommentSerializer
 from django.http import JsonResponse
-from rest_framework.decorators import api_view
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework import viewsets
+from rest_framework.decorators import api_view
+
 from community.models import Post
 from users.models import CustomUser
+from .models import Comment
+from .serializer import CommentSerializer
+
 
 # Create your views here.
 
@@ -21,12 +23,11 @@ class CommentViewSet(viewsets.ModelViewSet):
             post_id = request.data.get('post_id')
             content = request.data.get('comment')
             user_id = request.data.get('user_id')
-            user = get_object_or_404(CustomUser, id=user_id)
-            post = get_object_or_404(Post, id=post_id)
-            if not user:
-                return JsonResponse({'error': 'El usuario no existe'}, status=404)
-            if not post:
-                return JsonResponse({'error': 'El post no existe'}, status=404)
+            try:
+                user = get_object_or_404(CustomUser, id=user_id)
+                post = get_object_or_404(Post, id=post_id)
+            except Exception as e:
+                return JsonResponse({'error': 'El usuario o el post no existe'}, status=404)
             if len(content) > 200:
                 return JsonResponse({'error': 'El comentario no puede tener más de 200 caracteres'}, status=400)
             if Comment.objects.filter(user=user, post=post).exists():
@@ -67,5 +68,6 @@ class CommentViewSet(viewsets.ModelViewSet):
                 return JsonResponse({'error': 'El post no existe'}, status=404)
             comments = Comment.objects.filter(post=post)
             serializer = CommentSerializer(comments, many=True)
+            print(comments)
             return JsonResponse(serializer.data, safe=False, status=200)
 

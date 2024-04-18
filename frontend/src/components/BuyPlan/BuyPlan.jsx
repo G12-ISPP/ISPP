@@ -2,9 +2,70 @@ import React from 'react';
 import './BuyPlan.css';
 import PageTitle from '../PageTitle/PageTitle';
 import { RxCross1 } from "react-icons/rx";
+import Button, { BUTTON_TYPES } from '../Button/Button';
+
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
+
+class ModalDeletePlan extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            show: false
+        };
+    }
+    
+    handleDeletePlan = async (planName) => {
+        let petition = backend + '/deletePlan/';
+        petition = petition.replace(/"/g, '');
+        const token = localStorage.getItem('token');
+
+        try {
+            const response = await fetch(petition, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ planName })
+            });
+
+            if (response.ok) {
+                const responseData = await response.json();
+                if (responseData.success) {
+                    alert('Plan cancelado correctamente');
+                    window.location.reload();
+                } else {
+                    alert('No se pudo cancelar el plan');
+                }
+            } else {
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    render() {
+        console.log(this.props.planName);
+        return (
+            <>
+                <button className='cancelar-plan-button' onClick={() => this.setState({ show: true })}>Cancelar Plan</button>
+                {this.state.show && (
+                    <div className='modal'>
+                        <div className='modal-content'>
+                            <span className='close' onClick={() => this.setState({ show: false })}>&times;</span>
+                            <h3>¿Estás seguro de que quieres cancelar el plan?</h3>
+                            <button className='cancelar-plan-button' onClick={() => this.handleDeletePlan(this.props.planName)}>Sí</button>
+                            <button className='cancelar-plan-button-verde' onClick={() => this.setState({ show: false })}>No</button>
+                        </div>
+                    </div>
+                )}
+            </>
+        )
+    }
+
+}
 
 export default class BuyPlan extends React.Component {
     constructor(props) {
@@ -129,7 +190,10 @@ export default class BuyPlan extends React.Component {
                                 <td>
                                     <div>
                                         {this.state.buyer_plan ? (
-                                            <span role="img" aria-label="tick">✓</span>
+                                            <div className='plan-info'>
+                                                <span role="img" aria-label="tick">✓</span>
+                                                <ModalDeletePlan planName='buyer_plan' handleDeletePlan={this.handleDeletePlan} />
+                                            </div>
                                         ) : (
                                             <span role="img" aria-label="cross"><RxCross1 /></span>
                                         )}
@@ -143,8 +207,10 @@ export default class BuyPlan extends React.Component {
                                 <td>
                                     <div>
                                         {this.state.seller_plan ? (
-                                            <span role="img" aria-label="tick">✓</span>
-                                        ) : (
+                                            <div className='plan-info'>
+                                                <span role="img" aria-label="tick">✓</span>
+                                                <ModalDeletePlan planName='seller_plan' handleDeletePlan={this.handleDeletePlan} />
+                                            </div>) : (
                                             <span role="img" aria-label="cross"><RxCross1 /></span>
                                         )}
                                     </div>
@@ -160,8 +226,10 @@ export default class BuyPlan extends React.Component {
                                 <td>
                                     <div>
                                         {this.state.designer_plan ? (
-                                            <span role="img" aria-label="tick">✓</span>
-                                        ) : (
+                                            <div className='plan-info'>
+                                                <span role="img" aria-label="tick">✓</span>
+                                                <ModalDeletePlan planName='designer_plan' handleDeletePlan={this.handleDeletePlan} />
+                                            </div>) : (
                                             <span role="img" aria-label="cross"><RxCross1 /></span>
                                         )}
                                     </div>
