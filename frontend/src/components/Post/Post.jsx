@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Paginator from '../Paginator/Paginator';
+import Paginator from "../Paginator/Paginator";
 import "./Post.css";
 import Button, { BUTTON_TYPES } from "../Button/Button";
-import { FcLikePlaceholder, FcLike  } from "react-icons/fc";
-import ModalComment from "../ModalComment/ModalComment";
-import PropTypes from 'prop-types';
 
-const id = window.location.href.split('/')[4];
 const backend = import.meta.env.VITE_APP_BACKEND;
+const id = window.location.href.split("/")[4];
 
 const Post = () => {
   const [followedUsers, setFollowedUsers] = useState([]);
@@ -17,11 +14,6 @@ const Post = () => {
   const [username, setUsername] = useState("");
   const [page, setPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(5);
-  const [liked, setLiked] = useState([])
-  const [disliked, setDisliked] = useState([])
-  const [wantComment, setWantComment] = useState(false);
-  const [idPost, setIdPost] = useState(null);
-
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -35,6 +27,14 @@ const Post = () => {
 
     // Si hay un token, se supone que el usuario está autenticado
     setIsLoggedIn(true);
+
+    const handleDetail = (id) => {
+      if (!id) {
+        window.location.href = "/community";
+      } else {
+        window.location.href = "/community/post/" + id;
+      }
+    };
 
     if (id) {
       fetch(`${backend}/posts/get_post_by_user/${id}`, {
@@ -65,7 +65,6 @@ const Post = () => {
               setPosts((prevPosts) => [...prevPosts, ...userPostsWithName]);
             });
         });
-
     } else {
       fetch(`${backend}/posts/get_user_from_token`, {
         method: "POST",
@@ -79,6 +78,8 @@ const Post = () => {
           return response.json();
         })
         .then((data) => {
+          console.log(data.following);
+
           // Para cada usuario seguido, obtener sus posts
           if (Array.isArray(followedUsers)) {
             data.following.forEach((user) => {
@@ -107,48 +108,46 @@ const Post = () => {
                       }));
 
                       // Añadir userPostsWithName al estado de posts
-                      setPosts((prevPosts) => [...prevPosts, ...userPostsWithName]);
+                      setPosts((posts) => [...posts, ...userPostsWithName]);
+                      console.log(posts);
                     });
                 });
             });
           }
         });
     }
-  }, [liked, disliked]);
-
-  const handleCommentModal = (id) => {
-    setWantComment(!wantComment);
-    setIdPost(id);
-  };
-
-  const handleDetail = (id) => {
-    if (!id) {
-        window.location.href = '/community';
-    } else {
-        window.location.href = '/community/post/' + id;
-    }
-}
+  }, []);
 
   if (!isLoggedIn) {
     // Si el usuario no está autenticado, no se renderizará ningún contenido
     return null;
   }
-  posts.sort((a, b) => b.id - a.id)
+  posts.sort((a, b) => b.id - a.id);
+  console.log(posts);
 
   const numPages = Math.ceil(posts.length / postsPerPage);
-  const currentPosts = posts.slice((page - 1) * postsPerPage, page * postsPerPage);
+  const currentPosts = posts.slice(
+    (page - 1) * postsPerPage,
+    page * postsPerPage
+  );
 
   const handleOnClick = (newPage) => {
     setPage(newPage);
     window.scrollTo(0, 0);
   };
 
+  const handleDetail = (id) => {
+    if (!id) {
+      window.location.href = "/community";
+    } else {
+      window.location.href = "/community/post/" + id;
+    }
+  };
+
   return (
     <>
       <div className="introduccion">
-        <h1 className="titulo-pagina">
-          {id ? `Comunidad: ${username}` : 'Comunidad'}
-        </h1>
+        <h1 className="titulo-pagina">Comunidad</h1>
 
         <Button
           type={BUTTON_TYPES.LARGE}
@@ -160,63 +159,6 @@ const Post = () => {
         {currentPosts
           .sort((a, b) => b.id - a.id)
           .map((post, index) => {
-            const handleLike = () => {
-              const token = localStorage.getItem("token");
-              fetch(`${backend}/posts/like/${post.id}`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ token: token }),
-              })
-                .then((res) => {
-                  if (res.status === 200) {
-                    setPosts(prevPosts => {
-                      const updatedPosts = prevPosts.map(prevPost => {
-                        if (prevPost.id === post.id) {
-                          return {
-                            ...prevPost,
-                            likes: [...prevPost.likes, username] // Agregar el nombre de usuario a los likes del post
-                          };
-                        }
-                        return prevPost;
-                      });
-                      return updatedPosts;
-                    });
-                  }
-                });
-            };
-
-            const handleDeleteLike = () => {
-              const token = localStorage.getItem("token");
-              fetch(`${backend}/posts/delete-like/${post.id}`, {
-                method: "DELETE",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ token: token }),
-              })
-                .then((res) => {
-                  if (res.status === 200) {
-                    setPosts(prevPosts => {
-                      const updatedPosts = prevPosts.map(prevPost => {
-                        if (prevPost.id === post.id) {
-                          return {
-                            ...prevPost,
-                            likes: prevPost.likes.filter(like => like !== username)
-                          };
-                        }
-                        return prevPost;
-                      });
-                      return updatedPosts;
-                    });
-                  }
-                });
-            };
-
-
             return (
               <div key={index} className="post-item">
                 <div className="post-image-container">
@@ -226,28 +168,22 @@ const Post = () => {
                   <h3 className="post-title">{post.name}</h3>
                   <p className="post-description">{post.description}</p>
                   <p className="post-users">Publicado por: {post.users}</p>
-                  <hr/>
-                  <div className="post-comments-like">
-                    <p>
-                      {post.likes.filter(like => like === username).length === 1 ?
-                          <FcLike data-testid="like" onClick={handleDeleteLike}/> :
-                          <FcLikePlaceholder data-testid="dislike" onClick={handleLike}/>
-                      }
-                      {post.likes.length}
-                    </p>
-                    <p>
-                      <Button
-                        type={BUTTON_TYPES.MEDIUM}
-                        text="Más detalles"
-                        onClick={() => {
-                          handleDetail(post.id);
-                        }}
-                      />
-                    </p>
-                  </div>
                 </div>
-
-
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Button
+                    type={BUTTON_TYPES.MEDIUM}
+                    text="Más detalles"
+                    onClick={() => {
+                      handleDetail(post.id);
+                    }}
+                  />
+                </div>
               </div>
             );
           })}
@@ -258,12 +194,7 @@ const Post = () => {
             </div>
           </div>
         )}
-
-        {wantComment && (
-          <ModalComment setWantComment={setWantComment} postId={idPost} />
-        )}
         <Paginator page={page} setPage={handleOnClick} numPages={numPages} />
-
       </div>
     </>
   );
