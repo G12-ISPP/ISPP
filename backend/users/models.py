@@ -38,6 +38,9 @@ class CustomUser(AbstractUser):
     
     REQUIRED_FIELDS = ['email', 'address', 'city','postal_code']
 
+    def is_blocked(self):
+        return not self.is_active
+
     def __str__(self):
         return self.username
         
