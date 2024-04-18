@@ -4,11 +4,13 @@ import PageTitle from "../PageTitle/PageTitle";
 import "./PostDetail.css";
 import Button, { BUTTON_TYPES } from "../Button/Button";
 import ProfileIcon from "../ProfileIcon/ProfileIcon";
-import { FcLikePlaceholder } from "react-icons/fc";
+import { FcLikePlaceholder, FcLike } from "react-icons/fc";
 import ModalComment from "../ModalComment/ModalComment";
 import { getUsername } from "../../api/users.api.jsx";
 import { useParams } from "react-router-dom";
 import { getComments, getPost } from "../../api/community.api.jsx";
+
+const backend = import.meta.env.VITE_APP_BACKEND;
 
 export default function PostDetail(props) {
     const { id: idFromRoute } = useParams();
@@ -17,9 +19,17 @@ export default function PostDetail(props) {
     const [comments, setComments] = useState([]);
     const [idPost, setIdPost] = useState(props.idPost || idFromRoute || null);
     const [wantComment, setWantComment] = useState(false);
+    const [username, setUsername] = useState('')
+    const [liked, setLiked] = useState(false)
 
     useEffect(() => {
-        if (idPost) {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Debes iniciar sesión para acceder a la comunidad");
+            window.location.href = "/login";
+        }
+
+        if (idPost && token) {
             getPost(idPost)
                 .then((response) => response.json())
                 .then(async (data) => {
@@ -33,6 +43,21 @@ export default function PostDetail(props) {
                 .catch((error) =>
                     console.error("Error al obtener el post:", error)
                 );
+            
+                fetch(`${backend}/posts/get_user_from_token`, {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({ token: token }),
+                  })
+                    .then((response) => {
+                      return response.json()
+                    })
+                    .then(response => {
+                        setUsername(response.username)
+                    })
 
             getComments(idPost)
                 .then((response) => response.json())
@@ -50,7 +75,7 @@ export default function PostDetail(props) {
                     console.error("Error al obtener los comentarios:", error)
                 );
         }
-    }, [idPost, comments]);
+    }, [idPost, liked]);
 
     const handleCommentModal = (id) => {
         setWantComment(true);
@@ -58,10 +83,46 @@ export default function PostDetail(props) {
     };
 
     const addComment = async (comment) => {
-        const username = await getUsername(comment.user);
-        const newComment = { ...comment, username };
+        const username = await getUsername(comment.username);
+        const newComment = { id: idPost, post: idPost, content: comment.comment, username, user: comment.username };
         setComments([...comments, newComment]);
     };
+
+    const handleLike = () => {
+        const token = localStorage.getItem("token");
+        fetch(`${backend}/posts/like/${idPost}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ token: token }),
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            setLikes(likes + 1)
+            setLiked(!liked)
+          }
+        });
+      };
+
+      const handleDeleteLike = () => {
+        const token = localStorage.getItem("token");
+        fetch(`${backend}/posts/delete-like/${idPost}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ token: token }),
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            setLikes(likes - 1);
+            setLiked(!liked)
+          }
+        });
+      };
 
     return (
         <div className="post-detail-details-page">
@@ -72,6 +133,7 @@ export default function PostDetail(props) {
             </div>
 
             <div className="post-detail-container">
+
                 <div className="left-post-detail-container">
                     <div className="post-detail-img-container">
                         <img className="post-detail-image" src={post.image_url} alt={post.id} />
@@ -82,10 +144,6 @@ export default function PostDetail(props) {
                     <div className="post-detail-info-container">
                         <div className="post-detail-principal">
                             <h2 className="post-detail-info-name">{post.name}</h2>
-                            <p>
-                                <FcLikePlaceholder data-testid="dislike" />
-                                {likes}
-                            </p>
                         </div>
 
                         <div className="post-detail-info-owner">
@@ -102,6 +160,7 @@ export default function PostDetail(props) {
                         <div className="post-detail-info-description">
                             <h3 className="post-detail-info-description-label">Detalles:</h3>
                             <p className="post-detail-info-description-text">{post.description}</p>
+                            <h3>{post.likes?.filter(like => like === username).length === 1 ? <FcLike className="post-likes" onClick={handleDeleteLike} /> : <FcLikePlaceholder className="post-likes" onClick={handleLike}/>} {likes}</h3>
                         </div>
 
                         <div className="post-comments">

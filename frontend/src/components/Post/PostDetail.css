@@ -6,6 +6,12 @@
     margin-bottom: 2em;
 }
 
+.post-likes{
+    width: 30px;
+    height: 30px;
+}
+
+
 .post-comments{
     margin: auto;
 }

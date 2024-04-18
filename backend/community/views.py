@@ -4,7 +4,7 @@ from requests import Response
 from comment.serializer import CommentSerializer
 from users.models import CustomUser
 from community.serializer import PostSerializer, PostSerializerWrite
-from community.models import Post
+from community.models import Post, Like
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework_simplejwt.tokens import AccessToken
@@ -18,6 +18,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from comment.models import Comment
 from django.shortcuts import get_object_or_404
+from django.db import IntegrityError
 
 
 
@@ -132,6 +133,50 @@ class PostViewClass(APIView):
             data.append(post_data)
 
         return JsonResponse(data, safe=False)
+    
+@api_view(['POST'])
+@csrf_exempt
+@login_required
+def like(request, postId):
+    if request.method == 'POST':
+        token = request.headers.get('Authorization', '').split(' ')[1]
+        user = get_user_from_token(token)
+        if user is None:
+            return JsonResponse({'error': 'Invalid token'}, status=401) 
+
+        post = get_object_or_404(Post, id=postId)
+
+        try:
+            Like.objects.create(
+                user=user,
+                post=post
+            )
+            return JsonResponse({'message': 'Like creado exitosamente!'}, status=200)
+        except IntegrityError:
+            return JsonResponse({'error': 'Ya existe un like para este usuario y post.'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': f'Error al crear el like: {e}'}, status=500)
+
+@api_view(['DELETE'])
+@csrf_exempt
+@login_required
+def delete_like(request, postId):
+    if request.method == 'DELETE':
+        token = request.headers.get('Authorization', '').split(' ')[1]
+        user = get_user_from_token(token)
+        if user is None:
+            return JsonResponse({'error': 'Invalid token'}, status=401) 
+
+        post = Post.objects.get(id=postId)
+
+        try:
+            like = Like.objects.get(user=user, post=post)
+            like.delete()
+            return JsonResponse({'message': 'Like eliminado exitosamente!'}, status=200)
+        except Like.DoesNotExist:
+            return JsonResponse({'error': 'No existe un like para este usuario y post.'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': f'Error al eliminar el like: {e}'}, status=500)
 
 
 
