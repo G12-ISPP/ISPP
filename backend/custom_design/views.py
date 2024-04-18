@@ -1,3 +1,4 @@
+from chat.views import get_user_from_token
 from rest_framework import status
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -259,3 +260,32 @@ def custom_designs_request(request, buyer_id):
             return Response({'message': 'No hay solicitudes de impresión para este usuario'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'message': f'Error al obtener las solicitudes de impresión: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+@api_view(['POST', 'GET'])
+def update_status_finish(request, design_id):
+    try:
+        design = get_object_or_404(CustomDesign, custom_design_id=design_id)
+        print(design)
+        token = request.headers.get('Authorization').split(' ')[1]
+        user = get_user_from_token(token)
+        send_finish_email(design, user)
+        design.status = 'printed'
+        design.save()
+        print(design.status)
+        return JsonResponse({'success': 'Estado actualizado correctamente'}, status=200)
+    except Exception as e:
+        print(e)
+        return JsonResponse({'error': 'Internal server error'}, status=500)
+    
+def send_finish_email(cd, user_printer):
+    try:
+        asunto = 'Tu pedido de Shar3d se ha impreso'
+        contexto = {'cd': cd}
+        mensaje = render_to_string('finish_email.html', contexto)
+
+        sender_email = settings.EMAIL_HOST_USER
+        recipient_email = cd.buyer_mail
+        
+        send_mail(asunto, '', sender_email, [recipient_email], html_message=mensaje)
+    except Exception as e:
+        print(f"Error al enviar el correo: {e}")
