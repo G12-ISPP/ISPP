@@ -39,10 +39,15 @@ def post_message(request, room_id):
         user = get_user_from_token(token)
         room = get_object_or_404(ChatRoom, id=room_id)
         if user is None:
-            return JsonResponse({'error': 'Invalid token'}, status=401)        
+            return JsonResponse({'error': 'Invalid token'}, status=401)
         print(user)
         if user in room.members.all():
             room, created = ChatRoom.objects.get_or_create(id=room_id)
+            if len(content) == 0:
+                return JsonResponse({'error': 'El contenido del mensaje no puede estar vacío'}, status=400)
+            if len(content) > 200:
+                return JsonResponse({'error': 'El mensaje no puede tener más de 200 caracteres'}, status=400)
+
             message = Message.objects.create(room=room, content=content, author=user)
 
             return JsonResponse({"success": True, "message_id": message.id})
