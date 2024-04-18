@@ -15,7 +15,7 @@ let messages = {
         pieces: 'Piezas',
         printers: 'Impresoras',
         materials: 'Materiales',
-        artists: 'Artistas'
+        artists: 'Diseñadores'
     }
 };
 

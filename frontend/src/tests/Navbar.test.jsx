@@ -9,7 +9,7 @@ const messages = {
         'Diseños',
         'Impresoras',
         'Materiales',
-        'Artistas',
+        'Diseñadores',
         'Comunidad'
     ]
 };
