@@ -84,12 +84,42 @@ class UsersView(viewsets.ModelViewSet):
         user = self.get_object()
         serializer = ProfileUpdateSerializer(user, data=request.data, partial=True)
         postal_code = request.data.get('postal_code')
+        errors = {}
         try:
             postal_code = int(postal_code)
             if postal_code < 1000 or postal_code > 52999:
-                raise ValidationError({'postal_code': ['El código postal debe ser un número entero entre 1000 y 52999']})
+                errors['postal_code'] = ['El código postal debe ser un número entero entre 1000 y 52999']
         except ValueError:
-            raise ValidationError({'postal_code': ['El código postal debe ser un número entero válido']})
+            errors['postal_code'] = ['El código postal debe ser un número entero válido']
+        address = request.data.get('address').replace(" ", "")
+        if len(address) < 5:
+            errors['address'] = ['La dirección debe tener al menos 5 caracteres']
+        elif len(address) > 255:
+            errors['address'] = ['La dirección no puede tener más de 255 caracteres']
+        city = request.data.get('city').replace(" ", "")
+        if len(city) < 3:
+            errors['city'] = ['La ciudad debe tener al menos 3 caracteres']
+        elif len(city) > 50:
+            errors['city'] = ['La ciudad no puede tener más de 50 caracteres']
+        first_name = request.data.get('first_name').replace(" ", "")
+        if len(first_name) < 4:
+            errors['first_name'] = ['El nombre debe tener al menos 4 caracteres']
+        elif len(first_name) > 30:
+            errors['first_name'] = ['El nombre no puede tener más de 30 caracteres']
+        last_name = request.data.get('last_name').replace(" ", "")
+        if len(last_name) < 4:
+            errors['last_name'] = ['El apellido debe tener al menos 4 caracteres']
+        elif len(last_name) > 30:
+            errors['last_name'] = ['El apellido no puede tener más de 30 caracteres']
+        description = request.data.get('description').replace(" ", "")
+        if len(description)< 20:
+            errors['description'] = ['La descripción debe tener al menos 20 caracteres']
+        description = request.data.get('description')
+        if len(description) > 200:
+            errors['description'] = ['La descripción no puede tener más de 200 caracteres']
+        if errors:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+        
         
         if serializer.is_valid():
             serializer.save()

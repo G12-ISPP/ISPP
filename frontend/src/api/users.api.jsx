@@ -21,8 +21,8 @@ export const login = (username, password) => {
     });
 }
 
-export const getUser = (id) => {
-    return fetch(backend + '/users/api/v1/users/' + id + '/get_user_data/');
+export const getUser = (userId) => {
+    return fetch(backend + '/users/api/v1/users/' + userId + '/get_user_data/');
 }
 
 export const getFollowStatus = (userId) => {
@@ -42,3 +42,10 @@ export const toggleFollow = (userId) => {
         }
     });
 }
+
+export const getUsername = async (userId) => {
+    return getUser(userId)
+        .then(response => response.json())
+        .then(data => data.username)
+        .catch(error => console.error('Error fetching user data:', error));
+};

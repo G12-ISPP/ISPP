@@ -7,7 +7,7 @@ import {setupServer} from 'msw/node';
 
 const messages = {
     featuredDesignsMessage: 'Diseños destacados',
-    topArtistsMessage: 'Mejores artistas',
+    topArtistsMessage: 'Mejores diseñadores',
     printersForSaleMessage: 'Impresoras a la venta',
     materialsForSaleMessage: 'Materiales a la venta',
     errorMessage: 'Error al obtener los productos'
