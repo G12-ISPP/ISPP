@@ -77,16 +77,16 @@ export default function PostDetail(props) {
         }
     }, [idPost, liked]);
 
-    const handleCommentModal = (id) => {
-        setWantComment(true);
-        setIdPost(id);
-    };
+  const handleCommentModal = (id) => {
+    setWantComment(true);
+    setIdPost(id);
+  };
 
-    const addComment = async (comment) => {
+   const addComment = async (comment) => {
         const username = await getUsername(comment.username);
         const newComment = { id: idPost, post: idPost, content: comment.comment, username, user: comment.username };
         setComments([...comments, newComment]);
-    };
+   };
 
     const handleLike = () => {
         const token = localStorage.getItem("token");

@@ -60,12 +60,12 @@ const ModalComment = ({postId, setWantComment, addComment}) => {
 
     return (
         <div className="modal">
-            <div className="modal-content">
+            <div className="modal-comment-content">
                 <div className="close" onClick={closeModal}>
                         X
                 </div>
                 <h2>Añadir comentario</h2>
-                <form className='modal-form' onSubmit={handleSubmit}>
+                <form className='modal-comment-form' onSubmit={handleSubmit}>
                     <textarea
                         id="comment"
                         value={comment}

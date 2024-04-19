@@ -169,8 +169,8 @@ export default class ReportsList extends React.Component {
                     </div>
                     <h3>{report.title}</h3>
                     <p>{report.description}</p>
-                    <div className="post-image-container">
-                      <img src={report.image} alt="post" className="post-image" />
+                    <div className="reports-image-container">
+                      <img src={report.image} alt="report" className="reports-image"/>
                     </div>
 
 

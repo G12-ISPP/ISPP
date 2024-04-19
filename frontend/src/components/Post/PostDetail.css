@@ -69,6 +69,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    overflow-wrap: anywhere;
 }
 
 .post-detail-info-owner {
@@ -106,6 +107,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 5;
+    overflow-wrap: anywhere;
 }
 
 .post-detail-info-container .large-btn.button {

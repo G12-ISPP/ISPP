@@ -9,6 +9,7 @@ import exitIcon from '../../assets/bx-x.svg';
 import Button, { BUTTON_TYPES } from '../Button/Button';
 import { CgProfile } from "react-icons/cg";
 import AuthContext from "../../context/AuthContext.jsx";
+import $ from 'jquery';
 
 const Header = ({ cart, setCart }) => {
 
@@ -102,6 +103,15 @@ const Header = ({ cart, setCart }) => {
     const onToggleMenu = () => {
         setMenuVisible(!menuVisible);
         setIsHeaderFullScreen(!isHeaderFullScreen);
+
+        console.log(menuVisible);
+        console.log(isHeaderFullScreen);
+
+        if (!menuVisible) {
+            $(".header").parents("body").css("overflow", "hidden");
+        } else {
+            $(".header-fullscreen").parents("body").css("overflow", "");
+        }
     }
 
     const handleSearchClick = () => {
@@ -158,6 +168,8 @@ const Header = ({ cart, setCart }) => {
         setActiveCart(false);
     }
 
+
+
     return (
         <div className={isHeaderFullScreen ? 'header-fullscreen' : 'header'}>
             <div className={isHeaderFullScreen ? 'logo-container-fullscreen' : 'logo-container'}>
@@ -169,7 +181,7 @@ const Header = ({ cart, setCart }) => {
                 <>
                     <div className='search-box'>
                         <img src={searchIcon} className='search-icon' />
-                        <input type='text' placeholder={isHeaderFullScreen ? 'Busca diseños, impresoras y más...' : 'Busca diseños, impresoras, materiales y más...'} className='input-text'
+                        <input placeholder={isHeaderFullScreen ? 'Busca diseños, impresoras y más...' : 'Busca diseños, impresoras, materiales y más...'} className='input-text'
                             value={searchText}
                             onChange={handleSearchChange} />
                         {searchText && (

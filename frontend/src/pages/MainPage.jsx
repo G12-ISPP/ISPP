@@ -19,14 +19,12 @@ const MainPage = ({
 
     return (
         <>
-            <ModalChildren isOpen={isOpen} onClose={onCloseModal}>
-                <div>
-                    <Text type={TEXT_TYPES.TITLE_BOLD} text='¡Bienvenido a SHAR3D!' />
-                    <Text type={TEXT_TYPES.TITLE_NORMAL} text='Nuestro objetivo es conectar a diseñadores, impresores y entusiastas de la impresión 3D para que puedan compartir, comprar y vender diseños, impresoras y materiales de alta calidad.' />
-                </div>
-            </ModalChildren>
+            <div className="slogan">
+                <Text type={TEXT_TYPES.TITLE_BOLD} text='¡Explora la innovación en 3D!' />
+                <Text type={TEXT_TYPES.TITLE_NORMAL} text='Encuentra diseños, impresoras y materiales de alta calidad.' />
+                <Text type={TEXT_TYPES.TITLE_BOLD} text='¡Haz tus ideas realidad!' />
+            </div>
             
-
             <div className="section-title">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text='Diseños destacados' />
             </div>
