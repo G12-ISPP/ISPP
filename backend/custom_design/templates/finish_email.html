@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tu pedido de Shar3d se ha impreso</title>
+</head>
+
+<body>
+    <p>Buenas {{ cd.name }},</p>
+    <p>Tu pedido ha sido impreso con éxito. Tu impresor enviará su diseño a la dirección detallada a continuación</p>
+    <p>Información del pedido:</p>
+    <ul>
+        <li>Cantidad: {{ cd.quantity }}</li>
+        <li>Calidad: {{ cd.quality }}</li>
+        <li>Área: {{ cd.area }}</li>
+        <li>Volumen: {{ cd.volume }}</li>
+        <li>Precio: {{ cd.price }}</li>
+    </ul>
+    <p>Información del envío:</p>
+    <ul>
+        <li>Dirección: {{ cd.address }}</li>
+        <li>CP: {{ cd.postal_code }}</li>
+        <li>Ciudad: {{ cd.city }}</li>
+        <li>Fecha de compra: {{ cd.date }}</li>
+    </ul>
+</body>

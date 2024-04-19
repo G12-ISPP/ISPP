@@ -177,3 +177,16 @@ input:checked+.report-slider:before {
     justify-content: space-around;
     margin: 10px auto;
   }
+
+/* Estilos para el prefijo "reports" */
+.reports-image-container {
+    width: 100%;
+    margin-top: 0;
+    overflow: hidden;
+}
+
+.reports-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}

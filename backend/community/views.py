@@ -1,22 +1,24 @@
 from tokenize import TokenError
-
-from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
-from django.db import IntegrityError
-from django.db.models import Q
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
-from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
 from requests import Response
-from rest_framework import permissions
-from rest_framework.decorators import api_view
-from rest_framework.views import APIView
-from rest_framework_simplejwt.exceptions import InvalidToken
-from rest_framework_simplejwt.tokens import AccessToken
-
-from community.models import Post, Like
-from community.serializer import PostSerializer, PostSerializerWrite
+from comment.serializer import CommentSerializer
 from users.models import CustomUser
+from community.serializer import PostSerializer, PostSerializerWrite
+from community.models import Post
+from rest_framework import viewsets
+from rest_framework import permissions
+from rest_framework_simplejwt.tokens import AccessToken
+from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.exceptions import InvalidToken
+from rest_framework.views import APIView
+from django.http import JsonResponse
+from django.db.models import Q
+from rest_framework.decorators import api_view
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from comment.models import Comment
+from django.shortcuts import get_object_or_404
+
 
 
 # Create your views here.
@@ -84,13 +86,7 @@ class PostViewClass(APIView):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-
-        like_users_ids = instance.like_set.values_list('user__id', flat=True)
-
-        post_data = serializer.data
-        post_data['likes'] = list(like_users_ids)
-        print(post_data)
-        return Response(post_data)
+        return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -120,6 +116,11 @@ class PostViewClass(APIView):
         serializer = PostSerializer(queryset, many=True)
         return Response(serializer.data)
     
+    def get_post_by_userids(request, userid):
+        queryset = Post.objects.filter(users=userid)
+        serializer = PostSerializer(queryset, many=True, context={'request': request})
+        return JsonResponse(serializer.data, safe=False)
+    
     def get_post_by_id(request, postid):
         queryset = Post.objects.filter(id=postid)
         serializer = PostSerializer(queryset, many=True ,context={'request': request})
@@ -131,19 +132,6 @@ class PostViewClass(APIView):
             data.append(post_data)
 
         return JsonResponse(data, safe=False)
-
-    def get_post_by_userids(request, userid):
-        queryset = Post.objects.filter(users=userid)
-        serializer = PostSerializer(queryset, many=True, context={'request': request})
-
-        data = []
-        for post in queryset:
-            post_data = serializer.data.pop(0)  # Tomamos el primer elemento de la lista
-            post_data['likes'] = list(post.like_set.values_list('user__username', flat=True))  # Agregamos los IDs de usuarios que dieron like al post
-            data.append(post_data)
-
-        return JsonResponse(data, safe=False)
-    
 
 
 
@@ -157,8 +145,6 @@ def add_post(request):
         description = request.data.get('description')
         users = get_user_from_token(request.headers.get('Authorization', '').split(' ')[1])
         image = request.FILES.get('file')
-
-        print(name, description, users, image)
 
         # Verificar que todos los campos requeridos estén presentes
         if not all([name, description, image]):
@@ -178,47 +164,13 @@ def add_post(request):
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
-@api_view(['POST'])
-@csrf_exempt
-@login_required
-def like(request, postId):
-    if request.method == 'POST':
-        token = request.headers.get('Authorization', '').split(' ')[1]
-        user = get_user_from_token(token)
-        if user is None:
-            return JsonResponse({'error': 'Invalid token'}, status=401) 
-        
-        post = get_object_or_404(Post, id=postId)
-        
-        try:
-            if Like.objects.filter(user=user, post=post).exists():
-                return JsonResponse({'error': 'Ya existe un like para este usuario y post.'}, status=400)
 
-            Like.objects.create(
-                user=user,
-                post=post
-            )
-            return JsonResponse({'message': 'Like creado exitosamente!'}, status=200)
-        except Exception as e:
-            return JsonResponse({'error': f'Error al crear el like: {e}'}, status=500)
-
-@api_view(['DELETE'])
-@csrf_exempt
-@login_required
-def delete_like(request, postId):
-    if request.method == 'DELETE':
-        token = request.headers.get('Authorization', '').split(' ')[1]
-        user = get_user_from_token(token)
-        if user is None:
-            return JsonResponse({'error': 'Invalid token'}, status=401) 
-        
-        post = Post.objects.get(id=postId)
-
-        try:
-            like = Like.objects.get(user=user, post=post)
-            like.delete()
-            return JsonResponse({'message': 'Like eliminado exitosamente!'}, status=200)
-        except Like.DoesNotExist:
-            return JsonResponse({'error': 'No existe un like para este usuario y post.'}, status=404)
-        except Exception as e:
-            return JsonResponse({'error': f'Error al eliminar el like: {e}'}, status=500)
+@api_view(['GET'])
+def get_comments(request, postid):
+    if request.method == 'GET':
+        post = get_object_or_404(Post, id=postid)
+        if not post:
+            return JsonResponse({'error': 'El post no existe'}, status=404)
+        comments = Comment.objects.filter(post=post)
+        serializer = CommentSerializer(comments, many=True)
+        return JsonResponse(serializer.data, safe=False, status=200)

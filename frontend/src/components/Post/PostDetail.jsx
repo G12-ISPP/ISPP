@@ -11,57 +11,57 @@ import { useParams } from "react-router-dom";
 import { getComments, getPost } from "../../api/community.api.jsx";
 
 export default function PostDetail(props) {
-    const { id: idFromRoute } = useParams();
-    const [post, setPost] = useState({});
-    const [likes, setLikes] = useState(0);
-    const [comments, setComments] = useState([]);
-    const [idPost, setIdPost] = useState(props.idPost || idFromRoute || null);
-    const [wantComment, setWantComment] = useState(false);
+  const { id: idFromRoute } = useParams();
+  const [post, setPost] = useState({});
+  const [likes, setLikes] = useState(0);
+  const [comments, setComments] = useState([]);
+  const [idPost, setIdPost] = useState(props.idPost || idFromRoute || null);
+  const [wantComment, setWantComment] = useState(false);
 
-    useEffect(() => {
-        if (idPost) {
-            getPost(idPost)
-                .then((response) => response.json())
-                .then(async (data) => {
-                    const userId = data[0].users;
-                    const username = await getUsername(userId);
-                    const postWithUsername = { ...data[0], username };
-                    const likes = postWithUsername.likes.length;
-                    setPost(postWithUsername);
-                    setLikes(likes);
-                })
-                .catch((error) =>
-                    console.error("Error al obtener el post:", error)
-                );
+  useEffect(() => {
+    if (idPost) {
+      getPost(idPost)
+          .then((response) => response.json())
+          .then(async (data) => {
+            const userId = data[0].users;
+            const username = await getUsername(userId);
+            const postWithUsername = { ...data[0], username };
+            const likes = postWithUsername.likes.length;
+            setPost(postWithUsername);
+            setLikes(likes);
+          })
+          .catch((error) =>
+              console.error("Error al obtener el post:", error)
+          );
 
-            getComments(idPost)
-                .then((response) => response.json())
-                .then(async (data) => {
-                    const commentsWithUsernamesPromises = data.map(async (comment) => {
-                        const username = await getUsername(comment.user);
-                        return { ...comment, username: username };
-                    });
-                    const commentsWithUsernames = await Promise.all(
-                        commentsWithUsernamesPromises
-                    );
-                    setComments(commentsWithUsernames);
-                })
-                .catch((error) =>
-                    console.error("Error al obtener los comentarios:", error)
-                );
-        }
-    }, [idPost, comments]);
+      getComments(idPost)
+          .then((response) => response.json())
+          .then(async (data) => {
+            const commentsWithUsernamesPromises = data.map(async (comment) => {
+              const username = await getUsername(comment.user);
+              return { ...comment, username: username };
+            });
+            const commentsWithUsernames = await Promise.all(
+                commentsWithUsernamesPromises
+            );
+            setComments(commentsWithUsernames);
+          })
+          .catch((error) =>
+              console.error("Error al obtener los comentarios:", error)
+          );
+    }
+  }, [idPost, comments.length]);
 
-    const handleCommentModal = (id) => {
-        setWantComment(true);
-        setIdPost(id);
-    };
+  const handleCommentModal = (id) => {
+    setWantComment(true);
+    setIdPost(id);
+  };
 
-    const addComment = async (comment) => {
-        const username = await getUsername(comment.user);
-        const newComment = { ...comment, username };
-        setComments([...comments, newComment]);
-    };
+  const addComment = async (comment) => {
+    const username = await getUsername(comment.user);
+    const newComment = { ...comment, username };
+    setComments([...comments, newComment]);
+  };
 
     return (
         <div className="post-detail-details-page">

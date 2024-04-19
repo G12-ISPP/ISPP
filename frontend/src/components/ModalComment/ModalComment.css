@@ -1,4 +1,4 @@
-.modal {
+.modal-comment {
     position: fixed;
     top: 0;
     left: 0;
@@ -10,7 +10,7 @@
     align-items: center;
 }
 
-.modal-content {
+.modal-comment-content {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
@@ -18,7 +18,7 @@
 }
 
 
-.modal-form {
+.modal-comment-form {
     display: flex;
     flex-direction: column;
     justify-content: center;

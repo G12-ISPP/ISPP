@@ -6,6 +6,9 @@ import {http} from 'msw';
 import {setupServer} from 'msw/node';
 
 const messages = {
+    sloganMessage: '¡Explora la innovación en 3D!',
+    sloganMessage2: 'Encuentra diseños, impresoras y materiales de alta calidad.',
+    sloganMessage3: '¡Haz tus ideas realidad!',
     featuredDesignsMessage: 'Diseños destacados',
     topArtistsMessage: 'Mejores diseñadores',
     printersForSaleMessage: 'Impresoras a la venta',
@@ -25,14 +28,15 @@ describe('Test for MainPage', () => {
 
     test('contains expected texts', () => {
         render(<MainPage />);
-
+        
+        expect(screen.getByText(messages.sloganMessage)).toBeInTheDocument();
+        expect(screen.getByText(messages.sloganMessage2)).toBeInTheDocument();
+        expect(screen.getByText(messages.sloganMessage3)).toBeInTheDocument();
         expect(screen.getByText(messages.featuredDesignsMessage)).toBeInTheDocument();
         expect(screen.getByText(messages.topArtistsMessage)).toBeInTheDocument();
         expect(screen.getByText(messages.printersForSaleMessage)).toBeInTheDocument();
         expect(screen.getByText(messages.materialsForSaleMessage)).toBeInTheDocument();
 
-        const requestPrintButtonElement = screen.getByRole('button', { name: messages.requestPrintButtonName });
-        expect(requestPrintButtonElement).toBeInTheDocument();
     });
 })
 
