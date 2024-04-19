@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './ModalComment.css';
 import PropTypes from 'prop-types';
 
-const ModalComment = ({postId, setWantComment}) => {
+const ModalComment = ({postId, setWantComment, addComment}) => {
     const [comment, setComment] = useState('');
     const [errors, setErrors] = useState({});
     const backend = import.meta.env.VITE_APP_BACKEND;
@@ -38,6 +38,7 @@ const ModalComment = ({postId, setWantComment}) => {
             if (response.ok) {
                 setWantComment(false);
                 alert('Comentario enviado correctamente');
+                addComment({comment, username: localStorage.getItem('userId')})
             }else if (response.status === 401) {
                 setErrors({ comment: 'Debes iniciar sesión para comentar' });
             }else if (response.status === 403) {
