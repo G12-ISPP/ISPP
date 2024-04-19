@@ -59,7 +59,7 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
     const token = localStorage.getItem('token');
     e.preventDefault();
     if (!newMessage.trim()) return;
-  
+
     const content = newMessage;
 
     fetch(`${backend}/chat/${roomId}/post_message/`, {
@@ -73,19 +73,19 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
     })
     .then(response => response.json())
     .then(data => {
-      console.log(data);
-      setNewMessage('');
-      console.log("FETCHING");
-      setTimeout(fetchMessages, 200); 
+      if (data.error)
+        alert(data.error);
+      setTimeout(fetchMessages, 200);
       setTimeout(() => {
         scrollToBottom();
       }, 250); // Ajusta este tiempo si es necesario
     })
     .catch(error => {
       console.error('Error:', error);
+      alert('Error al enviar el mensaje. Inténtalo de nuevo.');
       setNewMessage('');
     })
-    
+
   }
 
   useEffect(() => {

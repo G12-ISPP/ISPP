@@ -66,10 +66,14 @@ class Post extends Component {
 
     if (!name.trim()) {
       errors.name = 'El nombre es obligatorio';
+    } else if (name.length > 20) {
+      errors.name = 'El nombre no puede tener más de 50 caracteres';
     }
 
     if (!description.trim()) {
       errors.description = 'La descripción es obligatoria';
+    } else if (description.length > 75) {
+        errors.description = 'La descripción no puede tener más de 500 caracteres';
     }
 
     if(description.length > 300) {

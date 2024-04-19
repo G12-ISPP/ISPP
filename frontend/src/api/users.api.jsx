@@ -21,8 +21,8 @@ export const login = (username, password) => {
     });
 }
 
-export const getUser = (userId) => {
-    return fetch(backend + '/users/api/v1/users/' + userId + '/get_user_data/');
+export const getUser = (id) => {
+    return fetch(backend + '/users/api/v1/users/' + id + '/get_user_data/');
 }
 
 export const getFollowStatus = (userId) => {
