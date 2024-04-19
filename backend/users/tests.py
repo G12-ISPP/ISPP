@@ -1,7 +1,8 @@
 import json
+from rest_framework.authtoken.models import Token
 
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_encode
@@ -11,6 +12,14 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from main import settings
 from .models import CustomUser
 from .utils import validate_email, get_user
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.http import QueryDict
+from PIL import Image
+import tempfile
+
+
+
+
 
 ruta_backend = settings.RUTA_BACKEND
 
@@ -283,3 +292,56 @@ class ToggleActiveTestCase(APITestCase):
         self.user.refresh_from_db()
         self.assertTrue(self.user.is_active)
 
+
+class ProfileUpdateTest(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = CustomUser.objects.create_user(username='testuser', password='12345', postal_code='22222')
+        self.token = Token.objects.create(user=self.user)
+        self.client.force_authenticate(user=self.user, token=self.token)
+
+        # Crear una imagen de prueba para el perfil
+        self.image = Image.new('RGB', (100, 100))
+        self.temp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
+        self.image.save(self.temp_file, format='JPEG')
+        self.temp_file.seek(0)
+
+    def test_update_profile(self):
+        # Crear los datos de la solicitud
+        data = {
+            'email': 'testuser@example.com',
+            'city': 'Test City',
+            'postal_code': '22222',
+            'address': '123 Test St',
+            'profile_picture': SimpleUploadedFile(name='test_image.jpg', content=self.temp_file.read(), content_type='image/jpeg'),
+            'first_name': 'Test',
+            'last_name': 'User',
+            'description': 'This is a test user. But a description is required',
+            'is_designer': True,
+            'is_printer': False,
+        }
+
+        # Enviar la solicitud PATCH
+        response = self.client.patch(reverse('update_profile', kwargs={'pk': self.user.pk}), data)
+
+        if response.status_code != 200:
+            print(response.content)
+
+        # Comprobar que la respuesta tiene un estado 200
+        self.assertEqual(response.status_code, 200)
+
+        # Comprobar que los datos del usuario se han actualizado correctamente
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.email, 'testuser@example.com')
+        self.assertEqual(self.user.city, 'Test City')
+        self.assertEqual(self.user.postal_code, 22222)
+        self.assertEqual(self.user.address, '123 Test St')
+        self.assertEqual(self.user.first_name, 'Test')
+        self.assertEqual(self.user.last_name, 'User')
+        self.assertEqual(self.user.description, 'This is a test user. But a description is required')
+        self.assertEqual(self.user.is_designer, True)
+        self.assertEqual(self.user.is_printer, False)
+
+    def tearDown(self):
+        # Cerrar el archivo temporal
+        self.temp_file.close()
