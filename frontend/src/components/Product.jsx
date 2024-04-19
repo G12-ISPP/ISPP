@@ -153,7 +153,7 @@ class ProductDetail extends React.Component {
     };
 
     const showEditButton = product.seller === currentUserId;
-    const showDeleteButton = (product.seller === currentUserId) || (user.is_staff)
+    const showDeleteButton = (product.seller === currentUserId) || (user.is_staff) || (currentUserId === 1);
 
     const { showForm } = this.state;
 

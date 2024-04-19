@@ -108,7 +108,7 @@ const CustomDesignPrinters = () => {
     <>
       <PageTitle title="Detalles de la solicitud" />
 
-      {data && data.status === "printing" && (
+      {data &&  (
         <>
           <div
             style={{ textAlign: "center", margin: "30px", fontSize: "20px" }}

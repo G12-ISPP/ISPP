@@ -59,7 +59,7 @@ const ModalComment = ({postId, setWantComment, addComment}) => {
     }
 
     return (
-        <div className="modal">
+        <div className="modal-comment">
             <div className="modal-comment-content">
                 <div className="close" onClick={closeModal}>
                         X
