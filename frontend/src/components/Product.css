@@ -102,6 +102,7 @@ height: 25px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  overflow-wrap: anywhere;
 }
 
 .product-info-owner {
@@ -129,7 +130,9 @@ height: 25px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 5;
+  overflow-wrap: anywhere;
 }
+
 
 .product-info-stock {
   margin: 0 0 0.5em 0;
