@@ -112,7 +112,8 @@ class UsersView(viewsets.ModelViewSet):
         elif len(last_name) > 30:
             errors['last_name'] = ['El apellido no puede tener más de 30 caracteres']
         description = request.data.get('description').replace(" ", "")
-        if len(description)< 20:
+        is_designer = request.data.get('is_designer')
+        if is_designer == "true" and len(description) < 20:
             errors['description'] = ['La descripción debe tener al menos 20 caracteres']
         description = request.data.get('description')
         if len(description) > 200:
