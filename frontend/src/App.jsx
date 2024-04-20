@@ -78,15 +78,15 @@ function App() {
                     <Route path="/chat/" element={<ChatPage />} />
                     <Route path="/product-details/:id" element={<ProductDetail cart={cart} setCart={setCart}/>}/>
                     <Route path="/products/:id/edit" element={<EditProduct />} />
-                    <Route path="/designs" element={<DesignsPage/>}/>
+                    <Route path="/designs" element={<DesignsPage cart={cart} setCart={setCart}/>}/>
                     <Route path="/designs/my-design" element={<CustomDesign/>}/>
                     <Route path="/designs/details/:id" element={<CustomModelDetails/>}/>
                     <Route path="/designs/details-to-printer/:id" element={<CustomDesignPrinters />} />
                     <Route path="/designs/cancelled" element={<CustonDesignCancelled/>}/>
-                    <Route path="/pieces" element={<PiecesPage/>}/>
+                    <Route path="/pieces" element={<PiecesPage cart={cart} setCart={setCart}/>}/>
                     <Route path="/to-print/:id" element={<ToPrintPage/>}/>
-                    <Route path="/printers" element={<PrintersPage/>}/>
-                    <Route path="/materials" element={<MaterialsPage/>}/>
+                    <Route path="/printers" element={<PrintersPage cart={cart} setCart={setCart}/>}/>
+                    <Route path="/materials" element={<MaterialsPage cart={cart} setCart={setCart}/>}/>
                     <Route path="/artists" element={<ArtistsPage/>}/>
                     <Route path="/register" element={<RegisterFormPage/>}/>
                     <Route path="/login" element={<LoginFormPage/>}/>
