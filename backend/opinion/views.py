@@ -30,7 +30,10 @@ class OpinionView(viewsets.ModelViewSet):
                 return JsonResponse({'error': 'Ya has dejado una opinión para este usuario'}, status=403)
 
             description = request.data.get('description')
-            score = request.data.get('score')
+            try:
+                score = int(request.data.get('score'))
+            except:
+                return JsonResponse({'error': 'La puntuación debe ser un número entero'}, status=400)
             target_user_id = request.data.get('target_user')
             date = request.data.get('date')
 
