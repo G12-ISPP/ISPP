@@ -39,11 +39,16 @@ const ModalComment = ({postId, setWantComment, addComment}) => {
                 setWantComment(false);
                 alert('Comentario enviado correctamente');
                 addComment({comment, username: localStorage.getItem('userId')})
-            }else if (response.status === 401) {
+            } else if (response.status === 400 || response.status === 404) {
+                const errorData = await response.json();
+                setErrors({ comment: errorData.error });
+            }
+            else if (response.status === 401) {
                 setErrors({ comment: 'Debes iniciar sesión para comentar' });
             }else if (response.status === 403) {
                 setErrors({ comment: 'Ya has comentado en este post' });
-            }else {
+            }
+            else {
                 const errorData = await response.json();
                 throw new Error(errorData.error);
             }
