@@ -15,7 +15,7 @@ class BaseTestCase(APITestCase):
     def setUp(self):
         self.custom_user = get_user_model().objects.create_user(
             username='testuser',
-            email='test@example.com',
+            email='test1@example.com',
             postal_code='12345',
             email_verified=True
         )
@@ -33,7 +33,7 @@ class BaseTestCase(APITestCase):
         self.order = Order.objects.create(
             buyer=self.custom_user,
             price=100,
-            buyer_mail = 'test@example.com',
+            buyer_mail = 'test1@example.com',
             status='P',
             address='123 Test Street',
             city='Test City',
@@ -100,7 +100,7 @@ class ConfirmOrderTestCase(BaseTestCase):
         
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(email.subject, 'Confirmación de tu pedido en Shar3d')
-        self.assertEqual(email.to, ['test@example.com'])
+        self.assertEqual(email.to, ['test1@example.com'])
         
         html_content = email.body
         
@@ -126,7 +126,7 @@ class CancelOrderTestCase(BaseTestCase):
 
 class OrderDetailsTestCase(BaseTestCase):
     def test_order_details(self):
-        User.objects.create_user(username='testuser1', email='test@example.com', password='test', is_staff=True, postal_code='12345', email_verified=True)
+        User.objects.create_user(username='testuser1', email='test2@example.com', password='test', is_staff=True, postal_code='12345', email_verified=True)
         response = self.client.post(reverse('login'), {'username': 'testuser1', 'password': 'test'})
         token = response.json()["token"]
 
@@ -142,3 +142,17 @@ class OrderDetailsTestCase(BaseTestCase):
         response = self.client.get(reverse('order_details', args=[non_existing_order_id]))
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {'error': 'El pedido no existe'})
+
+class MyOrdersTestCase(BaseTestCase):
+    def test_my_orders(self):
+        User.objects.create_user(username='testuser1', email='test3@example.com', password='test', is_staff=True, postal_code='12345', email_verified=True)
+        response = self.client.post(reverse('login'), {'username': 'testuser1', 'password': 'test'})
+        token = response.json()["token"]
+
+        response = self.client.get(reverse('my_orders'), HTTP_AUTHORIZATION='Bearer ' + token)
+        self.assertEqual(response.status_code, 200)
+        order_data = response.json()
+        self.assertIsInstance(order_data['orders'], list)
+        self.assertEqual(len(order_data['orders']), 1)
+        self.assertIsInstance(order_data['empty'], bool)
+        self.assertEqual(order_data['empty'], False)

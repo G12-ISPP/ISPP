@@ -13,6 +13,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from users.models import CustomUser
+from django.shortcuts import get_object_or_404
+
 
 ruta_backend = settings.RUTA_BACKEND
 ruta_frontend = settings.RUTA_FRONTEND
@@ -56,13 +59,32 @@ def add_product(request):
         except ValueError:
             return JsonResponse({'error': 'La cantidad de stock debe ser un número entero válido'}, status=400)
         
-        if show == 'true':
-            show = True
-        else:
-            show = False
 
         # Guardar el producto en la base de datos
         if request.user.is_authenticated:
+            if show == 'true':
+                products_showed = Product.objects.filter(seller=request.user, show=True)
+                user = CustomUser.objects.get(username=request.user)
+                if (user.seller_plan & user.designer_plan): 
+                    if (products_showed.count() > 7):
+                        return JsonResponse({'error': 'Ya hay 8 productos destacados'}, status=400)
+                    else:
+                        show = True
+                elif (user.seller_plan):
+                    if (products_showed.count() > 4):
+                            return JsonResponse({'error': 'Ya hay 5 productos destacados'}, status=400)
+                    else:
+                        show = True
+                elif (user.designer_plan):
+                    if (products_showed.count() > 2):
+                            return JsonResponse({'error': 'Ya hay 3 productos destacados'}, status=400)
+                    else:
+                        show = True
+                else:
+                    return JsonResponse({'error': 'No puedes destacar productos sin contratar un plan'}, status=400)
+            else:
+                show = False
+            
             product = Product(
                 product_type=product_type,
                 price=price,
@@ -167,3 +189,10 @@ class ProductsView(viewsets.ModelViewSet):
         product.save()
         return Response({'message': 'Producto actualizado correctamente'}, status=status.HTTP_200_OK)
 
+    @action(detail=True, methods=['delete'])
+    def delete_product(self, request, pk=None):
+        product = get_object_or_404(Product, pk=pk)
+        if not (request.user == product.seller or request.user.is_staff):
+            return Response({'error': 'No tienes permiso para eliminar este producto'}, status=status.HTTP_403_FORBIDDEN)
+        product.delete()
+        return Response({'message': 'Producto eliminado correctamente'}, status=status.HTTP_204_NO_CONTENT)

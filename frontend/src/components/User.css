@@ -9,6 +9,9 @@
 
 .left-user-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
   justify-content: center;
   width: 50%;
 }
@@ -48,6 +51,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  overflow-wrap: anywhere;
 }
 
 .user-review {
@@ -91,6 +95,7 @@
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  overflow-wrap: anywhere;
 }
 
 .user-button-wrapper {
@@ -124,6 +129,16 @@
   padding: 0;
   width: 100%;
   margin: 0;
+}
+
+.report-user {
+  display: flex;
+}
+
+.post-detail-comment{
+  background-color: #e2e1e1;
+  border-radius: 0.8em;
+  
 }
 
 @media (max-width: 767px) {
@@ -204,6 +219,12 @@
     font-size: 0.9em;
   }
 
+  .report-user {
+    width: 100%; 
+    display: flex;
+    justify-content: center;
+  }
+
 }
 
 @media (max-width: 320px) {
@@ -230,6 +251,12 @@
 
   .reviews-section {
     margin: 0 6.5em 2.5em;
+  }
+
+  .report-user {
+    width: 100%; 
+    display: flex;
+    justify-content: center;
   }
 
 }

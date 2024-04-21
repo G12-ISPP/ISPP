@@ -24,8 +24,16 @@ class OpinionView(viewsets.ModelViewSet):
     @login_required
     def add_opinion(request):
         if request.method == 'POST':
+            # Verifica si el usuario ya ha dejado una opinión para el usuario objetivo
+            existing_opinion = Opinion.objects.filter(author=request.user, target_user_id=request.data.get('target_user')).exists()
+            if existing_opinion:
+                return JsonResponse({'error': 'Ya has dejado una opinión para este usuario'}, status=403)
+
             description = request.data.get('description')
-            score = request.data.get('score')
+            try:
+                score = int(request.data.get('score'))
+            except:
+                return JsonResponse({'error': 'La puntuación debe ser un número entero'}, status=400)
             target_user_id = request.data.get('target_user')
             date = request.data.get('date')
 
@@ -37,6 +45,9 @@ class OpinionView(viewsets.ModelViewSet):
 
             if int(score) < 1 or int(score) > 5:
                 return JsonResponse({'error': 'La puntuación debe estar entre 1 y 5'}, status=400)
+
+            if len(description) < 10 or len(description) > 255:
+                return JsonResponse({'error': 'La descripción debe tener entre 10 y 255 caracteres'}, status=400)
 
             try:
                 target_user = CustomUser.objects.get(id=target_user_id)

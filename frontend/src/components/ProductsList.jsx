@@ -5,6 +5,7 @@ import Product from './Product/Product';
 import PageTitle from './PageTitle/PageTitle';
 import Text, { TEXT_TYPES } from "./Text/Text";
 
+
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [sellerName, setSellerName] = useState('');
@@ -36,7 +37,6 @@ const ProductList = () => {
         });
         if (response.ok) {
           const userData = await response.json();
-          console.log(userData)
           setSellerName(`${userData.first_name} ${userData.last_name}`);
           if (currentUserID === userData.id.toString()) {
             setOwnUser(true);
@@ -49,7 +49,7 @@ const ProductList = () => {
       }
     };
 
-    
+
 
     fetchProducts();
     fetchSeller();
@@ -68,6 +68,7 @@ const ProductList = () => {
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         return data;
       } else {
         console.error('Error al obtener los productos');
@@ -80,28 +81,64 @@ const ProductList = () => {
   return (
     <>
 
-        {ownUser ? (
-          <div className="section-title-container">
+      {ownUser ? (
+          <div style={{ textAlign: 'center' }} className="section-title-container">
             <Text type={TEXT_TYPES.TITLE_BOLD} text='Mis productos' />
             <PageTitle title={'Mis productos'} />
           </div>
         ) : (
-          <div className="section-title-container">
+          <div style={{ textAlign: 'center' }} className="section-title-container">
             <Text type={TEXT_TYPES.TITLE_BOLD} text={`Productos de: ${sellerName}`} />
             <PageTitle title={'Productos de ' + sellerName} />
           </div>
         )}
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Text type={TEXT_TYPES.TITLE_BOLD} text='Diseños' />
+      </div>
       <ItemsList
-        items={products.map(product => (
-          <Product
-            key={product.id}
-            name={product.name}
-            price={product.price}
-            pathImage={product.image_url ? product.image_url : product.imageRoute}
-            pathDetails={product.id}
-            isImageRoute={!product.image_url}
-          />
-        ))}
+        items={products
+          .filter(product => product.product_type === "D")
+          .map(product => (
+            <Product
+              product={product}
+            />
+          ))}
+      />
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Text type={TEXT_TYPES.TITLE_BOLD} text='Piezas' />
+      </div>
+      <ItemsList
+        items={products
+          .filter(product => product.product_type === "I")
+          .map(product => (
+            <Product
+              product={product}
+            />
+          ))}
+      />
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Text type={TEXT_TYPES.TITLE_BOLD} text='Impresoras' />
+      </div>
+      <ItemsList
+        items={products
+          .filter(product => product.product_type === "P")
+          .map(product => (
+            <Product
+              product={product}
+            />
+          ))}
+      />
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Text type={TEXT_TYPES.TITLE_BOLD} text='Materiales' />
+      </div>
+      <ItemsList
+        items={products
+          .filter(product => product.product_type === "M")
+          .map(product => (
+            <Product
+              product={product}
+            />
+          ))}
       />
     </>
   );

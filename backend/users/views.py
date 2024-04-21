@@ -12,19 +12,17 @@ from django.http import HttpResponseRedirect
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.template.loader import get_template
-from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import activate
 from django.utils.translation import gettext_lazy as _
-from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+from chat.views import get_user_from_token
 from paypalrestsdk import Payment
 from rest_framework import generics
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.decorators import api_view
-from rest_framework.exceptions import APIException
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -34,7 +32,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from users.serializer import ProfileUpdateSerializer
 from users.serializer import UserSerializer
 from .models import CustomUser
-from .utils import validate_email, get_user
+from .utils import validate_email, get_user, existe_email
 
 ruta_frontend = settings.RUTA_FRONTEND
 
@@ -62,17 +60,67 @@ class UsersView(viewsets.ModelViewSet):
         serializer = self.get_serializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+    @action(detail=False, methods=['get'])
+    def non_admin_users(self, request):
+        non_admin_users = CustomUser.objects.filter(is_staff=False)
+        serializer = self.get_serializer(non_admin_users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['patch'])
+    def toggle_active(self, request, pk=None):
+        if not request.user.is_staff:
+            return Response({'error': 'No tienes permiso para editar este usuario'}, status=status.HTTP_403_FORBIDDEN)
+        user = self.get_object()
+        serializer = self.get_serializer(user, data=request.data, partial=True)
+        is_active = request.data.get('is_active')
+        if serializer.is_valid():
+            user.is_active = is_active
+            user.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     @action(detail=True, methods=['patch'])
     def update_profile(self, request, pk=None):
         user = self.get_object()
         serializer = ProfileUpdateSerializer(user, data=request.data, partial=True)
         postal_code = request.data.get('postal_code')
+        errors = {}
         try:
             postal_code = int(postal_code)
             if postal_code < 1000 or postal_code > 52999:
-                raise ValidationError({'postal_code': ['El código postal debe ser un número entero entre 1000 y 52999']})
+                errors['postal_code'] = ['El código postal debe ser un número entero entre 1000 y 52999']
         except ValueError:
-            raise ValidationError({'postal_code': ['El código postal debe ser un número entero válido']})
+            errors['postal_code'] = ['El código postal debe ser un número entero válido']
+        address = request.data.get('address').replace(" ", "")
+        if len(address) < 5:
+            errors['address'] = ['La dirección debe tener al menos 5 caracteres']
+        elif len(address) > 255:
+            errors['address'] = ['La dirección no puede tener más de 255 caracteres']
+        city = request.data.get('city').replace(" ", "")
+        if len(city) < 3:
+            errors['city'] = ['La ciudad debe tener al menos 3 caracteres']
+        elif len(city) > 50:
+            errors['city'] = ['La ciudad no puede tener más de 50 caracteres']
+        first_name = request.data.get('first_name').replace(" ", "")
+        if len(first_name) < 4:
+            errors['first_name'] = ['El nombre debe tener al menos 4 caracteres']
+        elif len(first_name) > 30:
+            errors['first_name'] = ['El nombre no puede tener más de 30 caracteres']
+        last_name = request.data.get('last_name').replace(" ", "")
+        if len(last_name) < 4:
+            errors['last_name'] = ['El apellido debe tener al menos 4 caracteres']
+        elif len(last_name) > 30:
+            errors['last_name'] = ['El apellido no puede tener más de 30 caracteres']
+        description = request.data.get('description').replace(" ", "")
+        is_designer = request.data.get('is_designer')
+        if is_designer == "true" and len(description) < 20:
+            errors['description'] = ['La descripción debe tener al menos 20 caracteres']
+        description = request.data.get('description')
+        if len(description) > 200:
+            errors['description'] = ['La descripción no puede tener más de 200 caracteres']
+        if errors:
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+        
         
         if serializer.is_valid():
             serializer.save()
@@ -94,8 +142,10 @@ class UserCreateAPIView(generics.CreateAPIView):
     @translate
     def post(self, request, *args, **kwargs):
         errors = {}
-        if len(request.data.get('password')) < 4 or not re.search(r'\d', request.data.get('password')) or not re.search(r'[a-zA-Z]', request.data.get('password')):
-            errors['password'] = ['La contraseña debe tener al menos 4 caracteres de los cuales al menos uno debe ser un dígito y otro una letra']
+        password = request.data.get('password')
+        if len(password.replace(" ", "")) < 8 or not re.search(r'\d', password) or not re.search(r'[a-z]', password) or not re.search(r'[!@#$%^&*()-_=+{};:,<.>]', password) or not re.search(r'[A-Z]', password):
+            errors['password'] = ['La contraseña debe tener al menos 8 caracteres y contener al menos un dígito, una letra mayúscula, una letra minúscula y un carácter especial']
+
         postal_code = request.data.get('postal_code')
         try:
             postal_code = int(postal_code)
@@ -103,33 +153,38 @@ class UserCreateAPIView(generics.CreateAPIView):
                 errors['postal_code'] = ['El código postal debe ser un número entero entre 1000 y 52999']
         except ValueError:
             errors['postal_code'] = ['El código postal debe ser un número entero válido']
-        address = request.data.get('address')
+        address = request.data.get('address').replace(" ", "")
         if len(address) < 5:
             errors['address'] = ['La dirección debe tener al menos 5 caracteres']
         elif len(address) > 255:
             errors['address'] = ['La dirección no puede tener más de 255 caracteres']
-        city = request.data.get('city')
+        city = request.data.get('city').replace(" ", "")
         if len(city) < 3:
             errors['city'] = ['La ciudad debe tener al menos 3 caracteres']
         elif len(city) > 50:
             errors['city'] = ['La ciudad no puede tener más de 50 caracteres']
-        username = request.data.get('username')
+        username = request.data.get('username').replace(" ", "")
         if len(username) < 4:
             errors['username'] = ['El nombre de usuario debe tener al menos 4 caracteres']
         elif len(username) > 30:
             errors['username'] = ['El nombre de usuario no puede tener más de 30 caracteres']
-        email = request.data.get('email')
+        email = request.data.get('email').replace(" ", "")
         if len(email) > 50:
             errors['email'] = ['El email no puede tener más de 50 caracteres']
+        email = request.data.get('email')
+        if existe_email(email):
+            errors['email'] = ['Ya existe un usuario con este email']
         if not validate_email(email):
             errors['email'] = ['El email no es válido']
         if errors:
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
         try:
             user_json = super().post(request, *args, **kwargs)
+
             user = CustomUser.objects.get(username=request.data.get('username'))
-
-
+            user.followings.add(user)
+            user.followers.add(user)
+            user.save()
             # Generar el token único
             token = default_token_generator.make_token(user)
 
@@ -157,14 +212,12 @@ class UserCreateAPIView(generics.CreateAPIView):
             return Response(translated_errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             error_message = str(e)
-            print(error_message)
             return Response({'error': _('An error occurred.')}, status=status.HTTP_400_BAD_REQUEST)
 
 class VerifyEmailView(APIView):
 
     def get(self, request, uidb64, token):
         user = get_user(uidb64)
-        print(user)
         if user is not None and default_token_generator.check_token(user, token):
             if user.email_verified:
                 return Response({'message': 'Usuario ya verificado.'}, status=200)
@@ -179,10 +232,16 @@ class LoginView(APIView):
         username = request.data.get('username')
         password = request.data.get('password')
         user = authenticate(username=username, password=password)
+        
+        if CustomUser.objects.filter(username=username).exists():
+            user_models = CustomUser.objects.filter(username=username).first()
+            if user_models.is_blocked():
+                return Response({'error': 'El usuario ha sido bloqueado'}, status=403)
+            if not user_models.email_verified:
+                return Response({'error': 'El email no ha sido verificado'}, status=400)
         if user is None:
-            raise APIException('Invalid username or password')
-        if not user.email_verified:
-            raise APIException('Email not verified')
+            return Response({'python manage.py runserver': 'Usuario o contraseña incorrectos'}, status=400)
+        
         refresh = RefreshToken.for_user(user)
         return Response({
             'refresh': str(refresh),
@@ -245,19 +304,38 @@ def buy_plan(request):
 
 def obtain_plan(request, plan_seller, plan_buyer, plan_designer,user_id):
     user = CustomUser.objects.get(id=user_id)
-    if plan_buyer:
+
+    if plan_buyer == 'True':
         user.buyer_plan = True
         user.buyer_plan_date = datetime.now()
-    if plan_seller:
+    if plan_seller == 'True':
         user.seller_plan = True
         user.seller_plan_date = datetime.now()
-    if plan_designer:
+    if plan_designer == 'True':
         user.designer_plan = True
         user.is_designer = True
         user.designer_plan_date = datetime.now()
 
     user.save()
     return HttpResponseRedirect(ruta_frontend + '/confirm-plan')
+
+@api_view(['POST'])
+@csrf_exempt
+def delete_plan(request):
+    token = request.headers.get('Authorization', '').split(' ')[1]
+    user = get_user_from_token(token)
+    if request.data['planName'] == 'buyer_plan':
+        user.buyer_plan = False
+        user.buyer_plan_date = None
+    if request.data['planName'] == 'seller_plan':
+        user.seller_plan = False
+        user.seller_plan_date = None
+    if request.data['planName'] == 'designer_plan':
+        user.designer_plan = False
+        user.designer_plan_date = None
+    user.save()
+    return JsonResponse({'success': 'Plan cancelado exitosamente'}, status=201)
+
 
 # Following Functions
 @api_view(['GET'])
@@ -270,16 +348,12 @@ def follow_toggle(request, user_id):
         user.save()
         request.user.followings.remove(user)
         request.user.save()
-        print(user.followers.all())
-        print(request.user.followings.all())
         return JsonResponse({'success': 'Ya no sigues a ' + user.username}, status=201)
     else:
         user.followers.add(request.user)
         user.save()
         request.user.followings.add(user)
         request.user.save()
-        print(user.followers.all())
-        print(request.user.followings.all())
         return JsonResponse({'success': 'Ahora sigues a ' + user.username}, status=201)
 
 
@@ -294,4 +368,42 @@ def follow_status(request, user_id):
     else:
         return JsonResponse({'follows': False}, status=201)
 
+@api_view(['GET'])
+def get_following_count(request, user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        following_count = user.followings.exclude(id=user_id).count()
+        return JsonResponse({'following_count': following_count})
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
 
+
+@api_view(['GET'])
+def get_followings(request, user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        followings = user.followings.exclude(id=user_id)
+        followings_data = [{'id': following.id, 'username': following.username, 'profile_picture': following.profile_picture.url if following.profile_picture else None} for following in followings]
+        return JsonResponse({'followings': followings_data})
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+    
+@api_view(['GET'])
+def get_followers_count(request, user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        followers_count = user.followers.exclude(id=user_id).count()
+        return JsonResponse({'followers_count': followers_count})
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
+
+
+@api_view(['GET'])
+def get_followers(request, user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        followers = user.followers.exclude(id=user_id)
+        followers_data = [{'id': follower.id, 'username': follower.username, 'profile_picture': follower.profile_picture.url if follower.profile_picture else None} for follower in followers]
+        return JsonResponse({'followers': followers_data})
+    except CustomUser.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)

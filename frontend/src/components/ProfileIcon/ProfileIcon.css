@@ -18,6 +18,7 @@
 }
 
 .profile-icon-name {
+    margin: 0;
     cursor: pointer;
     font-weight: 700;
     font-size: 1.2em;
@@ -25,4 +26,21 @@
 }
 .profile-icon-name:hover {
     text-decoration: underline;
+}
+
+.profile-icon-score-container {
+    display: flex;
+    gap: 0.3em;
+    align-items: center;
+    padding-top: 0.2em;
+}
+
+.profile-icon-star {
+    width: 1.4em;
+}
+
+.profile-icon-score {
+    margin: 0;
+    font-size: 0.9em;
+    font-weight: 600;
 }

@@ -79,6 +79,8 @@ const Cart = ({
       newErrors.city = 'Por favor, introduce el nombre de tu ciudad.';
     } else if (city.length > 50) {
       newErrors.city = 'La ciudad debe tener menos de 50 caracteres.';
+    } else if (/\d/.test(city)) {
+      newErrors.city = 'La ciudad no debe contener caracteres numéricos.'
     }
 
     if (!address || address === '') {

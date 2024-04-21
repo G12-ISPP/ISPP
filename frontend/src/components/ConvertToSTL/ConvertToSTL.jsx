@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './ConvertToSTL.css';
 import PageTitle from '../PageTitle/PageTitle';
+import '../AddProduct.css';
 
 const ConvertToSTL = () => {
     const [file, setFile] = useState(null);
@@ -89,15 +90,16 @@ const ConvertToSTL = () => {
     return (
         <>
             <PageTitle title="Convertir a STL" />
-            <h1 className='title'>Convertir a STL</h1>
-            <div className='main'>
+            <div style={{textAlign:'center'}}>
+                <h1 className='title'>Convertir a STL</h1>
+            
                 <form className='form' onSubmit={handleSubmit}>
                     <div className='form-group'>
-                        <label htmlFor='file' className='upload'>
-                            Archivo
+                        <label htmlFor='file' style={{fontSize:'30px'}}>
+                            Selecciona el archivo que quieras convertir a formato STL
                         </label>
                         <div className='file-select'>
-                            <input type='file' id='file' name='file' className='form-input' accept='.ply, .step, .obj, .vtk, .xml, .bmp, .dae' onChange={handleFileChange} />
+                            <input type='file' id='file' name='file' className='stl-input' accept='.ply, .step, .obj, .vtk, .xml, .bmp, .dae' onChange={handleFileChange} />
                             {errors.file && <div className="error">{errors.file}</div>}
                         </div>
                     </div>

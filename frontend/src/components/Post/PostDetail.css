@@ -1,0 +1,243 @@
+.post-detail-details-page {
+    margin: 2em 10em;
+}
+
+.post-detail-title-container {
+    margin-bottom: 2em;
+}
+
+.post-likes{
+    width: 30px;
+    height: 30px;
+}
+
+
+.post-comments{
+    margin: auto;
+}
+
+.post-detail-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 2em;
+}
+
+
+.left-post-detail-container {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+}
+
+.post-detail-principal{
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.right-post-detail-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+}
+
+.post-detail-img-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 26em;
+    background: #D9D9D9;
+    border-radius: 0.8em;
+}
+
+.post-detail-img-container .post-detail-image {
+    width: 100%;
+    object-fit: contain;
+    border-radius: 0.8em;
+}
+
+.post-detail-info-container {
+    display: grid;
+}
+
+.post-detail-info-name {
+    margin: 0;
+    font-size: 2.2em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow-wrap: anywhere;
+}
+
+.post-detail-info-owner {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    margin-bottom: 1.2em;
+}
+
+.post-detail-info-user {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.post-detail-info-description {
+    margin-bottom: 1.2em;
+}
+
+.post-detail-info-owner .user-review-text {
+    font-size: 1.1em;
+}
+
+.post-detail-info-user .user-review-text {
+    font-size: 0.8em;
+}
+
+.post-detail-info-description-label {
+    margin: 0 0 0.6em 0;
+}
+
+.post-detail-info-description-text {
+    margin: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    overflow-wrap: anywhere;
+}
+
+.post-detail-info-container .large-btn.button {
+    justify-self: center;
+}
+
+.related-products .title-bold.text {
+    margin-bottom: 1em;
+}
+
+.related-products .main-page-gr.grid {
+    margin: 0;
+    width: 100%;
+}
+
+.post-detail-comment-description{
+    padding: 1em;
+}
+
+.post-detail-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    margin: 5em 10em;
+}
+
+.post-detail-section .grid {
+    padding: 0;
+    width: 100%;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+
+    .post-detail-details-page {
+        margin: 1.5em 1.5em;
+    }
+
+    .post-detail-title-container {
+        font-size: 0.8em;
+    }
+
+    .post-detail-container {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .left-post-detail-container {
+        width: 100%;
+        padding: 0;
+    }
+
+    .right-post-detail-container {
+        width: 100%;
+    }
+
+    .post-detail-img-container {
+        height: 18em;
+    }
+
+    .post-detail-info-container {
+        margin-top: 1em;
+        padding: 0;
+    }
+
+    .post-detail-section {
+        margin: 1.5em 1.5em;
+    }
+
+    .post-detail-section .text {
+        font-size: 1.5em;
+    }
+
+    .post-detail-section .grid {
+        padding: 0;
+    }
+
+    .post-detail-info-name {
+        font-size: 1.25em;
+        -webkit-line-clamp: 4;
+    }
+
+    .post-detail-info-owner .profile-icon-image {
+        width: 1.5em;
+        height: 1.5em;
+    }
+
+    .post-detail-info-owner .profile-icon-name {
+        font-size: 1em;
+    }
+
+    .post-detail-info-owner .profile-icon-star {
+        width: 1.2em;
+    }
+
+    .post-detail-info-owner .profile-icon-score {
+        font-size: 1em;
+    }
+
+    .post-detail-info-description-label {
+        font-size: 1em;
+    }
+
+    .post-detail-info-description-text {
+        -webkit-line-clamp: 20;
+    }
+
+    .right-post-detail-container .large-btn.button {
+        width: 100%;
+        height: 2.2em;
+    }
+
+    .right-post-detail-container .large-btn.button .btn-text {
+        font-size: 0.9em;
+    }
+
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    .post-detail-details-page {
+        margin: 1.5em 3.5em;
+    }
+
+    .post-detail-section {
+        margin: 1.5em 6.5em;
+    }
+
+    .post-detail-section .grid {
+        padding: 0;
+    }
+
+}

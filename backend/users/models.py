@@ -32,10 +32,14 @@ class CustomUser(AbstractUser):
     followings = models.ManyToManyField('self', related_name='follower_users', symmetrical=False, blank=True, default=[])
     followers = models.ManyToManyField('self', related_name='following_users', symmetrical=False, blank=True, default=[])
 
+    email = models.EmailField(unique=True)
 
     USERNAME_FIELD = 'username'
     
     REQUIRED_FIELDS = ['email', 'address', 'city','postal_code']
+
+    def is_blocked(self):
+        return not self.is_active
 
     def __str__(self):
         return self.username

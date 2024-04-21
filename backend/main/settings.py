@@ -65,6 +65,8 @@ INSTALLED_APPS = [
     'tokens',
     "conversion_to_stl",
     "community",
+    "report",
+    "comment",
 ]
 
 MIDDLEWARE = [

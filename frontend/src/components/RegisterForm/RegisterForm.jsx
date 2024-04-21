@@ -8,7 +8,9 @@ import avatar from '../../assets/avatar.svg';
 import editIcon from '../../assets/bxs-edit.svg';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye,faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import eye from '../../assets/eye-solid.svg';
+import eyeSlash from '../../assets/eye-slash-solid.svg';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -23,6 +25,7 @@ class RegisterForm extends React.Component {
       username: '',
       email: '',
       password: '',
+      confirmPassword: '', // Nuevo estado para confirmar la contraseña
       first_name: '',
       last_name: '',
       address: '',
@@ -38,8 +41,8 @@ class RegisterForm extends React.Component {
   }
 
   onButtonClick = (path) => {
-		window.location.href = path;
-	};
+    window.location.href = path;
+  };
 
   handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -47,6 +50,10 @@ class RegisterForm extends React.Component {
       [name]: type === 'checkbox' ? checked : value,
       customerAgreementChecked: name === 'customerAgreementChecked' ? checked : this.state.customerAgreementChecked
     });
+  }
+
+  handleConfirmPasswordChange = (event) => {
+    this.setState({ confirmPassword: event.target.value });
   }
 
   setImage = (preview) => {
@@ -66,12 +73,18 @@ class RegisterForm extends React.Component {
   handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Verificar si el checkbox de acuerdo del cliente está marcado
+    if (this.state.password !== this.state.confirmPassword) {
+      this.setState({
+        errors: { confirmPassword: 'Las contraseñas no coinciden' }
+      });
+      return;
+    }
+
     if (!this.state.customerAgreementChecked) {
       this.setState({
         errors: { customerAgreement: 'Debe aceptar el acuerdo del cliente' }
       });
-      return; // Detener el envío del formulario si el checkbox no está marcado
+      return;
     }
 
     try {
@@ -105,7 +118,7 @@ class RegisterForm extends React.Component {
       });
   
       if (response.ok) {
-        alert('Registro exitoso');
+        alert('Registro exitoso, para poder iniciar sesión debes confirmar tu correo electrónico con el mail que te hemos enviado.');
         window.location.href = "/";
       } else {
         const data = await response.json();
@@ -148,49 +161,61 @@ class RegisterForm extends React.Component {
                 <img className='edit-icon' src={editIcon} onClick={this.onClick} />
                 {this.state.modal && (<Modal modal={this.state.modal} toggle={() => this.setState({modal: false})} setImage={this.setImage}/>)}
               </div>
-              <div className='register-form-group'>
-                <input type='text' id='username' name='username' className='form-input' placeholder='Nombre de usuario*' value={this.state.username} onChange={this.handleChange} required />
+              <div className="register-form-row">
+                <div className='register-form-group left'>
+                  <input type='text' id='username' name='username' className='register-form-input' placeholder='Usuario*' value={this.state.username} onChange={this.handleChange} required />
+                </div>
+                <div className='register-form-group right'>
+                  <input type='email' id='email' name='email' className='register-form-input' placeholder='Correo electrónico*' value={this.state.email} onChange={this.handleChange} required />
+                </div>
               </div>
               <div className='register-form-group'>
-                <input type='email' id='email' name='email' className='form-input' placeholder='Correo electrónico*' value={this.state.email} onChange={this.handleChange} required />
+                <input
+                  type={this.state.showPassword ? 'text' : 'password'} // Mostrar contraseña si showPassword es true
+                  id='password'
+                  name='password'
+                  className='register-form-input'
+                  placeholder='Contraseña*'
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                  required/>
+                  <img src={this.state.showPassword ? eyeSlash : eye} alt="visibility" className="visibility-icon" onClick={this.togglePasswordVisibility} />
+
               </div>
               <div className='register-form-group'>
-              
-              <input
-                type={this.state.showPassword ? 'text' : 'password'} // Mostrar contraseña si showPassword es true
-                id='password'
-                name='password'
-                className='form-input'
-                placeholder='Contraseña*'
-                value={this.state.password}
-                onChange={this.handleChange}
-                required/>
-                <a type="button" onClick={this.togglePasswordVisibility}>
-                  {this.state.showPassword ? <FontAwesomeIcon icon={faEye} />  : <FontAwesomeIcon icon={faEyeSlash} />}
-                </a>
+                <input
+                  type={this.state.showPassword ? 'text' : 'password'} // Mostrar contraseña si showPassword es true
+                  id='confirmPassword'
+                  name='confirmPassword'
+                  className='register-form-input'
+                  placeholder='Confirmar contraseña*'
+                  value={this.state.confirmPassword}
+                  onChange={this.handleConfirmPasswordChange}
+                  required
+                />
               </div>
               <div className='register-form-row'>
                 <div className='register-form-group left'>
-                  <input type='text' id='first_name' name='first_name' className='form-input' placeholder='Nombre*' value={this.state.first_name} onChange={this.handleChange} required />
+                  <input type='text' id='first_name' name='first_name' className='register-form-input' placeholder='Nombre*' value={this.state.first_name} onChange={this.handleChange} required />
                 </div>
                 <div className='register-form-group right'>
-                  <input type='text' id='last_name' name='last_name' className='form-input' placeholder='Apellidos*' value={this.state.last_name} onChange={this.handleChange} required />
+                  <input type='text' id='last_name' name='last_name' className='register-form-input' placeholder='Apellidos*' value={this.state.last_name} onChange={this.handleChange} required />
                 </div>
               </div>
               <div className='register-form-group'>
-                <input type='text' id='address' name='address' className='form-input' placeholder='Dirección*' value={this.state.address} onChange={this.handleChange} required />
+                <input type='text' id='address' name='address' className='register-form-input' placeholder='Dirección*' value={this.state.address} onChange={this.handleChange} required />
               </div>
               <div className='register-form-row'>
                 <div className='register-form-group left'>
-                  <input type='text' id='postal_code' name='postal_code' className='form-input' placeholder='Código postal*' value={this.state.postal_code} onChange={this.handleChange} required />
+                  <input type='text' id='postal_code' name='postal_code' className='register-form-input' placeholder='CP*' value={this.state.postal_code} onChange={this.handleChange} required />
                 </div>
                 <div className='register-form-group right'>
-                  <input type='text' id='city' name='city' className='form-input' placeholder='Ciudad*' value={this.state.city} onChange={this.handleChange} required />
+                  <input type='text' id='city' name='city' className='register-form-input' placeholder='Ciudad*' value={this.state.city} onChange={this.handleChange} required />
                 </div>
               </div>
               {this.state.is_designer &&
-              <div className='form-textarea-group'>
-                <textarea id='description' name='description' className='form-textarea' placeholder='Descripción' maxLength={500} value={this.state.description} onChange={this.handleChange}></textarea>
+              <div className='register-form-group textarea'>
+                <textarea id='description' name='description' className='register-form-textarea' placeholder='Descripción' maxLength={500} value={this.state.description} onChange={this.handleChange}></textarea>
               </div>
               }
               <div className="role-selector">
@@ -203,14 +228,15 @@ class RegisterForm extends React.Component {
                   ¿Eres impresor?
                 </label>
               </div>
-                <label htmlFor='customerAgreement' className='register-checkbox-label'>
-                  <input type='checkbox' id='customerAgreement' name='customerAgreementChecked' checked={this.state.customerAgreementChecked} onChange={this.handleChange} />
-                  Acepto los términos y condiciones descritos <a href="/terminos">aquí*</a>
-                </label>
+              <label htmlFor='customerAgreement' className='register-checkbox-label agreement'>
+                <input type='checkbox' id='customerAgreement' name='customerAgreementChecked' checked={this.state.customerAgreementChecked} onChange={this.handleChange} />
+                <p className="agreement-text">Acepto los términos y condiciones descritos <a href="/terminos">aquí*</a></p>
+              </label>
               <div className="error-messages-container">
                 {errors.username && <p className="register-error-message">{'Nombre de usuario: ' + errors.username[0]}</p>}
                 {errors.email && <p className="register-error-message">{'Email: ' + errors.email[0]}</p>}
                 {errors.password && <p className="register-error-message">{'Contraseña: ' + errors.password[0]}</p>}
+                {errors.confirmPassword && <p className="register-error-message">{'Confirmar contraseña: ' + errors.confirmPassword}</p>} {/* Nuevo mensaje de error para confirmar contraseña */}
                 {errors.first_name && <p className="register-error-message">{'Nombre: ' + errors.first_name[0]}</p>}
                 {errors.last_name && <p className="register-error-message">{'Apellidos: ' + errors.last_name[0]}</p>}
                 {errors.address && <p className="register-error-message">{'Dirección: ' + errors.address[0]}</p>}
@@ -233,4 +259,3 @@ RegisterForm.propTypes = {
   modal: PropTypes.bool,
   toggle: PropTypes.func,
 };
-

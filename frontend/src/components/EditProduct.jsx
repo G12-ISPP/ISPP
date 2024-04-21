@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './AddProduct.css';
+import PageTitle from './PageTitle/PageTitle';
+import Text, { TEXT_TYPES } from "./Text/Text";
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
 const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
@@ -82,7 +84,8 @@ const EditProduct = () => {
             const products = await responseProducts.json();
             let count = 0;
             products.forEach(product => {
-              if (product.show) {
+              
+              if (product.show && product.id.toString() !== id) {
                 count++;
               }
             });
@@ -158,16 +161,26 @@ const EditProduct = () => {
       errors.name = 'El nombre es obligatorio';
     }
 
+    if(name.trim().length<3||name.length>30){
+      errors.name = 'El nombre debe tener entre 3 y 30 caracteres';
+    }
+
     if (!description.trim()) {
       errors.description = 'La descripción es obligatoria';
     }
 
+    if(description.trim().length<20||description.length>200){
+      errors.description = 'La descripción debe tener entre 20 y 200 caracteres';
+    }
+
     if(show && seller_plan && designer_plan && countShow >= 8){
       errors.show = 'No puedes más destacar más de 8 productos';
-    } else if(show && seller_plan && countShow >= 5){
-      errors.show = 'Para destacar más de 5 productos necesitas un plan de diseñador';
-    } else if(show && designer_plan && countShow >= 3){
+    } else if(show && !seller_plan && designer_plan && countShow >= 3){
       errors.show = 'Para destacar más de 3 productos necesitas un plan de vendedor';
+    } else if(show && seller_plan && !designer_plan && countShow >= 5){
+      errors.show = 'Para destacar más de 5 productos necesitas un plan de diseñador';
+    } else if (show && !seller_plan && !designer_plan) {
+      errors.show = 'Para destacar productos debe adquirir un plan';
     }
 
     if (!/^\d+(\.\d{1,2})?$/.test(price)) {
@@ -239,66 +252,82 @@ const EditProduct = () => {
 
   return (
     <>
-      <h1 className='title'>Editar Producto</h1>
-      <div className='main'>
-        {state.imagePreview && (
-          <img src={state.imagePreview} alt='Preview' className='image-preview-container' />
-        )}
-        <form className='form' onSubmit={handleSubmit}>
-          <div className='form-group'>
-            <label htmlFor='file' className='upload'>
-              Foto
-            </label>
-            <div className='file-select'>
-              <input type='file' id='file' name='file' className='form-input' accept='.jpg, .jpeg, .png' onChange={handleFileChange} />
-              {state.errors.file && <div className="error">{state.errors.file}</div>}
+      <div className="upload-product-page">
+
+        <PageTitle title="Subir producto" />
+        <div className="upload-product-title-container">
+          <Text type={TEXT_TYPES.TITLE_BOLD} text='Editar producto' />
+        </div>
+
+        <div className="upload-product-container">
+
+          <div className="left-upload-product-container">
+            <div className="product-image">
+              {state.imagePreview && <img src={state.imagePreview} alt='Preview' className='product-image-preview'/>}
             </div>
           </div>
-          {state.productType === 'D' && (
-            <div className='form-group'>
-              <label htmlFor="file2" className='upload'> Sube tu diseño:</label>
-              <div className='file-select'>
-                <input type='file' id='file2' name='file2' className='form-input' accept='.stl'
-                  onChange={handleDesignChange} />
-                {state.errors.design && <div className="error">{state.errors.design}</div>}
-              </div>
+          <div className="right-upload-product-container">
+            <div className="upload-product-data-container">
+              <h2 className="upload-product-data-section-title">Datos sobre el producto</h2>
+
+              <form className="upload-product-data-form" onSubmit={handleSubmit}>
+                <div className='form-group'>
+                  {state.file && <p className="image-name"><strong>Imagen seleccionada: </strong>{state.file.name}</p>}
+                  <label htmlFor="file" className={state.file ? "upload-image-button loaded" : "upload-image-button"}>{state.file ? "Cambiar imagen" : "Seleccionar imagen"}</label>
+                  <input type='file' id='file' name='file' className='form-input upload' accept='.jpg, .jpeg, .png' onChange={handleFileChange} />
+                  {state.errors.file && <div className="error">{state.errors.file}</div>}
+                </div>
+
+                {state.productType === 'D' && (
+                  <div className='form-group'>
+                    {state.design && <p className="design-name"><strong>Diseño seleccionado: </strong>{state.design.name}</p>}
+                    <label htmlFor="file2" className={state.design ? "upload-design-button loaded" : "upload-design-button"}>{state.design ? "Cambiar diseño" : "Seleccionar diseño"}</label>
+                    <input type='file' id='file2' name='file2' className='form-input upload' accept='.stl' onChange={handleDesignChange} />
+                    {state.errors.design && <div className="error">{state.errors.design}</div>}
+                  </div>
+                )}
+
+                <div className='form-group'>
+                  <label htmlFor='name' className='name label'>Nombre</label>
+                  <input type='text' id='name' name='name' className='form-input' value={state.name} onChange={(e) => setState(prevState => ({ ...prevState, name: e.target.value }))} placeholder="Cerdito rosa" />
+                  {state.errors.name && <div className="error">{state.errors.name}</div>}
+                </div>
+
+                <div className='form-group'>
+                  <label htmlFor='description' className='description label'>Descripción</label>
+                  <textarea id='description' name='description' className='form-input' value={state.description} onChange={(e) => setState(prevState => ({ ...prevState, description: e.target.value }))} placeholder="Pieza de un cerdo con dimensiones de 20x12 cm, perfecto estado" />
+                  {state.errors.description && <div className="error">{state.errors.description}</div>}
+                </div>
+
+                {state.productType !== 'D' && (
+                  <div className='form-group'>
+                    <label htmlFor='stock-quantity' className='stock_quantity label'>Cantidad</label>
+                    <input type='number' id='stock-quantity' name='stock-quantity' className='form-input' value={state.stockQuantity} min={1} max={100} onChange={(e) => setState({ stockQuantity: e.target.value })} placeholder="2" />
+                    {state.errors.stockQuantity && <div className="error">{state.errors.stockQuantity}</div>}
+                  </div>
+                )}
+
+                <div className='form-group'>
+                  <label htmlFor='price' className='price label'>Precio</label>
+                  <input type='text' id='price' name='price' className='form-input' value={state.price} onChange={(e) => setState(prevState => ({ ...prevState, price: e.target.value }))} placeholder="5.99" />
+                  {state.errors.price && <div className="error">{state.errors.price}</div>}
+                </div>
+
+                <div className='form-group'>
+                  <div className="form-group-contents">
+                    <input type='checkbox' id='show' name='show' checked={state.show} onChange={(e) => setState(prevState => ({ ...prevState, show: e.target.checked }))} />
+                    <label htmlFor='show' className='show label'>Destacar el producto</label>
+                  </div>
+                  {state.errors.show && <div className="error">{state.errors.show}</div>}
+                </div>
+              </form>
             </div>
-          )}
-          <div className='form-group'>
-            <label htmlFor='name'>Nombre</label>
-            <input type='text' id='name' name='name' className='form-input' value={state.name} onChange={(e) => setState(prevState => ({ ...prevState, name: e.target.value }))} placeholder="Cerdito rosa" />
-            {state.errors.name && <div className="error">{state.errors.name}</div>}
+            <button className='large-btn button' type='button' onClick={handleSubmit}>Editar producto</button>
           </div>
-          <div className='form-group'>
-            <label htmlFor='description'>Descripción</label>
-            <textarea id='description' name='description' className='form-input' value={state.description} onChange={(e) => setState(prevState => ({ ...prevState, description: e.target.value }))} placeholder="Pieza de un cerdo con dimensiones de 20x12 cm, perfecto estado" />
-            {state.errors.description && <div className="error">{state.errors.description}</div>}
-          </div>
-          <div className='form-group'>
-            <label htmlFor='show'>
-              Destacar el producto
-              <input type='checkbox' id='show' name='show' checked={state.show} onChange={(e) => setState(prevState => ({ ...prevState, show: e.target.checked }))} />
-              {state.errors.show && <div className="error">{state.errors.show}</div>}
-            </label>
-          </div>
-          <div className='form-group'>
-            <label htmlFor='price'>Precio</label>
-            <input type='text' id='price' name='price' className='form-input' value={state.price} onChange={(e) => setState(prevState => ({ ...prevState, price: e.target.value }))} placeholder="5.99" />
-            {state.errors.price && <div className="error">{state.errors.price}</div>}
-          </div>
-          {state.productType !== 'D' && (
-            <div className='form-group'>
-              <label htmlFor='stock-quantity'>Cantidad</label>
-              <input type='number' id='stock-quantity' name='stock-quantity' className='form-input' value={state.stockQuantity} min={1} max={100} onChange={(e) => setState(prevState => ({ ...prevState, stockQuantity: e.target.value }))} placeholder="2" />
-              {state.errors.stockQuantity && <div className="error">{state.errors.stockQuantity}</div>}
-            </div>
-          )}
-        </form>
-        {Object.keys(state.errors).length > 0 && (
-          <div className="error-message">Por favor, corrija los errores en el formulario</div>
-        )}
-      </div>
-      <button className='add-product-button' type='button' onClick={handleSubmit}>Guardar Cambios</button>
+
+        </div>
+
+      </div> 
     </>
   );
 };

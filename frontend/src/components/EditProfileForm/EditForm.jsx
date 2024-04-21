@@ -21,10 +21,15 @@ class EditProfileForm extends React.Component {
        preview: null,
        modal: false,
        username: '',
+       first_name: '',
+       last_name: '',
        email: '',
        address: '',
        postal_code: '',
        city: '',
+       description: '',
+       is_designer: false,
+       is_printer: false,
        errors: {},
        image_url: null,
      };
@@ -79,10 +84,15 @@ checkUserPermission = async () => {
        this.setState({
          id: userData.id,
          username: userData.username,
+         first_name: userData.first_name,
+         last_name: userData.last_name,
          email: userData.email,
          address: userData.address,
          postal_code: userData.postal_code,
          city: userData.city,
+         description: userData.description,
+         is_designer: userData.is_designer,
+         is_printer: userData.is_printer,
          image_url: userData.image_url ? userData.image_url : avatar,
          preview: userData.image_url ? userData.image_url : avatar,
        });
@@ -110,7 +120,36 @@ checkUserPermission = async () => {
 
  handleSubmit = async (event) => {
   event.preventDefault();
+
+  /*
+  this.state.errors = {};
  
+  if(this.state.first_name.trim().length <4 || this.state.first_name.trim().length > 20){
+    this.state.errors.first_name = ['El nombre debe tener entre 4 y 20 caracteres'];
+  }
+
+  if(this.state.last_name.trim().length <4 || this.state.last_name.trim().length > 40){
+    this.state.errors.last_name = ['Los apellidos debe tener entre 4 y 40 caracteres'];
+  }
+
+  if(this.state.address.trim().length <4 || this.state.address.trim().length > 40){
+    this.state.errors.address = ['La dirección debe tener entre 4 y 40 caracteres'];
+  }
+
+  if(this.state.description.trim().length <20 || this.state.description.trim().length > 200){
+    this.state.errors.description = ['La descripción debe tener entre 20 y 200 caracteres'];
+  }
+
+  if(typeof postal_code === 'undefined'||postal_code < 1000 || postal_code > 52999 || postal_code.toString().includes('.')|| postal_code.toString().includes(',')){
+    this.errors.postal_code = ['El código postal debe ser un número entero entre 1000 y 52999'];
+  }
+
+  if (Object.keys(this.state.errors).length > 0) {
+    return;
+  }
+
+  */
+
   try {
     const base64Response = await fetch(this.state.preview);
     const blob = await base64Response.blob();
@@ -123,9 +162,14 @@ checkUserPermission = async () => {
      formData.append('address', this.state.address);
      formData.append('postal_code', this.state.postal_code);
      formData.append('city', this.state.city);
+      formData.append('first_name', this.state.first_name);
+      formData.append('last_name', this.state.last_name);
+      formData.append('description', this.state.description);
+      formData.append('is_designer', this.state.is_designer);
+      formData.append('is_printer', this.state.is_printer);
  
      if(this.state.preview !== avatar){
-      formData.append('profile_picture', blob, `profile_picture_${this.state.username}.png`);
+      formData.append('profile_picture', blob, `profile_picture_${this.state.username}.webp`);
       }
  
      const response = await fetch(url, {
@@ -169,9 +213,13 @@ checkUserPermission = async () => {
                 <img className='edit-icon' src={editIcon} onClick={this.onClick} />
                 {this.state.modal && (<Modal modal={this.state.modal} toggle={() => this.setState({modal: false})} setImage={this.setImage}/>)}
               </div>
+              <div className='edit-profile-form-group'>
+                 <label htmlFor='first_name'>Nombre</label>
+                 <input type='text' id='first_name' name='first_name' className='form-input' placeholder='Pablo' value={this.state.first_name} onChange={this.handleChange} required />
+               </div>
                <div className='edit-profile-form-group'>
-                 <label htmlFor='email'>Correo electrónico</label>
-                 <input type='email' id='email' name='email' className='form-input' placeholder='ejemplo@ejemplo.com' value={this.state.email} onChange={this.handleChange} required />
+                 <label htmlFor='last_name'>Apellidos</label>
+                 <input type='text' id='last_name' name='last_name' className='form-input' placeholder='Pablo' value={this.state.last_name} onChange={this.handleChange} required />
                </div>
                <div className='edit-profile-form-group'>
                  <label htmlFor='address'>Dirección</label>
@@ -186,13 +234,33 @@ checkUserPermission = async () => {
                    <label htmlFor='city'>Ciudad</label>
                    <input type='text' id='city' name='city' className='form-input' placeholder='Ciudad Ejemplo' value={this.state.city} onChange={this.handleChange} required />
                  </div>
+                 {this.state.is_designer && (
+                    <div className='edit-profile-form-group'>
+                      <label htmlFor='description'>Descripción</label>
+                      <input type='text' id='description' name='description' className='form-input-large' placeholder='Ciudad Ejemplo' value={this.state.description} onChange={this.handleChange} required />
+                    </div>
+                 )}
+                 <div className="role-selector">
+                  <label htmlFor='is_designer' >
+                    <input type='checkbox' id='is_designer' name='is_designer' checked={this.state.is_designer} onChange={() => this.setState({ is_designer: !this.state.is_designer })} />
+                    ¿Eres diseñador?
+                  </label>
+                  <label htmlFor='is_printer'>
+                    <input type='checkbox' id='is_printer' name='is_printer' checked={this.state.is_printer} onChange={() => this.setState({ is_printer: !this.state.is_printer })} />
+                    ¿Eres impresor?
+                  </label>
+                </div>
                </div>
+
                <div className="error-messages-container">
-                {errors.username && <p className="edit-profile-error-message">{'Nombre de usuario: ' + errors.username[0]}</p>}
-                {errors.email && <p className="edit-profile-error-message">{'Email: ' + errors.email[0]}</p>}
-                {errors.address && <p className="edit-profile-error-message">{'Dirección: ' + errors.address[0]}</p>}
-                {errors.postal_code && <p className="edit-profile-error-message">{'Código postal: ' + errors.postal_code[0]}</p>}
-                {errors.city && <p className="edit-profile-error-message">{'Ciudad: ' + errors.city[0]}</p>}
+                {this.state.errors.username && <p className="edit-profile-error-message">{'Nombre de usuario: ' + this.state.errors.username[0]}</p>}
+                {this.state.errors.email && <p className="edit-profile-error-message">{'Email: ' + this.state.errors.email[0]}</p>}
+                {this.state.errors.address && <p className="edit-profile-error-message">{'Dirección: ' + this.state.errors.address[0]}</p>}
+                {this.state.errors.postal_code && <p className="edit-profile-error-message">{'Código postal: ' + this.state.errors.postal_code[0]}</p>}
+                {this.state.errors.city && <p className="edit-profile-error-message">{'Ciudad: ' + this.state.errors.city[0]}</p>}
+                {this.state.errors.first_name && <p className="edit-profile-error-message">{'Nombre: ' + this.state.errors.first_name[0]}</p>}
+                {this.state.errors.last_name && <p className="edit-profile-error-message">{'Apellido: ' + this.state.errors.last_name[0]}</p>}
+                {this.state.errors.description && <p className="edit-profile-error-message">{'Descripción: ' + this.state.errors.description[0]}</p>}
               </div>
                <Button type={BUTTON_TYPES.AUTHENTICATION} text='Guardar cambios' action='submit' />
              </form>

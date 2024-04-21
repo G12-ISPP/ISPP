@@ -1,0 +1,39 @@
+.modal-comment {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-comment-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+.modal-comment-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#comment {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    resize: both;
+    min-height: 80px;
+    max-height: 150px;
+    min-width: 150px; 
+    max-width: 250px;
+}

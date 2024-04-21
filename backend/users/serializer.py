@@ -4,6 +4,7 @@ from .models import CustomUser
 
 class UserSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
+    following_count = serializers.SerializerMethodField()
     class Meta:
         model = CustomUser
         fields = '__all__'
@@ -30,6 +31,9 @@ class UserSerializer(serializers.ModelSerializer):
         else:
             return None
     
+    def get_following_count(self, obj):
+        return obj.followings.count()
+    
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
@@ -38,4 +42,4 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class ProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['email', 'city', 'postal_code', 'address', 'profile_picture']
+        fields = ['email', 'city', 'postal_code', 'address', 'profile_picture', 'first_name', 'last_name', 'description','is_designer','is_printer']
