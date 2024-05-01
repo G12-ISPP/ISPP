@@ -65,11 +65,12 @@
 .post-detail-info-name {
     margin: 0;
     font-size: 2.2em;
-    overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow-wrap: anywhere;
+    word-wrap: break-word;
+    overflow: hidden;
 }
 
 .post-detail-info-owner {
@@ -108,6 +109,7 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 5;
     overflow-wrap: anywhere;
+    word-wrap: break-word;
 }
 
 .post-detail-info-container .large-btn.button {
@@ -123,8 +125,10 @@
     width: 100%;
 }
 
-.post-detail-comment-description{
+.post-detail-comment-description {
     padding: 1em;
+    word-wrap: break-word;
+    overflow: hidden;
 }
 
 .post-detail-section {

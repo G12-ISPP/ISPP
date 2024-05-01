@@ -53,6 +53,7 @@
     margin-top: 10px;
 }
 
+
 .report-buttons button {
     white-space: nowrap;
     overflow: hidden;
@@ -89,16 +90,16 @@
     box-shadow: 0 0 10px 3px rgb(0, 0, 0, 0.25);
 }
 
-.report-list-checkbox:checked~.report-list-slider::before {
+.report-list-checkbox:checked ~ .report-list-slider::before {
     transform: translateX(30px);
     box-shadow: 0 0 10px 3px rgb(0, 0, 0, 0.25);
 }
 
-.report-list-checkbox:checked~.report-list-slider {
+.report-list-checkbox:checked ~ .report-list-slider {
     background-color: #2196F3;
 }
 
-.report-list-checkbox:active~.report-list-slider::before {
+.report-list-checkbox:active ~ .report-list-slider::before {
     transform: translate(0);
 }
 
@@ -148,15 +149,15 @@
     transition: .4s;
 }
 
-input:checked+.report-slider {
+input:checked + .report-slider {
     background-color: #2196F3;
 }
 
-input:focus+.report-slider {
+input:focus + .report-slider {
     box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked+.report-slider:before {
+input:checked + .report-slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
@@ -176,17 +177,26 @@ input:checked+.report-slider:before {
     display: flex;
     justify-content: space-around;
     margin: 10px auto;
-  }
+}
 
-/* Estilos para el prefijo "reports" */
 .reports-image-container {
-    width: 100%;
-    margin-top: 0;
-    overflow: hidden;
+    width: 75%;
+    margin: 0 auto;
+/ overflow: hidden;
 }
 
 .reports-image {
     width: 100%;
-    height: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 75%;
     object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 20px;
+    box-sizing: border-box;
 }
+
+

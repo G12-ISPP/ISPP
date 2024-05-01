@@ -2,7 +2,6 @@ import React from "react";
 import "./ReportsList.css";
 import Text, { TEXT_TYPES } from "../Text/Text";
 import PageTitle from '../PageTitle/PageTitle';
-import { useState } from 'react';
 
 const backend = import.meta.env.VITE_APP_BACKEND;
 
@@ -187,18 +186,6 @@ export default class ReportsList extends React.Component {
 
               </div>
             </div>
-            <div>
-              {/* <label className="report-list-switch">
-                <input type="checkbox" className="report-list-checkbox">
-                  <div className="report-list-slider"></div>
-                </input>
-              </label>
-              <label className="report-list-switch">
-                <input type="checkbox" className="report-list-checkbox">
-                  <div className="report-list-slider"></div>
-                </input>
-              </label> */}
-            </div>
             {filteredReports.length === 0 && <div style={{ margin: 'auto', display: 'flex', justifyContent: 'center' }}>
                 <p>No hay reportes</p>
               </div>}
@@ -207,26 +194,28 @@ export default class ReportsList extends React.Component {
                 const reason = REASONS.find(([key]) => key === report.reason);
                 const reasonText = reason ? reason[1] : 'Razón desconocida';
                 return (
-                  <div key={report.id} className="report-user-card">
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
-                      <p className="report-reasonBox">{report.product ? 'Reporte de producto' : 'Reporte de usuario'}</p>
-                      <p className="report-reasonBox">{reasonText}</p>
+                    <div key={report.id} className="report-user-card">
+                      <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <p className="report-reasonBox">{report.product ? 'Reporte de producto' : 'Reporte de usuario'}</p>
+                        <p className="report-reasonBox">{reasonText}</p>
+                      </div>
+                      <h3>{report.title}</h3>
+                      <p>{report.description}</p>
+                      <div className="report-buttons">
+                        <button className="plain-btn button green"
+                                onClick={() => window.location.href = `/user-details/${report.author_user}`}>Ver autor
+                        </button>
+                        <button className="plain-btn button green"
+                                onClick={() => window.location.href = report.product ? `/product-details/${report.product}` : `/user-details/${report.user}`}>{report.product ? 'Ver producto' : 'Ver usuario'} </button>
+                        <button className="plain-btn button red"
+                                onClick={() => report.product ? this.deleteProduct(report.product) : this.deleteUser(report.user)}>
+                          Eliminar
+                        </button>
+                      </div>
+                      <div className="reports-image-container">
+                        <img src={report.image} alt="report" className="reports-image"/>
+                      </div>
                     </div>
-                    <h3>{report.title}</h3>
-                    <p>{report.description}</p>
-                    <div className="reports-image-container">
-                      <img src={report.image} alt="report" className="reports-image"/>
-                    </div>
-
-
-                    <div className="report-buttons">
-                      <button className="plain-btn button green" onClick={() => window.location.href = `/user-details/${report.author_user}`}>Ver autor</button>
-                      <button className="plain-btn button green" onClick={() => window.location.href = report.product ? `/product-details/${report.product}` : `/user-details/${report.user}`}>{report.product ? 'Ver producto' : 'Ver usuario'} </button>
-                      <button className="plain-btn button red" onClick={() => report.product ? this.deleteProduct(report.product) : this.deleteUser(report.user)}>
-                        Eliminar
-                      </button>
-                    </div>
-                  </div>
                 );
               })}
             </div>
