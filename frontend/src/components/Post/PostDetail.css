@@ -16,10 +16,13 @@
     margin: auto;
 }
 
+.peta {}
+
 .post-detail-container {
     display: flex;
     justify-content: space-around;
     margin-bottom: 2em;
+    word-wrap: break-word;
 }
 
 
@@ -33,14 +36,16 @@
     display: flex;
     align-items: center;
     gap: 1em;
+    word-wrap: break-word;
 }
 
 .right-post-detail-container {
-    display: flex;
+    padding: 1.5em;
     flex-direction: column;
     width: 50%;
     justify-content: center;
     align-items: center;
+    word-wrap: break-word;
 }
 
 .post-detail-img-container {
@@ -58,9 +63,7 @@
     border-radius: 0.8em;
 }
 
-.post-detail-info-container {
-    display: grid;
-}
+
 
 .post-detail-info-name {
     margin: 0;
@@ -71,13 +74,6 @@
     overflow-wrap: anywhere;
     word-wrap: break-word;
     overflow: hidden;
-}
-
-.post-detail-info-owner {
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-    margin-bottom: 1.2em;
 }
 
 .post-detail-info-user {

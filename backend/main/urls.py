@@ -24,7 +24,6 @@ from order.views import create_order, confirm_order, cancel_order, mark_products
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('tasks/', include('tasks.urls')),
     path('products/', include('products.urls')),
     path('designs/', include('custom_design.urls')),
     path('users/', include('users.urls')),

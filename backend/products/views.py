@@ -1,21 +1,18 @@
-from rest_framework import viewsets
-from rest_framework.decorators import action
-from products.models import Product
-from products.serializer import ProductSerializer
-from django.http import JsonResponse
-from rest_framework.decorators import api_view
-from django.views.decorators.csrf import csrf_exempt
-from .models import Product
-from django.http import JsonResponse
-from django.core.files.storage import FileSystemStorage
 from django.conf import settings
-from rest_framework.response import Response
-from rest_framework import status
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from users.models import CustomUser
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework import status
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
+from products.serializer import ProductSerializer
+from users.models import CustomUser
+from .models import Product
 
 ruta_backend = settings.RUTA_BACKEND
 ruta_frontend = settings.RUTA_FRONTEND
@@ -130,6 +127,7 @@ class ProductsView(viewsets.ModelViewSet):
     def get_product_data(self, request, pk=None):
         product = self.get_object()
         serializer = self.get_serializer(product)
+        print(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
   
     @action(detail=True, methods=['put'])
