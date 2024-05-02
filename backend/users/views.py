@@ -17,7 +17,6 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import activate
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
-from chat.views import get_user_from_token
 from paypalrestsdk import Payment
 from rest_framework import generics
 from rest_framework import viewsets, status
@@ -29,6 +28,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from chat.views import get_user_from_token
+from products.models import Product
 from users.serializer import ProfileUpdateSerializer
 from users.serializer import UserSerializer
 from .models import CustomUser
@@ -143,7 +144,8 @@ class UserCreateAPIView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         errors = {}
         password = request.data.get('password')
-        if len(password.replace(" ", "")) < 8 or not re.search(r'\d', password) or not re.search(r'[a-z]', password) or not re.search(r'[!@#$%^&*()-_=+{};:,<.>]', password) or not re.search(r'[A-Z]', password):
+
+        if re.match(r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_=+{};:,<.>]).{8,}$', password) is None:
             errors['password'] = ['La contraseña debe tener al menos 8 caracteres y contener al menos un dígito, una letra mayúscula, una letra minúscula y un carácter especial']
 
         postal_code = request.data.get('postal_code')
@@ -333,6 +335,8 @@ def delete_plan(request):
     if request.data['planName'] == 'designer_plan':
         user.designer_plan = False
         user.designer_plan_date = None
+    if not user.designer_plan and not user.seller_plan:
+        Product.objects.filter(seller=user).update(show=False)
     user.save()
     return JsonResponse({'success': 'Plan cancelado exitosamente'}, status=201)
 

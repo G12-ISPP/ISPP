@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'coreapi',
     # Modules
-    'tasks',
     'users',
     'opinion',
     'order',

@@ -216,6 +216,7 @@ def update_design_status(request, design_id):
 @api_view(['GET'])
 @csrf_exempt
 def loguedUser(request):
+    print(request.user)
     if request is None:
         return Response({"message": "La solicitud es nula"}, status=status.HTTP_400_BAD_REQUEST)
     
