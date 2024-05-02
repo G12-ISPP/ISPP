@@ -78,6 +78,7 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
       setTimeout(fetchMessages, 200);
       setTimeout(() => {
         scrollToBottom();
+        setNewMessage('');
       }, 250); // Ajusta este tiempo si es necesario
     })
     .catch(error => {
