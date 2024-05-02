@@ -51,7 +51,8 @@ const Cart = ({
   const editProduct = (product, amount) => {
     let cartCopy = [...cart];
     let existingProduct = cartCopy.find(cartProduct => cartProduct.id === product.id);
-    if (existingProduct.product_type === 'D') {
+
+    if (existingProduct.product_type === 'D' && amount === 1) {
       alert('No puedes añadir más de un diseño al carrito')
       return;
     }
