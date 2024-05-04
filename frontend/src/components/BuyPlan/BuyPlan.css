@@ -227,6 +227,53 @@
     background-color: #EF233C;
 }
 
+.plan-confirmed-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2em 10em;
+}
+
+.plan-confirmed-page .plan-confirmed-container {
+    width: 50%;
+    padding: 1.5em 2em;
+    box-sizing: border-box;
+    border-radius: 1em;
+    background: #FFF;
+    box-shadow: rgba(50, 50, 105, 0.15) 0px 0.125em 0.3125em 0px, rgba(0, 0, 0, 0.05) 0px 0.0625em 0.0625em 0px;
+}
+
+.plan-confirmed-page .plan-confirmed-container .plan-confirmed-contents-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.plan-confirmed-page .plan-confirmed-container .plan-confirmed-contents-wrapper .logo-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.plan-confirmed-page .plan-confirmed-container .plan-confirmed-contents-wrapper .logo-container .logo {
+    width: 50%;
+}
+
+.plan-confirmed-page .plan-confirmed-container .plan-confirmed-contents-wrapper .plan-confirmed-text .plan-confirmed-text-primary {
+    font-size: 1.5em;
+    text-align: center;
+    color: #004040;
+    margin: 0 0 0.5em;
+}
+
+.plan-confirmed-page .plan-confirmed-container .plan-confirmed-contents-wrapper .plan-confirmed-text .plan-confirmed-text-secondary {
+    font-size: 1em;
+    font-weight: 600;
+    text-align: center;
+    color: #004040;
+    margin: 0;
+}
+
 
 @media screen and (max-width: 1430px) {
     .buy-plan-page {
@@ -258,11 +305,15 @@
     .buy-plan-slogan .slogan {
         font-size: 3em;
     }
+
+    .plan-confirmed-page {
+        margin: 1.5em;
+    }
 }
 
 @media screen and (max-width: 768px) {
     .buy-plan-page {
-        margin: 1.5em 1.5em;
+        margin: 1.5em;
     }
 
     .buy-plan-slogan .pre-slogan {
@@ -280,5 +331,9 @@
 
     .cancel-plan-modal .cancel-plan-modal-content .cancel-plan-modal-button-wrapper .cancel-plan-button {
         width: 50%;
+    }
+
+    .plan-confirmed-page .plan-confirmed-container {
+        width: 100%;
     }
 }
