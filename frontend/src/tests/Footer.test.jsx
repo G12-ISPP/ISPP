@@ -18,7 +18,10 @@ const messages = {
         'logo.png',
         'bxl-facebook-circle.svg',
         'bxl-instagram.svg',
-        'bxl-twitter.svg'
+        'bxl-twitter.svg',
+        'bxl-tiktok.svg',
+        'bxl-twitch.svg',
+        'bxl-youtube.svg'
     ],
     labels: {
         link: 'link',
