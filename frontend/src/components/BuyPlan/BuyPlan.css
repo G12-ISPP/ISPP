@@ -17,9 +17,8 @@
 }
 
 .buy-plan-slogan .slogan {
-    font-family: "Roboto Slab", serif;
     font-size: 4em;
-    font-weight: 800;
+    font-weight: 700;
     color: #002D2D;
     margin: 0;
     width: 100%;
@@ -229,65 +228,57 @@
 }
 
 
-h1{
-    font-size: 60px;
+@media screen and (max-width: 1430px) {
+    .buy-plan-page {
+        margin: 2em 5em;
+    }
 }
 
-h2{
-    font-size: 35px
+@media screen and (max-width: 1200px) {
+    .pricing-container .plan {
+        width: 100%;
+    }
+
+    .pricing-container .plan .plan-wrapper .buy-plan {
+        width: 30%;
+    }
+
+    .cancel-plan-modal .cancel-plan-modal-content .cancel-plan-modal-button-wrapper {
+        justify-content: center;
+    }
+
+    .cancel-plan-modal .cancel-plan-modal-content .cancel-plan-modal-button-wrapper .cancel-plan-button {
+        width: 20%;
+    }
+
+    .buy-plan-slogan .pre-slogan {
+        font-size: 2.5em;
+    }
+
+    .buy-plan-slogan .slogan {
+        font-size: 3em;
+    }
 }
 
-label{
-    font-size: 20px;
+@media screen and (max-width: 768px) {
+    .buy-plan-page {
+        margin: 1.5em 1.5em;
+    }
+
+    .buy-plan-slogan .pre-slogan {
+        font-size: 1.8em;
+    }
+
+    .buy-plan-slogan .slogan {
+        font-size: 2.2em;
+        padding: 0;
+    }
+
+    .pricing-container .plan .plan-wrapper .buy-plan {
+        width: 100%;
+    }
+
+    .cancel-plan-modal .cancel-plan-modal-content .cancel-plan-modal-button-wrapper .cancel-plan-button {
+        width: 50%;
+    }
 }
-
-input{
-    margin: 0 2vh;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 20px;
-}
-
-th, td {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-div.container{
-    margin-left: 5%;
-    margin-right: 5%;
-    font-size: 20px;
-}
-
-.plan-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.cancelar-plan-button {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.cancelar-plan-button-verde {
-    background-color: #004040;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    margin-left: 20px;
-}
-
-
