@@ -36,6 +36,7 @@
 .pricing-container .plan {
     position: relative;
     width: calc(33.333% - 20px);
+    max-width: 75em;
     background: #FFF;
     border-radius: 1em;
     padding: 1.2em 2em;
