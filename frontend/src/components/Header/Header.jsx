@@ -58,7 +58,7 @@ const Header = ({ cart, setCart }) => {
         const handleResize = () => {
             if (window.innerWidth > 1024) {
                 setMenuVisible(true);
-            } else {
+            } else if (window.innerWidth <= 1024 && menuVisible) {
                 setMenuVisible(false);
             }
         }
@@ -103,9 +103,6 @@ const Header = ({ cart, setCart }) => {
     const onToggleMenu = () => {
         setMenuVisible(!menuVisible);
         setIsHeaderFullScreen(!isHeaderFullScreen);
-
-        console.log(menuVisible);
-        console.log(isHeaderFullScreen);
 
         if (!menuVisible) {
             $(".header").parents("body").css("overflow", "hidden");
@@ -167,8 +164,6 @@ const Header = ({ cart, setCart }) => {
     const handleCartMouseLeave = () => {
         setActiveCart(false);
     }
-
-
 
     return (
         <div className={isHeaderFullScreen ? 'header-fullscreen' : 'header'}>
