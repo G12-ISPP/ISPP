@@ -2,7 +2,6 @@ import React from 'react';
 import './BuyPlan.css';
 import PageTitle from '../PageTitle/PageTitle';
 import { RxCross1 } from "react-icons/rx";
-import Button, { BUTTON_TYPES } from '../Button/Button';
 
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
@@ -47,17 +46,22 @@ class ModalDeletePlan extends React.Component {
     }
 
     render() {
-        console.log(this.props.planName);
         return (
             <>
-                <button className='cancelar-plan-button' onClick={() => this.setState({ show: true })}>Cancelar Plan</button>
+                <button className='buy-plan purchased' onClick={() => this.setState({ show: true })}>Cancelar</button>
                 {this.state.show && (
-                    <div className='modal'>
-                        <div className='modal-content'>
-                            <span className='close' onClick={() => this.setState({ show: false })}>&times;</span>
-                            <h3>¿Estás seguro de que quieres cancelar el plan?</h3>
-                            <button className='cancelar-plan-button' onClick={() => this.handleDeletePlan(this.props.planName)}>Sí</button>
-                            <button className='cancelar-plan-button-verde' onClick={() => this.setState({ show: false })}>No</button>
+                    <div className='cancel-plan-modal'>
+                        <div className='cancel-plan-modal-content'>
+                            <div className="close-cancel-plan-modal">
+                                <span className='close-cancel-plan-modal-icon' onClick={() => this.setState({ show: false })}>&times;</span>
+                            </div>
+                            <div className="cancel-modal-warning">
+                                <h3 className="warning-text">¿Está seguro de que quiere cancelar el plan?</h3>
+                            </div>
+                            <div className="cancel-plan-modal-button-wrapper">
+                                <button className='cancel-plan-button cancel' onClick={() => this.handleDeletePlan(this.props.planName)}>Sí</button>
+                                <button className='cancel-plan-button not-cancel' onClick={() => this.setState({ show: false })}>No</button>
+                            </div>
                         </div>
                     </div>
                 )}
@@ -108,183 +112,203 @@ export default class BuyPlan extends React.Component {
         }
     }
 
-    handlePlanChange = (planName) => {
+    handleButtonClick = async (planName) => {
         this.setState(prevState => ({
             plans: {
                 ...prevState.plans,
                 [planName]: !prevState.plans[planName]
+            },
+            errors: {}
+        }), async () => {
+    
+            if (this.state.buyer_plan && this.state.plans.buyerPlan) {
+                this.setState(prevState => ({
+                    errors: {
+                        ...prevState.errors,
+                        buyerplan: 'Ya has pagado por el plan comprador, por lo que no tienes que volver a pagar'
+                    }
+                }));
+                alert(this.state.errors.buyerplan);
             }
-        }));
-    }
-
-    handleSubmit = async (event) => {
-        event.preventDefault();
-        this.state.errors = {};
-        if (!this.state.plans.buyerPlan && !this.state.plans.sellerPlan && !this.state.plans.designerPlan) {
-            this.state.errors.empty = 'Debes seleccionar al menos un plan para comprar';
-            alert(this.state.errors.empty);
-        }
-        if (this.state.buyer_plan && this.state.plans.buyerPlan) {
-            this.state.errors.buyerplan = 'Ya has pagado por el plan comprador, por lo que no tienes que volver a pagar';
-            alert(this.state.errors.buyerplan);
-        }
-        if (this.state.seller_plan && this.state.plans.sellerPlan) {
-            this.state.errors.sellerPlan = 'Ya has pagado por el plan vendedor, por lo que no tienes que volver a pagar';
-            alert(this.state.errors.sellerPlan);
-        }
-        if (this.state.designer_plan && this.state.plans.designerPlan) {
-            this.state.errors.designerPlan = 'Ya has pagado por el plan diseñador, por lo que no tienes que volver a pagar';
-            alert(this.state.errors.designerPlan)
-        }
-
-        if (Object.keys(this.state.errors).length > 0) {
-            return;
-        }
-
-        let petition = backend + '/buyPlan/';
-        petition = petition.replace(/"/g, '');
-        const token = localStorage.getItem('token');
-
-        try {
-            const response = await fetch(petition, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(this.state.plans)
-            });
-
-            if (response.ok) {
-                const responseData = await response.json();
-                const paypalPaymentUrl = responseData.paypal_payment_url;
-                window.location.href = paypalPaymentUrl;
-            } else {
-                alert('No se pudo comprar el plan')
+            if (this.state.seller_plan && this.state.plans.sellerPlan) {
+                this.setState(prevState => ({
+                    errors: {
+                        ...prevState.errors,
+                        sellerPlan: 'Ya has pagado por el plan vendedor, por lo que no tienes que volver a pagar'
+                    }
+                }));
+                alert(this.state.errors.sellerPlan);
             }
-        } catch (error) {
-            console.error('Error:', error);
-        }
+            if (this.state.designer_plan && this.state.plans.designerPlan) {
+                this.setState(prevState => ({
+                    errors: {
+                        ...prevState.errors,
+                        designerPlan: 'Ya has pagado por el plan diseñador, por lo que no tienes que volver a pagar'
+                    }
+                }));
+                alert(this.state.errors.designerPlan);
+            }
+    
+            if (Object.keys(this.state.errors).length > 0) {
+                return;
+            }
+    
+            let petition = backend + '/buyPlan/';
+            petition = petition.replace(/"/g, '');
+            const token = localStorage.getItem('token');
+    
+            try {
+                const response = await fetch(petition, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(this.state.plans)
+                });
+    
+                if (response.ok) {
+                    const responseData = await response.json();
+                    const paypalPaymentUrl = responseData.paypal_payment_url;
+                    window.location.href = paypalPaymentUrl;
+                } else {
+                    alert('No se pudo comprar el plan.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
     }
+    
 
     render() {
         const { buyer_plan, seller_plan, designer_plan } = this.state;
-        console.log(buyer_plan, seller_plan, designer_plan);
-        return (
-            <>
-                <PageTitle title="Comprar Plan" />
-                <div style={{ textAlign: 'center', }}>
-                    <h1>Aqui tienes un pequeño resumen para que puedas decidir que plan comprar</h1>
-                    <div className='container'>
-                        <table>
-                            <tr>
-                                <th>Plan</th>
-                                <th>Ventajas</th>
-                                <th>Precio</th>
-                                <th>Adquirido</th>
-                            </tr>
-                            <tr>
-                                <td>Comprador</td>
-                                <td>No pagarás gastos de envío</td>
-                                <td>10€/mes</td>
-                                <td>
-                                    <div>
-                                        {this.state.buyer_plan ? (
-                                            <div className='plan-info'>
-                                                <span role="img" aria-label="tick">✓</span>
-                                                <ModalDeletePlan planName='buyer_plan' handleDeletePlan={this.handleDeletePlan} />
-                                            </div>
-                                        ) : (
-                                            <span role="img" aria-label="cross"><RxCross1 /></span>
-                                        )}
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Vendedor</td>
-                                <td>Podrás destacar cinco productos</td>
-                                <td>15€/mes</td>
-                                <td>
-                                    <div>
-                                        {this.state.seller_plan ? (
-                                            <div className='plan-info'>
-                                                <span role="img" aria-label="tick">✓</span>
-                                                <ModalDeletePlan planName='seller_plan' handleDeletePlan={this.handleDeletePlan} />
-                                            </div>) : (
-                                            <span role="img" aria-label="cross"><RxCross1 /></span>
-                                        )}
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Diseñador</td>
-                                <td>
-                                    Podrás destacar tres productos <br></br>
-                                    Aumenta tu visibilidad como diseñador
-                                </td>
-                                <td>15€/mes</td>
-                                <td>
-                                    <div>
-                                        {this.state.designer_plan ? (
-                                            <div className='plan-info'>
-                                                <span role="img" aria-label="tick">✓</span>
-                                                <ModalDeletePlan planName='designer_plan' handleDeletePlan={this.handleDeletePlan} />
-                                            </div>) : (
-                                            <span role="img" aria-label="cross"><RxCross1 /></span>
-                                        )}
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                        *Si compras varios planes, sus ventajas son acumulables
-                        <br></br>
-                        **Mensualmente se cobrará por los planes que hayas comprado hasta que los canceles
-                    </div>
-                    {(!this.state.buyer_plan || !this.state.seller_plan || !this.state.designer_plan) && (
-                        <form onSubmit={this.handleSubmit}>
-                            <h2 >Selecciona el plan que quieras comprar</h2>
-                            {!this.state.buyer_plan && (
-                                <label>
-                                    Plan Comprador
-                                    <input
-                                        type="checkbox"
-                                        style={{ transform: 'scale(2)' }}
-                                        checked={this.state.buyerPlan}
-                                        onChange={() => this.handlePlanChange('buyerPlan')}
-                                    />
-                                </label>
-                            )}
-                            <br />
-                            {!this.state.seller_plan && (
-                                <label>
-                                    Plan Vendedor
-                                    <input
-                                        type="checkbox"
-                                        style={{ transform: 'scale(2)' }}
-                                        checked={this.state.plans.sellerPlan}
-                                        onChange={() => this.handlePlanChange('sellerPlan')}
-                                    />
-                                </label>
-                            )}
-                            <br />
-                            {!this.state.designer_plan && (
-                                <label>
-                                    Plan Diseñador
-                                    <input
-                                        type="checkbox"
-                                        style={{ transform: 'scale(2)' }}
-                                        checked={this.state.plans.designerPlan}
-                                        onChange={() => this.handlePlanChange('designerPlan')}
-                                    />
-                                </label>
-                            )}
-                            <br />
 
-                            <button type="submit">Comprar</button>
-                        </form>
-                    )}
+        return (
+            <div className="buy-plan-page">
+                
+                <PageTitle title="Planes" />
+
+                <div className="buy-plan-slogan">
+                    <h2 className="pre-slogan">La comunidad de impresores que necesitas.</h2>
+                    <h2 className="slogan">¡Únete a la innovación!</h2>
                 </div>
-            </>
+
+                <div className="pricing-container">
+
+                    <div className={`plan ${this.state.buyer_plan ? 'purchased' : ''}`}>
+
+                        {this.state.buyer_plan && (
+                            <div className="purchased-text">
+                                ADQUIRIDO
+                            </div>
+                        )}
+
+                        <div className="plan-wrapper">
+
+                            <div className="main-info">
+                                <h3 className="plan-name">Comprador</h3>
+                                <div className="plan-price">
+                                    <h2 className="price">10€</h2>
+                                    <p className="period">/mes</p>
+                                </div>
+                            </div>
+
+                            <div className="plan-features">
+                                <p className="feature">
+                                    No pagarás gastos de envío.
+                                </p>
+                            </div>
+
+                            {this.state.buyer_plan ? (
+                                <ModalDeletePlan planName='buyer_plan' handleDeletePlan={this.handleDeletePlan} />
+                            ) : (
+                                <button className="buy-plan" onClick={() => this.handleButtonClick('buyerPlan')}>
+                                    Comprar
+                                </button>
+                            )}
+
+                        </div>
+                    </div>
+
+                    <div className={`plan ${this.state.seller_plan ? 'purchased' : ''}`}>
+                        
+                        {this.state.seller_plan && (
+                            <div className="purchased-text">
+                                ADQUIRIDO
+                            </div>
+                        )}
+
+                        <div className="plan-wrapper">
+                            <div className="main-info">
+                                <h3 className="plan-name">Vendedor</h3>
+                                <div className="plan-price">
+                                    <h2 className="price">15€</h2>
+                                    <p className="period">/mes</p>
+                                </div>
+                            </div>
+
+                            <div className="plan-features">
+                                <p className="feature">
+                                    Podrás destacar cinco productos.
+                                </p>
+                            </div>
+
+                            {this.state.seller_plan ? (
+                                <ModalDeletePlan planName='seller_plan' handleDeletePlan={this.handleDeletePlan} />
+                            ) : (
+                                <button className="buy-plan" onClick={() => this.handleButtonClick('sellerPlan')}>
+                                    Comprar
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className={`plan ${this.state.designer_plan ? 'purchased' : ''}`}>
+
+                        {this.state.designer_plan && (
+                            <div className="purchased-text">
+                                ADQUIRIDO
+                            </div>
+                        )}
+
+                        <div className="plan-wrapper">
+                            <div className="main-info">
+                                <h3 className="plan-name">Diseñador</h3>
+                                <div className="plan-price">
+                                    <h2 className="price">15€</h2>
+                                    <p className="period">/mes</p>
+                                </div>
+                            </div>
+
+                            <div className="plan-features">
+                                <p className="feature">
+                                    Podrás destacar tres productos.
+                                </p>
+                                <p className="feature">
+                                    Aumenta tu visibilidad como diseñador.
+                                </p>
+                            </div>
+
+                            {this.state.designer_plan ? (
+                                <ModalDeletePlan planName='designer_plan' handleDeletePlan={this.handleDeletePlan} />
+                            ) : (
+                                <button className="buy-plan" onClick={() => this.handleButtonClick('designerPlan')}>
+                                    Comprar
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div className="purchase-info">
+                    <p className="purchase-info-text">Si compras varios planes, se acumularán las ventajas.</p>
+                    <p className="purchase-info-text">Se cobrará mensualmente por los planes que posea hasta que los cancele.</p>
+                </div>
+
+            </div>
+            
         )
     }
 }
