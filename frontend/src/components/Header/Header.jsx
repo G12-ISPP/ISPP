@@ -17,7 +17,7 @@ const Header = ({ cart, setCart }) => {
     const [ownUser, setOwnUser] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'));
-    const [menuVisible, setMenuVisible] = useState(false);
+    const [menuVisible, setMenuVisible] = useState(true);
     const [isHeaderFullScreen, setIsHeaderFullScreen] = useState(false);
     const { logoutUser } = useContext(AuthContext);
     const [searchText, setSearchText] = useState('');
@@ -55,17 +55,37 @@ const Header = ({ cart, setCart }) => {
             fetchUserData();
         }
 
-        const handleResize = () => {
+        const changeMenuVisibility = () => {
             if (window.innerWidth > 1024) {
                 setMenuVisible(true);
-            } else if (window.innerWidth <= 1024 && menuVisible) {
+            } else if (window.innerWidth <= 1024) {
                 setMenuVisible(false);
             }
         }
 
-        window.addEventListener('resize', handleResize);
+        changeMenuVisibility();
 
-        handleResize();
+        const handleResize = () => {
+            console.log(prevWidth);
+
+            setTimeout(() => {
+                var newWidth = window.innerWidth;
+                console.log(newWidth);
+
+                if (prevWidth !== newWidth) {
+                    if (window.innerWidth > 1024) {
+                        setMenuVisible(true);
+                    } else if (window.innerWidth <= 1024) {
+                        setMenuVisible(false);
+                    }
+                }
+
+                prevWidth = newWidth;
+            }, 50);
+        }
+
+        var prevWidth = window.innerWidth;
+        window.addEventListener('resize', handleResize);
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
