@@ -50,9 +50,6 @@ const Footer = () => {
                 <p className='footer-section-element'>
                     <a href='/terminos'>Términos y condiciones</a>
                 </p>
-                <p className='footer-section-element'>
-                    <a href='/'>Política de cookies</a>
-                </p>
             </div>
         </footer>
     )
