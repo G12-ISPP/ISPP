@@ -102,3 +102,23 @@
 .convert-to-stl-container .convert-to-stl-form-container .button-wrapper .convert-to-stl-btn.button:hover {
     background: #E0EEC6;
 }
+
+
+@media screen and (max-width: 1024px) {
+    .convert-to-stl-page {
+        margin: 1.5em;
+    }
+
+    .convert-to-stl-container .convert-to-stl-page-title-container {
+        font-size: 0.8em;
+    }
+
+    .convert-to-stl-container .convert-to-stl-form-container .button-wrapper {
+        flex-direction: column;
+        gap: 0.5em;
+    }
+
+    .convert-to-stl-container .convert-to-stl-form-container .button-wrapper .convert-to-stl-btn.button {
+        width: 50%;
+    }
+}
