@@ -66,11 +66,9 @@ const Header = ({ cart, setCart }) => {
         changeMenuVisibility();
 
         const handleResize = () => {
-            console.log(prevWidth);
 
             setTimeout(() => {
                 var newWidth = window.innerWidth;
-                console.log(newWidth);
 
                 if (prevWidth !== newWidth) {
                     if (window.innerWidth > 1024) {
