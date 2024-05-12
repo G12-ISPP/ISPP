@@ -40,7 +40,6 @@ import ArtistsPage from "./pages/ArtistsPage.jsx";
 import RequestsPage from "./pages/RequestsPage.jsx";
 import ComunityPage from "./pages/ComunityPage.jsx";
 import AddPost from "./components/Post/AddPost.jsx";
-import Terms from "./pages/TermsPage.jsx";
 import VerifyEmail from "./components/VerifyEmail/VerifyEmail.jsx";
 import Admin from "./components/Admin/Admin.jsx";
 import UsersList from "./components/UsersList/UsersList.jsx";
@@ -49,6 +48,7 @@ import FollowingList from "./components/FollowingList.jsx";
 import FollowersList from "./components/FollowersList.jsx";
 import PostDetail from './components/Post/PostDetail.jsx';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage.jsx';
+import TermsAndConditionsPage from './pages/TermsAndConditionsPage.jsx';
 
 
 function App() {
@@ -110,7 +110,7 @@ function App() {
                     <Route path="/community/post/:id" element={<PostDetail />} />
                     <Route path="/posts/add-post" element={<AddPost/>}/>
                     <Route path="/privacy" element={<PrivacyPolicyPage/>} />
-                    <Route path="/terminos" element={<Terms/>} />
+                    <Route path="/terms" element={<TermsAndConditionsPage/>} />
                     <Route path="/verify-email/:uuid/:token" element={<VerifyEmail />} />
                     <Route path="/requests/:id" element={<RequestsPage/>} />
                 </Routes>

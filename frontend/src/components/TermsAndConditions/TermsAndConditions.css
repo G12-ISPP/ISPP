@@ -1,0 +1,167 @@
+.terms-and-conditions-page {
+    margin: 2em 10em;
+}
+
+.terms-and-conditions-page-title-container {
+    margin-bottom: 1em;
+}
+
+.terms-and-conditions-contents {
+    display: flex;
+    flex-direction: column;
+}
+
+.terms-and-conditions-contents .terms-and-conditions-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2em;
+    margin-bottom: 1.5em;
+}
+
+.terms-and-conditions-contents .terms-and-conditions-intro .terms-and-conditions-intro-title {
+    display: flex;
+    align-items: center;
+    gap: 1.2em;
+}
+
+.terms-and-conditions-contents .terms-and-conditions-intro .terms-and-conditions-intro-title .intro-text {
+    font-size: 3.5em;
+    color: #004040;
+    margin: 0;
+}
+
+.terms-and-conditions-contents .terms-and-conditions-intro .terms-and-conditions-intro-title .intro-logo {
+    height: 6em;
+    width: auto;
+    padding-top: 1em;
+}
+
+.terms-and-conditions-contents .terms-and-conditions-intro .terms-and-conditions-intro-text-section .terms-and-conditions-intro-text {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #004040;
+    margin: 0;
+}
+
+.terms-and-conditions-contents .terms-and-conditions-section {
+    margin-bottom: 1em;
+}
+
+.terms-and-conditions-contents .terms-and-conditions-section .terms-and-conditions-section-title .section-title {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #004040;
+    margin: 0;
+}
+
+.terms-and-conditions-contents .terms-and-conditions-section .terms-and-conditions-section-contents .terms-and-conditions-section-text,
+.terms-and-conditions-contents .terms-and-conditions-section .terms-and-conditions-section-contents .terms-and-conditions-section-text-with-dot {
+    font-size: 1.2em;
+    color: #004040;
+    margin: 0;
+    padding-bottom: 0.6em;
+}
+
+.terms-and-conditions-contents .terms-and-conditions-section .terms-and-conditions-section-contents .terms-and-conditions-section-text:last-of-type {
+    padding-bottom: 0;
+}
+
+.terms-and-conditions-contents .terms-and-conditions-section .terms-and-conditions-section-contents .terms-and-conditions-section-text-with-dot {
+    margin-left: 1em;
+}
+.terms-and-conditions-contents .terms-and-conditions-section .terms-and-conditions-section-contents .terms-and-conditions-section-text-with-dot::before {
+    content: "• ";
+}
+
+.terms-and-conditions-contents .terms-and-conditions-section .terms-and-conditions-section-contents .terms-and-conditions-section-text a {
+    color: #004040;
+    font-weight: 600;
+}
+.terms-and-conditions-contents .terms-and-conditions-section .terms-and-conditions-section-contents .terms-and-conditions-section-text a:hover {
+    text-decoration: underline;
+}
+
+.terms-and-conditions-contents .terms-and-conditions-signature-section .terms-and-conditions-signature-contents {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.terms-and-conditions-contents .terms-and-conditions-signature-section .terms-and-conditions-signature-contents .terms-and-conditions-signature-text {
+    font-size: 1em;
+    font-weight: 700;
+    color: #004040;
+    margin: 0;
+}
+
+
+@media screen and (max-width: 1024px) {
+    .terms-and-conditions-page {
+        margin: 1.5em;
+    }
+
+    .terms-and-conditions-contents .terms-and-conditions-intro .terms-and-conditions-intro-title .intro-text {
+        font-size: 2.5em;
+    }
+    
+    .terms-and-conditions-contents .terms-and-conditions-intro .terms-and-conditions-intro-title .intro-logo {
+        height: 4em;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .terms-and-conditions-contents .terms-and-conditions-intro .terms-and-conditions-intro-title {
+        gap: 0.8em;
+    }
+
+    .terms-and-conditions-contents .terms-and-conditions-intro .terms-and-conditions-intro-title .intro-text {
+        font-size: 1.5em;
+    }
+    
+    .terms-and-conditions-contents .terms-and-conditions-intro .terms-and-conditions-intro-title .intro-logo {
+        height: 3.5em;
+        padding-top: 0.5em;
+    }
+
+    .terms-and-conditions-contents .terms-and-conditions-intro .terms-and-conditions-intro-text-section .terms-and-conditions-intro-text {
+        font-size: 1.2em;
+    }
+
+    .terms-and-conditions-contents .terms-and-conditions-section .terms-and-conditions-section-title .section-title {
+        font-size: 1.2em;
+    }
+
+    .terms-and-conditions-contents .terms-and-conditions-section .terms-and-conditions-section-contents .terms-and-conditions-section-text,
+    .terms-and-conditions-contents .terms-and-conditions-section .terms-and-conditions-section-contents .terms-and-conditions-section-text-with-dot {
+        font-size: 1em;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .terms-and-conditions-page-title-container .title-bold.text {
+        font-size: 1.5em;
+    }
+
+    .terms-and-conditions-contents .terms-and-conditions-intro .terms-and-conditions-intro-title {
+        gap: 0.6em;
+    }
+
+    .terms-and-conditions-contents .terms-and-conditions-intro .terms-and-conditions-intro-title .intro-text {
+        font-size: 1.2em;
+    }
+    
+    .terms-and-conditions-contents .terms-and-conditions-intro .terms-and-conditions-intro-title .intro-logo {
+        height: 3em;
+    }
+
+    .terms-and-conditions-contents .terms-and-conditions-signature-section .terms-and-conditions-signature-contents .terms-and-conditions-signature-text {
+        font-size: 0.8em;
+    }
+}
+
+@media screen and (max-width: 340px) {
+    .terms-and-conditions-contents .terms-and-conditions-intro .terms-and-conditions-intro-title .intro-logo {
+        height: 2.5em;
+    }
+}

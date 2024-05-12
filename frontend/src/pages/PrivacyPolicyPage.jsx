@@ -1,6 +1,5 @@
 import React from 'react';
 import PageTitle from '../components/PageTitle/PageTitle';
-import Text, { TEXT_TYPES } from "../components/Text/Text";
 import PrivacyPolicy from '../components/PrivacyPolicy/PrivacyPolicy';
 
 const PrivacyPolicyPage = () => {

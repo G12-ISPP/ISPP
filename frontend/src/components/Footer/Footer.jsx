@@ -48,7 +48,7 @@ const Footer = () => {
                     <a href='/privacy'>Política de privacidad</a>
                 </p>
                 <p className='footer-section-element'>
-                    <a href='/terminos'>Términos y condiciones</a>
+                    <a href='/terms'>Términos y condiciones</a>
                 </p>
             </div>
         </footer>
