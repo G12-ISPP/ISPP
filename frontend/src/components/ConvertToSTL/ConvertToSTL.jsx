@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './ConvertToSTL.css';
 import PageTitle from '../PageTitle/PageTitle';
 import '../AddProduct.css';
+import Text, { TEXT_TYPES } from '../Text/Text';
+import Button, { BUTTON_TYPES } from '../Button/Button';
 
 const ConvertToSTL = () => {
     const [file, setFile] = useState(null);
@@ -18,15 +20,15 @@ const ConvertToSTL = () => {
 
         const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
 
-        if(selectedFile.size > 10 * 1024 * 1024) {
+        if (!allowedExtensions.includes(fileExtension)) {
             setFile(null);
-            setErrors({ file: 'Por favor, seleccione un archivo con un tamaño menor a 10 mb' });
+            setErrors({ file: 'Por favor, seleccione un archivo con una extensión permitida (.ply, .step, .obj, .vtk, .xml, .bmp, .dae).' });
             return;
         }
 
-        if (!allowedExtensions.includes(fileExtension)) {
+        if(selectedFile.size > 10 * 1024 * 1024) {
             setFile(null);
-            setErrors({ file: 'Por favor, seleccione un archivo con una extensión permitida (.ply, .step, .obj, .vtk, .xml, .bmp, .dae)' });
+            setErrors({ file: 'Por favor, seleccione un archivo con un tamaño menor a 10MB.' });
             return;
         }
 
@@ -37,11 +39,11 @@ const ConvertToSTL = () => {
         const errors = {};
 
         if (!file) {
-            errors.file = 'El archivo es obligatorio';
+            errors.file = 'El archivo es obligatorio.';
         }
 
         if(file.size > 30 * 1024 * 1024) {
-            errors.file = 'Por favor, seleccione un archivo con un tamaño menor a 30 mb' 
+            errors.file = 'Por favor, seleccione un archivo con un tamaño menor a 30MB.' 
         }
 
         setErrors(errors);
@@ -75,41 +77,45 @@ const ConvertToSTL = () => {
                             link.click();
                             document.body.removeChild(link);
                         });
-                        alert('Archivo convertido y procesado correctamente');
+                        alert('Archivo convertido y procesado correctamente.');
                     } else {
-                        throw new Error('Error al convertir el archivo');
+                        throw new Error('Error al convertir el archivo.');
                     }
                 })
                 .catch(error => {
                     console.error('Error al enviar el formulario:', error);
-                    alert('Error al enviar el formulario');
+                    alert('Error al enviar el formulario.');
                 });
         }
     };
 
     return (
-        <>
+        <div className="convert-to-stl-page">
+
             <PageTitle title="Convertir a STL" />
-            <div style={{textAlign:'center'}}>
-                <h1 className='title'>Convertir a STL</h1>
-            
-                <form className='form' onSubmit={handleSubmit}>
+
+            <div className="convert-to-stl-container">
+                <div className="convert-to-stl-page-title-container">
+                    <Text type={TEXT_TYPES.TITLE_BOLD} text='Convertir a formato STL'/>
+                </div>
+
+                <div className="convert-to-stl-form-container">
                     <div className='form-group'>
-                        <label htmlFor='file' style={{fontSize:'30px'}}>
-                            Selecciona el archivo que quieras convertir a formato STL
-                        </label>
-                        <div className='file-select'>
-                            <input type='file' id='file' name='file' className='stl-input' accept='.ply, .step, .obj, .vtk, .xml, .bmp, .dae' onChange={handleFileChange} />
-                            {errors.file && <div className="error">{errors.file}</div>}
-                        </div>
+                        {file && <p className="file-name"><strong>Archivo seleccionado: </strong>{file.name}</p>}
+                        <label htmlFor="file"
+                                className={file ? "upload-file-button loaded" : "upload-file-button"}>{file ? "Cambiar archivo" : "Seleccionar archivo"}</label>
+                        <input type='file' id='file' name='file' className='form-input upload'
+                                accept='.ply, .step, .obj, .vtk, .xml, .bmp, .dae' onChange={handleFileChange}/>
+                        {errors.file && <div className="error">{errors.file}</div>}
                     </div>
-                </form>
-                {Object.keys(errors).length > 0 && (
-                    <div className="error-message">Por favor, corrija los errores en el formulario</div>
-                )}
+
+                    <div className="button-wrapper">
+                        <button className="convert-to-stl-btn button" type="button" onClick={handleSubmit}>Convertir a STL</button>
+                    </div>
+                </div>
             </div>
-            <button className='convert-button' type='button' onClick={handleSubmit}>Convertir a STL</button>
-        </>
+        </div>
+        
     );
 };
 
