@@ -1,0 +1,96 @@
+.privacy-policy-page {
+    margin: 2em 10em;
+}
+
+.privacy-policy-page-title-container {
+    margin-bottom: 1em;
+}
+
+.privacy-policy-contents {
+    display: flex;
+    flex-direction: column;
+}
+
+.privacy-policy-contents .privacy-policy-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2em;
+    margin-bottom: 1.5em;
+}
+
+.privacy-policy-contents .privacy-policy-intro .privacy-policy-intro-title {
+    display: flex;
+    align-items: center;
+    gap: 1.2em;
+}
+
+.privacy-policy-contents .privacy-policy-intro .privacy-policy-intro-title .intro-text {
+    font-size: 3.5em;
+    color: #004040;
+    margin: 0;
+}
+
+.privacy-policy-contents .privacy-policy-intro .privacy-policy-intro-title .intro-logo {
+    height: 6em;
+    width: auto;
+    padding-top: 1em;
+}
+
+.privacy-policy-contents .privacy-policy-intro .privacy-policy-intro-text-section .privacy-policy-intro-text {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #004040;
+    margin: 0;
+}
+
+.privacy-policy-contents .privacy-policy-section {
+    margin-bottom: 1em;
+}
+
+.privacy-policy-contents .privacy-policy-section .privacy-policy-section-title .section-title {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #004040;
+    margin: 0;
+}
+
+.privacy-policy-contents .privacy-policy-section .privacy-policy-section-contents .privacy-policy-section-text,
+.privacy-policy-contents .privacy-policy-section .privacy-policy-section-contents .privacy-policy-section-text-with-dot {
+    font-size: 1.2em;
+    color: #004040;
+    margin: 0;
+    padding-bottom: 0.2em;
+}
+
+.privacy-policy-contents .privacy-policy-section .privacy-policy-section-contents .privacy-policy-section-text:last-of-type {
+    padding-bottom: 0;
+}
+
+.privacy-policy-contents .privacy-policy-section .privacy-policy-section-contents .privacy-policy-section-text-with-dot {
+    margin-left: 1em;
+}
+.privacy-policy-contents .privacy-policy-section .privacy-policy-section-contents .privacy-policy-section-text-with-dot::before {
+    content: "• ";
+}
+
+.privacy-policy-contents .privacy-policy-section .privacy-policy-section-contents .privacy-policy-section-text a {
+    color: #004040;
+    font-weight: 600;
+}
+.privacy-policy-contents .privacy-policy-section .privacy-policy-section-contents .privacy-policy-section-text a:hover {
+    text-decoration: underline;
+}
+
+.privacy-policy-contents .privacy-policy-signature-section .privacy-policy-signature-contents {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.privacy-policy-contents .privacy-policy-signature-section .privacy-policy-signature-contents .privacy-policy-signature-text {
+    font-size: 1em;
+    font-weight: 700;
+    color: #004040;
+    margin: 0;
+}

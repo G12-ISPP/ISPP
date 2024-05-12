@@ -45,7 +45,7 @@ const Footer = () => {
             <div className='footer-section'>
                 <p className='footer-section-title'>Nuestras políticas</p>
                 <p className='footer-section-element'>
-                    <a href='/privacidad'>Política de privacidad</a>
+                    <a href='/privacy'>Política de privacidad</a>
                 </p>
                 <p className='footer-section-element'>
                     <a href='/terminos'>Términos y condiciones</a>
