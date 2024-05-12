@@ -11,8 +11,7 @@ const messages = {
         'Sobre nosotros',
         'Contacto',
         'Política de privacidad',
-        'Términos y condiciones',
-        'Política de cookies'
+        'Términos y condiciones'
     ],
     images: [
         'logo.png',
