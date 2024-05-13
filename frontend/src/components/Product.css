@@ -109,7 +109,11 @@ height: 25px;
   display: flex;
   align-items: center;
   gap: 0.5em;
-  margin-bottom: 1.2em;
+  margin-bottom: 0.4em;
+}
+
+.product-info-container .report-product {
+  margin-bottom: 0.5em;
 }
 
 .product-info-description {

@@ -189,10 +189,13 @@ class ProductDetail extends React.Component {
           <div className="right-product-container">
             <div className="product-info-container">
               <h2 className="product-info-name">{product.name}</h2>
-              <AddProductReport product={product} />
               
               <div className="product-info-owner">
                 {user && <ProfileIcon key={user.id} name={user.username} onClick={user.id} showScore="True" userId={user.id} />}
+              </div>
+
+              <div className="report-product">
+                <AddProductReport product={product} />
               </div>
 
               <div className="product-info-description">
