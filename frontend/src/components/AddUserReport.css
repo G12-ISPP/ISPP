@@ -1,3 +1,21 @@
+.report-user-container .report-button-container .report-btn.button {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  color: #D90429;
+}
+.report-user-container .report-button-container .report-btn.button:hover {
+  text-decoration: underline;
+}
+.report-user-container .report-button-container .report-btn.button:focus {
+  outline: none;
+}
+
+.report-user-container .report-button-container .report-btn.button .report-icon {
+  padding: 0.2em 0.2em 0 0;
+}
+
+
 .report-user-form-group-description {
     font-family: inherit;
     border-radius: 0.5em;

@@ -1,6 +1,9 @@
 import React, { Component, useState } from "react";
 import Button, { BUTTON_TYPES } from "./Button/Button";
 import "./AddUserReport.css";
+import info from '../assets/bx-info-circle.svg';
+
+
 // Modal Component
 class Modal extends React.Component {
   render() {
@@ -176,18 +179,15 @@ class AddUserReport extends Component {
     const { isAuthenticated, errors, showForm } = this.state;
 
     return (
-      <>
-        <Button
-          type={BUTTON_TYPES.REPORT}
-          text={
-            showForm && isAuthenticated
-              ? "Reporte"
-              : "Reportar usuario"
-          }
-          onClick={showForm && isAuthenticated
-            ? this.closeModal
-            : this.openModal}
-        />
+      <div className="report-user-container">
+
+        <div className="report-button-container">
+          <button className="report-btn button" onClick={showForm && isAuthenticated ? this.closeModal : this.openModal}>
+            <img src={info} alt="Reportar usuario" className="report-icon"/>
+            {showForm && isAuthenticated ? "Reporte" : "Reportar usuario"}
+          </button>
+        </div>
+        
         {errors.login && (
           <div className="opinion-login-error">
             <p className="opinion-error-text">{errors.login}</p>
@@ -273,7 +273,7 @@ class AddUserReport extends Component {
             </div>
           </Modal>
         )}
-      </>
+      </div>
     );
   }
 }
