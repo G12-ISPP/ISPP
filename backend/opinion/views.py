@@ -37,14 +37,14 @@ class OpinionView(viewsets.ModelViewSet):
             target_user_id = request.data.get('target_user')
             date = request.data.get('date')
 
-            if not all([description, score, target_user_id, date]):
+            if not all([description, target_user_id, date]):
                 return JsonResponse({'error': 'Todos los campos son obligatorios'}, status=400)
 
             if request.user.id == int(target_user_id):
                 return JsonResponse({'error': 'No puedes dejarte una opinión a ti mismo'}, status=403)
 
-            if int(score) < 1 or int(score) > 5:
-                return JsonResponse({'error': 'La puntuación debe estar entre 1 y 5'}, status=400)
+            if int(score) < 0 or int(score) > 5:
+                return JsonResponse({'error': 'La puntuación debe estar entre 0 y 5'}, status=400)
 
             if len(description) < 10 or len(description) > 255:
                 return JsonResponse({'error': 'La descripción debe tener entre 10 y 255 caracteres'}, status=400)

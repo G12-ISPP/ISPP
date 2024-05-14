@@ -73,17 +73,56 @@ class RegisterForm extends React.Component {
   handleSubmit = async (event) => {
     event.preventDefault();
 
+    let isAnyError = false;
+
     if (this.state.password !== this.state.confirmPassword) {
       this.setState({
         errors: { confirmPassword: 'Las contraseñas no coinciden' }
       });
-      return;
+      isAnyError = true;
     }
 
     if (!this.state.customerAgreementChecked) {
       this.setState({
         errors: { customerAgreement: 'Debe aceptar el acuerdo del cliente' }
       });
+      isAnyError = true;
+    }
+
+    
+    if (this.state.is_designer) {
+      if (this.state.description.length < 20){
+        this.setState({
+          errors: { description: ['La descripción debe tener al menos 20 caracteres'] }
+        });
+        isAnyError = true;
+      }
+      if (this.state.description.length > 200){
+        this.setState({
+          errors: { description: ['La descripción no puede tener más de 200 caracteres'] }
+        });
+        isAnyError = true;
+      }
+    }
+
+    if (!/^[a-zA-Z\s]{3,30}$/.test(this.state.first_name)) {
+      this.setState({
+        errors: { first_name: ['El nombre debe tener al menos 3 caracteres que sean letras o espacios y máximo 30'] }
+      });
+      isAnyError = true;
+    }
+
+    if (!/^[a-zA-Z\s]{3,30}$/.test(this.state.last_name)) {
+      this.setState({
+        errors: { last_name: ['El apellido debe tener al menos 3 caracteres que sean letras o espacios y máximo 30'] }
+      });
+      isAnyError = true;
+    }
+
+    console.log(isAnyError)
+    console.log(this.state.errors);
+
+    if (isAnyError) {
       return;
     }
 
@@ -243,6 +282,7 @@ class RegisterForm extends React.Component {
                 {errors.postal_code && <p className="register-error-message">{'Código postal: ' + errors.postal_code[0]}</p>}
                 {errors.city && <p className="register-error-message">{'Ciudad: ' + errors.city[0]}</p>}
                 {errors.customerAgreement && <p className="register-error-message">{errors.customerAgreement}</p>}
+                {errors.description && <p className="register-error-message">{errors.description[0]}</p>}
               </div>
               <Button type={BUTTON_TYPES.AUTHENTICATION} text='Registrarse' action='submit' />
             </form>

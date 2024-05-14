@@ -219,7 +219,7 @@ def order_details(request, order_id):
 
         order_details = {
             'id': order.id,
-            'buyer': order.buyer.email if order.buyer else None,
+            'buyer': order.buyer.username if order.buyer else None,
             'price': order.price,
             'status': order.status,
             'address': order.address,

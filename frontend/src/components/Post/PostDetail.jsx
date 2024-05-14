@@ -198,6 +198,9 @@ export default function PostDetail(props) {
             <div className="post-detail-section">
                 <Text type={TEXT_TYPES.TITLE_BOLD} text="Comentarios"/>
                 <div className="post-detail-comments">
+                    {comments.length === 0 && (
+                        <p className="post-detail-no-comments">No hay comentarios</p>
+                    )}
                     {comments.map((comment) => (
                         <div key={comment.id} className="post-detail-comment">
                             <div className="post-detail-comment-info">
@@ -214,6 +217,7 @@ export default function PostDetail(props) {
                             </div>
                         </div>
                     ))}
+
                 </div>
             </div>
         </div>
