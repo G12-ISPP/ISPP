@@ -105,14 +105,15 @@ class RegisterForm extends React.Component {
       }
     }
 
-    if (!/^[a-zA-Z\s]{3,30}$/.test(this.state.first_name)) {
+    if (this.state.last_name.length < 3 || this.state.last_name.length > 30 || !/^[a-zA-Z\s]*$/.test(this.state.last_name)) {
       this.setState({
         errors: { first_name: ['El nombre debe tener al menos 3 caracteres que sean letras o espacios y máximo 30'] }
       });
       isAnyError = true;
     }
 
-    if (!/^[a-zA-Z\s]{3,30}$/.test(this.state.last_name)) {
+    if (this.state.last_name.length < 3 || this.state.last_name.length > 30 || !/^[a-zA-Z\s]*$/.test(this.state.last_name)){
+      console.log(this.state.last_name);
       this.setState({
         errors: { last_name: ['El apellido debe tener al menos 3 caracteres que sean letras o espacios y máximo 30'] }
       });
