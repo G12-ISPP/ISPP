@@ -1,4 +1,4 @@
-import {test} from 'vitest';
+import {expect, test} from 'vitest';
 import {render, screen} from "@testing-library/react";
 import Footer from '../components/Footer/Footer';
 import '@testing-library/jest-dom';
@@ -44,6 +44,10 @@ describe('Test para Footer', () => {
 
     test('contains expected texts and images', () => {
 
+        const buttons = screen.getAllByRole("button");
+
+        expect(buttons.length).toBe(7);
+
         const links = screen.getAllByRole(messages.labels.link);
         expect(links.length).toBe(messages.expectedTexts.length);
 
@@ -51,11 +55,8 @@ describe('Test para Footer', () => {
             expect(links[index].textContent).toBe(text);
         });
 
-        const images = screen.getAllByRole(messages.labels.image);
-        expect(images.length).toBe(messages.images.length);
-
-        messages.images.forEach((image, index) => {
-            expect(images[index].src).toContain(image);
+        buttons.forEach((button, index) => {
+            expect(button.src).toContain(`${messages.images[index]}`);
         });
     });
 })
