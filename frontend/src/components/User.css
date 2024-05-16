@@ -26,7 +26,12 @@
   margin-bottom: 0.5em;
 }
 
+.right-user-container .user-info-container .user-header .user-name-container {
+  width: 100%;
+}
+
 .right-user-container .user-info-container .user-header .user-name-container .user-name {
+  width: 100%;
   margin: 0;
   font-size: 2.2em;
   overflow: hidden;
@@ -226,33 +231,65 @@
     width: 100%;
   }
 
-  .user-info-container {
+  .right-user-container .user-info-container {
     margin-top: 1em;
     padding: 0;
   }
 
-  .user-name {
+  .right-user-container .user-info-container .user-header .user-name-container .user-name {
     font-size: 1.25em;
   }
 
-  .user-button-wrapper {
-    gap: 0.5em;
+  .right-user-container .user-info-container .user-body .user-button-wrapper {
+    gap: 10px;
   }
 
-  .user-review-text {
+  .right-user-container .user-info-container .user-body .user-button-wrapper .user-button {
+    width: 100%;
+  }
+
+  .right-user-container .user-info-container .user-body .user-button-wrapper .user-button .plain-btn.button.green {
+    width: 100%;
+  }
+
+  .right-user-container .user-info-container .user-body .user-button-wrapper .medium-btn.button {
+    width: 100%;
+  }
+
+  .right-user-container .user-info-container .user-body .user-button-wrapper .transparent-btn.button {
+    width: calc(50% - 5px);
+  }
+
+  .right-user-container .user-info-container .user-body .user-review .user-review-text {
     font-size: 0.8em;
   }
 
-  .user-review-stars img {
+  .right-user-container .user-info-container .user-body .user-review .user-review-stars img {
     width: 1.25em;
   }
 
-  .user-role {
+  .right-user-container .user-info-container .user-body .user-role-container .roles .user-role,
+  .right-user-container .user-info-container .user-body .user-plan-container .plans .user-plan {
     font-size: 0.8em;
   }
 
-  .user-contact {
+  .right-user-container .user-info-container .user-body .user-contact-container .user-contact {
     font-size: 0.9em;
+  }
+
+  .right-user-container .user-info-container .user-header .user-header-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .right-user-container .user-info-container .user-header .user-header-actions .follows-info-section .follows-info {
+    font-size: 1em;
+  }
+
+  .right-user-container .user-info-container .user-body .user-role-container .roles-label,
+  .right-user-container .user-info-container .user-body .user-plan-container .plan-label {
+    font-size: 0.8em;
   }
 
   .user-products-section {
@@ -283,17 +320,20 @@
     font-size: 0.9em;
   }
 
-  .report-user {
-    width: 100%; 
-    display: flex;
-    justify-content: center;
+  .report-user .report-user-container .report-button-container .report-btn.button img {
+    width: 1em;
+    padding: 0 0.2em 0 0;
+  }
+
+  .report-user .report-user-container .report-button-container .report-btn.button {
+    font-size: 0.9em;
   }
 
 }
 
 @media (max-width: 320px) {
 
-  .user-button-wrapper {
+  .right-user-container .user-info-container .user-body .user-button-wrapper {
     gap: 0.3em;
   }
 

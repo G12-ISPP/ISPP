@@ -26,6 +26,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 35em;
+  min-width: 0;
 }
 
 .report-user-container .modal .modal-content .close {
@@ -195,4 +196,28 @@
 .report-user-form-group-button{
   display: flex;
   justify-content: center;
+}
+
+
+@media screen and (max-width: 767px) {
+  .report-user-container .modal .modal-content {
+    width: 15em;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .report-user-container .modal .modal-content {
+    width: 14em;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .report-user-form-group-button .large-btn.button {
+    width: 8em;
+    height: 2em;
+  }
+
+  .report-user-form-group-button .large-btn.button .btn-text {
+    font-size: 0.8em;
+  }
 }
