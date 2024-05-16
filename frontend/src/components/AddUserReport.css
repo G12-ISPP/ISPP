@@ -221,3 +221,27 @@
     font-size: 0.8em;
   }
 }
+
+@media screen and (max-height: 160px) {
+  .report-user-container .modal .modal-content {
+    top: 260%;
+  }
+}
+
+@media screen and (min-height: 161px) and (max-height: 200px) {
+  .report-user-container .modal .modal-content {
+    top: 225%;
+  }
+}
+
+@media screen and (min-height: 201px) and (max-height: 300px) {
+  .report-user-container .modal .modal-content {
+    top: 175%;
+  }
+}
+
+@media screen and (min-height: 301px) and (max-height: 450px) {
+  .report-user-container .modal .modal-content {
+    top: 125%;
+  }
+}
