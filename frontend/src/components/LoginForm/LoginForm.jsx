@@ -54,11 +54,8 @@ const LoginForm = () => {
         },
         body: JSON.stringify(formData)
       });
-      console.log(response);
       if (response.ok) {
         const data = await response.json();
-        console.log(data.access);
-        console.log(data.refresh);
         localStorage.setItem('token', data.token);
         localStorage.setItem('refresh', data.refresh);
         localStorage.setItem('username', formData.username);
