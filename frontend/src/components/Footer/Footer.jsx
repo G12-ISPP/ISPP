@@ -17,14 +17,14 @@ const Footer = () => {
     return (
         <footer className='footer'>
             <div className='footer-section'>
-                <img src={logo} className='logo-footer' onClick={() => onButtonClick('/')} role="button" tabIndex="0" />
+                <img src={logo} className='logo-footer' onClick={(e) => {e.preventDefault(); onButtonClick('/');}} role="button" tabIndex="0" />
                 <div className='social'>
-                    <img src={facebookIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.facebook.com/profile.php?id=61558534868827')} role="button" tabIndex="0" />
-                    <img src={instagramIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.instagram.com/shar3d_es')} role="button" tabIndex="0" />
-                    <img src={twitterIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.twitter.com/shar3d_2024')} role="button" tabIndex="0" />
-                    <img src={tiktokIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.tiktok.com/@shar3d_2024')} role="button" tabIndex="0" />
-                    <img src={twitchIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.twitch.com/shar3d_2024')} role="button" tabIndex="0" />
-                    <img src={youtubeIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.youtube.com/channel/UCA-3C2FB2mZB-jY1V3KGHnQ')} role="button" tabIndex="0" />
+                    <img src={facebookIcon} className='social-media-icon' onClick={(e) => {e.preventDefault(); onButtonClick('https://www.facebook.com/profile.php?id=61558534868827');}} role="button" tabIndex="0" />
+                    <img src={instagramIcon} className='social-media-icon' onClick={(e) => {e.preventDefault(); onButtonClick('https://www.instagram.com/shar3d_es');}} role="button" tabIndex="0" />
+                    <img src={twitterIcon} className='social-media-icon' onClick={(e) => {e.preventDefault(); onButtonClick('https://www.twitter.com/shar3d_2024');}} role="button" tabIndex="0" />
+                    <img src={tiktokIcon} className='social-media-icon' onClick={(e) => {e.preventDefault(); onButtonClick('https://www.tiktok.com/@shar3d_2024');}} role="button" tabIndex="0" />
+                    <img src={twitchIcon} className='social-media-icon' onClick={(e) => {e.preventDefault(); onButtonClick('https://www.twitch.com/shar3d_2024');}} role="button" tabIndex="0" />
+                    <img src={youtubeIcon} className='social-media-icon' onClick={(e) => {e.preventDefault(); onButtonClick('https://www.youtube.com/channel/UCA-3C2FB2mZB-jY1V3KGHnQ');}} role="button" tabIndex="0" />
                 </div>
             </div>
             <div className='footer-section'>
