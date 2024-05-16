@@ -47,28 +47,28 @@ class AddUserReport extends Component {
     const errors = {};
 
     if (!title.trim()) {
-      errors.title = "El título es obligatorio";
+      errors.title = "El asunto es obligatorio.";
     }
 
     if (!description.trim()) {
-      errors.description = "La descripción es obligatoria";
+      errors.description = "Los motivos son obligatorios.";
     }
 
     if (title.trim().length < 5 || title.length > 20) {
-      errors.title = "El título debe tener entre 5 y 20 caracteres";
+      errors.title = "El asunto debe tener entre 5 y 20 caracteres.";
     }
 
     if (description.trim().length < 10 || description.length > 250) {
       errors.description =
-        "La descripción debe tener entre 10 y 250 caracteres";
+        "Los motivos deben tener entre 10 y 250 caracteres.";
     }
 
     if (!reason) {
-      errors.reason = "Debes seleccionar una razón";
+      errors.reason = "Debes seleccionar una razón.";
     }
 
     if (!file) {
-      errors.file = 'La foto es obligatoria';
+      errors.file = 'La comprobación es obligatoria.';
     }
 
     this.setState({ errors });
@@ -128,14 +128,14 @@ class AddUserReport extends Component {
             });
           } else if (response.ok) {
             this.setState({ showForm: false });
-            alert("Reporte enviado correctamente" );
+            alert("Reporte enviado correctamente." );
           } else {
             console.error("Error submitting report");
           }
         })
         .catch(error => {
           console.error('Error al enviar el formulario:', error);
-          alert('Error al enviar el formulario');
+          alert('Error al enviar el formulario.');
         });
         
         fetch();
@@ -164,7 +164,7 @@ class AddUserReport extends Component {
     }
 
     if (!allowedExtensions.includes(fileExtension)) {
-      this.setState({ file: null, errors: { file: 'Por favor, seleccione un archivo de imagen válido (.jpg, .jpeg, .png)' } });
+      this.setState({ file: null, errors: { file: 'Por favor, seleccione un archivo de imagen válido (.jpg, .jpeg, .png).' } });
       return;
     }
 
