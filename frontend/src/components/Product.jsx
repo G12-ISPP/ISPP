@@ -212,11 +212,14 @@ class ProductDetail extends React.Component {
 
                 {!showEditButton && (
                   <>
-                    <div className='product-quantity'>
-                      <button className="product-cart-qty-plus" type="button" onClick={this.decrementarCantidad}>-</button>
-                      <input type="text" name="qty" min="0" className="qty product-form-control" value={cantidad} readOnly />
-                      <button className="product-cart-qty-minus" type="button" onClick={this.incrementarCantidad}>+</button>
-                    </div>
+                    {product.product_type != "D" && (
+                      <div className='product-quantity'>
+                        <button className="product-cart-qty-plus" type="button" onClick={this.decrementarCantidad}>-</button>
+                        <input type="text" name="qty" min="0" className="qty product-form-control" value={cantidad} readOnly />
+                        <button className="product-cart-qty-minus" type="button" onClick={this.incrementarCantidad}>+</button>
+                      </div>
+                    )}
+
                     <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                       <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => { addProduct(product, cantidad); 
                         this.setState({ agregado: true });
