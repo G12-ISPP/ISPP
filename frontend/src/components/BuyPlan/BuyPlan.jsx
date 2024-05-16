@@ -53,7 +53,7 @@ class ModalDeletePlan extends React.Component {
                     <div className='cancel-plan-modal'>
                         <div className='cancel-plan-modal-content'>
                             <div className="close-cancel-plan-modal">
-                                <span className='close-cancel-plan-modal-icon' onClick={() => this.setState({ show: false })} role="button">&times;</span>
+                                <span className='close-cancel-plan-modal-icon' onClick={() => this.setState({ show: false })} role="button" tabIndex="0">&times;</span>
                             </div>
                             <div className="cancel-modal-warning">
                                 <h3 className="warning-text">¿Está seguro de que quiere cancelar el plan?</h3>

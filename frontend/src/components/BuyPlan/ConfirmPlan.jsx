@@ -15,7 +15,7 @@ const CancelPlan = () => {
             <div className="plan-confirmed-container">
                 <div className="plan-confirmed-contents-wrapper">
                     <div className="logo-container">
-                        <img src={logo} alt="logo" className="logo" onClick={() => onButtonClick('/')} role="button" />
+                        <img src={logo} alt="logo" className="logo" onClick={() => onButtonClick('/')} role="button" tabIndex="0" />
                     </div>
                     <div className="plan-confirmed-text">
                         <h3 className="plan-confirmed-text-primary">Pago realizado correctamente, disfruta de tus nuevas ventajas.</h3>

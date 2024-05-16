@@ -326,10 +326,10 @@ const UserDetail = () => {
                 <div className="user-header-actions">
 
                   <div className="follows-info-section">
-                    <div className="follows-info" onClick={handleFollowersClick} role="button">
+                    <div className="follows-info" onClick={handleFollowersClick} role="button" tabIndex="0">
                       {followersCount.followers_count} {followersCount.followers_count === 1 ? 'seguidor' : 'seguidores'}
                     </div>
-                    <div className="follows-info" onClick={handleFollowingsClick} role="button">
+                    <div className="follows-info" onClick={handleFollowingsClick} role="button" tabIndex="0">
                       {followingCount.following_count} {followingCount.following_count === 1 ? 'seguido' : 'seguidos'}
                     </div>
                   </div>
