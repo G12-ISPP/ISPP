@@ -14,7 +14,7 @@ class Modal extends React.Component {
     return (
       <div className="modal">
         <div className="modal-content">
-          <a onClick={this.props.onClose} class="close">&times;</a>
+          <a onClick={this.props.onClose} className="close">&times;</a>
           {this.props.children}
         </div>
       </div>
@@ -201,66 +201,62 @@ class AddUserReport extends Component {
 
         {showForm && isAuthenticated && (
           <Modal show={showForm} onClose={this.closeModal}>
-            <h2>Reportar un usuario</h2>
-            <form>
-              <label>
-                Titulo:
-                <br></br>
-                <input
-                  type="text"
-                  name="title"
-                  value={this.state.title}
-                  onChange={this.handleTitleChange}
-                  className="report-user-form-group-title"
-                />
-                {this.state.errors.title && (
-                  <p className="error">{this.state.errors.title}</p>
-                )}
-              </label>
-              <br></br>
-              <label>Descripción:</label>
-              <br></br>
-              <textarea
-                type="text"
-                name="description"
-                onChange={this.handleDescriptionChange}
-                value={this.state.description}
-                className="report-user-form-group-description"
-                rows={5}
-              />
-              {this.state.errors.description && (
-                <p className="error">{this.state.errors.description}</p>
-              )}
-              <label htmlFor='file' className='upload'>
-                Comprobación
-              </label>
-              <div className='file-select'>
-                <input type='file' id='file' name='file' className='form-input' accept='.jpg, .jpeg, .png' onChange={this.handleFileChange} />
-                {errors.file && <div className="error">{errors.file}</div>}
+
+            <div className="report-form-contents">
+
+              <div className="form-title">
+                <h3 className="modal-title">Reportar usuario</h3>
               </div>
-              <br></br>
-              <label>
-                Motivo del Reporte:
-                <br></br>
-                <select
-                  name="reason"
-                  value={this.state.reason}
-                  onChange={this.handleReasonsChange}
-                  className="report-user-form-group-selector"
-                >
-                  <option value="P">Problema de calidad</option>
-                  <option value="D">Derecho de Autor</option>
-                  <option value="S">Spam o publicidad</option>
-                  <option value="F">Fraude o estafa</option>
-                  <option value="R">Robo de diseño/idea</option>
-                  <option value="I">Inapropiado</option>
-                </select>
-                {this.state.errors.reason && (
-                  <p className="error">{this.state.errors.reason}</p>
-                )}
-              </label>
-              <br></br>
-            </form>
+
+              <form className="form-inputs-section">
+
+                <div className="form-input-container">
+                  <label htmlFor="title" className="form-input-label">Asunto</label>
+                  <input type="text" name="title" value={this.state.title} onChange={this.handleTitleChange} className="form-input" />
+                  {this.state.errors.title && (
+                    <p className="error">{this.state.errors.title}</p>
+                  )}
+                </div>
+
+                <div className="form-input-container">
+                  <label htmlFor="description" className="form-input-label">Motivos detallados</label>
+                  <div className="textarea-container">
+                    <textarea type="text" name="description" value={this.state.description} onChange={this.handleDescriptionChange} className="form-input" />
+                  </div>
+                  {this.state.errors.description && (
+                    <p className="error">{this.state.errors.description}</p>
+                  )}
+                </div>
+
+                <div className='form-input-container'>
+                  <p className="form-input-label">Comprobación</p>
+                  {this.state.file && <p className="file-name"><strong>Archivo seleccionado: </strong>{this.state.file.name}</p>}
+                  <label htmlFor="file"
+                          className={this.state.file ? "upload-file-button loaded" : "upload-file-button"}>{this.state.file ? "Cambiar archivo" : "Seleccionar archivo"}</label>
+                  <input type='file' id='file' name='file' className='form-input upload' accept='.jpg, .jpeg, .png' onChange={this.handleFileChange}/>
+                  {errors.file && <div className="error">{errors.file}</div>}
+                </div>
+                
+                <div className="form-input-container">
+                  <label htmlFor="reason" className="form-input-label">Motivo del reporte</label>
+                  <select name="reason" value={this.state.reason} onChange={this.handleReasonsChange} className="form-selector">
+                    <option value="P">Problema de calidad</option>
+                    <option value="D">Derechos de autor</option>
+                    <option value="S">Spam o publicidad</option>
+                    <option value="F">Fraude o estafa</option>
+                    <option value="R">Robo de diseño/idea</option>
+                    <option value="I">Inapropiado</option>
+                  </select>
+                  {this.state.errors.reason && (
+                    <p className="error">{this.state.errors.reason}</p>
+                  )}
+                </div>
+                
+              </form>
+
+            </div>
+            
+            
             {this.state.errors.unique && (
               <p className="error">{this.state.errors.unique}</p>
             )}
