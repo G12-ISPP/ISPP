@@ -68,7 +68,7 @@ const Header = ({ cart, setCart }) => {
         const handleResize = () => {
 
             setTimeout(() => {
-                var newWidth = window.innerWidth;
+                let newWidth = window.innerWidth;
 
                 if (prevWidth !== newWidth) {
                     if (window.innerWidth > 1024) {
@@ -82,7 +82,7 @@ const Header = ({ cart, setCart }) => {
             }, 50);
         }
 
-        var prevWidth = window.innerWidth;
+        let prevWidth = window.innerWidth;
         window.addEventListener('resize', handleResize);
 
         return () => window.removeEventListener('resize', handleResize);

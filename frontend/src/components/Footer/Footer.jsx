@@ -19,12 +19,12 @@ const Footer = () => {
             <div className='footer-section'>
                 <img src={logo} className='logo-footer' onClick={() => onButtonClick('/')} />
                 <div className='social'>
-                    <img src={facebookIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.facebook.com/profile.php?id=61558534868827')} />
-                    <img src={instagramIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.instagram.com/shar3d_es')} />
-                    <img src={twitterIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.twitter.com/shar3d_2024')} />
-                    <img src={tiktokIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.tiktok.com/@shar3d_2024')} />
-                    <img src={twitchIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.twitch.com/shar3d_2024')} />
-                    <img src={youtubeIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.youtube.com/channel/UCA-3C2FB2mZB-jY1V3KGHnQ')} />
+                    <img src={facebookIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.facebook.com/profile.php?id=61558534868827')} role="button" />
+                    <img src={instagramIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.instagram.com/shar3d_es')} role="button" />
+                    <img src={twitterIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.twitter.com/shar3d_2024')} role="button" />
+                    <img src={tiktokIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.tiktok.com/@shar3d_2024')} role="button" />
+                    <img src={twitchIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.twitch.com/shar3d_2024')} role="button" />
+                    <img src={youtubeIcon} className='social-media-icon' onClick={() => onButtonClick('https://www.youtube.com/channel/UCA-3C2FB2mZB-jY1V3KGHnQ')} role="button" />
                 </div>
             </div>
             <div className='footer-section'>

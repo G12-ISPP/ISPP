@@ -358,9 +358,21 @@
   }
 
   .report-user {
-    width: 100%; 
     display: flex;
     justify-content: center;
+  }
+
+  .right-user-container .user-info-container .user-header .user-header-actions .follows-info-section .follows-info {
+    font-size: 1em;
+  }
+
+  .report-user .report-user-container .report-button-container .report-btn.button img {
+    width: 1em;
+    padding: 0 0.2em 0 0;
+  }
+
+  .report-user .report-user-container .report-button-container .report-btn.button {
+    font-size: 0.9em;
   }
 
 }
