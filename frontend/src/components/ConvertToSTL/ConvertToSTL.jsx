@@ -8,6 +8,7 @@ import Button, { BUTTON_TYPES } from '../Button/Button';
 const ConvertToSTL = () => {
     const [file, setFile] = useState(null);
     const [errors, setErrors] = useState({});
+    const [waiting, setWaiting] = useState(false);
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -61,6 +62,8 @@ const ConvertToSTL = () => {
             let petition1 = import.meta.env.VITE_APP_BACKEND + '/conversion/api/v1/convert_to_stl';
             petition1 = petition1.replace(/"/g, '');
 
+            setWaiting(true);
+
             fetch(petition1, {
                 method: 'POST',
                 body: formData
@@ -83,6 +86,7 @@ const ConvertToSTL = () => {
                     }
                 })
                 .catch(error => {
+                    setWaiting(false);
                     console.error('Error al enviar el formulario:', error);
                     alert('Error al enviar el formulario.');
                 });
@@ -115,7 +119,6 @@ const ConvertToSTL = () => {
                 </div>
             </div>
         </div>
-        
     );
 };
 

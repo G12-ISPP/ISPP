@@ -66,11 +66,25 @@ class Post extends Component {
 
     if (!name.trim()) {
       errors.name = 'El nombre es obligatorio';
+    } else {
+      if (name.length < 5) {
+        errors.name = 'El nombre debe tener al menos 5 caracteres';
+      } else if (name.length > 25) {
+        errors.name = 'El nombre no puede tener más de 25 caracteres';
+      }
     }
 
     if (!description.trim()) {
       errors.description = 'La descripción es obligatoria';
+    } else {
+      if (description.length < 10) {
+        errors.description = 'La descripción debe tener al menos 10 caracteres';
+      } else if (description.length > 200) {
+        errors.description = 'La descripción no puede tener más de 200 caracteres';
+      }
     }
+
+
 
     this.setState({ errors });
 

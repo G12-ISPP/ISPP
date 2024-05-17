@@ -90,7 +90,7 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
   }
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    // document.body.style.overflow = 'hidden';
     if(roomId>0){
       fetchMessages().then(() => {
         setTimeout(() => {
