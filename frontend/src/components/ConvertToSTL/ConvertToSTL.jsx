@@ -6,6 +6,7 @@ import '../AddProduct.css';
 const ConvertToSTL = () => {
     const [file, setFile] = useState(null);
     const [errors, setErrors] = useState({});
+    const [waiting, setWaiting] = useState(false);
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -59,6 +60,8 @@ const ConvertToSTL = () => {
             let petition1 = import.meta.env.VITE_APP_BACKEND + '/conversion/api/v1/convert_to_stl';
             petition1 = petition1.replace(/"/g, '');
 
+            setWaiting(true);
+
             fetch(petition1, {
                 method: 'POST',
                 body: formData
@@ -75,12 +78,15 @@ const ConvertToSTL = () => {
                             link.click();
                             document.body.removeChild(link);
                         });
+                        setWaiting(false);
                         alert('Archivo convertido y procesado correctamente');
                     } else {
+                        setWaiting(false);
                         throw new Error('Error al convertir el archivo');
                     }
                 })
                 .catch(error => {
+                    setWaiting(false);
                     console.error('Error al enviar el formulario:', error);
                     alert('Error al enviar el formulario');
                 });
@@ -108,7 +114,7 @@ const ConvertToSTL = () => {
                     <div className="error-message">Por favor, corrija los errores en el formulario</div>
                 )}
             </div>
-            <button className='convert-button' type='button' onClick={handleSubmit}>Convertir a STL</button>
+            <button className='convert-button' type='button' onClick={handleSubmit} disabled={waiting}>Convertir a STL</button>
         </>
     );
 };

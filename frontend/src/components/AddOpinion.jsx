@@ -106,7 +106,7 @@ class Opinion extends Component {
                 </label>
                 <input
                   type="number"
-                  min={1}
+                  min={0}
                   max={5}
                   id="score"
                   name="score"
