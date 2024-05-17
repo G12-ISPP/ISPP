@@ -25,18 +25,6 @@
     transition: 0.3s;
 }
 
-.report-btn {
-    width: 15em;
-    background-color: rgb(190, 0, 0);
-    height: 2.5em;
-    padding: 0.8em;
-    border-radius: 0.6em;
-    color: #D9D9D9;
-    font-size: 0.8em;
-    font-weight: 700;
-    transition: 0.3s;
-  }
-
 .header-btn:hover {
     background-color: #E0EEC6;
     scale: 1.05;
@@ -98,7 +86,7 @@
 }
 
 .plain-btn {
-    width: 10em;
+    width: 12em;
     height: 2.5em;
     padding: 0.8em;
     border-radius: 0.6em;
@@ -112,7 +100,6 @@
 }
 
 .plain-btn.button.green {
-    width: 7em;
     background: #00992e;
     border: 0.15em #00992e solid;
 }
@@ -120,6 +107,9 @@
 .plain-btn.button.red {
     background: #D90429;
     border: 0.15em #D90429 solid;
+}
+.plain-btn.button.red:hover {
+    background: #EF233C;
 }
 
 .fat-btn {

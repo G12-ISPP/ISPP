@@ -1,4 +1,4 @@
-import {test} from 'vitest';
+import {expect, test} from 'vitest';
 import {render, screen} from "@testing-library/react";
 import Footer from '../components/Footer/Footer';
 import '@testing-library/jest-dom';
@@ -11,14 +11,16 @@ const messages = {
         'Sobre nosotros',
         'Contacto',
         'Política de privacidad',
-        'Términos y condiciones',
-        'Política de cookies'
+        'Términos y condiciones'
     ],
     images: [
         'logo.png',
         'bxl-facebook-circle.svg',
         'bxl-instagram.svg',
-        'bxl-twitter.svg'
+        'bxl-twitter.svg',
+        'bxl-tiktok.svg',
+        'bxl-twitch.svg',
+        'bxl-youtube.svg'
     ],
     labels: {
         link: 'link',
@@ -42,6 +44,10 @@ describe('Test para Footer', () => {
 
     test('contains expected texts and images', () => {
 
+        const buttons = screen.getAllByRole("button");
+
+        expect(buttons.length).toBe(7);
+
         const links = screen.getAllByRole(messages.labels.link);
         expect(links.length).toBe(messages.expectedTexts.length);
 
@@ -49,11 +55,8 @@ describe('Test para Footer', () => {
             expect(links[index].textContent).toBe(text);
         });
 
-        const images = screen.getAllByRole(messages.labels.image);
-        expect(images.length).toBe(messages.images.length);
-
-        messages.images.forEach((image, index) => {
-            expect(images[index].src).toContain(image);
+        buttons.forEach((button, index) => {
+            expect(button.src).toContain(`${messages.images[index]}`);
         });
     });
 })

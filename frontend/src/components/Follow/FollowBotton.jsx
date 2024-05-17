@@ -41,7 +41,7 @@ function FollowButton({ userId }) {
 
     return (
         <button className={following ? 'plain-btn button red' : 'plain-btn button green'} onClick={handleFollowToggle}>
-            {following ? 'Dejar de seguir' : 'SEGUIR'}
+            {following ? 'Dejar de seguir' : 'Seguir'}
         </button>
     );
 }

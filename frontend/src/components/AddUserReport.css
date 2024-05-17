@@ -1,47 +1,247 @@
-.report-user-form-group-description {
-    font-family: inherit;
-    border-radius: 0.5em;
-    width: 500px;
-    height: 100px;
-  }
+.report-user-container .report-button-container .report-btn.button {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  color: #D90429;
+}
+.report-user-container .report-button-container .report-btn.button:hover {
+  text-decoration: underline;
+}
+.report-user-container .report-button-container .report-btn.button:focus {
+  outline: none;
+}
 
-.report-user-form-group-title {
-    font-family: inherit;
-    border-radius: 0.5em;
-    width: 300px;
-  }
+.report-user-container .report-button-container .report-btn.button .report-icon {
+  padding: 0.2em 0.2em 0 0;
+}
 
-.report-user-form-group-selector {
-    font-family: inherit;
-    border-radius: 0.5em;
+.report-user-container .modal .modal-content {
+  background: #FFF;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+  border-radius: 1.8em;
+  border: 1px solid #004040;
+  padding: 1em 2em;
+  text-align: unset;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 35em;
+  min-width: 0;
+}
 
-  }
+.report-user-container .modal .modal-content .close {
+  color: #D90429;
+  font-size: 2em;
+  font-weight: 700;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0.5em;
+  margin: 0;
+  transition: 0.3s;
+}
+.report-user-container .modal .modal-content .close:hover {
+  color: #EF233C;
+}
 
-.modal-content {
-  border: 0.25vh solid #004040;
+.report-user-container .modal .modal-content .report-form-contents .form-title {
+  padding: 0.5em 0 0;
+  margin-bottom: 1em;
+}
+
+.report-user-container .modal .modal-content .report-form-contents .form-title .modal-title {
+  font-size: 1.2em;
+  margin: 0;
+}
+
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  margin-bottom: 1.5em;
+}
+
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .form-input-label {
+  font-size: 0.9em;
+  color: #004040;
+  font-weight: 600;
+  margin: 0;
+}
+
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .form-input {
+  border: 1px solid #004040;
+  border-radius: 0.5em;
+  padding: 0.5em 1em;
+  background: transparent;
+  color: #004040;
+  font-size: 0.9em;
+}
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .textarea-container .form-input:focus-within {
+  outline: 0;
+}
+
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .textarea-container {
+  width: 100%;
+  max-height: 5em;
+  padding: 0.2em 0.9em;
+  box-sizing: border-box;
+  border: 1px solid #004040;
+  border-radius: 0.5em;
+}
+
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .textarea-container textarea.form-input {
+  width: 100%;
+  height: 4em;
+  resize: none;
+  font-family: system-ui;
+  color: #004040;
+  font-size: 1em;
+  font-weight: normal;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .textarea-container textarea.form-input:focus-within {
+  outline: none;
+}
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .textarea-container textarea.form-input::-webkit-scrollbar {
+  width: 0.5em;
+  height: 100%;
+}
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .textarea-container textarea.form-input::-webkit-scrollbar-track {
+  cursor: pointer;
+  background: #f1f1f1;
+  margin-right: 50px;
+}
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .textarea-container textarea.form-input::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  background: #888;
+}
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .textarea-container textarea.form-input::-webkit-scrollbar-thumb:hover {
+  cursor: pointer;
+  background: #555;
+}
+
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .file-name {
+  width: 100%;
+  max-height: 2em;
+  margin: 0;
+  background: #D9D9D9;
+  border: 1px solid #004040;
+  border-bottom: none;
+  border-radius: 0.5em 0.5em 0 0;
+  padding: 0.2em 1em;
+  box-sizing: border-box;
   text-align: center;
-  }
+  font-weight: 600;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow-wrap: anywhere;
+}
+
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .upload-file-button {
+  width: 100%;
+  background: #004040;
+  color: #FFF;
+  border-radius: 1.2em;
+  font-size: 1em;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.4em 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .upload-file-button:hover {
+  background: #E0EEC6;
+  border: 1px solid #004040;
+  color: #004040;
+}
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .upload-file-button.loaded {
+  border-radius: 0 0 0.5em 0.5em;
+}
+
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .form-input.upload {
+  display: none;
+}
+
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .form-selector {
+  width: 100%;
+  color: #004040;
+  font-size: 0.9em;
+  font-weight: normal;
+  padding: 0.5em 1em;
+  border: 1px solid #004040;
+  border-radius: 0.5em;
+  background: transparent;
+}
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .form-selector:focus-visible {
+  outline: 0;
+}
+
+.report-user-container .modal .modal-content .report-form-contents .form-inputs-section .form-input-container .error {
+  color: #D90429;
+  margin: 0;
+  font-size: 0.8em;
+}
 
 .report-user-form-group-button{
   display: flex;
   justify-content: center;
 }
 
-.close {
-  color: red;
-  float: right;
-  font-size: 30px;
-  font-weight: bold;
-  cursor: pointer;
-  position: absolute;
-  top: 0.5em;
-  right: 1em;
-  border-radius: 50%;
-  margin-right: -20px;
-  margin-top: -20px;
+
+@media screen and (max-width: 767px) {
+  .report-user-container .modal .modal-content {
+    width: 15em;
+  }
 }
 
-.close:hover,
-.close:focus {
-  color: darkred;
+@media screen and (max-width: 400px) {
+  .report-user-container .modal .modal-content {
+    width: 14em;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .report-user-form-group-button .large-btn.button {
+    width: 8em;
+    height: 2em;
+  }
+
+  .report-user-form-group-button .large-btn.button .btn-text {
+    font-size: 0.8em;
+  }
+}
+
+@media screen and (max-height: 160px) {
+  .report-user-container .modal .modal-content {
+    top: 260%;
+  }
+}
+
+@media screen and (min-height: 161px) and (max-height: 200px) {
+  .report-user-container .modal .modal-content {
+    top: 225%;
+  }
+}
+
+@media screen and (min-height: 201px) and (max-height: 300px) {
+  .report-user-container .modal .modal-content {
+    top: 175%;
+  }
+}
+
+@media screen and (min-height: 301px) and (max-height: 450px) {
+  .report-user-container .modal .modal-content {
+    top: 125%;
+  }
 }

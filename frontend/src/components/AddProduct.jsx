@@ -47,10 +47,6 @@ class Product extends Component {
                     buyer_plan: datos.buyer_plan
                 });
 
-                console.log(this.state.buyer_plan);
-                console.log(this.state.seller_plan);
-                console.log(this.state.designer_plan);
-
                 let petitionProducts = backend + '/products/api/v1/products/?seller=' + datos.id;
                 petitionProducts = petitionProducts.replace(/"/g, '');
                 const responseProducts = await fetch(petitionProducts, {

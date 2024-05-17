@@ -189,10 +189,13 @@ class ProductDetail extends React.Component {
           <div className="right-product-container">
             <div className="product-info-container">
               <h2 className="product-info-name">{product.name}</h2>
-              <AddProductReport product={product} />
               
               <div className="product-info-owner">
                 {user && <ProfileIcon key={user.id} name={user.username} onClick={user.id} showScore="True" userId={user.id} />}
+              </div>
+
+              <div className="report-product">
+                <AddProductReport product={product} />
               </div>
 
               <div className="product-info-description">
@@ -209,11 +212,14 @@ class ProductDetail extends React.Component {
 
                 {!showEditButton && (
                   <>
-                    <div className='product-quantity'>
-                      <button className="product-cart-qty-plus" type="button" onClick={this.decrementarCantidad}>-</button>
-                      <input type="text" name="qty" min="0" className="qty product-form-control" value={cantidad} readOnly />
-                      <button className="product-cart-qty-minus" type="button" onClick={this.incrementarCantidad}>+</button>
-                    </div>
+                    {product.product_type != "D" && (
+                      <div className='product-quantity'>
+                        <button className="product-cart-qty-plus" type="button" onClick={this.decrementarCantidad}>-</button>
+                        <input type="text" name="qty" min="0" className="qty product-form-control" value={cantidad} readOnly />
+                        <button className="product-cart-qty-minus" type="button" onClick={this.incrementarCantidad}>+</button>
+                      </div>
+                    )}
+
                     <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                       <Button type={BUTTON_TYPES.LARGE} text={agregado ? 'Añadido' : 'Añadir al carrito'} onClick={() => { addProduct(product, cantidad); 
                         this.setState({ agregado: true });

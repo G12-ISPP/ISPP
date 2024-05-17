@@ -22,6 +22,115 @@
   width: 50%;
 }
 
+.right-user-container .user-info-container .user-header {
+  margin-bottom: 0.5em;
+}
+
+.right-user-container .user-info-container .user-header .user-name-container {
+  width: 100%;
+}
+
+.right-user-container .user-info-container .user-header .user-name-container .user-name {
+  width: 100%;
+  margin: 0;
+  font-size: 2.2em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow-wrap: anywhere;
+}
+
+.right-user-container .user-info-container .user-header .user-header-actions {
+  display: flex;
+  gap: 2em;
+  align-items: center;
+}
+
+.right-user-container .user-info-container .user-header .user-header-actions .follows-info-section {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.right-user-container .user-info-container .user-header .user-header-actions .follows-info-section .follows-info {
+  font-size: 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+}
+.right-user-container .user-info-container .user-header .user-header-actions .follows-info-section .follows-info:hover {
+  text-decoration: underline;
+}
+
+.right-user-container .user-info-container .user-header .user-header-actions .edit-profile-button-container .edit-profile-btn.button {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  color: #00881D;
+}
+.right-user-container .user-info-container .user-header .user-header-actions .edit-profile-button-container .edit-profile-btn.button:hover {
+  text-decoration: underline;
+}
+.right-user-container .user-info-container .user-header .user-header-actions .edit-profile-button-container .edit-profile-btn.button:focus {
+  outline: none;
+}
+
+.right-user-container .user-info-container .user-header .user-header-actions .edit-profile-button-container .edit-profile-btn .edit-profile-icon {
+  padding: 0.2em 0.2em 0 0;
+}
+
+.right-user-container .user-info-container .user-body .user-review {
+  display: flex;
+  gap: 0.5em;
+  margin: 0;
+  margin-top: 0.2em;
+}
+
+.right-user-container .user-info-container .user-body .user-review .user-review-stars {
+  display: flex;
+}
+
+.right-user-container .user-info-container .user-body .user-review .user-review-text {
+  font-size: 1em;
+  font-weight: 700;
+  margin: 0;
+}
+
+.right-user-container .user-info-container .user-body .user-role-container,
+.right-user-container .user-info-container .user-body .user-plan-container {
+  display: flex;
+  margin: 0.6em 0 1em;
+}
+
+.right-user-container .user-info-container .user-body .user-role-container .roles-label,
+.right-user-container .user-info-container .user-body .user-plan-container .plan-label {
+  background: #C3E0FF;
+  border: 2px solid #004040;
+  border-radius: 0.5em 0 0 0.5em;
+  padding: 0.2em 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.right-user-container .user-info-container .user-body .user-role-container .roles,
+.right-user-container .user-info-container .user-body .user-plan-container .plans {
+  display: flex;
+}
+
+.right-user-container .user-info-container .user-body .user-role-container .roles .user-role,
+.right-user-container .user-info-container .user-body .user-plan-container .plans .user-plan {
+  background: #B6FCCE;
+  font-size: 1em;
+  font-weight: 700;
+  padding: 0.2em 0.8em;
+  border: 2px #004040 solid;
+  border-left: 0;
+}
+.right-user-container .user-info-container .user-body .user-role-container .roles .user-role:last-of-type,
+.right-user-container .user-info-container .user-body .user-plan-container .plans .user-plan:last-of-type {
+  border-radius: 0 0.7em 0.7em 0;
+}
+
 .user-img-container {
   display: flex;
   flex-direction: column;
@@ -40,13 +149,16 @@
   background: #D9D9D9;
 }
 
-.user-info-container {
+.right-user-container .user-info-container {
   padding: 0 5em 0 0;
 }
 
-.user-name {
+.right-user-container .user-info-container .user-body .user-contact-container {
+  margin-bottom: 1em;
+}
+
+.right-user-container .user-info-container .user-body .user-contact-container .user-contact {
   margin: 0;
-  font-size: 2.2em;
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -54,52 +166,9 @@
   overflow-wrap: anywhere;
 }
 
-.user-review {
+.right-user-container .user-info-container .user-body .user-button-wrapper {
   display: flex;
-  gap: 0.5em;
-  margin: 0;
-  margin-top: 0.2em;
-}
-
-.user-review-stars {
-  display: flex;
-}
-
-.user-review-text {
-  font-size: 1em;
-  font-weight: 600;
-  margin: 0;
-}
-
-.user-role-container {
-  display: flex;
-  gap: 0.5em;
-  margin-top: 0.6em;
-}
-
-.user-role {
-  background: #B6FCCE;
-  font-size: 1em;
-  font-weight: 700;
-  padding: 0.2em 0.8em;
-  border-radius: 0.7em;
-  border: 0.15em #004040 solid;
-}
-
-.user-contact-container {
-  margin-bottom: 2.5em;
-}
-
-.user-contact {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow-wrap: anywhere;
-}
-
-.user-button-wrapper {
-  display: flex;
+  flex-wrap: wrap;
   gap: 1em;
 }
 
@@ -162,33 +231,65 @@
     width: 100%;
   }
 
-  .user-info-container {
+  .right-user-container .user-info-container {
     margin-top: 1em;
     padding: 0;
   }
 
-  .user-name {
+  .right-user-container .user-info-container .user-header .user-name-container .user-name {
     font-size: 1.25em;
   }
 
-  .user-button-wrapper {
-    gap: 0.5em;
+  .right-user-container .user-info-container .user-body .user-button-wrapper {
+    gap: 10px;
   }
 
-  .user-review-text {
+  .right-user-container .user-info-container .user-body .user-button-wrapper .user-button {
+    width: 100%;
+  }
+
+  .right-user-container .user-info-container .user-body .user-button-wrapper .user-button .plain-btn.button.green {
+    width: 100%;
+  }
+
+  .right-user-container .user-info-container .user-body .user-button-wrapper .medium-btn.button {
+    width: 100%;
+  }
+
+  .right-user-container .user-info-container .user-body .user-button-wrapper .transparent-btn.button {
+    width: calc(50% - 5px);
+  }
+
+  .right-user-container .user-info-container .user-body .user-review .user-review-text {
     font-size: 0.8em;
   }
 
-  .user-review-stars img {
+  .right-user-container .user-info-container .user-body .user-review .user-review-stars img {
     width: 1.25em;
   }
 
-  .user-role {
+  .right-user-container .user-info-container .user-body .user-role-container .roles .user-role,
+  .right-user-container .user-info-container .user-body .user-plan-container .plans .user-plan {
     font-size: 0.8em;
   }
 
-  .user-contact {
+  .right-user-container .user-info-container .user-body .user-contact-container .user-contact {
     font-size: 0.9em;
+  }
+
+  .right-user-container .user-info-container .user-header .user-header-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .right-user-container .user-info-container .user-header .user-header-actions .follows-info-section .follows-info {
+    font-size: 1em;
+  }
+
+  .right-user-container .user-info-container .user-body .user-role-container .roles-label,
+  .right-user-container .user-info-container .user-body .user-plan-container .plan-label {
+    font-size: 0.8em;
   }
 
   .user-products-section {
@@ -219,17 +320,20 @@
     font-size: 0.9em;
   }
 
-  .report-user {
-    width: 100%; 
-    display: flex;
-    justify-content: center;
+  .report-user .report-user-container .report-button-container .report-btn.button img {
+    width: 1em;
+    padding: 0 0.2em 0 0;
+  }
+
+  .report-user .report-user-container .report-button-container .report-btn.button {
+    font-size: 0.9em;
   }
 
 }
 
 @media (max-width: 320px) {
 
-  .user-button-wrapper {
+  .right-user-container .user-info-container .user-body .user-button-wrapper {
     gap: 0.3em;
   }
 
@@ -254,9 +358,21 @@
   }
 
   .report-user {
-    width: 100%; 
     display: flex;
     justify-content: center;
+  }
+
+  .right-user-container .user-info-container .user-header .user-header-actions .follows-info-section .follows-info {
+    font-size: 1em;
+  }
+
+  .report-user .report-user-container .report-button-container .report-btn.button img {
+    width: 1em;
+    padding: 0 0.2em 0 0;
+  }
+
+  .report-user .report-user-container .report-button-container .report-btn.button {
+    font-size: 0.9em;
   }
 
 }
