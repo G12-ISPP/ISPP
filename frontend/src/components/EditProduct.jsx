@@ -138,13 +138,13 @@ const EditProduct = () => {
                 errors.description = 'La descripción debe tener entre 20 y 200 caracteres';
             }
 
-            if (productData.show && productData.seller_plan && productData.designer_plan && countShow >= 8) {
+            if (productData.show && currentUserData.seller_plan && currentUserData.designer_plan && countShow >= 8) {
                 errors.show = 'No puedes más destacar más de 8 productos';
-            } else if (productData.show && !productData.seller_plan && productData.designer_plan && countShow >= 3) {
+            } else if (productData.show && !currentUserData.seller_plan && currentUserData.designer_plan && countShow >= 3) {
                 errors.show = 'Para destacar más de 3 productos necesitas un plan de vendedor';
-            } else if (productData.show && productData.seller_plan && !productData.designer_plan && countShow >= 5) {
+            } else if (productData.show && currentUserData.seller_plan && !currentUserData.designer_plan && countShow >= 5) {
                 errors.show = 'Para destacar más de 5 productos necesitas un plan de diseñador';
-            } else if (productData.show && !productData.seller_plan && !productData.designer_plan) {
+            } else if (productData.show && !currentUserData.seller_plan && !currentUserData.designer_plan) {
                 errors.show = 'Para destacar productos debe adquirir un plan';
             }
 

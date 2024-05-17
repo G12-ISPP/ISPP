@@ -330,9 +330,6 @@ class Product extends Component {
                                            onChange={(e) => this.setState({price: e.target.value})} placeholder="5.99"/>
                                     {errors.price && <div className="error">{errors.price}</div>}
                                 </div>
-                                {console.log(this.state.seller_plan)}
-                                {console.log(this.state.designer_plan)}
-                                {console.log(this.state.buyer_plan)}
                                 {(this.state.seller_plan || this.state.designer_plan || this.state.buyer_plan) && (
                                     <div className='form-group'>
                                         <div className="form-group-contents">
