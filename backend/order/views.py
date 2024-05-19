@@ -194,6 +194,10 @@ def mark_products_as_sent(request, token):
 
     # Asumiendo que usas el primer enfoque y que el token está asociado a un vendedor
     OrderProduct.objects.filter(order=action_token.order, product__seller=action_token.seller).update(state='Enviado')
+    order = Order.objects.get(id=action_token.order.id)
+    order.status = 'E'
+    order.save()
+
     return HttpResponse('Productos marcados como enviados. Puedes cerrar la pestaña.')
 
 def cancel_order(request, order_id):
@@ -215,7 +219,7 @@ def order_details(request, order_id):
 
         order_details = {
             'id': order.id,
-            'buyer': order.buyer.email if order.buyer else None,
+            'buyer': order.buyer.username if order.buyer else None,
             'price': order.price,
             'status': order.status,
             'address': order.address,

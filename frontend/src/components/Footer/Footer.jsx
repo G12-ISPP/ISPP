@@ -4,6 +4,9 @@ import logo from '../../assets/logo.png'
 import facebookIcon from '../../assets/bxl-facebook-circle.svg'
 import instagramIcon from '../../assets/bxl-instagram.svg'
 import twitterIcon from '../../assets/bxl-twitter.svg'
+import tiktokIcon from '../../assets/bxl-tiktok.svg'
+import twitchIcon from '../../assets/bxl-twitch.svg'
+import youtubeIcon from '../../assets/bxl-youtube.svg'
 
 const Footer = () => {
 
@@ -14,11 +17,14 @@ const Footer = () => {
     return (
         <footer className='footer'>
             <div className='footer-section'>
-                <img src={logo} className='logo-footer' onClick={() => onButtonClick('/')} />
+                <img src={logo} className='logo-footer' onClick={(e) => {e.preventDefault(); onButtonClick('/');}} role="button" tabIndex="0" />
                 <div className='social'>
-                    <img src={facebookIcon} className='social-media-icon' onClick={() => onButtonClick('/')} />
-                    <img src={instagramIcon} className='social-media-icon' onClick={() => onButtonClick('/')} />
-                    <img src={twitterIcon} className='social-media-icon' onClick={() => onButtonClick('/')} />
+                    <img src={facebookIcon} className='social-media-icon' onClick={(e) => {e.preventDefault(); onButtonClick('https://www.facebook.com/profile.php?id=61558534868827');}} role="button" tabIndex="0" />
+                    <img src={instagramIcon} className='social-media-icon' onClick={(e) => {e.preventDefault(); onButtonClick('https://www.instagram.com/shar3d_es');}} role="button" tabIndex="0" />
+                    <img src={twitterIcon} className='social-media-icon' onClick={(e) => {e.preventDefault(); onButtonClick('https://www.twitter.com/shar3d_2024');}} role="button" tabIndex="0" />
+                    <img src={tiktokIcon} className='social-media-icon' onClick={(e) => {e.preventDefault(); onButtonClick('https://www.tiktok.com/@shar3d_2024');}} role="button" tabIndex="0" />
+                    <img src={twitchIcon} className='social-media-icon' onClick={(e) => {e.preventDefault(); onButtonClick('https://www.twitch.com/shar3d_2024');}} role="button" tabIndex="0" />
+                    <img src={youtubeIcon} className='social-media-icon' onClick={(e) => {e.preventDefault(); onButtonClick('https://www.youtube.com/channel/UCA-3C2FB2mZB-jY1V3KGHnQ');}} role="button" tabIndex="0" />
                 </div>
             </div>
             <div className='footer-section'>
@@ -39,13 +45,10 @@ const Footer = () => {
             <div className='footer-section'>
                 <p className='footer-section-title'>Nuestras políticas</p>
                 <p className='footer-section-element'>
-                    <a href='/privacidad'>Política de privacidad</a>
+                    <a href='/privacy'>Política de privacidad</a>
                 </p>
                 <p className='footer-section-element'>
-                    <a href='/terminos'>Términos y condiciones</a>
-                </p>
-                <p className='footer-section-element'>
-                    <a href='/'>Política de cookies</a>
+                    <a href='/terms'>Términos y condiciones</a>
                 </p>
             </div>
         </footer>

@@ -1,6 +1,9 @@
 import React, { Component, useState } from "react";
 import Button, { BUTTON_TYPES } from "./Button/Button";
 import "./AddUserReport.css";
+import info from '../assets/bx-info-circle.svg';
+
+
 // Modal Component
 class Modal extends React.Component {
   render() {
@@ -11,7 +14,7 @@ class Modal extends React.Component {
     return (
       <div className="modal">
         <div className="modal-content">
-          <a onClick={this.props.onClose} class="close">&times;</a>
+          <a onClick={this.props.onClose} className="close" role="button" tabIndex="0">&times;</a>
           {this.props.children}
         </div>
       </div>
@@ -44,28 +47,28 @@ class AddUserReport extends Component {
     const errors = {};
 
     if (!title.trim()) {
-      errors.title = "El título es obligatorio";
+      errors.title = "El asunto es obligatorio.";
     }
 
     if (!description.trim()) {
-      errors.description = "La descripción es obligatoria";
+      errors.description = "Los motivos son obligatorios.";
     }
 
     if (title.trim().length < 5 || title.length > 20) {
-      errors.title = "El título debe tener entre 5 y 20 caracteres";
+      errors.title = "El asunto debe tener entre 5 y 20 caracteres.";
     }
 
     if (description.trim().length < 10 || description.length > 250) {
       errors.description =
-        "La descripción debe tener entre 10 y 250 caracteres";
+        "Los motivos deben tener entre 10 y 250 caracteres.";
     }
 
     if (!reason) {
-      errors.reason = "Debes seleccionar una razón";
+      errors.reason = "Debes seleccionar una razón.";
     }
 
     if (!file) {
-      errors.file = 'La foto es obligatoria';
+      errors.file = 'La comprobación es obligatoria.';
     }
 
     this.setState({ errors });
@@ -125,14 +128,14 @@ class AddUserReport extends Component {
             });
           } else if (response.ok) {
             this.setState({ showForm: false });
-            alert("Reporte enviado correctamente" );
+            alert("Reporte enviado correctamente." );
           } else {
             console.error("Error submitting report");
           }
         })
         .catch(error => {
           console.error('Error al enviar el formulario:', error);
-          alert('Error al enviar el formulario');
+          alert('Error al enviar el formulario.');
         });
         
         fetch();
@@ -161,7 +164,7 @@ class AddUserReport extends Component {
     }
 
     if (!allowedExtensions.includes(fileExtension)) {
-      this.setState({ file: null, errors: { file: 'Por favor, seleccione un archivo de imagen válido (.jpg, .jpeg, .png)' } });
+      this.setState({ file: null, errors: { file: 'Por favor, seleccione un archivo de imagen válido (.jpg, .jpeg, .png).' } });
       return;
     }
 
@@ -176,18 +179,15 @@ class AddUserReport extends Component {
     const { isAuthenticated, errors, showForm } = this.state;
 
     return (
-      <>
-        <Button
-          type={BUTTON_TYPES.REPORT}
-          text={
-            showForm && isAuthenticated
-              ? "Reporte"
-              : "Reportar usuario"
-          }
-          onClick={showForm && isAuthenticated
-            ? this.closeModal
-            : this.openModal}
-        />
+      <div className="report-user-container">
+
+        <div className="report-button-container">
+          <button className="report-btn button" onClick={showForm && isAuthenticated ? this.closeModal : this.openModal}>
+            <img src={info} alt="Reportar usuario" className="report-icon"/>
+            {showForm && isAuthenticated ? "Reporte" : "Reportar usuario"}
+          </button>
+        </div>
+        
         {errors.login && (
           <div className="opinion-login-error">
             <p className="opinion-error-text">{errors.login}</p>
@@ -201,66 +201,62 @@ class AddUserReport extends Component {
 
         {showForm && isAuthenticated && (
           <Modal show={showForm} onClose={this.closeModal}>
-            <h2>Reportar un usuario</h2>
-            <form>
-              <label>
-                Titulo:
-                <br></br>
-                <input
-                  type="text"
-                  name="title"
-                  value={this.state.title}
-                  onChange={this.handleTitleChange}
-                  className="report-user-form-group-title"
-                />
-                {this.state.errors.title && (
-                  <p className="error">{this.state.errors.title}</p>
-                )}
-              </label>
-              <br></br>
-              <label>Descripción:</label>
-              <br></br>
-              <textarea
-                type="text"
-                name="description"
-                onChange={this.handleDescriptionChange}
-                value={this.state.description}
-                className="report-user-form-group-description"
-                rows={5}
-              />
-              {this.state.errors.description && (
-                <p className="error">{this.state.errors.description}</p>
-              )}
-              <label htmlFor='file' className='upload'>
-                Comprobación
-              </label>
-              <div className='file-select'>
-                <input type='file' id='file' name='file' className='form-input' accept='.jpg, .jpeg, .png' onChange={this.handleFileChange} />
-                {errors.file && <div className="error">{errors.file}</div>}
+
+            <div className="report-form-contents">
+
+              <div className="form-title">
+                <h3 className="modal-title">Reportar usuario</h3>
               </div>
-              <br></br>
-              <label>
-                Motivo del Reporte:
-                <br></br>
-                <select
-                  name="reason"
-                  value={this.state.reason}
-                  onChange={this.handleReasonsChange}
-                  className="report-user-form-group-selector"
-                >
-                  <option value="P">Problema de calidad</option>
-                  <option value="D">Derecho de Autor</option>
-                  <option value="S">Spam o publicidad</option>
-                  <option value="F">Fraude o estafa</option>
-                  <option value="R">Robo de diseño/idea</option>
-                  <option value="I">Inapropiado</option>
-                </select>
-                {this.state.errors.reason && (
-                  <p className="error">{this.state.errors.reason}</p>
-                )}
-              </label>
-              <br></br>
-            </form>
+
+              <form className="form-inputs-section">
+
+                <div className="form-input-container">
+                  <label htmlFor="title" className="form-input-label">Asunto</label>
+                  <input type="text" name="title" value={this.state.title} onChange={this.handleTitleChange} className="form-input" />
+                  {this.state.errors.title && (
+                    <p className="error">{this.state.errors.title}</p>
+                  )}
+                </div>
+
+                <div className="form-input-container">
+                  <label htmlFor="description" className="form-input-label">Motivos detallados</label>
+                  <div className="textarea-container">
+                    <textarea type="text" name="description" value={this.state.description} onChange={this.handleDescriptionChange} className="form-input" />
+                  </div>
+                  {this.state.errors.description && (
+                    <p className="error">{this.state.errors.description}</p>
+                  )}
+                </div>
+
+                <div className='form-input-container'>
+                  <p className="form-input-label">Comprobación</p>
+                  {this.state.file && <p className="file-name"><strong>Archivo seleccionado: </strong>{this.state.file.name}</p>}
+                  <label htmlFor="file"
+                          className={this.state.file ? "upload-file-button loaded" : "upload-file-button"}>{this.state.file ? "Cambiar archivo" : "Seleccionar archivo"}</label>
+                  <input type='file' id='file' name='file' className='form-input upload' accept='.jpg, .jpeg, .png' onChange={this.handleFileChange}/>
+                  {errors.file && <div className="error">{errors.file}</div>}
+                </div>
+                
+                <div className="form-input-container">
+                  <label htmlFor="reason" className="form-input-label">Motivo del reporte</label>
+                  <select name="reason" value={this.state.reason} onChange={this.handleReasonsChange} className="form-selector">
+                    <option value="P">Problema de calidad</option>
+                    <option value="D">Derechos de autor</option>
+                    <option value="S">Spam o publicidad</option>
+                    <option value="F">Fraude o estafa</option>
+                    <option value="R">Robo de diseño/idea</option>
+                    <option value="I">Inapropiado</option>
+                  </select>
+                  {this.state.errors.reason && (
+                    <p className="error">{this.state.errors.reason}</p>
+                  )}
+                </div>
+                
+              </form>
+
+            </div>
+            
+            
             {this.state.errors.unique && (
               <p className="error">{this.state.errors.unique}</p>
             )}
@@ -273,7 +269,7 @@ class AddUserReport extends Component {
             </div>
           </Modal>
         )}
-      </>
+      </div>
     );
   }
 }

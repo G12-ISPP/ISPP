@@ -10,6 +10,7 @@ import FollowButton from "./Follow/FollowBotton.jsx";
 import PageTitle from './PageTitle/PageTitle';
 import filledStar from '../assets/bxs-star.svg';
 import emptyStar from '../assets/bx-star.svg';
+import editIcon from '../assets/bxs-edit-light.svg';
 import Paginator from './Paginator/Paginator.jsx';
 import AddUserReport from './AddUserReport.jsx';
 
@@ -315,113 +316,125 @@ const UserDetail = () => {
 
           <div className="right-user-container">
             <div className="user-info-container">
+              
+              <div className="user-header">
 
-              <h2 className="user-name">{user.first_name} {user.last_name}</h2>
-
-
-
-              {opinions.length > 0 ? (
-                <div className="user-review">
-                  <div className="user-review-stars">
-                    {Array.from({ length: roundScore(avgScore) }, (_, index) => (
-                      <img key={index} src={filledStar} alt="filled star" />
-                    ))}
-                    {Array.from({ length: 5 - roundScore(avgScore) }, (_, index) => (
-                      <img key={index} src={emptyStar} alt="empty star" />
-                    ))}
-                  </div>
-                  <div className="user-review-text">{roundScore(avgScore)} ({totalOpinions} {totalOpinions === 1 ? 'Opinión' : 'Opiniones'})</div>
+                <div className="user-name-container">
+                  <h2 className="user-name">{user.first_name} {user.last_name}</h2>
                 </div>
-              ) : (
-                <p className='user-review-text'>Sin valoraciones</p>
-              )}
 
-              <div className="user-role-container">
-                <Button
-                  type={BUTTON_TYPES.TRANSPARENT}
-                  text={`${followingCount.following_count} seguidos`}
-                  onClick={handleFollowingsClick}
-                />
-                <Button
-                  type={BUTTON_TYPES.TRANSPARENT}
-                  text={`${followersCount.followers_count} seguidores`}
-                  onClick={handleFollowersClick}
-                />
-              </div>
+                <div className="user-header-actions">
 
-              <p className='user-review-text'>Roles del usuario:</p>
-              <div className="user-role-container">
-
-                {user.is_designer === true ? (
-                  <div className="user-role">Diseñador</div>
-                ) : null}
-                {user.is_printer === true ? (
-                  <div className="user-role">Impresor</div>
-                ) : null}
-              </div>
-
-              {ownUser ? (
-                <>
-                  <p className='user-review-text'>Planes del usuario:</p>
-                  <div className="user-role-container">
-                    {user.buyer_plan === true ? (
-                      <div className="user-role">Plan Diseñador</div>
-                    ) : null}
-                    {user.designer_plan === true ? (
-                      <div className="user-role">Plan Impresor</div>
-                    ) : null}
-                    {user.seller_plan === true ? (
-                      <div className="user-role">Plan Vendedor</div>
-                    ) : null}
+                  <div className="follows-info-section">
+                    <div className="follows-info" onClick={handleFollowersClick} role="button" tabIndex="0">
+                      {followersCount.followers_count} {followersCount.followers_count === 1 ? 'seguidor' : 'seguidores'}
+                    </div>
+                    <div className="follows-info" onClick={handleFollowingsClick} role="button" tabIndex="0">
+                      {followingCount.following_count} {followingCount.following_count === 1 ? 'seguido' : 'seguidos'}
+                    </div>
                   </div>
-                </>
-              ) : (
-                <></>
-              )}
 
-              <div className="user-contact-container">
-                <p className="user-contact"><strong>Contacto: </strong> {user.email}</p>
+                  {!ownUser ? (
+                    <div className="report-user">
+                      <AddUserReport user={user} />
+                    </div>
+                  ) : (
+                    <div className="edit-profile-button-container">
+                      <button className="edit-profile-btn button" onClick={handleEditClick}>
+                        <img src={editIcon} alt="Editar perfil" className="edit-profile-icon"/>
+                        Editar perfil
+                      </button>
+                    </div>
+                  )}
+
+                </div>
+
               </div>
 
-              {!ownUser ? (
-                <>
-                  <div className='report-user' >
-                    <AddUserReport user={user} />
+              <div className="user-body">
+
+                {opinions.length > 0 ? (
+                  <div className="user-review">
+                    <div className="user-review-stars">
+                      {Array.from({ length: roundScore(avgScore) }, (_, index) => (
+                        <img key={index} src={filledStar} alt="filled star" />
+                      ))}
+                      {Array.from({ length: 5 - roundScore(avgScore) }, (_, index) => (
+                        <img key={index} src={emptyStar} alt="empty star" />
+                      ))}
+                    </div>
+                    <div className="user-review-text">{roundScore(avgScore)} ({totalOpinions} {totalOpinions === 1 ? 'Opinión' : 'Opiniones'})</div>
                   </div>
-                </>
-              ) : (
-                <>
-                </>
-              )}
-
-
-              <div className="user-button-wrapper">
-                {ownUser ? (
-                  <Button type={BUTTON_TYPES.TRANSPARENT} text='Editar Perfil' onClick={handleEditClick} />
                 ) : (
-                  <Button type={BUTTON_TYPES.TRANSPARENT} text='Chat' onClick={handleChatClick} />
-                )}
-                <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
-              </div>
-              <div className="user-button-wrapper">
-                {ownUser && user.is_printer === true ?
-                  (<Button type={BUTTON_TYPES.TRANSPARENT} text='Por imprimir' onClick={handlePorImprimir} />)
-                  :
-                  ("")
-                }
-                {ownUser === true ?
-                  (<Button type={BUTTON_TYPES.TRANSPARENT} text='Mis solicitudes' onClick={handleRequest} />)
-                  :
-                  ("")
-                }
-                {ownUser || localStorage.getItem('token') === null ? null : (
-                  <div className="user-button">
-                    <FollowButton userId={id} />
+                  <div className="user-review">
+                    <p className='user-review-text'>Sin valoraciones</p>
                   </div>
                 )}
-              </div>
-              <div className="user-button-wrapper">
+
+                {user.is_designer || user.is_printer ? (
+                  <div className="user-role-container">
+                    <div className="roles-label">
+                      {user.is_designer && user.is_printer ? "Roles" : "Rol"}
+                    </div>
+                    <div className="roles">
+                      {user.is_designer === true ? (
+                        <div className="user-role">Diseñador</div>
+                      ) : null}
+                      {user.is_printer === true ? (
+                        <div className="user-role">Impresor</div>
+                      ) : null}
+                    </div>
+                  </div>
+                ) : null}
+
+                {ownUser && (user.buyer_plan || user.designer_plan || user.seller_plan) ? (
+                  <div className="user-plan-container">
+                    <div className="plan-label">
+                      {user.buyer_plan + user.designer_plan + user.seller_plan === 1 ? "Tu plan" : "Tus planes"}
+                    </div>
+                    <div className="plans">
+                      {user.buyer_plan === true ? (
+                        <div className="user-plan">Diseñador</div>
+                      ) : null}
+                      {user.designer_plan === true ? (
+                        <div className="user-plan">Impresor</div>
+                      ) : null}
+                      {user.seller_plan === true ? (
+                        <div className="user-plan">Vendedor</div>
+                      ) : null}
+                    </div>
+                  </div> 
+                ) : null}
+
+                <div className="user-contact-container">
+                  <p className="user-contact"><strong>Contacto: </strong> {user.email}</p>
+                </div>
+
+                <div className="user-button-wrapper">
+
+                  {ownUser || localStorage.getItem('token') === null ? null : (
+                    <div className="user-button">
+                      <FollowButton userId={id} />
+                    </div>
+                  )}
+
+                  {!ownUser ? (
+                    <Button type={BUTTON_TYPES.MEDIUM} text='Chat' onClick={handleChatClick}/>
+                  ) : (
+                    <>
+                      <Button type={BUTTON_TYPES.TRANSPARENT} text='Mis solicitudes' onClick={handleRequest} />
+
+                      {user.is_printer ? (
+                        <Button type={BUTTON_TYPES.TRANSPARENT} text='Por imprimir' onClick={handlePorImprimir} />
+                      ) : null}
+                    </>
+                  )}
+
+                  <Button type={BUTTON_TYPES.TRANSPARENT} text='Productos' onClick={handleProductListClick} />
                   <Button type={BUTTON_TYPES.TRANSPARENT} text='Publicaciones' onClick={handlePosts} />
+
+                </div>
+
               </div>
             
             </div>

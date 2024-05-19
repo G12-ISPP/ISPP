@@ -49,3 +49,11 @@ export const getUsername = async (userId) => {
         .then(data => data.username)
         .catch(error => console.error('Error fetching user data:', error));
 };
+
+export const getLoggedUser = async () => {
+    return fetch(backend +'/designs/loguedUser', {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+}

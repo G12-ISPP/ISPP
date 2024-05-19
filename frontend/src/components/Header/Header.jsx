@@ -17,7 +17,7 @@ const Header = ({ cart, setCart }) => {
     const [ownUser, setOwnUser] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false)
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('token'));
-    const [menuVisible, setMenuVisible] = useState(false);
+    const [menuVisible, setMenuVisible] = useState(true);
     const [isHeaderFullScreen, setIsHeaderFullScreen] = useState(false);
     const { logoutUser } = useContext(AuthContext);
     const [searchText, setSearchText] = useState('');
@@ -55,17 +55,35 @@ const Header = ({ cart, setCart }) => {
             fetchUserData();
         }
 
-        const handleResize = () => {
+        const changeMenuVisibility = () => {
             if (window.innerWidth > 1024) {
                 setMenuVisible(true);
-            } else {
+            } else if (window.innerWidth <= 1024) {
                 setMenuVisible(false);
             }
         }
 
-        window.addEventListener('resize', handleResize);
+        changeMenuVisibility();
 
-        handleResize();
+        const handleResize = () => {
+
+            setTimeout(() => {
+                let newWidth = window.innerWidth;
+
+                if (prevWidth !== newWidth) {
+                    if (window.innerWidth > 1024) {
+                        setMenuVisible(true);
+                    } else if (window.innerWidth <= 1024) {
+                        setMenuVisible(false);
+                    }
+                }
+
+                prevWidth = newWidth;
+            }, 50);
+        }
+
+        let prevWidth = window.innerWidth;
+        window.addEventListener('resize', handleResize);
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
@@ -103,9 +121,6 @@ const Header = ({ cart, setCart }) => {
     const onToggleMenu = () => {
         setMenuVisible(!menuVisible);
         setIsHeaderFullScreen(!isHeaderFullScreen);
-
-        console.log(menuVisible);
-        console.log(isHeaderFullScreen);
 
         if (!menuVisible) {
             $(".header").parents("body").css("overflow", "hidden");
@@ -167,8 +182,6 @@ const Header = ({ cart, setCart }) => {
     const handleCartMouseLeave = () => {
         setActiveCart(false);
     }
-
-
 
     return (
         <div className={isHeaderFullScreen ? 'header-fullscreen' : 'header'}>

@@ -26,6 +26,11 @@ const ModalComment = ({postId, setWantComment, addComment}) => {
             
             let petition = backend + '/comment/add_comment/';
             petition = petition.replace(/"/g, '');
+
+            if (comment.length > 100) {
+                setErrors({ comment: 'El comentario no puede tener más de 100 caracteres' });
+                return;
+            }
         
             const response = await fetch(petition, {
               method: 'POST',

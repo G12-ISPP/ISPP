@@ -78,6 +78,7 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
       setTimeout(fetchMessages, 200);
       setTimeout(() => {
         scrollToBottom();
+        setNewMessage('');
       }, 250); // Ajusta este tiempo si es necesario
     })
     .catch(error => {
@@ -89,7 +90,7 @@ const ChatComponent = ({ roomId, roomName, roomMate }) => {
   }
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    // document.body.style.overflow = 'hidden';
     if(roomId>0){
       fetchMessages().then(() => {
         setTimeout(() => {

@@ -3,6 +3,7 @@ import { ChatList } from 'react-chat-elements';
 import './ChatComponent.css'
 import 'react-chat-elements/dist/main.css'; // Importar estilos de react-chat-elements
 import { useNavigate } from 'react-router-dom';
+import {getUser} from "../../api/users.api.jsx";
 
 
 function UserChatList({ onUserClick }) {
@@ -36,7 +37,6 @@ function UserChatList({ onUserClick }) {
         throw new Error('Failed to create or get chatroom');
       }
       const data = await response.json();
-      console.log(data)
       navigate(`/chat/${data.chatroomID}`);
     } catch (error) {
       console.error('Error:', error);
@@ -127,11 +127,20 @@ function UserChatList({ onUserClick }) {
   
         const data = await response.json();
         const users = data.users;
-  
+
+        console.log("users")
         // Cargar el último mensaje para cada usuario
         const usersWithLastMessage = await Promise.all(users.map(async (user) => {
           const lastMessage = await getLastMessage(user.id);
-          await fetchUser(user.id);
+          let response = await getUser(user.id);
+
+          if (!response.ok) {
+            alert('Error al obtener los datos del usuario');
+          }
+
+          user = await response.json();
+
+          console.log(user)
           return {
             ...user,
             subtitle: lastMessage.content || "No hay mensajes",
@@ -141,6 +150,9 @@ function UserChatList({ onUserClick }) {
   
         // Actualizar estado con los usuarios y sus últimos mensajes
         setUsers(usersWithLastMessage);
+        for (let i = 0; i < usersWithLastMessage.length; i++) {
+          console.log(usersWithLastMessage[i].image_url);
+        }
       } catch (error) {
         console.error('Error:', error);
       }
@@ -154,6 +166,7 @@ function UserChatList({ onUserClick }) {
   
 
   return (
+
     <ChatList
       onClick={(chat) => handleChatClick(chat.userId)}
       className='user-list'
@@ -166,6 +179,7 @@ function UserChatList({ onUserClick }) {
         unread: 2, // Aquí puedes agregar lógica para mostrar la cantidad de mensajes no leídos
       }))}
     />
+
   );
 }
 

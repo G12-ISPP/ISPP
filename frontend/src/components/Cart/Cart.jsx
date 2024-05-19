@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './Cart.css';
 import { FaTrash } from "react-icons/fa";
-import Text, { TEXT_TYPES } from '../Text/Text';
 import Button, { BUTTON_TYPES } from '../Button/Button';
 import PageTitle from '../PageTitle/PageTitle';
 
 const backend = JSON.stringify(import.meta.env.VITE_APP_BACKEND);
-const frontend = JSON.stringify(import.meta.env.VITE_APP_FRONTEND);
 
 const Cart = ({
   cart,
@@ -53,6 +51,13 @@ const Cart = ({
   const editProduct = (product, amount) => {
     let cartCopy = [...cart];
     let existingProduct = cartCopy.find(cartProduct => cartProduct.id === product.id);
+
+    if (existingProduct.product_type === 'D' && amount === 1) {
+      alert('No puedes añadir más de un diseño al carrito')
+      return;
+    }
+
+
     if (!existingProduct || (product.stock_quantity - existingProduct.quantity) < amount) return;
     existingProduct.quantity += amount;
     if (existingProduct.quantity <= 0) {
@@ -79,8 +84,8 @@ const Cart = ({
       newErrors.city = 'Por favor, introduce el nombre de tu ciudad.';
     } else if (city.length > 50) {
       newErrors.city = 'La ciudad debe tener menos de 50 caracteres.';
-    } else if (/\d/.test(city)) {
-      newErrors.city = 'La ciudad no debe contener caracteres numéricos.'
+    } else if (!/^[a-zA-Z\s]{2,50}$/.test(city)) {
+      newErrors.city = 'La ciudad debe contener solo letras.';
     }
 
     if (!address || address === '') {
